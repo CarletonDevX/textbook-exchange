@@ -1,0 +1,23 @@
+{
+  "name": "textbook-exchange",
+  "version": "0.0.1",
+  "description": "Textbook exchange!",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.3.16",
+    "express": "^4.12.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/CarletonDevX/textbook-exchange.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "textbook"
+  ],
+  "author": "David Pickart and Joe Slote",
+  "license": "ISC"
+}
