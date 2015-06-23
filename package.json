@@ -12,7 +12,10 @@
     "body-parser": "^1.13.1",
     "express": "^4.12.4",
     "jade": "^1.11.0",
-    "mongoose": "^4.0.5"
+    "mongoose": "^4.0.5",
+    "node-sass-middleware": "^0.9.0",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0"
   },
   "repository": {
     "type": "git",

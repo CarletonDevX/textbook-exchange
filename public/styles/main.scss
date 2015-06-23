@@ -1,0 +1,13 @@
+$font-stack:    Helvetica, sans-serif;
+$primary-color: #333;
+
+html {
+	background: #AAA;
+}
+
+body {
+  margin: 0 auto;
+  width: 20em;
+  font: 100% $font-stack;
+  color: $primary-color;
+}
