@@ -29,19 +29,19 @@ app.set('view engine', 'jade');
 
 /* AUTH */
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
+// passport.serializeUser(function(user, done) {
+//     done(null, user.id);
+// });
 
-passport.deserializeUser(function(id, done) {
-    User.findOne(
-        {_id: id},
-        '-password',
-        function(err, user) {
-            done(err, user);
-        }
-    );
-});
+// passport.deserializeUser(function(id, done) {
+//     User.findOne(
+//         {_id: id},
+//         '-password',
+//         function(err, user) {
+//             done(err, user);
+//         }
+//     );
+// });
 
 require('./app/strategies/local.js')();
 
@@ -55,8 +55,8 @@ var logAll = function (req, res, next) {
 
 app.use(logAll);
 
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

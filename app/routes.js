@@ -1,4 +1,4 @@
-var users = require('./controllers/user.controller');
+var users = require('./controllers/users.controller');
 
 exports.setup = function(app) {
 
@@ -6,10 +6,17 @@ exports.setup = function(app) {
     app.get('/', function (req, res) {
 	    res.render('index', {
 	        "title": "Textbook Exchange",
-	        "desc": "Get ur textbooks 4 free"
+	        "desc": "Time to hit the books!"
 	    })
     });
 
-    // User stuff
-	app.route('/users').post(users.create).get(users.list);
+    app.get('/users', function (req, res) {
+    	users.list(req, res);
+    });
+
+    app.post('/register', function (req, res) {
+    	users.create(req, res, function () {
+    		users.list(req, res);
+    	});
+    });
 };
