@@ -1,13 +1,52 @@
-$font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
+$form-space: 0.5em;
+$form-color: black;
+$form-font-size: 1em;
 
 html {
-	background: #AAA;
+    background: white;
 }
 
 body {
-  margin: 0 auto;
-  width: 20em;
-  font: 100% $font-stack;
-  color: $primary-color;
+	margin: 0 auto;
+	margin-top: 5em;
+	padding: 1em;
+	width: 20em;
+	font: 100% Helvetica, sans-serif;
+	color: $primary-color;
+	background: white;
+	text-align: center;
+	border-radius: 8px; 
+	outline: 0;
+	border: 5px solid #333;
+}
+
+.form-register {
+    padding: $form-space;
+	color: $form-color;
+
+    input {
+	    margin: $form-space;
+	    color: $form-color;
+	    font-size: $form-font-size;
+        outline: 0;
+        border: 2px solid $form-color;
+	    border-radius: 5px; 
+        background: none;
+        letter-spacing: 1px;
+        padding: 0.5em 0.5em;
+	}
+
+	button {
+		margin: $form-space;
+		color: $form-color;
+	    font-size: $form-font-size;
+        outline: 0;
+        border: 2px solid $form-color;
+		border-radius: 5px; 
+        background: none;
+        letter-spacing: 1px;
+        padding: 0.5em 1.5em;
+        cursor: pointer;
+	}
 }
