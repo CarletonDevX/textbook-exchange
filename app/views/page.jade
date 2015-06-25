@@ -1,0 +1,12 @@
+doctype html
+html(lang="en")
+head
+	title Textbook exchange
+	link(rel='stylesheet', href='/styles/main.css')
+body
+	h1 Textbook Exchange
+
+	block page
+
+	if(messages)
+		div(class='flash') #{messages}

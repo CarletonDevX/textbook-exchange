@@ -13,31 +13,31 @@ var UserSchema = new Schema({
         trim: true,
         unique: true
     },
-    password: String
-    // provider: String,
-    // providerId: String,
-    // providerData: {},
-    // books: {}
+    password: String,
+    provider: String,
+    providerId: String,
+    providerData: {},
+    books: {}
 });
 
-// // Before saving, hash password
-// UserSchema.pre('save',
-//     function(next) {
-//         if (this.password) {
-//             var md5 = crypto.createHash('md5');
-//             this.password = md5.update(this.password).digest('hex');
-//         }
-//         next();
-//     }
-// );
+// Before saving, hash password
+UserSchema.pre('save',
+    function(next) {
+        if (this.password) {
+            var md5 = crypto.createHash('md5');
+            this.password = md5.update(this.password).digest('hex');
+        }
+        next();
+    }
+);
 
-// // Compare input password to user password
-// UserSchema.methods.authenticate = function(password) {
-//     var md5 = crypto.createHash('md5');
-//     md5 = md5.update(password).digest('hex');
+// Compare input password to user password
+UserSchema.methods.authenticate = function(password) {
+    var md5 = crypto.createHash('md5');
+    md5 = md5.update(password).digest('hex');
 
-//     return this.password === md5;
-// };
+    return this.password === md5;
+};
 
 // // Given a suffix, find an available username
 // UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
@@ -62,7 +62,3 @@ var UserSchema = new Schema({
 
 // Add schema to db
 mongoose.model('users', UserSchema, 'users');
-
-module.exports = {
-    User: UserSchema
-};
