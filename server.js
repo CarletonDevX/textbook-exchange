@@ -2,11 +2,11 @@ process.env.NODE_ENV = 'development';
 var config = require('./app/config/config');
 
 // Set up db
-var mongoose = require('mongoose'),
-	model = require('./app/model'),
-	User = model.User;
+var mongoose = require('mongoose');
 
-db = mongoose.connect(config.db);
+require('./app/model');
+var User = mongoose.model('users');
+var db = mongoose.connect(config.db);
 
 // Set up app
 var express = require('express'),
@@ -14,6 +14,8 @@ var express = require('express'),
 	sass = require('node-sass-middleware'),
 	errorHandlers = require('./app/errors'),
 	passport = require('passport'),
+    flash = require('connect-flash'),
+    session = require('express-session'),
 	routes = require('./app/routes');
 
 var app = express();
@@ -27,21 +29,23 @@ app.use(express.static(__dirname + '/public/'));
 app.set('views', './app/views');
 app.set('view engine', 'jade');
 
-/* AUTH */
+/* Passport stuff */
 
-// passport.serializeUser(function(user, done) {
-//     done(null, user.id);
-// });
+// Save user ID in session
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
 
-// passport.deserializeUser(function(id, done) {
-//     User.findOne(
-//         {_id: id},
-//         '-password',
-//         function(err, user) {
-//             done(err, user);
-//         }
-//     );
-// });
+// Make sure session is valid
+passport.deserializeUser(function(id, done) {
+    User.findOne(
+        {_id: id},
+        '-password',
+        function(err, user) {
+            done(err, user);
+        }
+    );
+});
 
 require('./app/strategies/local.js')();
 
@@ -55,12 +59,22 @@ var logAll = function (req, res, next) {
 
 app.use(logAll);
 
-// app.use(passport.initialize());
-// app.use(passport.session());
+// Sessions
+app.use(session({
+    saveUninitialized: true,
+    resave: true,
+    secret: 'joesbigbutt'
+}));
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Flash
+app.use(flash());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 
 // Error handling
 app.use(errorHandlers.logger);

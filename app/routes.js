@@ -1,22 +1,28 @@
-var users = require('./controllers/users.controller');
+var users = require('./controllers/users.controller'),
+    passport = require('passport');
 
 exports.setup = function(app) {
 
 	// Main page
     app.get('/', function (req, res) {
-	    res.render('index', {
-	        "title": "Textbook Exchange",
-	        "desc": "Time to hit the books!"
-	    })
+        if (!req.user) {
+            users.renderLogin(req, res);
+        } else {
+            users.renderUsers(req, res);
+        }
     });
 
-    app.get('/users', function (req, res) {
-    	users.list(req, res);
-    });
+    app.route('/login')
+        .get(users.renderLogin)
+        .post(passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/',
+            failureFlash: true
+        }));
 
-    app.post('/register', function (req, res) {
-    	users.create(req, res, function () {
-    		users.list(req, res);
-    	});
-    });
+    app.route('/register')
+        .get(users.renderRegister)
+        .post(users.register);
+
+    app.get('/logout', users.logout);
 };

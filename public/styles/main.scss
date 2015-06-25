@@ -21,32 +21,44 @@ body {
 	border: 5px solid #333;
 }
 
-.form-register {
+form {
     padding: $form-space;
 	color: $form-color;
-
-    input {
-	    margin: $form-space;
-	    color: $form-color;
-	    font-size: $form-font-size;
-        outline: 0;
-        border: 2px solid $form-color;
-	    border-radius: 5px; 
-        background: none;
-        letter-spacing: 1px;
-        padding: 0.5em 0.5em;
-	}
-
-	button {
-		margin: $form-space;
-		color: $form-color;
-	    font-size: $form-font-size;
-        outline: 0;
-        border: 2px solid $form-color;
-		border-radius: 5px; 
-        background: none;
-        letter-spacing: 1px;
-        padding: 0.5em 1.5em;
-        cursor: pointer;
-	}
 }
+
+input {
+    margin: $form-space;
+    color: $form-color;
+    font-size: $form-font-size;
+    outline: 0;
+    border: 2px solid $form-color;
+    border-radius: 5px; 
+    background: none;
+    letter-spacing: 1px;
+    padding: 0.5em 0.5em;
+}
+
+button {
+	margin-top: $form-space;
+	color: $form-color;
+    font-size: $form-font-size;
+    outline: 0;
+    border: 2px solid $form-color;
+	border-radius: 5px; 
+    background: none;
+    letter-spacing: 1px;
+    padding: 0.5em 1.5em;
+    cursor: pointer;
+}
+
+.button-alt {
+	margin-top: 0;
+	color: white;
+	background: black;
+}
+
+.flash {
+	padding: $form-space;
+	color: red;
+}
+

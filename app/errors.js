@@ -26,7 +26,9 @@ var send404 = function (req, res, next){
 
   // respond with html page
   if (req.accepts('html')) {
-    return res.status(404).render('error');
+    return res.status(404).render('error', {
+      message: "404: we goofed"
+    });
   }
 
   // respond with json
