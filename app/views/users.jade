@@ -3,7 +3,7 @@ extends page
 block page
 	h3 Users
 	each user in Users
-		li=user.username + ": " + user.password + ": " + user.provider
+		li=user.username + ": " + user.name
 
 	form(action='logout' method='get')
 		button(type='submit') Logout
