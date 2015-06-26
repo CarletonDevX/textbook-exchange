@@ -4,7 +4,10 @@ var passport = require('passport'),
     User = require('mongoose').model('users');
 
 module.exports = function() {
+
+    // Define authenticate function
     passport.use(new LocalStrategy(function(username, password, done) {
+
         // Look for a matching user
         User.findOne(
             {username: username},
@@ -12,15 +15,12 @@ module.exports = function() {
                 if (err) {
                     return done(err);
                 }
-
                 if (!user) {
-                    return done(null, false, {message: 'Unknown user'});
+                    return done(null, false, {message: 'Unknown user!'});
                 }
-
                 if (!user.authenticate(password)) {
-                    return done(null, false, {message: 'Invalid password'});
+                    return done(null, false, {message: 'Invalid password!'});
                 }
-
                 return done(null, user);
             }
         );

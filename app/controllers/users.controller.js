@@ -47,6 +47,30 @@ exports.register = function(req, res, next) {
     }
 };
 
+// Return a user with the profile ID if it exists, else create a new one
+exports.saveOAuthUserProfile = function(req, profile, done) {
+    User.findOne({username: profile.username},
+        function(err, user) {
+            if (!err) {
+                if (user) {
+                    return done(err, user);
+                } else {
+                    user = new User(profile);
+                    user.save(function(err) {
+                        if (!err) {
+                            return done(err, user);
+                        } else {
+                            var message = getErrorMessage(err);
+                            return done(err, false, {message: message})
+                        }
+                    });
+                }
+            } else {
+                return done(err);
+            }
+        });
+};
+
 // Find and list all users *if logged in*
 exports.renderUsers = function(req, res, next) {
     if (req.user) {

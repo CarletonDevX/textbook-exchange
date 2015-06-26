@@ -47,8 +47,10 @@ passport.deserializeUser(function(id, done) {
     );
 });
 
+// Strategies
 require('./app/strategies/local.js')();
-
+require('./app/strategies/facebook.js')();
+require('./app/strategies/google.js')();
 
 /* REQUESTS */
 

@@ -12,6 +12,7 @@ exports.setup = function(app) {
         }
     });
 
+    // Login and registration
     app.route('/login')
         .get(users.renderLogin)
         .post(passport.authenticate('local', {
@@ -25,4 +26,30 @@ exports.setup = function(app) {
         .post(users.register);
 
     app.get('/logout', users.logout);
+
+    // Facebook
+    app.get('/oauth/facebook', passport.authenticate('facebook', {
+        failureRedirect: '/',
+        scope:['email']
+    }));
+
+    app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
+        failureRedirect: '/',
+        successRedirect: '/',
+        failureFlash: true,
+        scope:['email', 'user_education_history']
+    }));
+
+    // Google
+    app.get('/oauth/google', passport.authenticate('google', {
+        failureRedirect: '/',
+        scope:['email']
+    }));
+
+    app.get('/oauth/google/callback', passport.authenticate('google', {
+        failureRedirect: '/',
+        successRedirect: '/',
+        failureFlash: true,
+        scope:['email']
+    }));
 };
