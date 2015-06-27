@@ -7,14 +7,13 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
     name: String,
-    username: {
-        type: String,
-        trim: true,
-        unique: true
-    },
+    email: { type: String, trim: true, unique: true },
+    verified: { type: Boolean, default: true },
+    verifier: String,
     password: String,
     provider: String,
     providerId: String,
+    created: String, // not used yet
     providerData: {},
     books: {}
 });
@@ -37,27 +36,6 @@ UserSchema.methods.authenticate = function(password) {
 
     return this.password === md5;
 };
-
-// // Given a suffix, find an available username
-// UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-//     var _this = this;
-//     var possibleUsername = username + (suffix || '');
-
-//     _this.findOne(
-//         {username: possibleUsername},
-//         function(err, user) {
-//             if (!err) {
-//                 if (!user) {
-//                     callback(possibleUsername);
-//                 } else {
-//                     return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-//                 }
-//             } else {
-//                 callback(null);
-//             }
-//         }
-//     );
-// };
 
 // Add schema to db
 mongoose.model('users', UserSchema, 'users');

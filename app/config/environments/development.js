@@ -5,6 +5,8 @@ var port = "1337";
 module.exports = {
     port: port,
     db: "mongodb://localhost/textbook-exchange",
+    emailID: 'textbookexchange25',
+    emailPassword: 'joesbigbutt',
     facebook: {
         clientID: '1591101357807096',
         clientSecret: '8a9c28b4d3eb9cbfa117138ae4c4d768',

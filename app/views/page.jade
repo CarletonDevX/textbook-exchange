@@ -6,7 +6,10 @@ head
 body
 	h1 Textbook Exchange
 
-	block page
+	if(alerts)
+		div(class='flash-alerts') #{alerts}
 
-	if(messages)
-		div(class='flash') #{messages}
+	if(errors)
+		div(class='flash-errors') #{errors}
+
+	block page

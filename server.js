@@ -13,9 +13,10 @@ var express = require('express'),
     bodyParser = require('body-parser'),
 	sass = require('node-sass-middleware'),
 	errorHandlers = require('./app/errors'),
-	passport = require('passport'),
+	passport = require('./app/config/passport'),
     flash = require('connect-flash'),
     session = require('express-session'),
+    mailer = require('./app/config/nodemailer'),
 	routes = require('./app/routes');
 
 var app = express();
@@ -29,28 +30,6 @@ app.use(express.static(__dirname + '/public/'));
 app.set('views', './app/views');
 app.set('view engine', 'jade');
 
-/* Passport stuff */
-
-// Save user ID in session
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-// Make sure session is valid
-passport.deserializeUser(function(id, done) {
-    User.findOne(
-        {_id: id},
-        '-password',
-        function(err, user) {
-            done(err, user);
-        }
-    );
-});
-
-// Strategies
-require('./app/strategies/local.js')();
-require('./app/strategies/facebook.js')();
-require('./app/strategies/google.js')();
 
 /* REQUESTS */
 
@@ -65,7 +44,7 @@ app.use(logAll);
 app.use(session({
     saveUninitialized: true,
     resave: true,
-    secret: 'joesbigbutt'
+    secret: 'ayylmao'
 }));
 
 // Passport
