@@ -12,7 +12,7 @@ exports.setup = function(app) {
         }
     });
 
-    // Login and registration
+    // Local strategy login and registration
     app.route('/login')
         .get(users.renderLogin)
         .post(passport.authenticate('local', {
@@ -24,6 +24,8 @@ exports.setup = function(app) {
     app.route('/register')
         .get(users.renderRegister)
         .post(users.register);
+
+    app.get('/verify', users.verify);
 
     app.get('/logout', users.logout);
 

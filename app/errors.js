@@ -14,10 +14,10 @@ var ajaxErrorHandler = function (err, req, res, next) {
 };
 
 var endOfWorld = function (err, req, res, next) {
-  res.status(500).render('errors', {
+  res.status(500).render('error', {
     status: 500,
     heading: 'Server Error',
-    msg: 'Sorry, something went wrong. Please try again.'
+    message: 'Sorry, something went wrong. Please try again.'
   });
 };
 

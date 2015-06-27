@@ -57,8 +57,11 @@ button {
 	background: black;
 }
 
-.flash {
-	padding: $form-space;
+.flash-alerts {
+	color: green;
+}
+
+.flash-errors {
 	color: red;
 }
 

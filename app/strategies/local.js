@@ -10,16 +10,17 @@ module.exports = function() {
 
         // Look for a matching user
         User.findOne(
-            {username: username},
+            {email: username},
             function(err, user) {
+                var failstring = 'Invalid email address or password.'
                 if (err) {
                     return done(err);
                 }
                 if (!user) {
-                    return done(null, false, {message: 'Unknown user!'});
+                    return done(null, false, {message: failstring});
                 }
-                if (!user.authenticate(password)) {
-                    return done(null, false, {message: 'Invalid password!'});
+                if (!user.authenticate(password) || !user.verified) {
+                    return done(null, false, {message: failstring});
                 }
                 return done(null, user);
             }
