@@ -1,0 +1,57 @@
+.dialog-button{
+  background-color:white;
+  box-shadow: 0px 0px 5px 1px rgba(0,0,0,.2);
+  overflow:hidden;
+  margin: 100px;
+}
+
+.dialog-transition{
+  position: absolute;
+  transition: all .5s;
+}
+
+.dialog.dialog-header{
+  width:100%;
+  height:40px;
+}
+
+.dialog .button-graphic{
+  width:40px;
+  height:40px;
+  font-size: 70px;
+  line-height:40px;
+  overflow:hidden;
+  text-align:center;
+  vertical-align:middle;
+  color:gray;
+  display:inline-block;
+}
+
+.dialog h3{
+  margin-bottom:0;
+  display:inline;
+  vertical-align:middle;
+  font-weight:500;
+  font-variant: small-caps;
+  font-size:28px
+}
+
+.dialog-button.collapsed{
+  width: 40px;
+  height: 40px;
+}
+
+.dialog-button.collapsed:hover{
+  box-shadow: 0px 0px 5px 1px rgba(0,200,100,.2);
+}
+
+.dialog-button.expanded{
+  box-sizing:border-box;
+  padding:20px;
+  height:auto;
+  width:75%;
+  margin: 0 12.5%;
+  position:absolute;
+  top:30px;
+  box-shadow: 0px 0px 20px 5px rgba(0,0,0,.2);
+}
