@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Button test</title>
+  <link rel="stylesheet" type="text/css" href="button.css">
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="button.js"></script
+</head>
+<body>
+<p contenteditable="true">Alright so here's a little button demo I've been working on. The idea is that the button square itself is hiding the entire dialog box relating to the button action. Click it, you'll see what I mean. Comments about how it works are in the JS file. The nice thing though is that it maintains flexible styling. For instance, if you resize the page or click into this paragraph and add some more lines (try it!), you'll see the button continues to behave nicely.</p>
+<div class="dialog-button collapsed">
+  <div class="dialog">
+    <div class="dialog-header">
+      <span class="button-graphic">+</span>
+      <h3>Add a Listing</h3>
+    </div>
+    <div class="dialog-main">
+      <p>You'll notice there are some more kinks to be worked out: for instance, it doesn't seem to like percent or auto margins on the original button. Further, when you go to collapse the dialog box, it first expands in size without a transition.
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
