@@ -3,7 +3,8 @@ var User = require('mongoose').model('users'),
     mailer = require('../config/nodemailer');
 
 function validateEmail(email) {
-    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu/i;
+    // ((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
     return re.test(email);
 }
 
@@ -33,7 +34,7 @@ var getErrorMessage = function(err) {
 exports.register = function(req, res, next) {
     var user = new User(req.body);
     if (!validateEmail(user.email)) {
-        req.flash('error', 'Please enter a valid email address.');
+        req.flash('error', 'Please enter a Carleton email address.');
         return res.redirect('/register');
     }
     user.verified = false;
@@ -47,7 +48,7 @@ exports.register = function(req, res, next) {
             mailOptions={
                 to : user.email,
                 subject : "Please confirm your email account",
-                html : "Hello,<br> Please click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>" 
+                html : "Hello,<br> Please click on the link to verify your email.<br><a href=" + link + ">Click here to verify.</a>" 
             }
             mailer.sendMail(mailOptions, function(err2, response) {
                 if(!err2){
@@ -70,9 +71,11 @@ exports.verify = function(req, res, next) {
     User.update(
         {email: req.query.email, providerId: req.query.id},
         {verified : true},
-        function(err, user) {
+        function(err, result) {
             if (!err) {
-                req.flash('alert', 'Your account has been verified.');
+                if (result.nModified > 0) {
+                    req.flash('alert', 'Your account has been verified.');
+                }
                 return res.redirect('/');
             } else {
                 req.flash('error', getErrorMessage(err));
