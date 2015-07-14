@@ -1,21 +1,46 @@
 var mongoose = require('mongoose'),
-    crypto = require('crypto');
-
-var mongoose = require('mongoose'),
     crypto = require('crypto'),
     Schema = mongoose.Schema;
+
+/**** 
+Books 
+****/
+
+var BookSchema = new Schema({
+    name: String,
+    coverImage: String,
+    author: String,
+    edition: String,
+    pageCount: String,
+    publishYear: String,
+    publisher: String,
+    ISBN: String,
+    description: String,
+    amazonInfo: {},
+    lastSearched: Date
+});
+
+// Add schema to db
+mongoose.model('books', BookSchema, 'books');
+
+/**** 
+Users 
+****/
 
 var UserSchema = new Schema({
     name: String,
     email: { type: String, trim: true, unique: true },
     verified: { type: Boolean, default: true },
-    verifier: String,
     password: String,
     provider: String,
     providerId: String,
-    created: String, // not used yet
     providerData: {},
-    books: {}
+    listings: [],
+    avatar: String,
+    bio: String,
+    gradYear: Number,
+    reports: [],
+    created: Date
 });
 
 // Before saving, hash password
@@ -39,3 +64,47 @@ UserSchema.methods.authenticate = function(password) {
 
 // Add schema to db
 mongoose.model('users', UserSchema, 'users');
+
+/*******
+Listings 
+*******/
+
+var ListingSchema = new Schema({
+    userID: String,
+    ISBN: String,
+    condition: String,
+    sellingPrice: String,
+    rentingPrice: String,
+    created: Date
+});
+
+// Add schema to db
+mongoose.model('listings', ListingSchema, 'listings');
+
+/***********
+Transactions 
+***********/
+
+var TransactionSchema = new Schema({
+    listingID: String,
+    buyerID: String,
+    sellerID: String,
+    ISBN: String,
+    date: Date,
+    completed: Boolean
+});
+
+// Add schema to db
+mongoose.model('transactions', TransactionSchema, 'transactions');
+
+/***********
+School Stats 
+***********/
+
+var SchoolStatsSchema = new Schema({
+    booksSold: Number,
+    booksListed: Number
+});
+
+// Add schema to db
+mongoose.model('schoolStats', SchoolStatsSchema, 'schoolStats');
