@@ -3,11 +3,10 @@ extends page
 block page
 	h4 You're probably not cool enough for this website
 	form(class='form-register' action='register' method='post')
-
-		input(type='text' name='email' placeholder='Email' required autofocus)
-		br
+		input(type='text' name='email' placeholder='Email' required autofill="email" autofocus)
+		input(type='text' name='givenName' placeholder='First Name' autofill="given-name" required)
+		input(type='text' name='familyName' placeholder='Last Name' autofill="family-name" required)
 		input(type='password' name='password' placeholder='Password' required)
-		br
 		button(type='submit') Register Anyway
 
 	form(action='/' method='get')
