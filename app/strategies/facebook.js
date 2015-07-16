@@ -16,9 +16,9 @@ module.exports = function() {
     // Define authenticate function
     function(req, accessToken, refreshToken, profile, done) {
 
-        // if (!profile.emails) {
-        //     return done(null, false, {message: 'You must allow access to your email address.'});
-        // }
+        if (!profile.emails) {
+            return done(null, false, {message: 'You must allow access to your email address.'});
+        }
 
         var providerData = profile._json;
         providerData.accessToken = accessToken;
@@ -26,12 +26,11 @@ module.exports = function() {
 
         console.log(profile.name);
         var providerUserProfile = {
-            // user.name = {
-            //     firstName: req.body.givenName,
-            //     lastName: req.body.familyName,
-            //     fullName: req.body.givenName + " " + req.body.familyName
-            // }
-            name: profile.name.givenName + ' ' + profile.name.familyName,
+            user.name = {
+                givenName: profile.name.givenName,
+                familyName: profile.name.familyName,
+                fullName: profile.name.givenName + " " + profile.name.familyName
+            }
             email: profile.emails[0].value,
             provider: 'facebook',
             providerId: profile.id,
