@@ -16,20 +16,16 @@ module.exports = function() {
     // Define authenticate function
     function(req, accessToken, refreshToken, profile, done) {
 
-        // if (!profile.emails) {
-        //     return done(null, false, {message: 'You must allow access to your email address.'});
-        // }
-
         var providerData = profile._json;
         providerData.accessToken = accessToken;
         providerData.refreshToken = refreshToken;
 
         var providerUserProfile = {
-            user.name = {
+            name: {
                 givenName: profile.name.givenName,
                 familyName: profile.name.familyName,
                 fullName: profile.name.givenName + " " + profile.name.familyName
-            }
+            },
             email: profile.emails[0].value,
             provider: 'google',
             providerId: profile.id,

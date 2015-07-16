@@ -24,13 +24,12 @@ module.exports = function() {
         providerData.accessToken = accessToken;
         providerData.refreshToken = refreshToken;
 
-        console.log(profile.name);
         var providerUserProfile = {
-            user.name = {
+            name: {
                 givenName: profile.name.givenName,
                 familyName: profile.name.familyName,
                 fullName: profile.name.givenName + " " + profile.name.familyName
-            }
+            },
             email: profile.emails[0].value,
             provider: 'facebook',
             providerId: profile.id,
