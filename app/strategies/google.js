@@ -25,7 +25,11 @@ module.exports = function() {
         providerData.refreshToken = refreshToken;
 
         var providerUserProfile = {
-            name: profile.name.givenName + ' ' + profile.name.familyName,
+            user.name = {
+                givenName: profile.name.givenName,
+                familyName: profile.name.familyName,
+                fullName: profile.name.givenName + " " + profile.name.familyName
+            }
             email: profile.emails[0].value,
             provider: 'google',
             providerId: profile.id,
