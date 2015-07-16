@@ -16,7 +16,12 @@ var BookSchema = new Schema({
     publisher: String,
     ISBN: String,
     description: String,
-    amazonInfo: {},
+    amazonInfo: {
+        id: String,
+        lastUpdated: Date,
+        sellingPrice: Number,
+        rentingPrice: Number
+    },
     lastSearched: Date
 });
 
@@ -28,7 +33,11 @@ Users
 ****/
 
 var UserSchema = new Schema({
-    name: String,
+    name: {
+        givenName: String,
+        familyName: String,
+        fullName: String
+    },
     email: { type: String, trim: true, unique: true },
     verified: { type: Boolean, default: true },
     password: String,

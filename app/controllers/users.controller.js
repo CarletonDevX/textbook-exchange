@@ -37,6 +37,11 @@ exports.register = function(req, res, next) {
         req.flash('error', 'Please enter a Carleton email address.');
         return res.redirect('/register');
     }
+    user.name = {
+        firstName: req.body.givenName,
+        lastName: req.body.familyName,
+        fullName: req.body.givenName + " " + req.body.familyName
+    }
     user.verified = false;
     user.provider = 'local';
     var md5 = crypto.createHash('md5');
