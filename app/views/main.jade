@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Hits the books
+  body
+    include header
+    main
+      block main
+        div.search
+          label(for="search") I want to find or list a book.
+          input#search(type="text", placeholder="ISBN or other text")
