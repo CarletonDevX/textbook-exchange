@@ -1,4 +1,5 @@
 var users = require('./controllers/users.controller'),
+    books = require('./controllers/books.controller'),
     passport = require('passport');
 
 exports.setup = function(app) {
@@ -7,27 +8,10 @@ exports.setup = function(app) {
     app.get('/templates', function (req, res) {
         res.render('main',{});
     });
-    app.get('/templates/book/:isbn/*', function (req, res) {
-        var testObj = {
-            ISBN:req.params.isbn,
-            book: {
-                title: 'An Adventure',
-                author: 'David Picardte'
-            },
-            listings: [
-                {ID:'123',
-                lister: {
-                    URL:'/user/58008',
-                    avatar:'',
-                    fullName:'DAAVIDD'},
-                condition: 'glorious',
-                sellingPrice: '$2.00',
-                rentingPrice: '$1.99'
-                }
-            ]
-        }
-        res.render('book',testObj);
-    })
+    
+    app.get('/templates/book', function(req, res) {
+        books.renderBook(req, res); 
+    });
 
 	// Main page
     app.get('/', function (req, res) {

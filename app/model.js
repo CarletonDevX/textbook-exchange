@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     crypto = require('crypto'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    data = require('./data.js');
 
 /**** 
 Books 
@@ -11,8 +12,8 @@ var BookSchema = new Schema({
     coverImage: String,
     author: String,
     edition: String,
-    pageCount: String,
-    publishYear: String,
+    pageCount: Number,
+    publishYear: Number,
     publisher: String,
     ISBN: String,
     description: String,
@@ -26,13 +27,24 @@ var BookSchema = new Schema({
 });
 
 // Add schema to db
-mongoose.model('books', BookSchema, 'books');
+var Book = mongoose.model('books', BookSchema, 'books');
+var junkbooks = data.books();
+
+// Clear and add junk data
+var clear = new Book(); 
+clear.collection.drop();
+for (var i = 0; i < junkbooks.length; i++)
+{
+    var junkbook = new Book(junkbooks[i]);
+    junkbook.save();
+}
 
 /**** 
 Users 
 ****/
 
 var UserSchema = new Schema({
+    userID: String,
     name: {
         givenName: String,
         familyName: String,
@@ -72,14 +84,29 @@ UserSchema.methods.authenticate = function(password) {
 };
 
 // Add schema to db
-mongoose.model('users', UserSchema, 'users');
+User = mongoose.model('users', UserSchema, 'users');
+var junkusers = data.users();
+
+// Clear and add junk data
+var clear = new User(); 
+clear.collection.drop();
+for (var i = 0; i < junkusers.length; i++)
+{
+    var junkuser = new User(junkusers[i]);
+    junkuser.save();
+}
 
 /*******
 Listings 
 *******/
 
 var ListingSchema = new Schema({
-    userID: String,
+    ID: String,
+    user: {
+        userID: String,
+        fullName: String,
+        avatar: String
+    },
     ISBN: String,
     condition: String,
     sellingPrice: String,
@@ -88,7 +115,17 @@ var ListingSchema = new Schema({
 });
 
 // Add schema to db
-mongoose.model('listings', ListingSchema, 'listings');
+Listing = mongoose.model('listings', ListingSchema, 'listings');
+var junklistings = data.listings();
+
+// Clear and add junk data
+var clear = new Listing(); 
+clear.collection.drop();
+for (var i = 0; i < junklistings.length; i++)
+{
+    var junklisting = new Listing(junklistings[i]);
+    junklisting.save();
+}
 
 /***********
 Transactions 
