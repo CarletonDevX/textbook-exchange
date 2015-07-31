@@ -17,8 +17,8 @@ block append main
             each listing in listings
               if (listing.sellingPrice != null)
                 tr
-                  td: a(href="#{listing.lister.URL}"): img(src="#{listing.lister.avatar}")
-                  td: a(href="#{listing.lister.URL}") #{listing.lister.fullName}
+                  td: a(href="user/#{listing.user.userID}"): img(src="#{listing.user.avatar}")
+                  td: a(href="user/#{listing.user.userID}") #{listing.user.fullName}
                   td #{listing.condition}
                   td #{listing.sellingPrice}
                   td: button(data-listingId="#{listing.ID}"): img(src="/images/email.png")
@@ -33,8 +33,8 @@ block append main
             each listing in listings
               if (listing.rentingPrice != null)
                 tr
-                  td: a(href="#{listing.lister.URL}"): img(src="#{listing.lister.avatar}")
-                  td: a(href="#{listing.lister.URL}") #{listing.lister.fullName}
+                  td: a(href="user/#{listing.user.userID}"): img(src="#{listing.user.avatar}")
+                  td: a(href="user/#{listing.user.userID}") #{listing.user.fullName}
                   td #{listing.condition}
                   td #{listing.rentingPrice}
                   td: button(data-listingId="#{listing.ID}"): img(src="/images/email.png")

@@ -38,8 +38,8 @@ exports.register = function(req, res, next) {
         return res.redirect('/register');
     }
     user.name = {
-        firstName: req.body.givenName,
-        lastName: req.body.familyName,
+        givenName: req.body.givenName,
+        familyName: req.body.familyName,
         fullName: req.body.givenName + " " + req.body.familyName
     }
     user.verified = false;

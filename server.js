@@ -4,9 +4,10 @@ var config = require('./app/config/config');
 // Set up db
 var mongoose = require('mongoose');
 
+var db = mongoose.connect(config.db);
+
 require('./app/model');
 var User = mongoose.model('users');
-var db = mongoose.connect(config.db);
 
 // Set up app
 var express = require('express'),
