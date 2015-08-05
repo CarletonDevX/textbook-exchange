@@ -2,8 +2,14 @@ extends page
 
 block page
 	h3 Users
-	each user in Users
-		li=user.email + ": " + user.name.fullName
+
+	table
+		tbody
+			each user in Users
+				tr
+					td: img(src="#{user.avatar}")
+					td #{user.email}
+					td #{user.name.fullName}
 
 	form(action='logout' method='get')
 		button(type='submit') Logout

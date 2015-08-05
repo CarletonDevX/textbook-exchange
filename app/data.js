@@ -4,7 +4,7 @@ exports.books = function() {
 	return [
 		{
 		    name: 'Python Programming: An Introduction to Computer Science',
-		    coverImage: null,
+		    coverImage: 'https://books.google.com/books/content?id=aJQILlLxRmAC&printsec=frontcover&img=1&zoom=5',
 		    author: 'John Zelle',
 		    edition: null,
 		    pageCount: 432,
@@ -34,12 +34,12 @@ exports.users = function() {
 		    },
 		    email: 'pickartd@carleton.edu',
 		    verified: true,
-		    password: '7e9f2b2837519f155580ab962b4dc312',
+		    password: 'JoesButt',
 		    provider: 'local',
 		    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 		    providerData: {},
 		    listings: ['2500'],
-		    avatar: null,
+		    avatar: 'http://graph.facebook.com/613262579/picture?type=square',
 		    bio: 'a great guy',
 		    gradYear: 2016,
 		    reports: [],
@@ -55,7 +55,7 @@ exports.listings = function() {
 		    user: {
 		        userID: '58008',
 		        fullName: 'David Pickart',
-		        avatar: null
+		        avatar: 'http://graph.facebook.com/613262579/picture?type=square'
 		    },
 		    ISBN: '1590282418',
 		    condition: 'glorious',

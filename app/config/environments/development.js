@@ -16,5 +16,9 @@ module.exports = {
         clientID: '480832395071-p86iqrqk14209hm24qe1v4jg38m2n9fn.apps.googleusercontent.com',
         clientSecret: 'C2HXEpmYqhUZACB4ptKjP7e4',
         callbackURL: 'http://localhost:'+ port +'/oauth/google/callback'
+    },
+    avatars: {
+        endpoint: 'https://api.dumpyourphoto.com/v1',
+        clientSecret: '?api_key=JFM36bCttTccIswJLMmSjGkxINh3KCGH5fmtr6zuNvqslb4SBCloWNbJgifWccdmWVpkhdRiw8NpaAssLrckJHNYhzmsCxsbPedG'
     }
 };

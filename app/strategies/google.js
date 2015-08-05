@@ -26,6 +26,7 @@ module.exports = function() {
                 familyName: profile.name.familyName,
                 fullName: profile.name.givenName + " " + profile.name.familyName
             },
+            avatar: providerData.image.url,
             email: profile.emails[0].value,
             provider: 'google',
             providerId: profile.id,
@@ -34,5 +35,6 @@ module.exports = function() {
 
         // Either logs in or creates new profile
         users.saveOAuthUserProfile(req, providerUserProfile, done);
+
     }));
 };
