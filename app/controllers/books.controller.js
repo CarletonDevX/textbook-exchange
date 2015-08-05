@@ -9,6 +9,7 @@ exports.renderBook = function(req, res, next) {
               res.type('txt').send('No book found by those parameters :(');
             } else {
                 Listing.find({ISBN: book.ISBN}, function(err, listings) {
+                    console.log(listings[0].user.avatar);
                     if (!err) {
                         res.render('book', {
                             'book': book,

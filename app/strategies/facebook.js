@@ -30,6 +30,7 @@ module.exports = function() {
                 familyName: profile.name.familyName,
                 fullName: profile.name.givenName + " " + profile.name.familyName
             },
+            avatar: 'http://graph.facebook.com/' + profile.id + '/picture?type=square',
             email: profile.emails[0].value,
             provider: 'facebook',
             providerId: profile.id,

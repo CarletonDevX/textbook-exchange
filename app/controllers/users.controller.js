@@ -1,6 +1,7 @@
 var User = require('mongoose').model('users'),
     crypto = require('crypto'),
-    mailer = require('../config/nodemailer');
+    mailer = require('../config/nodemailer'),
+    avatars = require('../config/avatars');
 
 function validateEmail(email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu/i;
@@ -46,28 +47,31 @@ exports.register = function(req, res, next) {
     user.provider = 'local';
     var md5 = crypto.createHash('md5');
     user.providerId = md5.update((Math.random()*100).toString()).digest('hex');
-    user.save(function(err) {
-        if (!err) {
-            // Send verification email
-            link = "http://" + req.get('host') + "/verify?email=" + user.email + "&id=" + user.providerId;
-            mailOptions={
-                to : user.email,
-                subject : "Please confirm your email account",
-                html : "Hello,<br> Please click on the link to verify your email.<br><a href=" + link + ">Click here to verify.</a>" 
-            }
-            mailer.sendMail(mailOptions, function(err2, response) {
-                if(!err2){
-                    req.flash('alert', 'Verification email sent.');
-                    return res.redirect('/');
-                } else {
-                    req.flash('error', 'Verification email not sent.');
-                    return res.redirect('/');
+    avatars.getAvatarWithID(null, function (image) {
+        user.avatar = image;
+        user.save(function(err) {
+            if (!err) {
+                // Send verification email
+                link = "http://" + req.get('host') + "/verify?email=" + user.email + "&id=" + user.providerId;
+                mailOptions={
+                    to : user.email,
+                    subject : "Please confirm your email account",
+                    html : "Hello,<br> Please click on the link to verify your email.<br><a href=" + link + ">Click here to verify.</a>" 
                 }
-            });
-        } else {
-            req.flash('error', getErrorMessage(err));
-            return res.redirect('/register');
-        }
+                mailer.sendMail(mailOptions, function(err2, response) {
+                    if(!err2){
+                        req.flash('alert', 'Verification email sent.');
+                        return res.redirect('/');
+                    } else {
+                        req.flash('error', 'Verification email not sent.');
+                        return res.redirect('/');
+                    }
+                });
+            } else {
+                req.flash('error', getErrorMessage(err));
+                return res.redirect('/register');
+            }
+        });
     });
 };
 
