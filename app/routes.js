@@ -42,14 +42,14 @@ exports.setup = function(app) {
     // Facebook
     app.get('/oauth/facebook', passport.authenticate('facebook', {
         failureRedirect: '/',
-        scope:['email']
+        scope:['email', 'user_education_history']
     }));
 
     app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
         failureRedirect: '/',
         successRedirect: '/',
         failureFlash: true,
-        scope:['email', 'user_education_history']
+        // scope:['email', 'user_education_history']
     }));
 
     // Google

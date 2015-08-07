@@ -13,6 +13,7 @@
     "connect-flash": "^0.1.1",
     "express": "^4.12.4",
     "express-session": "^1.11.3",
+    "fbgraph": "^1.0.0",
     "jade": "^1.11.0",
     "mongoose": "^4.0.5",
     "node-sass-middleware": "^0.9.0",
