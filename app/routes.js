@@ -22,6 +22,10 @@ exports.setup = function(app) {
         }
     });
 
+    // Book
+    app.route('/api/book/*')
+        .get(books.getBook);
+
     // Local strategy login and registration
     app.route('/login')
         .get(users.renderLogin)
