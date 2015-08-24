@@ -1,0 +1,11 @@
+doctype html
+html(ng-app="hitsTheBooks")
+  head
+    title Hits the books
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js")
+    script(src="/scripts/main.js")
+    base(href="/app/")
+  body
+    include header
+    main(ui-view)

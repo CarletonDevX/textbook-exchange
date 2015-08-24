@@ -1,0 +1,5 @@
+div.search
+  label(for="search") I want to find or list a book.
+  input#search(type="text", ng-model="searchInput" placeholder="ISBN or other text: {{ message }}")
+  a(ui-sref="home.searchResults({query: searchInput})") Search
+  div#search-results(ui-view)
