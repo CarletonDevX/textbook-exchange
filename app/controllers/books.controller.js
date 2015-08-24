@@ -52,7 +52,7 @@ exports.search = function(req, res, next) {
     //right now we just grab all the books
     Book.find({}, function(err, results) {
         if (!err) {
-            res.json(results)
+            res.json(results);
         } else {
             res.json(err);
         }
