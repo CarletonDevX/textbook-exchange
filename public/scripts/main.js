@@ -11,12 +11,12 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 		.state('home.searchResults',{
 			// the resolve function is how we'd grab JSON before rendering a view.
 			// For example...
-			//
+			// but how does this work?
 			// resolve : {
-			// 	currentDetails: function($http) {
+			// 	results: function($http, $stateParams) {
 			// 	  return $http({
 			// 	    method : 'JSONP',
-			// 	       url : '/'
+			// 	       url : '/api/search?query='+$stateParams.query
 			// 	  });
 			// 	}
 			// },
@@ -37,6 +37,6 @@ hitsTheBooks.controller('homeController', function($scope) {
 	$scope.message = "DAVID'S BIG NOSE";
 });
 
-hitsTheBooks.controller('searchResultsController', function($scope, $stateParams) {
+hitsTheBooks.controller('searchResultsController', function($scope, $http, $stateParams) {
 	$scope.query = $stateParams.query;
 });

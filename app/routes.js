@@ -26,9 +26,13 @@ exports.setup = function(app) {
         }
     });
 
-    // Book
-    app.route('/api/book/*')
+    // API
+    app.route('/api/book/:isbn')
         .get(books.getBook);
+
+    app.route('/api/search')
+        .get(books.search);
+
 
     // Local strategy login and registration
     app.route('/login')
