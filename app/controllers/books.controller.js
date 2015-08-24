@@ -26,8 +26,9 @@ exports.renderBook = function(req, res, next) {
 };
 
 exports.getBook = function(req, res, next) {
-    path = req.url;
-    isbn = path.substr(path.lastIndexOf('/') + 1);
+    // path = req.url;
+    // isbn = path.substr(path.lastIndexOf('/') + 1);
+    isbn = req.params.isbn;
     if (isbn.length < 1) {
         res.status(400).send('Needs ISBN.');
     } else {
@@ -43,4 +44,17 @@ exports.getBook = function(req, res, next) {
             }
         });
     }
+};
+
+exports.search = function(req, res, next) {
+    query = req.query.query;
+    console.log("query:" + query);
+    //right now we just grab all the books
+    Book.find({}, function(err, results) {
+        if (!err) {
+            res.json(results)
+        } else {
+            res.json(err);
+        }
+    });
 };
