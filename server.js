@@ -30,6 +30,8 @@ app.use(sass({
 app.use(express.static(__dirname + '/public/'));
 app.set('views', './app/views');
 app.set('view engine', 'jade');
+//force terse attributes on jade templates (e.g. ui-view not ui-view="ui-view")
+app.locals.doctype = 'html';
 
 
 /* REQUESTS */

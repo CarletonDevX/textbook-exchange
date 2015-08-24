@@ -4,11 +4,15 @@ var users = require('./controllers/users.controller'),
 
 exports.setup = function(app) {
 
-    // Template testing
-    app.get('/templates', function (req, res) {
-        res.render('main',{});
+    // Workin on dem angular stuff inside /app/whatever
+    app.get('/app/*', function (req, res) {
+        res.render('app/main',{});
     });
-    
+    app.get('/partials/:partial', function (req, res) {
+        res.render('app/partials/'+req.params.partial,{});
+    });
+
+    //old login/testing routes:    
     app.get('/templates/book', function(req, res) {
         books.renderBook(req, res); 
     });
