@@ -48,8 +48,8 @@ exports.getBook = function(req, res, next) {
 
 exports.search = function(req, res, next) {
     query = req.query.query;
-    console.log("query:" + query);
     //right now we just grab all the books
+    //TODO: Implement a real search function
     Book.find({}, function(err, results) {
         if (!err) {
             res.json(results);
