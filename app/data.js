@@ -6,7 +6,7 @@ exports.books = function() {
 		    name: 'Python Programming: An Introduction to Computer Science',
 		    coverImage: 'https://books.google.com/books/content?id=aJQILlLxRmAC&printsec=frontcover&img=1&zoom=5',
 		    author: 'John Zelle',
-		    edition: null,
+		    edition: 1,
 		    pageCount: 432,
 		    publishYear: 2010,
 		    publisher: 'Franklin, Beedle & Associates Inc.',
