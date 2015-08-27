@@ -8,30 +8,34 @@ Login stuff is still unclear. [Here's](http://stackoverflow.com/questions/154969
 	`GET hitsthebooks.com/api/user`
 	- Update current user (with user details): 
 	`PUT hitsthebooks.com/api/user`
+	- Delete current user account:
+	`DELETE hitsthebooks.com/api/user`
 	- Get user by user ID:
 	`GET hitsthebooks.com/api/user/id`
 	- Get watchlist of current user:
 	`GET hitsthebooks.com/api/watchlist`
-	- Add book to watchlist of current user with book ID:
-	`POST hitsthebooks.com/api/watchlist/add/id`
-	- Remove book from watchlist of current user with book ID:
-	`POST hitsthebooks.com/api/watchlist/remove/id`
+	- Add book to watchlist of current user with book ID (id in queries):
+	`POST hitsthebooks.com/api/watchlist/add`
+	- Remove book from watchlist of current user with book ID (id in queries):
+	`DELETE hitsthebooks.com/api/watchlist/remove`
 	- Clear the watchlist of current user:
 	`POST hitsthebooks.com/api/watchlist/clear`
-	- Deactivate current user account:
-	`POST hitsthebooks.com/api/deactivate`
 	
 - Listings
 	- Get listings for user with user ID: 
 	`GET hitsthebooks.com/api/listing/user/id`
 	- Get listings for book with book ID:
 	`GET hitsthebooks.com/api/listing/book/id`
+	- Get listing by listing ID:
+	`GET hitsthebooks.com/api/listing/id`
+	- Update listing (with listing details):
+	`PUT hitsthebooks.com/api/listing/id`
 	- Add a listing (with listing details):
 	`POST hitsthebooks.com/api/listing/add`
-	- Remove a listing with listing ID:
-	`POST hitsthebooks.com/api/listing/remove/id`
+	- Remove a listing with listing ID (id in queries):
+	`DELETE hitsthebooks.com/api/listing/remove`
 	- Make an offer on a listing with listing ID:
-	`POST hitsthebooks.com/api/listing/offer/id`
+	`POST hitsthebooks.com/api/listing/id/offer/`
 	
 - Books
 	- Get book with book ID:
