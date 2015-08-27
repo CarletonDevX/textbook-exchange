@@ -1,8 +1,9 @@
+h4 Hello I am search.jade
 p You searched for "{{ query }}," and, well, it doesn't look good. This is all we have: 
 ul
 	li(ng-repeat="book in results")
 		h4 {{ book.name }}
 		img(src="{{book.coverImage}}")
-		a(ui-sref="home.search.bookDetail({isbn: book.ISBN})") View Details
+		a(ui-sref="home.detail.book({isbn: book.ISBN})") View Details
 
 div.book-detail(ui-view)

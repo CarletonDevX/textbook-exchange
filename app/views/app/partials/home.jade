@@ -3,4 +3,5 @@ div.search
   input#search(type="text", ng-model="searchInput" placeholder="ISBN or other text: {{ message }}")
   //TODO: using ng-model searchInput is most-def not the best way to do this.
   a(ui-sref="home.search({query: searchInput})") Search
-  div#search-results(ui-view)
+  div#search-results(ui-view="search")
+  div#info-page(ui-view="detail")
