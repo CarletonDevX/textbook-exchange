@@ -1,0 +1,36 @@
+div#book-details
+  h2#book-title {{book.name}}
+  h3#book-author {{book.author}}
+  img(src="{{book.coverImage}}")
+  //TODO: make this h4 into a table of details about the book
+  h4#isbn {{book.ISBN}}
+  div.listing#selling
+    table
+      thead
+        tr
+          th Seller
+          th Condition
+          th Price
+      tbody
+        //todo: filter on whether it's for sale or rent
+        tr(ng-repeat="listing in book.listings")
+          td: a(href="user/{{listing.user.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.user.userID}}") {{listing.user.fullName}}
+          td {{listing.condition}}
+          td {{listing.sellingPrice}}
+          td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
+  div.listing#renting
+    table
+      thead
+        tr
+          th Lender
+          th Condition
+          th Price
+      tbody
+        //todo: filter on whether it's for sale or rent
+        tr(ng-repeat="listing in book.listings")
+          td: a(href="user/{{listing.user.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.user.userID}}") {{listing.user.fullName}}
+          td {{listing.condition}}
+          td {{listing.rentingPrice}}
+          td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
