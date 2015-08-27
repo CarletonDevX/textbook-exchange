@@ -7,22 +7,50 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 			url: '/',
 			templateUrl : '/partials/home',
 			controller  : 'homeController'
-		})	
-		.state('home.searchResults',{
+		})
+		.state('home.bookDetail',{
 			// the resolve function is how we'd grab JSON before rendering a view.
 			// For example...
 			resolve : {
+				bookInfo: function($http, $stateParams) {
+					return $http({
+						method : 'GET',
+						url : '/api/book/' + $stateParams.isbn
+					});
+				}
+			},
+			url : 'book/:isbn',
+			templateUrl : '/partials/bookDetail',
+			controller  : 'bookController'
+		})
+		.state('home.search',{
+			resolve : {
+				//get results of search from server
 				results: function($http, $stateParams) {
 				  return $http({
 				    method : 'GET',
-				       url : '/api/search?query='+$stateParams.query
+				       url : '/api/search?query=' + $stateParams.query
 				  });
 				}
 			},
 			url : 'search?query',
-			templateUrl : '/partials/searchResults',
-			controller  : 'searchResultsController'
+			templateUrl : '/partials/search',
+			controller  : 'searchController'
 		})
+		.state('home.search.bookDetail',{
+			resolve : {
+				bookInfo: function($http, $stateParams) {
+					return $http({
+						method : 'GET',
+						url : '/api/book/' + $stateParams.isbn
+					});
+				}
+			},
+			url : '/book/:isbn',
+			templateUrl : '/partials/bookDetail',
+			controller  : 'bookController'
+		})
+
 		.state('otherwise', {
 			url: "*path",
 			template: "Oops! We don't know how to serve you (404)"
@@ -36,8 +64,13 @@ hitsTheBooks.controller('homeController', function($scope) {
 	$scope.message = "DAVID'S BIG NOSE";
 });
 
-hitsTheBooks.controller('searchResultsController', function($scope, results, $stateParams) {
+hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
 	$scope.query = $stateParams.query;
 	$scope.results = results.data;
 	console.log($scope.results);
+});
+
+hitsTheBooks.controller('bookController', function($scope, bookInfo, $stateParams) {
+	console.log(bookInfo.data);
+	$scope.book = bookInfo.data;
 });
