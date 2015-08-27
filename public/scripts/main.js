@@ -1,4 +1,4 @@
-var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router']);
+var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras']);
 
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
 	$stateProvider
@@ -7,21 +7,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 			url: '/',
 			templateUrl : '/partials/home',
 			controller  : 'homeController'
-		})
-		.state('home.bookDetail',{
-			// the resolve function is how we'd grab JSON before rendering a view.
-			// For example...
-			resolve : {
-				bookInfo: function($http, $stateParams) {
-					return $http({
-						method : 'GET',
-						url : '/api/book/' + $stateParams.isbn
-					});
-				}
-			},
-			url : 'book/:isbn',
-			templateUrl : '/partials/bookDetail',
-			controller  : 'bookController'
 		})
 		.state('home.search',{
 			resolve : {
@@ -33,11 +18,27 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 				  });
 				}
 			},
+			sticky: true,
 			url : 'search?query',
-			templateUrl : '/partials/search',
-			controller  : 'searchController'
+			views:{
+				'search' : {
+					templateUrl : '/partials/search',
+					controller  : 'searchController'
+				}
+			}
 		})
-		.state('home.search.bookDetail',{
+		.state('home.detail',{
+			url:'',
+			sticky: true,
+			views: {
+				'detail' : {
+					templateUrl : '/partials/detail'
+				}
+			}
+		})
+		.state('home.detail.book',{
+			// the resolve function is how we'd grab JSON before rendering a view.
+			// For example...
 			resolve : {
 				bookInfo: function($http, $stateParams) {
 					return $http({
@@ -46,10 +47,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 					});
 				}
 			},
-			url : '/book/:isbn',
-			templateUrl : '/partials/bookDetail',
+			url : 'book/:isbn',
+			templateUrl : '/partials/book',
 			controller  : 'bookController'
 		})
+		.state('home.detail.user',{
+			url : 'user/:id',
+			templateUrl : '/partials/user',
+			controller  : 'bookController'
+		})
+
 
 		.state('otherwise', {
 			url: "*path",
