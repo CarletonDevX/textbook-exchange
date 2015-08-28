@@ -30,7 +30,14 @@ exports.setup = function(app) {
 
     /* API */
 
+    // Users
+    app.route('/api/user/:userID')
+        .get(users.getUserWithID, listings.getListingsWithUser, responder.formatUserResponse);
+
     // Listings
+    app.route('/api/listings/user/:userID')
+        .get(listings.getListingsWithUser, responder.formatListingResponse);
+
     app.route('/api/listings/book/:ISBN')
         .get(listings.getListingsWithBook, responder.formatListingResponse);
 

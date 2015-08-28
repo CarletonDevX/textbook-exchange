@@ -26,7 +26,7 @@ var Book = require('mongoose').model('books'),
 // };
 
 exports.getBook = function(req, res, next) {
-    ISBN = req.params.ISBN;
+    var ISBN = req.params.ISBN;
     Book.findOne({ISBN: ISBN}, function(err, book) {
         if (!err) {
             if (!book) {
@@ -42,7 +42,7 @@ exports.getBook = function(req, res, next) {
 };
 
 exports.search = function(req, res, next) {
-    query = req.query.query;
+    var query = req.query.query;
     //right now we just grab all the books
     //TODO: Implement a real search function
     Book.find({}, function(err, results) {

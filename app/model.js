@@ -27,16 +27,20 @@ var BookSchema = new Schema({
 });
 
 // Add schema to db
-var Book = mongoose.model('books', BookSchema, 'books');
-var junkbooks = data.books();
+mongoose.model('books', BookSchema, 'books');
 
-// Clear and add junk data
-var clear = new Book(); 
-clear.collection.drop();
-for (var i = 0; i < junkbooks.length; i++)
-{
-    var junkbook = new Book(junkbooks[i]);
-    junkbook.save();
+generateBooks = function () {
+    var Book = mongoose.model('books');
+    var junkbooks = data.books();
+
+    // Clear and add junk data
+    var clear = new Book(); 
+    clear.collection.drop();
+    for (var i = 0; i < junkbooks.length; i++) {
+        var junkbook = new Book(junkbooks[i]);
+        junkbook.save();
+    }
+    generateUsers();
 }
 
 /**** 
@@ -44,7 +48,6 @@ Users
 ****/
 
 var UserSchema = new Schema({
-    userID: String,
     name: {
         givenName: String,
         familyName: String,
@@ -56,7 +59,7 @@ var UserSchema = new Schema({
     provider: String,
     providerId: String,
     providerData: {},
-    listings: [],
+    // listings: [],
     avatar: String,
     bio: String,
     gradYear: Number,
@@ -84,16 +87,21 @@ UserSchema.methods.authenticate = function(password) {
 };
 
 // Add schema to db
-User = mongoose.model('users', UserSchema, 'users');
-var junkusers = data.users();
+mongoose.model('users', UserSchema, 'users');
 
-// Clear and add junk data
-var clear = new User(); 
-clear.collection.drop();
-for (var i = 0; i < junkusers.length; i++)
-{
-    var junkuser = new User(junkusers[i]);
-    junkuser.save();
+generateUsers = function () {
+    var User = mongoose.model('users');
+    var junkusers = data.users();
+
+    // Clear and add junk data
+    var clear = new User(); 
+    clear.collection.drop();
+    for (var i = 0; i < junkusers.length; i++) {
+        var junkuser = new User(junkusers[i]);
+        junkuser.save(function (err, user) {
+            generateListings();
+        });
+    }
 }
 
 /*******
@@ -101,12 +109,7 @@ Listings
 *******/
 
 var ListingSchema = new Schema({
-    ID: String,
-    user: {
-        userID: String,
-        fullName: String,
-        avatar: String
-    },
+    userID: String,
     ISBN: String,
     condition: String,
     sellingPrice: String,
@@ -115,16 +118,25 @@ var ListingSchema = new Schema({
 });
 
 // Add schema to db
-Listing = mongoose.model('listings', ListingSchema, 'listings');
-var junklistings = data.listings();
+mongoose.model('listings', ListingSchema, 'listings');
 
-// Clear and add junk data
-var clear = new Listing(); 
-clear.collection.drop();
-for (var i = 0; i < junklistings.length; i++)
-{
-    var junklisting = new Listing(junklistings[i]);
-    junklisting.save();
+generateListings = function () {
+    var Listing = mongoose.model('listings');
+    var junklistings = data.listings();
+
+    // Clear and add junk data
+    var clear = new Listing(); 
+    clear.collection.drop();
+
+    // I'm responsible for all listings, of course
+    User = mongoose.model('users');
+    User.findOne({email: 'pickartd@carleton.edu'}, function(err, user) {
+        for (var i = 0; i < junklistings.length; i++) {
+            var junklisting = new Listing(junklistings[i]);
+            junklisting.userID = user._id;
+            junklisting.save();
+        }
+    });
 }
 
 /***********
@@ -143,6 +155,7 @@ var TransactionSchema = new Schema({
 // Add schema to db
 mongoose.model('transactions', TransactionSchema, 'transactions');
 
+
 /***********
 School Stats 
 ***********/
@@ -154,3 +167,6 @@ var SchoolStatsSchema = new Schema({
 
 // Add schema to db
 mongoose.model('schoolStats', SchoolStatsSchema, 'schoolStats');
+
+// Get the data generation party started
+generateBooks();

@@ -12,7 +12,7 @@ Communist calls have been implemented already.
 	`PUT hitsthebooks.com/api/user`
 	- Delete current user account:
 	`DELETE hitsthebooks.com/api/user`
-	- Get user by user ID:
+	- ☭ Get user by user ID:
 	`GET hitsthebooks.com/api/user/id`
 	- Get watchlist of current user:
 	`GET hitsthebooks.com/api/watchlist`
@@ -24,7 +24,7 @@ Communist calls have been implemented already.
 	`DELETE hitsthebooks.com/api/watchlist`
 	
 - Listings
-	- Get listings for user with user ID: 
+	- ☭ Get listings for user with user ID: 
 	`GET hitsthebooks.com/api/listings/user/id`
 	- ☭ Get listings for book with book ID:
 	`GET hitsthebooks.com/api/listings/book/id`

@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connect(config.db);
 
 require('./app/model');
-var User = mongoose.model('users');
+// var User = mongoose.model('users');
 
 // Set up app
 var express = require('express'),
