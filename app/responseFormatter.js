@@ -4,7 +4,6 @@ exports.formatUserResponse = function(req, res) {
     var user = formatUser(req.user),
         listings = formatListings(req.listings);
     user.listings = listings;
-    console.log(listings);
     res.json(user);
 }
 
