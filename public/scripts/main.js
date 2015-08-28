@@ -1,14 +1,19 @@
 var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras']);
 
+hitsTheBooks.run(function($rootScope, $state){
+	$rootScope.is = function(name){ return $state.is(name) };
+	$rootScope.includes = function(name){ return $state.includes(name) };
+});
+
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
 	$stateProvider
 
-		.state('home',{
+		.state('main',{
 			url: '/',
-			templateUrl : '/partials/home',
-			controller  : 'homeController'
+			templateUrl : '/partials/main',
+			controller  : 'mainController'
 		})
-		.state('home.search',{
+		.state('main.search',{
 			resolve : {
 				//get results of search from server
 				results: function($http, $stateParams) {
@@ -27,7 +32,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 				}
 			}
 		})
-		.state('home.detail',{
+		.state('main.detail',{
 			url:'',
 			sticky: true,
 			views: {
@@ -36,7 +41,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 				}
 			}
 		})
-		.state('home.detail.book',{
+		.state('main.detail.book',{
 			resolve : {
 				bookInfo: function($http, $stateParams) {
 					return $http({
@@ -46,10 +51,10 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 				}
 			},
 			url : 'book/:isbn',
-			templateUrl : '/partials/book',
+			templateUrl : '/partials/detail.book',
 			controller  : 'bookController'
 		})
-		.state('home.detail.user',{
+		.state('main.detail.user',{
 			url : 'user/:id',
 			//uncomment the below when user api call is implemented
 			// resolve : {
@@ -60,7 +65,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 			// 		});
 			// 	}
 			// },
-			templateUrl : '/partials/user',
+			templateUrl : '/partials/detail.user',
 			controller  : 'userPageController'
 		})
 
@@ -74,7 +79,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 		$locationProvider.html5Mode(true);
 })
 
-hitsTheBooks.controller('homeController', function($scope) {
+
+
+hitsTheBooks.controller('mainController', function($scope) {
 	$scope.message = "DAVID'S BIG NOSE";
 });
 
@@ -84,9 +91,9 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
 	console.log($scope.results);
 });
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $stateParams) {
-	console.log(bookInfo.data);
+hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams) {
 	$scope.book = bookInfo.data;
+	console.log($state);
 });
 
 hitsTheBooks.controller('userPageController', function($scope, $stateParams) {

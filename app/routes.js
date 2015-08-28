@@ -8,10 +8,10 @@ exports.setup = function(app) {
 
     // Workin on dem angular stuff inside /app/whatever
     app.get('/app/*', function (req, res) {
-        res.render('app/main',{});
+        res.render('app/index.jade',{});
     });
     app.get('/partials/:partial', function (req, res) {
-        res.render('app/partials/'+req.params.partial,{});
+        res.render('app/partials/'+req.params.partial+'.jade',{});
     });
 
     // //old login/testing routes:    
