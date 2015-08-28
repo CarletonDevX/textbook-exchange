@@ -37,8 +37,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 			}
 		})
 		.state('home.detail.book',{
-			// the resolve function is how we'd grab JSON before rendering a view.
-			// For example...
 			resolve : {
 				bookInfo: function($http, $stateParams) {
 					return $http({
@@ -53,8 +51,17 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 		})
 		.state('home.detail.user',{
 			url : 'user/:id',
+			//uncomment the below when user api call is implemented
+			// resolve : {
+			// 	userInfo: function($http, $stateParams) {
+			// 		return $http({
+			// 			method : 'GET',
+			// 			url : '/api/user/' + $stateParams.id
+			// 		});
+			// 	}
+			// },
 			templateUrl : '/partials/user',
-			controller  : 'bookController'
+			controller  : 'userPageController'
 		})
 
 
@@ -80,4 +87,9 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $stateParams) {
 	console.log(bookInfo.data);
 	$scope.book = bookInfo.data;
+});
+
+hitsTheBooks.controller('userPageController', function($scope, $stateParams) {
+	// console.log(bookInfo.data);
+	// $scope.book = bookInfo.data;
 });
