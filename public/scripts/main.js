@@ -55,16 +55,15 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 			controller  : 'bookController'
 		})
 		.state('main.detail.user',{
-			url : 'user/:id',
-			//uncomment the below when user api call is implemented
-			// resolve : {
-			// 	userInfo: function($http, $stateParams) {
-			// 		return $http({
-			// 			method : 'GET',
-			// 			url : '/api/user/' + $stateParams.id
-			// 		});
-			// 	}
-			// },
+			url : 'user/:userID',
+			resolve : {
+				userInfo: function($http, $stateParams) {
+					return $http({
+						method : 'GET',
+						url : '/api/user/' + $stateParams.userID
+					});
+				}
+			},
 			templateUrl : '/partials/detail.user',
 			controller  : 'userPageController'
 		})
@@ -96,7 +95,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $st
 	console.log($state);
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $stateParams) {
-	// console.log(bookInfo.data);
-	// $scope.book = bookInfo.data;
+hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
+	console.log(userInfo.data);
+	$scope.user = userInfo.data;
 });
