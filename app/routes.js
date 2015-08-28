@@ -3,6 +3,7 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     passport = require('passport'),
     responder = require('./responseFormatter');
+    tools = require('./utilities')
 
 exports.setup = function(app) {
 
@@ -39,7 +40,7 @@ exports.setup = function(app) {
         .get(listings.getListingsWithUser, responder.formatListingResponse);
 
     app.route('/api/listings/book/:ISBN')
-        .get(listings.getListingsWithBook, responder.formatListingResponse);
+        .get(listings.getListingsWithBook, responder.formatListingResponseForBook);
 
     app.route('/api/listings/:listingID')
         .get(listings.getListingsWithID, responder.formatListingResponse);
