@@ -19,7 +19,7 @@ exports.formatListingResponseForBook = function(req, res) {
 
 exports.formatBookResponse = function(req, res) {
 	var book = formatBook(req.book),
-		listings = formatListings(req.listings);
+		listings = formatListingsForBook(req.listings);
 
 	book.listings = listings;
     res.json(book);
@@ -57,7 +57,7 @@ formatListings = function (listings) {
 	return newListings;
 }
 
-formatListings = function (listings) {
+formatListingsForBook = function (listings) {
     newListings = [];
     for (var i = 0; i < listings.length; i++) {
         listing = listings[i];
