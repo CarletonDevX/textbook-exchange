@@ -12,10 +12,11 @@ div#book-details
           th Condition
           th Price
       tbody
-        //todo: filter on whether it's for sale or rent
+        //-todo: filter on whether it's for sale or rent
+        //- change hrefs to ui-srefs
         tr(ng-repeat="listing in book.listings")
-          // td: a(href="user/{{listing.user.userID}}"): img(src="{{listing.user.avatar}}")
-          td: a(href="user/{{listing.userID}}") User {{listing.userID}}
+          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
           td {{listing.condition}}
           td {{listing.sellingPrice}}
           td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
@@ -27,10 +28,10 @@ div#book-details
           th Condition
           th Price
       tbody
-        //todo: filter on whether it's for sale or rent
+        //-todo: filter on whether it's for sale or rent
         tr(ng-repeat="listing in book.listings")
-          // td: a(href="user/{{listing.user.userID}}"): img(src="{{listing.user.avatar}}")
-          td: a(href="user/{{listing.userID}}") User {{listing.userID}}
+          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
           td {{listing.condition}}
           td {{listing.rentingPrice}}
           td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")

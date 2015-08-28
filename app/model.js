@@ -8,6 +8,7 @@ Books
 ****/
 
 var BookSchema = new Schema({
+    ISBN: String,
     name: String,
     coverImage: String,
     author: String,
@@ -15,7 +16,6 @@ var BookSchema = new Schema({
     pageCount: Number,
     publishYear: Number,
     publisher: String,
-    ISBN: String,
     description: String,
     amazonInfo: {
         id: String,
@@ -110,7 +110,7 @@ Listings
 
 var ListingSchema = new Schema({
     userID: String,
-    ISBN: String,
+    ISBN: String, //which is the book id
     condition: String,
     sellingPrice: String,
     rentingPrice: String,
