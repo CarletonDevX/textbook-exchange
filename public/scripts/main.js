@@ -87,12 +87,10 @@ hitsTheBooks.controller('mainController', function($scope) {
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
 	$scope.query = $stateParams.query;
 	$scope.results = results.data;
-	console.log($scope.results);
 });
 
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams) {
 	$scope.book = bookInfo.data;
-	console.log($state);
 });
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {

@@ -5,4 +5,4 @@ div#search
   a(ui-sref="main.search({query: searchInput})") Search
   div#search-results(ui-view="search")
 
-div#detail-wrapper(ui-view="detail", ng-class="is('main.detail.book')?'maximized':'minimized'")
+div#detail-wrapper(ui-view="detail", ng-class="includes('main.detail')?'maximized':'minimized'")
