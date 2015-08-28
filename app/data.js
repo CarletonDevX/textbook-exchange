@@ -10,7 +10,7 @@ exports.books = function() {
 		    pageCount: 432,
 		    publishYear: 2010,
 		    publisher: 'Franklin, Beedle & Associates Inc.',
-		    ISBN: '1590282418',
+		    ISBN: '9781590282410',
 		    description: 'This book is designed to be used as the primary textbook in a college-level first course in computing.',
 		    amazonInfo: {
 		        id: '1590282418',
@@ -28,7 +28,7 @@ exports.books = function() {
 		    pageCount: 200,
 		    publishYear: 2010,
 		    publisher: 'For Dummies',
-		    ISBN: '1118115538',
+		    ISBN: '9781118115534',
 		    description: 'Whether you use your computer for bookkeeping, making travel plans, socializing, shopping, or just plain fun, computers are now an essential part of daily life. But it can be overwhelming to keep up with the technology as it continually evolves. This clear, friendly guide not only gets you up to speed on computer basics, it also covers the very latest information, like the changes you?ll see with Windows 8.',
 		    amazonInfo: {
 		        id: '1118115538',
@@ -44,7 +44,6 @@ exports.books = function() {
 exports.users = function() {
 	return [
 		{
-			userID: '58008',
 		    name: {
 		        givenName: "David",
 		        familyName: "Pickart",
@@ -69,13 +68,8 @@ exports.users = function() {
 exports.listings = function() {
 	return [
 		{
-			ID: '2500',
-		    user: {
-		        userID: '58008',
-		        fullName: 'David Pickart',
-		        avatar: 'http://graph.facebook.com/613262579/picture?type=square'
-		    },
-		    ISBN: '1590282418',
+		    userID: '58008',
+		    ISBN: '9781118115534',
 		    condition: 'glorious',
 		    sellingPrice: '$2.00',
 		    rentingPrice: '$1.99',

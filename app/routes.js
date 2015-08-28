@@ -1,6 +1,8 @@
 var users = require('./controllers/users.controller'),
     books = require('./controllers/books.controller'),
-    passport = require('passport');
+    listings = require('./controllers/listings.controller'),
+    passport = require('passport'),
+    responder = require('./responseFormatter');
 
 exports.setup = function(app) {
 
@@ -12,10 +14,10 @@ exports.setup = function(app) {
         res.render('app/partials/'+req.params.partial,{});
     });
 
-    //old login/testing routes:    
-    app.get('/templates/book', function(req, res) {
-        books.renderBook(req, res); 
-    });
+    // //old login/testing routes:    
+    // app.get('/templates/book', function(req, res) {
+    //     books.renderBook(req, res); 
+    // });
 
 	// Main page
     app.get('/', function (req, res) {
@@ -26,9 +28,18 @@ exports.setup = function(app) {
         }
     });
 
-    // API
-    app.route('/api/book/:isbn')
-        .get(books.getBook);
+    /* API */
+
+    // Listings
+    app.route('/api/listings/book/:ISBN')
+        .get(listings.getListingsWithBook, responder.formatListingResponse);
+
+    app.route('/api/listings/:listingID')
+        .get(listings.getListingsWithID, responder.formatListingResponse);
+
+    // Books
+    app.route('/api/book/:ISBN')
+        .get(books.getBook, listings.getListingsWithBook, responder.formatBookResponse);
 
     app.route('/api/search')
         .get(books.search);
