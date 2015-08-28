@@ -3,6 +3,23 @@ var User = require('mongoose').model('users'),
     mailer = require('../config/nodemailer'),
     avatars = require('../config/avatars');
 
+// API Calls
+exports.getUserWithID = function (req, res, next) {
+    var userID = req.params.userID;
+    User.findOne({_id: userID}, function(err, user) {
+        if (!err) {
+            if (!user) {
+                res.status(404).send('User not found by those conditions.');
+            } else {
+                req.user = user;
+                next();
+            }
+        } else {
+            res.json(err);
+        }
+    });
+}
+
 function validateEmail(email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu/i;
     // ((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
