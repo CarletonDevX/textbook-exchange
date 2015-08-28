@@ -1,5 +1,7 @@
 Login stuff is still unclear. [Here's](http://stackoverflow.com/questions/15496915/how-to-implement-a-secure-rest-api-with-node-js) some reading on the subject. 
 
+Communist calls have been implemented already.
+
 - Schools
 	- Get statistics for school by school ID:
 	`GET hitsthebooks.com/api/school/id`
@@ -24,13 +26,13 @@ Login stuff is still unclear. [Here's](http://stackoverflow.com/questions/154969
 - Listings
 	- Get listings for user with user ID: 
 	`GET hitsthebooks.com/api/listings/user/id`
-	- Get listings for book with book ID:
+	- ☭ Get listings for book with book ID:
 	`GET hitsthebooks.com/api/listings/book/id`
 	- Add a listing (with listing details)
 	`POST hitsthebooks.com/api/listings/add`
 	- Make an offer on a listing (id in queries):
 	`POST hitsthebooks.com/api/listings/offer/`
-	- Get listing by listing ID:
+	- ☭ Get listing by listing ID:
 	`GET hitsthebooks.com/api/listings/id`
 	- Update listing (with listing details):
 	`PUT hitsthebooks.com/api/listings/id`
@@ -38,7 +40,7 @@ Login stuff is still unclear. [Here's](http://stackoverflow.com/questions/154969
 	`DELETE hitsthebooks.com/api/listings/id`
 	
 - Books
-	- Get book with book ID:
+	- ☭ Get book with book ID:
 	`GET hitsthebooks.com/api/book/id`
 
 - Search
