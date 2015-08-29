@@ -33,7 +33,6 @@ exports.inject = function(mainCollection, other, callback) {
 
 	var response = function(err,res) {
 		if (!err){
-
 			//map the response list to a dict for easier searching
 			var responseDict = {}
 			for (var i=0; i<res.length; i++){
@@ -44,10 +43,9 @@ exports.inject = function(mainCollection, other, callback) {
 			var newCollection = []
 			for (var i=0; i<mainCollection.length; i++){
 				var item = mainCollection[i];
-				item['user'] = responseDict[item[other.ID]];
+				item[other.newKey] = responseDict[item[other.ID]];
 				newCollection.push(item);
 			}
-
 			callback(err, newCollection);
 		} else {
 			callback(err, mainCollection);
@@ -56,6 +54,19 @@ exports.inject = function(mainCollection, other, callback) {
 
 	//switch case on whether props are spec'd
 	if (other.propsNeeded) {
+		//make sure we hold on to the local id (so that we can match
+		//recipient object with object to be inserted)
+		var containsLocalID = false;
+		for (var i=0;i<other.propsNeeded.length; i++) {
+			if (other.propsNeeded[i] == other.localID) {
+				containsLocalID = true;
+				break;
+			}
+		}
+		if (!containsLocalID) {
+			other.propsNeeded.push(other.localID);
+		}
+
 		other.collection.find(query, other.propsNeeded.join(' '), response);
 	} else { 
 		console.log("no req'd params provided");

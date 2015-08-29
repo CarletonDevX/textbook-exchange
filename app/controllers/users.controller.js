@@ -4,7 +4,7 @@ var User = require('mongoose').model('users'),
     avatars = require('../config/avatars');
 
 // API Calls
-exports.getUserWithID = function (req, res, next) {
+exports.getUser = function (req, res, next) {
     var userID = req.params.userID;
     User.findOne({_id: userID}, function(err, user) {
         if (!err) {
