@@ -3,6 +3,7 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     passport = require('passport'),
     responder = require('./responseFormatter');
+    inject = require('./injectors');
     tools = require('./utilities')
 
 exports.setup = function(app) {
@@ -32,22 +33,35 @@ exports.setup = function(app) {
     /* API */
 
     // Users
+    // (e.g., for the top half of a user page)
     app.route('/api/user/:userID')
-        .get(users.getUserWithID, listings.getListingsWithUser, responder.formatUserResponse);
+        .get(users.getUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatUser);
 
+    // the commented-out api calls are not fixed yet.
     // Listings
-    app.route('/api/listings/user/:userID')
-        .get(listings.getListingsWithUser, responder.formatListingResponse);
+    // app.route('/api/listings/user/:userID')
+    //     .get(listings.getUserListings,
+    //          inject.BooksIntoListings,
+    //          responder.formatUserListings);
 
-    app.route('/api/listings/book/:ISBN')
-        .get(listings.getListingsWithBook, responder.formatListingResponseForBook);
+    // app.route('/api/listings/book/:ISBN')
+    //     .get(listings.getBookListings,
+    //          inject.UsersIntoListings,
+    //          responder.formatBookListings);
 
-    app.route('/api/listings/:listingID')
-        .get(listings.getListingsWithID, responder.formatListingResponse);
+    // app.route('/api/listings/:listingID')
+    //     .get(listings.getListing,
+    //          responder.formatSingleListing);
 
-    // Books
+    // // Books
     app.route('/api/book/:ISBN')
-        .get(books.getBook, listings.getListingsWithBook, responder.formatBookResponse);
+        .get(books.getBook,
+             listings.getBookListings,
+             inject.UsersIntoListings,
+             responder.formatBook);
 
     app.route('/api/search')
         .get(books.search);
