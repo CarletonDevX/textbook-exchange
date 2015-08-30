@@ -1,5 +1,7 @@
 // Formats API responses from retrieved objects
 
+/** USERS **/
+
 exports.formatUser = function(req, res) {
     var user = {
           "userID": req.user._id, 
@@ -35,6 +37,78 @@ exports.formatUser = function(req, res) {
     user.listings = listings;
     res.json(user);
 }
+
+/** LISTINGS **/
+
+exports.formatBookListings = function(req, res) {
+    var listings = [];
+    for (var i = 0; i < req.listings.length; i++) {
+        var lstng = req.listings[i];
+        var formattedUser = {
+            "name": lstng.user.name,
+            "avatar": lstng.user.avatar,
+            "gradYear": lstng.user.gradYear
+        };
+        var formattedListing = {
+                  "userID": lstng.userID,
+                    "ISBN": lstng.ISBN, 
+               "listingId": lstng._id, 
+               "condition": lstng.condition, 
+                 "created": lstng.created, 
+            "rentingPrice": lstng.rentingPrice, 
+            "sellingPrice": lstng.sellingPrice,
+                    "user": formattedUser
+        }
+        listings.push(formattedListing);
+    }
+
+    res.json(listings);
+}
+
+exports.formatUserListings = function(req, res) {
+    var listings = [];
+    for (var i = 0; i < req.listings.length; i++) {
+        var lstng = req.listings[i];
+        var formattedBook = {
+                  "name": lstng.book.name,
+            "coverImage": lstng.book.coverImage,
+               "edition": lstng.book.edition
+        };
+        var formattedListing = {
+                  "userID": lstng.userID,
+                    "ISBN": lstng.ISBN, 
+               "listingId": lstng._id, 
+               "condition": lstng.condition, 
+                 "created": lstng.created, 
+            "rentingPrice": lstng.rentingPrice, 
+            "sellingPrice": lstng.sellingPrice,
+                    "book": formattedBook
+        }
+        listings.push(formattedListing);
+    }
+
+    res.json(listings);
+}
+
+exports.formatSingleListing = function(req, res) {
+    var lstng = req.listings[0];
+    if (!lstng) {
+      res.status(404).send('Listing not found by those conditions.');
+    }
+    var formattedListing = {
+              "userID": lstng.userID,
+                "ISBN": lstng.ISBN, 
+           "listingId": lstng._id, 
+           "condition": lstng.condition, 
+             "created": lstng.created, 
+        "rentingPrice": lstng.rentingPrice, 
+        "sellingPrice": lstng.sellingPrice,
+    }
+
+    res.json(formattedListing);
+}
+
+/** BOOKS **/
 
 exports.formatBook = function(req, res) {
     var book = { 
@@ -72,32 +146,6 @@ exports.formatBook = function(req, res) {
         listings.push(formattedListing);
     }
 
-	book.listings = listings;
+  	book.listings = listings;
     res.json(book);
-}
-
-//below not fixed yet
-
-exports.formatListingResponse = function(req, res) {
-    var listings = formatListings(req.listings);
-    res.json(listings);
-}
-
-
-formatListings = function (listings) {
-	newListings = [];
-	for (var i = 0; i < listings.length; i++) {
-		listing = listings[i];
-		newListing = {
-            "userID": listing.userID,
-			"ISBN": listing.ISBN, 
-            "listingId": listing._id, 
-            "condition": listing.condition, 
-            "created": listing.created, 
-            "rentingPrice": listing.rentingPrice, 
-            "sellingPrice": listing.sellingPrice
-		}
-		newListings.push(newListing);
-	}
-	return newListings;
 }
