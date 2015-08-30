@@ -40,23 +40,22 @@ exports.setup = function(app) {
              inject.BooksIntoListings,
              responder.formatUser);
 
-    // the commented-out api calls are not fixed yet.
     // Listings
-    // app.route('/api/listings/user/:userID')
-    //     .get(listings.getUserListings,
-    //          inject.BooksIntoListings,
-    //          responder.formatUserListings);
+    app.route('/api/listings/user/:userID')
+        .get(listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatUserListings);
 
-    // app.route('/api/listings/book/:ISBN')
-    //     .get(listings.getBookListings,
-    //          inject.UsersIntoListings,
-    //          responder.formatBookListings);
+    app.route('/api/listings/book/:ISBN')
+        .get(listings.getBookListings,
+             inject.UsersIntoListings,
+             responder.formatBookListings);
 
-    // app.route('/api/listings/:listingID')
-    //     .get(listings.getListing,
-    //          responder.formatSingleListing);
+    app.route('/api/listings/:listingID')
+        .get(listings.getListing,
+             responder.formatSingleListing);
 
-    // // Books
+    // Books
     app.route('/api/book/:ISBN')
         .get(books.getBook,
              listings.getBookListings,
