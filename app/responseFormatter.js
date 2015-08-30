@@ -17,11 +17,11 @@ exports.formatUser = function(req, res) {
         var formattedBook = {
                   "name": lstng.book.name,
             "coverImage": lstng.book.coverImage,
-               "edition": lstng.book.edition
+               "edition": lstng.book.edition,
+                  "ISBN": lstng.ISBN, 
         };
         var formattedListing = {
                   "userID": lstng.userID,
-                    "ISBN": lstng.ISBN, 
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
@@ -61,7 +61,6 @@ exports.formatBook = function(req, res) {
         };
         var formattedListing = {
                   "userID": lstng.userID,
-                    "ISBN": lstng.ISBN, 
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 

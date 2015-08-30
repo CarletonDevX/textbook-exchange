@@ -11,8 +11,8 @@ div.listing#selling
       tbody
         //- todo: filter on whether it's for sale or rent
         tr(ng-repeat="listing in user.listings")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
+          td: a(ui-sref="main.detail.book({isbn: listing.book.ISBN})"): img(src="{{listing.book.coverImage}}")
+          td: a(ui-sref="main.detail.book({isbn: listing.book.ISBN})") {{listing.book.name}}
           td {{listing.condition}}
           td {{listing.sellingPrice}}
           td: button: img(src="/images/email.png")
@@ -26,8 +26,8 @@ div.listing#selling
       tbody
         //-todo: filter on whether it's for sale or rent
         tr(ng-repeat="listing in user.listings")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
+          td: a(ui-sref="main.detail.book({isbn: listing.book.ISBN})"): img(src="{{listing.book.coverImage}}")
+          td: a(ui-sref="main.detail.book({isbn: listing.book.ISBN})") {{listing.book.name}}
           td {{listing.condition}}
           td {{listing.rentingPrice}}
           td: button: img(src="/images/email.png")
