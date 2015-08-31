@@ -1,0 +1,52 @@
+/*minimal WIP!!!*/
+
+body,html{
+  margin:0;
+}
+
+div#about, div#register{
+  display:none;
+}
+
+div#sub-box{
+  position:absolute;
+  right:0;
+  top:0;
+}
+
+div#main-box{
+  text-align: center;
+  height: 10em;
+}
+
+div#search{
+  overflow: hidden;
+  transition: max-height .5s;
+  box-shadow: 0px 20px 20px 20px rgba(0,0,0,.3);
+  z-index: 10;
+  padding:20px;
+}
+
+div#search.behind-detail {
+  max-height:2em;
+}
+
+div#search.searching{
+  max-height:50em;
+}
+
+div#detail-wrapper{
+  background-color: white;
+  z-index: 100;
+  overflow: hidden;
+  transition: max-height .5s;
+  box-shadow: 0px 20px 20px 20px rgba(0,0,0,.3);
+}
+
+div#detail-wrapper.maximized{
+  max-height: 50em;
+}
+
+div#detail-wrapper.minimized{
+  max-height: 0px;
+}
