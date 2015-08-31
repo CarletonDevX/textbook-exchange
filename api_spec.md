@@ -13,7 +13,7 @@ Communist calls have been implemented already.
 	- Delete current user account:
 	`DELETE hitsthebooks.com/api/user`
 	- ☭ Get user by user ID:
-	`GET hitsthebooks.com/api/user/id`
+	`GET hitsthebooks.com/api/user/id`	
 	- Get watchlist of current user:
 	`GET hitsthebooks.com/api/watchlist`
 	- Add book to watchlist of current user with book ID (id in queries):
