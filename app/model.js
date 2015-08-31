@@ -8,7 +8,7 @@ Books
 ****/
 
 var BookSchema = new Schema({
-    ISBN: String,
+    ISBN: { type: String, unique: true, index: true },
     name: String,
     coverImage: String,
     author: String,

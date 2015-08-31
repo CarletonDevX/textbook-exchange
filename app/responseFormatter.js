@@ -20,10 +20,10 @@ exports.formatUser = function(req, res) {
                   "name": lstng.book.name,
             "coverImage": lstng.book.coverImage,
                "edition": lstng.book.edition,
-                  "ISBN": lstng.ISBN, 
         };
         var formattedListing = {
                   "userID": lstng.userID,
+                    "ISBN": lstng.ISBN,
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
