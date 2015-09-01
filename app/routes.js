@@ -6,6 +6,14 @@ var users = require('./controllers/users.controller'),
     inject = require('./injectors');
     tools = require('./utilities')
 
+var authenticate = function (req, res, next) {
+    if (!req.user) {
+        res.status(401).send("Not authorized.");
+    } else {
+        next();
+    }
+}
+
 exports.setup = function(app) {
 
     // Workin on dem angular stuff inside /app/whatever
@@ -34,6 +42,23 @@ exports.setup = function(app) {
 
     // Users
     // (e.g., for the top half of a user page)
+
+    app.route('/api/login')
+        .post(passport.authenticate('local'), function (req, res) {
+            res.status(200).send("Logged in");
+        });
+
+    app.route('/api/logout')
+        .post(function (req, res) {
+            req.logout();
+            res.status(200).send("Logged out");
+        });
+
+    app.route('/api/authTest')
+        .get(authenticate, function (req, res) {
+            res.status(200).send("Yay");
+        });
+
     app.route('/api/user/:userID')
         .get(users.getUser,
              listings.getUserListings,
@@ -93,7 +118,6 @@ exports.setup = function(app) {
         failureRedirect: '/',
         successRedirect: '/',
         failureFlash: true,
-        // scope:['email', 'user_education_history']
     }));
 
     // Google
