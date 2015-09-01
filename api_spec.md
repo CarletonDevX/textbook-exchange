@@ -1,4 +1,6 @@
-Login stuff is still unclear. [Here's](http://stackoverflow.com/questions/15496915/how-to-implement-a-secure-rest-api-with-node-js) some reading on the subject. 
+Looks like passport is gonna make auth a lot easier than we thought- after authenticating, it'll store the user in the req.user object until the session expires. Not sure if the facebook/google oauth stuff is still gonna be possible with the api though.
+
+P.S. Make sure you have a persistent session enabled in whatever you're using to make requests.
 
 Communist calls have been implemented already.
 
@@ -6,6 +8,12 @@ Communist calls have been implemented already.
 	- Get statistics for school by school ID:
 	`GET hitsthebooks.com/api/school/id`
 - Users
+	- ☭ Login (with credentials):
+	`POST hitsthebooks.com/api/login`
+	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
+	`POST hitsthebooks.com/api/logout`
+	- ☭ Authentification test:
+	`POST hitsthebooks.com/api/authTest`
 	- Get current user: 
 	`GET hitsthebooks.com/api/user`
 	- Update current user (with user details): 
