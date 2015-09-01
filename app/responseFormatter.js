@@ -2,20 +2,58 @@
 
 /** USERS **/
 
-exports.formatUser = function(req, res) {
+exports.formatCurrentUser = function(req, res) {
+    console.log(req.rUser);
     var user = {
-          "userID": req.user._id, 
-          "avatar": req.user.avatar, 
-             "bio": req.user.bio, 
-         "created": req.user.created,  
-        "gradYear": req.user.gradYear, 
-            "name": req.user.name,
-         "reports": req.user.reports
+          "userID": req.rUser._id, 
+           "email": req.rUser.email,
+          "avatar": req.rUser.avatar, 
+             "bio": req.rUser.bio, 
+         "created": req.rUser.created,  
+        "gradYear": req.rUser.gradYear, 
+            "name": req.rUser.name,
+         "reports": req.rUser.reports
     }
 
     var listings = [];
-    for (var i = 0; i < req.listings.length; i++) {
-        var lstng = req.listings[i];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
+        var formattedBook = {
+                  "name": lstng.book.name,
+            "coverImage": lstng.book.coverImage,
+               "edition": lstng.book.edition,
+        };
+        var formattedListing = {
+                  "userID": lstng.userID,
+                    "ISBN": lstng.ISBN,
+               "listingId": lstng._id, 
+               "condition": lstng.condition, 
+                 "created": lstng.created, 
+            "rentingPrice": lstng.rentingPrice, 
+            "sellingPrice": lstng.sellingPrice,
+                    "book": formattedBook
+        }
+        listings.push(formattedListing);
+    }
+
+    user.listings = listings;
+    res.json(user);
+}
+
+exports.formatUser = function(req, res) {
+    var user = {
+          "userID": req.rUser._id, 
+          "avatar": req.rUser.avatar, 
+             "bio": req.rUser.bio, 
+         "created": req.rUser.created,  
+        "gradYear": req.rUser.gradYear, 
+            "name": req.rUser.name,
+         "reports": req.rUser.reports
+    }
+
+    var listings = [];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
         var formattedBook = {
                   "name": lstng.book.name,
             "coverImage": lstng.book.coverImage,
@@ -42,8 +80,8 @@ exports.formatUser = function(req, res) {
 
 exports.formatBookListings = function(req, res) {
     var listings = [];
-    for (var i = 0; i < req.listings.length; i++) {
-        var lstng = req.listings[i];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
         var formattedUser = {
             "name": lstng.user.name,
             "avatar": lstng.user.avatar,
@@ -67,8 +105,8 @@ exports.formatBookListings = function(req, res) {
 
 exports.formatUserListings = function(req, res) {
     var listings = [];
-    for (var i = 0; i < req.listings.length; i++) {
-        var lstng = req.listings[i];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
         var formattedBook = {
                   "name": lstng.book.name,
             "coverImage": lstng.book.coverImage,
@@ -91,7 +129,7 @@ exports.formatUserListings = function(req, res) {
 }
 
 exports.formatSingleListing = function(req, res) {
-    var lstng = req.listings[0];
+    var lstng = req.rListings[0];
     if (!lstng) {
       res.status(404).send('Listing not found by those conditions.');
     }
@@ -112,22 +150,22 @@ exports.formatSingleListing = function(req, res) {
 
 exports.formatBook = function(req, res) {
     var book = { 
-                "ISBN": req.book.ISBN, 
-          "amazonInfo": req.book.amazonInfo,
-              "author": req.book.author, 
-          "coverImage": req.book.coverImage, 
-         "description": req.book.description, 
-             "edition": req.book.edition, 
-        "lastSearched": req.book.lastSearched, 
-                "name": req.book.name, 
-           "pageCount": req.book.pageCount, 
-         "publishYear": req.book.publishYear, 
-           "publisher": req.book.publisher
+                "ISBN": req.rBook.ISBN, 
+          "amazonInfo": req.rBook.amazonInfo,
+              "author": req.rBook.author, 
+          "coverImage": req.rBook.coverImage, 
+         "description": req.rBook.description, 
+             "edition": req.rBook.edition, 
+        "lastSearched": req.rBook.lastSearched, 
+                "name": req.rBook.name, 
+           "pageCount": req.rBook.pageCount, 
+         "publishYear": req.rBook.publishYear, 
+           "publisher": req.rBook.publisher
     };
 
     var listings = [];
-    for (var i = 0; i < req.listings.length; i++) {
-        var lstng = req.listings[i];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
         var formattedUser = {
             "name": lstng.user.name,
             "avatar": lstng.user.avatar,

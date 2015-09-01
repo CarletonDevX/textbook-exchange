@@ -4,6 +4,12 @@ var User = require('mongoose').model('users'),
     avatars = require('../config/avatars');
 
 // API Calls
+
+exports.getCurrentUser = function (req, res, next) {
+    req.rUser = req.user;
+    next();
+}
+
 exports.getUser = function (req, res, next) {
     var userID = req.params.userID;
     User.findOne({_id: userID}, function(err, user) {
@@ -11,7 +17,7 @@ exports.getUser = function (req, res, next) {
             if (!user) {
                 res.status(404).send('User not found by those conditions.');
             } else {
-                req.user = user;
+                req.rUser = user;
                 next();
             }
         } else {

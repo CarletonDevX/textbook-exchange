@@ -3,7 +3,7 @@ var User = require('mongoose').model('users');
 var utils = require('./utilities')
 
 
-exports.UsersIntoListings = function(req, res, next){
+exports.UsersIntoListings = function(req, res, next) {
     //config for injector
     var configParams = {
         collection: User,
@@ -14,13 +14,13 @@ exports.UsersIntoListings = function(req, res, next){
     };
 
     //inject req'd user data into each listing
-    utils.inject(req.listings, configParams, function(err, augListings){
-        req.listings = augListings;
+    utils.inject(req.rListings, configParams, function(err, augListings){
+        req.rListings = augListings;
         next();
     });
 }
 
-exports.BooksIntoListings = function(req, res, next){
+exports.BooksIntoListings = function(req, res, next) {
     //config for injector
     var configParams = {
         collection: Book,
@@ -31,8 +31,8 @@ exports.BooksIntoListings = function(req, res, next){
     };
 
     //inject req'd user data into each listing
-    utils.inject(req.listings, configParams, function(err, augListings){
-        req.listings = augListings;
+    utils.inject(req.rListings, configParams, function(err, augListings){
+        req.rListings = augListings;
         next();
     });
 }

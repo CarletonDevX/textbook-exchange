@@ -40,9 +40,7 @@ exports.setup = function(app) {
 
     /* API */
 
-    // Users
-    // (e.g., for the top half of a user page)
-
+    // Auth
     app.route('/api/login')
         .post(passport.authenticate('local'), function (req, res) {
             res.status(200).send("Logged in");
@@ -59,6 +57,14 @@ exports.setup = function(app) {
             res.status(200).send("Yay");
         });
 
+    // Users
+    app.route('/api/user')
+        .get(authenticate, 
+             users.getCurrentUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatCurrentUser);
+
     app.route('/api/user/:userID')
         .get(users.getUser,
              listings.getUserListings,
@@ -66,13 +72,22 @@ exports.setup = function(app) {
              responder.formatUser);
 
     // Listings
+    app.route('/api/listings/')
+        .get(authenticate, 
+             users.getCurrentUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatUserListings);
+
     app.route('/api/listings/user/:userID')
-        .get(listings.getUserListings,
+        .get(users.getUser,
+             listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUserListings);
 
     app.route('/api/listings/book/:ISBN')
-        .get(listings.getBookListings,
+        .get(books.getBook,
+             listings.getBookListings,
              inject.UsersIntoListings,
              responder.formatBookListings);
 
