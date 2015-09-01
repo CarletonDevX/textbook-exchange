@@ -13,7 +13,7 @@ Communist calls have been implemented already.
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
 	- ☭ Authentification test:
-	`POST hitsthebooks.com/api/authTest`
+	`GET hitsthebooks.com/api/authTest`
 	- Get current user: 
 	`GET hitsthebooks.com/api/user`
 	- Update current user (with user details): 
