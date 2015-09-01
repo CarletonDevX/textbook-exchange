@@ -4,48 +4,51 @@ P.S. Make sure you have a persistent session enabled in whatever you're using to
 
 Communist calls have been implemented already.
 
+- Auth
+	- ☭ Login (with credentials) [Requires auth]:
+	`POST hitsthebooks.com/api/login`
+	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
+	`POST hitsthebooks.com/api/logout`
+	- ☭ Authentification test [Requires auth]:
+	`GET hitsthebooks.com/api/authTest`
 - Schools
 	- Get statistics for school by school ID:
 	`GET hitsthebooks.com/api/school/id`
 - Users
-	- ☭ Login (with credentials):
-	`POST hitsthebooks.com/api/login`
-	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
-	`POST hitsthebooks.com/api/logout`
-	- ☭ Authentification test:
-	`GET hitsthebooks.com/api/authTest`
-	- Get current user: 
+	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`
-	- Update current user (with user details): 
+	- Update current user (with user details) [Requires auth]: 
 	`PUT hitsthebooks.com/api/user`
-	- Delete current user account:
+	- Delete current user account [Requires auth]:
 	`DELETE hitsthebooks.com/api/user`
 	- ☭ Get user by user ID:
 	`GET hitsthebooks.com/api/user/id`	
-	- Get watchlist of current user:
+	- Get watchlist of current user [Requires auth]:
 	`GET hitsthebooks.com/api/watchlist`
-	- Add book to watchlist of current user with book ID (id in queries):
+	- Add book to watchlist of current user with book ID (id in queries) [Requires auth]:
 	`POST hitsthebooks.com/api/watchlist/add`
-	- Remove book from watchlist of current user with book ID (id in queries):
+	- Remove book from watchlist of current user with book ID (id in queries) [Requires auth]:
 	`DELETE hitsthebooks.com/api/watchlist/remove`
-	- Clear the watchlist of current user:
+	- Clear the watchlist of current user [Requires auth]:
 	`DELETE hitsthebooks.com/api/watchlist`
 	
 - Listings
+	- ☭ Get listings for current user [Requires auth]:
+	`GET hitsthebooks.com/api/listings` 
 	- ☭ Get listings for user with user ID: 
 	`GET hitsthebooks.com/api/listings/user/id`
 	- ☭ Get listings for book with book ID:
 	`GET hitsthebooks.com/api/listings/book/id`
-	- Add a listing (with listing details)
-	`POST hitsthebooks.com/api/listings/add`
-	- Make an offer on a listing (id in queries):
-	`POST hitsthebooks.com/api/listings/offer/`
 	- ☭ Get listing by listing ID:
 	`GET hitsthebooks.com/api/listings/id`
-	- Update listing (with listing details):
+	- Add a listing (with listing details) [Requires auth]:
+	`POST hitsthebooks.com/api/listings/add`
+	- Update listing (with listing details) [Requires auth]:
 	`PUT hitsthebooks.com/api/listings/id`
-	- Remove a listing:
+	- Remove a listing [Requires auth]:
 	`DELETE hitsthebooks.com/api/listings/id`
+	- Make an offer on a listing [Requires auth]:
+	`POST hitsthebooks.com/api/listings/offer/id`
 	
 - Books
 	- ☭ Get book with book ID:

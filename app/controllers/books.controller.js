@@ -9,7 +9,7 @@ exports.getBook = function(req, res, next) {
             if (!book) {
                 res.status(404).send('Book not found by those conditions.');
             } else {
-                req.book = book;
+                req.rBook = book;
                 next();
             }
         } else {
