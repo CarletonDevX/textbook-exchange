@@ -38,26 +38,34 @@ exports.setup = function(app) {
         }
     });
 
-    /* API */
+    /****
+     API 
+    ****/
 
-    // Auth
+    /* Auth */
+
+    // Login
     app.route('/api/login')
         .post(passport.authenticate('local'), function (req, res) {
             res.status(200).send("Logged in");
         });
 
+    // Logout
     app.route('/api/logout')
         .post(function (req, res) {
             req.logout();
             res.status(200).send("Logged out");
         });
 
+    // Authentification test
     app.route('/api/authTest')
         .get(authenticate, function (req, res) {
             res.status(200).send("Yay");
         });
 
-    // Users
+    /* Users */
+
+    // Get current user
     app.route('/api/user')
         .get(authenticate, 
              users.getCurrentUser,
@@ -65,13 +73,16 @@ exports.setup = function(app) {
              inject.BooksIntoListings,
              responder.formatCurrentUser);
 
+    // Get user by user ID
     app.route('/api/user/:userID')
         .get(users.getUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUser);
 
-    // Listings
+    /* Listings */
+
+    // Get listings for current user
     app.route('/api/listings/')
         .get(authenticate, 
              users.getCurrentUser,
@@ -79,32 +90,49 @@ exports.setup = function(app) {
              inject.BooksIntoListings,
              responder.formatUserListings);
 
+    // Get listings for user with user ID
     app.route('/api/listings/user/:userID')
         .get(users.getUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUserListings);
 
+    // Get listings for book with book ID
     app.route('/api/listings/book/:ISBN')
         .get(books.getBook,
              listings.getBookListings,
              inject.UsersIntoListings,
              responder.formatBookListings);
 
+    // Get and remove listing by listing ID
     app.route('/api/listings/:listingID')
         .get(listings.getListing,
-             responder.formatSingleListing);
+             responder.formatSingleListing)
 
-    // Books
+    // Remove a listing
+        .delete(authenticate,
+                listings.getListing,
+                listings.removeListing);
+
+    /* Books */
+
+    // Get book with book ID
     app.route('/api/book/:ISBN')
         .get(books.getBook,
              listings.getBookListings,
              inject.UsersIntoListings,
              responder.formatBook);
 
+    /* Search */
+
+    // Search
     app.route('/api/search')
         .get(books.search);
 
+
+    /************
+    MOSTLY LEGACY
+    *************/
 
     // Local strategy login and registration
     app.route('/login')

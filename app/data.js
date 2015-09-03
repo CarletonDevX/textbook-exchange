@@ -61,6 +61,25 @@ exports.users = function() {
 		    gradYear: 2016,
 		    reports: [],
 		    created: new Date()
+		},
+		{
+		    name: {
+		        givenName: "Joe",
+		        familyName: "Slote",
+		        fullName: "Joe Slote"
+		    },
+		    email: 'slotej@carleton.edu',
+		    verified: true,
+		    password: 'BigB00ty',
+		    provider: 'local',
+		    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
+		    providerData: {},
+		    // listings: [],
+		    avatar: 'http://graph.facebook.com/100000903098201/picture?type=square',
+		    bio: 'an OK guy',
+		    gradYear: 2016,
+		    reports: [],
+		    created: new Date()
 		}
 	];
 };

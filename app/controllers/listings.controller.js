@@ -26,12 +26,31 @@ exports.getBookListings = function(req, res, next) {
 
 exports.getListing = function(req, res, next) {
     var listingID = req.params.listingID;
-    Listing.find({_id: listingID}, function(err, listings) {
+    Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {
-        	req.rListings = listings;
-        	next();
+            if (!listing) {
+                res.status(404).send('Listing not found by those conditions.');
+            } else {
+                req.rListing = listing;
+                next();
+            }
         } else {
             res.json(err);
         }
     });
+};
+
+exports.removeListing = function(req, res, next) {
+    var listing = req.rListing;
+    if (req.user._id != listing.userID) {
+        res.status(401).send("Unaithorized to delete listing.");
+    } else {
+        Listing.remove({_id: listing._id}, function(err) {
+            if (!err) {
+                res.status(200).send("Listing deleted.");
+            } else {
+                res.json(err);
+            }
+        });
+    }
 };

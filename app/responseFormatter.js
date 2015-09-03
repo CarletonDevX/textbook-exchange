@@ -3,7 +3,6 @@
 /** USERS **/
 
 exports.formatCurrentUser = function(req, res) {
-    console.log(req.rUser);
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
@@ -129,7 +128,7 @@ exports.formatUserListings = function(req, res) {
 }
 
 exports.formatSingleListing = function(req, res) {
-    var lstng = req.rListings[0];
+    var lstng = req.rListing;
     if (!lstng) {
       res.status(404).send('Listing not found by those conditions.');
     }
