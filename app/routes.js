@@ -68,7 +68,7 @@ exports.setup = function(app) {
              inject.BooksIntoListings,
              responder.formatCurrentUser);
 
-    // Get user by user ID
+    // Get user with user ID
     app.route('/api/user/:userID')
         .get(users.getUser,
              listings.getUserListings,
@@ -85,7 +85,7 @@ exports.setup = function(app) {
              inject.BooksIntoListings,
              responder.formatUserListings);
 
-    // Add a listing
+    // Add listing with book ID
     app.route('/api/listings/add/:ISBN')
         .post(authenticate,
              users.getCurrentUser,
@@ -108,12 +108,18 @@ exports.setup = function(app) {
              inject.UsersIntoListings,
              responder.formatBookListings);
 
-    // Get listing by listing ID
+    // Get listing with listing ID
     app.route('/api/listings/:listingID')
         .get(listings.getListing,
              responder.formatSingleListing)
 
-    // Remove a listing by listing ID
+    // Update listing with listing ID
+        .put(authenticate,
+             listings.getListing,
+             listings.updateListing,
+             responder.formatSingleListing)
+
+    // Remove listing with listing ID
         .delete(authenticate,
                 listings.getListing,
                 listings.removeListing);
