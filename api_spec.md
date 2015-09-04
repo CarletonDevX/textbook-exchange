@@ -35,14 +35,14 @@ Communist calls have been implemented already.
 - Listings
 	- ☭ Get listings for current user [Requires auth]:
 	`GET hitsthebooks.com/api/listings` 
+	- ☭ Add a listing with book ID (with listing details) [Requires auth]:
+	`POST hitsthebooks.com/api/listings/add/id`
 	- ☭ Get listings for user with user ID: 
 	`GET hitsthebooks.com/api/listings/user/id`
 	- ☭ Get listings for book with book ID:
 	`GET hitsthebooks.com/api/listings/book/id`
 	- ☭ Get listing by listing ID:
 	`GET hitsthebooks.com/api/listings/id`
-	- Add a listing (with listing details) [Requires auth]:
-	`POST hitsthebooks.com/api/listings/add`
 	- Update listing (with listing details) [Requires auth]:
 	`PUT hitsthebooks.com/api/listings/id`
 	- ☭ Remove a listing [Requires auth]:

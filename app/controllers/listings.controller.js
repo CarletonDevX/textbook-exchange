@@ -1,4 +1,5 @@
-var Listing = require('mongoose').model('listings');
+var Listing = require('mongoose').model('listings'),
+    Error = require('../errors');
 
 exports.getUserListings = function(req, res, next) {
     var userID = req.rUser._id;
@@ -7,7 +8,7 @@ exports.getUserListings = function(req, res, next) {
             req.rListings = listings;
             next();
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
         }
     });
 };
@@ -19,7 +20,7 @@ exports.getBookListings = function(req, res, next) {
             req.rListings = listings
             next();
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
         }
     });
 };
@@ -29,13 +30,42 @@ exports.getListing = function(req, res, next) {
     Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {
             if (!listing) {
-                res.status(404).send('Listing not found by those conditions.');
+                Error.errorWithStatus(req, res, 404, 'Listing not found by those conditions.');
             } else {
                 req.rListing = listing;
                 next();
             }
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
+        }
+    });
+};
+
+exports.createListing = function(req, res, next) {
+
+    var userListings = req.rListings;
+    for (var i = 0; i < userListings.length; i++) {
+        if (userListings[i].ISBN == req.rBook.ISBN) {
+            Error.errorWithStatus(req, res, 400, 'User already has a listing for this book.');
+            return;
+        }
+    }
+    var newListing = new Listing(req.body);
+    if (!(newListing.sellingPrice || newListing.rentingPrice)) {
+        Error.errorWithStatus(req, res, 400, 'Must include selling or renting price.');
+        return;
+    }
+    
+    newListing.userID = req.user._id;
+    newListing.ISBN = req.rBook.ISBN;
+    newListing.created = new Date();
+
+    newListing.save(function(err, listing) {
+        if (!err) {
+            req.rListing = listing;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
         }
     });
 };
@@ -43,13 +73,13 @@ exports.getListing = function(req, res, next) {
 exports.removeListing = function(req, res, next) {
     var listing = req.rListing;
     if (req.user._id != listing.userID) {
-        res.status(401).send("Unaithorized to delete listing.");
+        Error.errorWithStatus(req, res, 401, 'Unauthorized to delete listing.');
     } else {
         Listing.remove({_id: listing._id}, function(err) {
             if (!err) {
                 res.status(200).send("Listing deleted.");
             } else {
-                res.json(err);
+                Error.mongoError(req, res, err);
             }
         });
     }

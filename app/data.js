@@ -89,9 +89,9 @@ exports.listings = function() {
 		{
 		    userID: '58008',
 		    ISBN: '9781118115534',
-		    condition: 'glorious',
-		    sellingPrice: '$2.00',
-		    rentingPrice: '$1.99',
+		    condition: 'New',
+		    sellingPrice: 2,
+		    rentingPrice: 2,
 		    created: new Date()
 		}
 	];

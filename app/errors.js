@@ -7,7 +7,7 @@ var logErrors = function (err, req, res, next) {
 
 var ajaxErrorHandler = function (err, req, res, next) {
   if (req.xhr) {
-    res.status(500).send({ error: 'something went wrong' });
+    res.status(500).send({ errors: ['Something went wrong.'] });
   } else {
     next(err);
   }
@@ -33,16 +33,36 @@ var send404 = function (req, res, next){
 
   // respond with json
   if (req.accepts('json')) {
-    return res.send({ error: 'Not found' });
+    return res.send({ errors: ['Not found'] });
   }
 
   // default to plain-text
   res.type('txt').send('Not found');
 };
 
+var mongoError = function (req, res, err) {
+  res.status(400);
+  var messages = ["Mongo Error"];
+  for (var name in err.errors) {
+      messages.push(err.errors[name].message);
+  }
+  res.json({errors: messages});
+}
+
+var statusError = function (req, res, status, message) {
+  res.status(status);
+  var messages = [];
+  if (message) {
+    messages.push(message);
+  }
+  res.json({errors: messages});
+}
+
 module.exports = {
   logger: logErrors,
   ajax: ajaxErrorHandler,
   endOfWorld: endOfWorld,
-  send404: send404
+  send404: send404,
+  mongoError: mongoError,
+  errorWithStatus: statusError
 }
