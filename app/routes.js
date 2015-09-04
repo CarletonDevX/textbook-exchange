@@ -24,11 +24,6 @@ exports.setup = function(app) {
         res.render('app/partials/'+req.params.partial+'.jade',{});
     });
 
-    // //old login/testing routes:    
-    // app.get('/templates/book', function(req, res) {
-    //     books.renderBook(req, res); 
-    // });
-
 	// Main page
     app.get('/', function (req, res) {
         if (!req.user) {
@@ -83,12 +78,21 @@ exports.setup = function(app) {
     /* Listings */
 
     // Get listings for current user
-    app.route('/api/listings/')
+    app.route('/api/listings')
         .get(authenticate, 
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUserListings);
+
+    // Add a listing
+    app.route('/api/listings/add/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             listings.getUserListings,
+             books.getBook,
+             listings.createListing,
+             responder.formatSingleListing);
 
     // Get listings for user with user ID
     app.route('/api/listings/user/:userID')
@@ -104,12 +108,12 @@ exports.setup = function(app) {
              inject.UsersIntoListings,
              responder.formatBookListings);
 
-    // Get and remove listing by listing ID
+    // Get listing by listing ID
     app.route('/api/listings/:listingID')
         .get(listings.getListing,
              responder.formatSingleListing)
 
-    // Remove a listing
+    // Remove a listing by listing ID
         .delete(authenticate,
                 listings.getListing,
                 listings.removeListing);

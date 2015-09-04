@@ -1,7 +1,8 @@
 var User = require('mongoose').model('users'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
-    avatars = require('../config/avatars');
+    avatars = require('../config/avatars'),
+    Error = require('../errors');
 
 // API Calls
 
@@ -15,13 +16,13 @@ exports.getUser = function (req, res, next) {
     User.findOne({_id: userID}, function(err, user) {
         if (!err) {
             if (!user) {
-                res.status(404).send('User not found by those conditions.');
+                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
             } else {
                 req.rUser = user;
                 next();
             }
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
         }
     });
 }

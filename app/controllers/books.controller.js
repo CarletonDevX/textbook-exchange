@@ -1,19 +1,20 @@
 var Book = require('mongoose').model('books'),
     Listing = require('mongoose').model('listings'),
-    User = require('mongoose').model('users');
+    User = require('mongoose').model('users'),
+    Error = require('../errors');
 
 exports.getBook = function(req, res, next) {
     var ISBN = req.params.ISBN;
     Book.findOne({ISBN: ISBN}, function(err, book) {
         if (!err) {
             if (!book) {
-                res.status(404).send('Book not found by those conditions.');
+                Error.errorWithStatus(req, res, 404, 'Book not found by those conditions.');
             } else {
                 req.rBook = book;
                 next();
             }
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
         }
     });
 };
@@ -28,7 +29,7 @@ exports.search = function(req, res, next) {
         if (!err) {
             res.json(results);
         } else {
-            res.json(err);
+            Error.mongoError(req, res, err);
         }
     });
 };
