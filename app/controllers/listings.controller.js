@@ -42,20 +42,20 @@ exports.getListing = function(req, res, next) {
 };
 
 exports.createListing = function(req, res, next) {
-
     var userListings = req.rListings;
     for (var i = 0; i < userListings.length; i++) {
         if (userListings[i].ISBN == req.rBook.ISBN) {
-            Error.errorWithStatus(req, res, 400, 'User already has a listing for this book.');
+            Error.errorWithStatus(req, res, 400, 'User already has a listing for this book. ID: ' + userListings[i]._id);
             return;
         }
     }
+
     var newListing = new Listing(req.body);
     if (!(newListing.sellingPrice || newListing.rentingPrice)) {
         Error.errorWithStatus(req, res, 400, 'Must include selling or renting price.');
         return;
     }
-    
+
     newListing.userID = req.user._id;
     newListing.ISBN = req.rBook.ISBN;
     newListing.created = new Date();
@@ -68,6 +68,28 @@ exports.createListing = function(req, res, next) {
             Error.mongoError(req, res, err);
         }
     });
+};
+
+exports.updateListing = function(req, res, next) {
+    var updateListing = req.rListing;
+    if (req.user._id != updateListing.userID) {
+        Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
+    } else {
+        var updates = req.body;
+        // Only these updates are allowed
+        if (updates.condition) updateListing.condition = updates.condition;
+        if (updates.sellingPrice) updateListing.sellingPrice = updates.sellingPrice;
+        if (updates.rentingPrice) updateListing.rentingPrice = updates.rentingPrice;
+
+        updateListing.save(function(err, listing) {
+            if (!err) {
+                req.rListing = listing;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
 };
 
 exports.removeListing = function(req, res, next) {
