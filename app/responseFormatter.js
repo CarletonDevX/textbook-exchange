@@ -8,10 +8,11 @@ exports.formatCurrentUser = function(req, res) {
            "email": req.rUser.email,
           "avatar": req.rUser.avatar, 
              "bio": req.rUser.bio, 
-         "created": req.rUser.created,  
+         "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
             "name": req.rUser.name,
-         "reports": req.rUser.reports
+         "reports": req.rUser.reports,
+   "subscriptions": req.rUser.subscriptions
     }
 
     var listings = [];
@@ -73,6 +74,11 @@ exports.formatUser = function(req, res) {
 
     user.listings = listings;
     res.json(user);
+}
+
+exports.formatSubscriptions = function(req, res) {
+    var subscriptions = req.rUser.subscriptions;
+    res.json(subscriptions);
 }
 
 /** LISTINGS **/
@@ -159,7 +165,8 @@ exports.formatBook = function(req, res) {
                 "name": req.rBook.name, 
            "pageCount": req.rBook.pageCount, 
          "publishYear": req.rBook.publishYear, 
-           "publisher": req.rBook.publisher
+           "publisher": req.rBook.publisher,
+         "subscribers": req.rBook.subscribers
     };
 
     var listings = [];

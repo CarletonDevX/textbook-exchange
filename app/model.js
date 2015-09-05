@@ -17,6 +17,7 @@ var BookSchema = new Schema({
     publishYear: Number,
     publisher: String,
     description: String,
+    subscribers: [],
     amazonInfo: {
         id: String,
         lastUpdated: Date,
@@ -59,7 +60,7 @@ var UserSchema = new Schema({
     provider: String,
     providerId: String,
     providerData: {},
-    // listings: [],
+    subscriptions: [],
     avatar: String,
     bio: String,
     gradYear: Number,

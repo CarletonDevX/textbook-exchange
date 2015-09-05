@@ -23,14 +23,15 @@ Communist calls have been implemented already.
 	`DELETE hitsthebooks.com/api/user`
 	- ☭ Get user with user ID:
 	`GET hitsthebooks.com/api/user/id`	
-	- Get watchlist of current user [Requires auth]:
-	`GET hitsthebooks.com/api/watchlist`
-	- Add book to watchlist of current user with book ID (id in queries) [Requires auth]:
-	`POST hitsthebooks.com/api/watchlist/add`
-	- Remove book from watchlist of current user with book ID (id in queries) [Requires auth]:
-	`DELETE hitsthebooks.com/api/watchlist/remove`
-	- Clear the watchlist of current user [Requires auth]:
-	`DELETE hitsthebooks.com/api/watchlist`
+- Subscriptions
+	- ☭ Get subscriptions of current user [Requires auth]:
+	`GET hitsthebooks.com/api/subscriptions`
+	- ☭ Clear subscriptions of current user [Requires auth]:
+	`POST hitsthebooks.com/api/subscriptions/clear`
+	- ☭ Subscribe current user to book with book ID [Requires auth]:
+	`POST hitsthebooks.com/api/subscriptions/add/id`
+	- ☭ Unsubscribe current user from book with book ID [Requires auth]:
+	`DELETE hitsthebooks.com/api/subscriptions/remove/id`
 	
 - Listings
 	- ☭ Get listings for current user [Requires auth]:

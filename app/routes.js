@@ -42,14 +42,14 @@ exports.setup = function(app) {
     // Login
     app.route('/api/login')
         .post(passport.authenticate('local'), function (req, res) {
-            res.status(200).send("Logged in");
+            res.status(200).send("Logged in.");
         });
 
     // Logout
     app.route('/api/logout')
         .post(function (req, res) {
             req.logout();
-            res.status(200).send("Logged out");
+            res.status(200).send("Logged out.");
         });
 
     // Authentification test
@@ -74,6 +74,38 @@ exports.setup = function(app) {
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUser);
+
+    /* Subscriptions */
+
+    // Get subscriptions of current user
+    app.route('/api/subscriptions')
+        .get(authenticate,
+             users.getCurrentUser,
+             responder.formatSubscriptions);
+
+    // Clear subscriptions of current user
+    app.route('/api/subscriptions/clear')
+        .post(authenticate,
+             users.getCurrentUser,
+             users.clearUserSubscriptions);
+
+    // Subscribe current user to book with book ID
+    app.route('/api/subscriptions/add/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             books.subscribe,
+             users.subscribe,
+             responder.formatSubscriptions);
+
+    // Unsubscribe current user from book with book ID
+    app.route('/api/subscriptions/remove/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             books.unsubscribe,
+             users.unsubscribe,
+             responder.formatSubscriptions);
 
     /* Listings */
 

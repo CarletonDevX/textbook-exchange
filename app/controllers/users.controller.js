@@ -27,6 +27,59 @@ exports.getUser = function (req, res, next) {
     });
 }
 
+exports.subscribe = function (req, res, next) {
+    var book = req.rBook;
+    var user = req.rUser;
+    for (var i = 0; i < user.subscriptions.length; i++) {
+        if (book.ISBN == user.subscriptions[i]) {
+            Error.errorWithStatus(req, res, 400, 'User is already subscribed to book.');
+            return;
+        }
+    }
+
+    user.subscriptions.push(book.ISBN);
+    user.save(function(err) {
+        if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.unsubscribe = function (req, res, next) {
+    var book = req.rBook;
+    var user = req.rUser;
+    var newSubs = [];
+    for (var i = 0; i < user.subscriptions.length; i++) {
+        var sub = user.subscriptions[i];
+        if (sub != book.ISBN) {
+            newSubs.push(sub);
+        }
+    }
+
+    user.subscriptions = newSubs;
+    user.save(function(err) {
+        if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.clearUserSubscriptions = function (req, res, next) {
+    var user = req.rUser;
+    user.subscriptions = [];
+    user.save(function(err) {
+        if (!err) {
+            res.status(200).send("Subscriptions cleared.");
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 function validateEmail(email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu/i;
     // ((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
