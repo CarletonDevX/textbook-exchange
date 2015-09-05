@@ -18,6 +18,7 @@ exports.books = function() {
 		        sellingPrice: 19.99,
 		        rentingPrice: 13.00
 		    },
+		    subscribers: [],
 		    lastSearched: new Date()
 		},
 		{
@@ -36,6 +37,7 @@ exports.books = function() {
 		        sellingPrice: 17.47,
 		        rentingPrice: 13.00
 		    },
+		    subscribers: [],
 		    lastSearched: new Date()
 		}
 	];
@@ -55,7 +57,7 @@ exports.users = function() {
 		    provider: 'local',
 		    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 		    providerData: {},
-		    // listings: [],
+		    subscriptions: [],
 		    avatar: 'http://graph.facebook.com/613262579/picture?type=square',
 		    bio: 'a great guy',
 		    gradYear: 2016,
@@ -74,7 +76,7 @@ exports.users = function() {
 		    provider: 'local',
 		    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 		    providerData: {},
-		    // listings: [],
+		    subscriptions: [],
 		    avatar: 'http://graph.facebook.com/100000903098201/picture?type=square',
 		    bio: 'an OK guy',
 		    gradYear: 2016,

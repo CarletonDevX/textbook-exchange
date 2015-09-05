@@ -19,6 +19,47 @@ exports.getBook = function(req, res, next) {
     });
 };
 
+exports.subscribe = function (req, res, next) {
+    var book = req.rBook;
+    var user = req.rUser;
+    for (var i = 0; i < book.subscribers.length; i++) {
+        if (user._id.toString() == book.subscribers[i]) {
+            Error.errorWithStatus(req, res, 400, 'User is already subscribed to book.');
+            return;
+        }
+    }
+
+    book.subscribers.push(user._id);
+    book.save(function(err) {
+        if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.unsubscribe = function (req, res, next) {
+    var book = req.rBook;
+    var user = req.rUser;
+    var newSubs = [];
+    for (var i = 0; i < book.subscribers.length; i++) {
+        var sub = book.subscribers[i];
+        if (sub != user._id.toString()) {
+            newSubs.push(sub);
+        }
+    }
+
+    book.subscribers = newSubs;
+    book.save(function(err) {
+        if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.search = function(req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
