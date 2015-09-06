@@ -1,4 +1,4 @@
-var config = require('./config'),
+var config = require('./config')(),
 	request = require('request');
 
 exports.getAvatarWithID = function (id, callback) {
