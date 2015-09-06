@@ -1,9 +1,8 @@
-process.env.NODE_ENV = 'development';
-var config = require('./app/config/config');
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var config = require('./app/config/config')();
 
 // Set up db
 var mongoose = require('mongoose');
-
 var db = mongoose.connect(config.db);
 
 require('./app/model');
@@ -41,7 +40,7 @@ var logAll = function (req, res, next) {
 	next();
 };
 
-app.use(logAll);
+if ('process.env.NODE_ENV' == 'development') app.use(logAll);
 
 // Sessions
 app.use(session({

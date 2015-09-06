@@ -1,5 +1,5 @@
 var mailer = require('nodemailer'),
-	config = require('./config');
+	config = require('./config')();
 
 var transport = mailer.createTransport("SMTP", {
     service: "Gmail",
