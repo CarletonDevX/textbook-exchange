@@ -1,10 +1,11 @@
 var users = require('./controllers/users.controller'),
     books = require('./controllers/books.controller'),
     listings = require('./controllers/listings.controller'),
+    data = require('./data'),
     passport = require('passport'),
-    responder = require('./responseFormatter');
-    inject = require('./injectors');
-    tools = require('./utilities')
+    responder = require('./responseFormatter'),
+    inject = require('./injectors'),
+    tools = require('./utilities');
 
 var authenticate = function (req, res, next) {
     if (!req.user) {
@@ -31,6 +32,16 @@ exports.setup = function(app) {
         } else {
             users.renderUsers(req, res);
         }
+    });
+
+    // db stuff for testing
+    app.post('/clear', function (req, res) {
+        data.clear();
+        res.status(200).send();
+    });
+    app.post('/populate', function (req, res) {
+        data.populate();
+        res.status(200).send();
     });
 
     /****

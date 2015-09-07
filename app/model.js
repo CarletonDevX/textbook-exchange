@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
     crypto = require('crypto'),
-    Schema = mongoose.Schema,
-    data = require('./data.js');
+    Schema = mongoose.Schema;
 
 /**** 
 Books 
@@ -29,20 +28,6 @@ var BookSchema = new Schema({
 
 // Add schema to db
 mongoose.model('books', BookSchema, 'books');
-
-generateBooks = function () {
-    var Book = mongoose.model('books');
-    var junkbooks = data.books();
-
-    // Clear and add junk data
-    var clear = new Book(); 
-    clear.collection.drop();
-    for (var i = 0; i < junkbooks.length; i++) {
-        var junkbook = new Book(junkbooks[i]);
-        junkbook.save();
-    }
-    generateUsers();
-}
 
 /**** 
 Users 
@@ -90,21 +75,6 @@ UserSchema.methods.authenticate = function(password) {
 // Add schema to db
 mongoose.model('users', UserSchema, 'users');
 
-generateUsers = function () {
-    var User = mongoose.model('users');
-    var junkusers = data.users();
-
-    // Clear and add junk data
-    var clear = new User(); 
-    clear.collection.drop();
-    for (var i = 0; i < junkusers.length; i++) {
-        var junkuser = new User(junkusers[i]);
-        junkuser.save(function (err, user) {
-            generateListings();
-        });
-    }
-}
-
 /*******
 Listings 
 *******/
@@ -139,25 +109,6 @@ ListingSchema.path('condition').validate(function (value) {
 // Add schema to db
 mongoose.model('listings', ListingSchema, 'listings');
 
-generateListings = function () {
-    var Listing = mongoose.model('listings');
-    var junklistings = data.listings();
-
-    // Clear and add junk data
-    var clear = new Listing(); 
-    clear.collection.drop();
-
-    // I'm responsible for all listings, of course
-    User = mongoose.model('users');
-    User.findOne({email: 'pickartd@carleton.edu'}, function(err, user) {
-        for (var i = 0; i < junklistings.length; i++) {
-            var junklisting = new Listing(junklistings[i]);
-            junklisting.userID = user._id;
-            junklisting.save();
-        }
-    });
-}
-
 /***********
 Transactions 
 ***********/
@@ -186,6 +137,3 @@ var SchoolStatsSchema = new Schema({
 
 // Add schema to db
 mongoose.model('schoolStats', SchoolStatsSchema, 'schoolStats');
-
-// Get the data generation party started
-generateBooks();
