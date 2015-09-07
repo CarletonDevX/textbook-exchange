@@ -6,7 +6,7 @@ describe("Auth", function() {
   describe("AuthTest", function() {
     it("Rejects unauthorized users", function(done) {
       request.get('/api/authTest')
-        .expect(401, done);
+        .expect(401, "Not authorized.", done);
     });
   });
 });
