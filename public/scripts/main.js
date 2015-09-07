@@ -1,9 +1,47 @@
 var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras']);
 
+// BEGIN UTILS
+// debouncing function from John Hann
+// http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+var debounce = function (func, threshold, execAsap) {
+  var timeout;
+
+  return function debounced () {
+      var obj = this, args = arguments;
+      function delayed () {
+          if (!execAsap)
+              func.apply(obj, args);
+          timeout = null;
+      }
+
+      if (timeout)
+          clearTimeout(timeout);
+      else if (execAsap)
+          func.apply(obj, args);
+
+      timeout = setTimeout(delayed, threshold || 100);
+  };
+};
+
+hitsTheBooks.directive('ngHtbKeypress', function() {
+    return function(scope, element, attrs) {
+
+        element.bind("keydown keypress", function(event) {
+            var keyCode = event.which || event.keyCode;
+            var map = scope.$eval("("+attrs.ngHtbKeypress+")");
+            if (map[keyCode]){
+	            scope.$eval(map[keyCode])
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 hitsTheBooks.run(function($rootScope, $state){
 	$rootScope.is = function(name){ return $state.is(name) };
 	$rootScope.includes = function(name){ return $state.includes(name) };
 });
+//END UTILS
 
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
 	$stateProvider
@@ -80,8 +118,29 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
 
 
-hitsTheBooks.controller('mainController', function($scope) {
-	$scope.message = "DAVID'S BIG NOSE";
+hitsTheBooks.controller('mainController', function($scope, $state, $document) {
+
+
+	if($state.is('main.search')){
+		$scope.searchInput = $state.params.query;
+	}
+
+	$scope.handleSearchPaneClick = function(){
+		if ($state.includes('main.detail')) {
+			$state.go('main.search',{query: $scope.searchInput});
+		}
+	}
+	
+	//when typing, throttle searching
+	$scope.streamSearch = debounce(function(){
+		console.log("queried", $scope.searchInput)
+		$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+	},200);
+
+	$scope.search = function() {
+		console.log("entersearching");
+		$state.go('main.search',{query:$scope.searchInput})
+	}
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
