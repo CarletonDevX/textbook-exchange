@@ -1,9 +1,12 @@
 header
   div#main-box
-    a(ui-sref="main")
+    a#wordmark-link(ui-sref="main")
       h1#wordmark
         span.college-name Carleton
-        | hits the books
+        span.app-name
+          | Hits
+          span.interject  the 
+          | Books
     ul#college-info
       li #{availBooks} books available
       li #{listings} successful listings
