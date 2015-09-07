@@ -3,11 +3,16 @@ div#search(ng-class="\
 		'searching'    : includes('main.search'),\
 		'home-view'    : is('main'),\
 		'behind-detail' : includes('main.detail')\
-	}")
+	}",
+	ng-click="handleSearchPaneClick()")
   label(for="search") I want to find or list a book.
-  input#search(type="text", ng-model="searchInput" placeholder="ISBN or other text: {{ message }}")
-  //TODO: using ng-model searchInput is most-def not the best way to do this.
-  a(ui-sref="main.search({query: searchInput})") Search
+  input#search-box(type="text",
+  			   ng-model="searchInput",
+  			   ng-change="streamSearch()",
+  			   ng-htb-keypress="{13:'search()'}"
+  			   placeholder="ISBN or other text")
+  //- TODO: using ng-model searchInput is most-def not the best way to do this.
+  //- a(ui-sref="main.search({query: searchInput})") Search
   div#search-results(ui-view="search")
 
 div#detail-wrapper(ui-view="detail", ng-class="includes('main.detail')?'maximized':'minimized'")
