@@ -119,8 +119,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
 
 hitsTheBooks.controller('mainController', function($scope, $state, $document) {
+	var streamSearchDelay = 200;//ms
 
-
+	//inject the query if we init on the search page
 	if($state.is('main.search')){
 		$scope.searchInput = $state.params.query;
 	}
@@ -131,16 +132,16 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 		}
 	}
 	
-	//when typing, throttle searching
+	//the classic type and hit [enter] search
+	$scope.search = function() {
+		$state.go('main.search',{query:$scope.searchInput})
+	}
+
+	//when typing, perform a throttled search
 	$scope.streamSearch = debounce(function(){
 		console.log("queried", $scope.searchInput)
 		$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
-	},200);
-
-	$scope.search = function() {
-		console.log("entersearching");
-		$state.go('main.search',{query:$scope.searchInput})
-	}
+	},streamSearchDelay);
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
@@ -153,6 +154,5 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $st
 });
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
-	console.log(userInfo.data);
 	$scope.user = userInfo.data;
 });
