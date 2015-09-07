@@ -120,7 +120,25 @@ div#search{
   z-index: 10;
   padding:20px;
   background-color:white;
+  text-align: center;
 }
+
+div#search label{
+  font-family: 'Roboto Serif';
+  font-size: 24px;
+  display:block;
+}
+
+div#search #search-box{
+  border: none;
+  text-align: center;
+  outline: none;
+  font-family: 'Roboto Serif';
+  font-size: 24px;
+  border-bottom: solid 2px black;
+  width: 10em;
+  margin: 20px;
+  }
 
 div#search.behind-detail {
   max-height:2em;
@@ -129,6 +147,16 @@ div#search.behind-detail {
 div#search.searching{
   max-height:50em;
 }
+
+div#search-results ul{
+  list-style-type: none;
+}
+
+div#search-results ul li{
+  border-bottom: solid black 1px;
+}
+
+
 
 div#detail-wrapper{
   background-color: white;
