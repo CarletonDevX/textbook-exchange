@@ -5,12 +5,12 @@ P.S. Make sure you have a persistent session enabled in whatever you're using to
 Communist calls have been implemented already.
 
 - Auth
+	- ☭ Authentification test [Requires auth]:
+	`GET hitsthebooks.com/api/authTest`
 	- ☭ Login (with credentials) [Requires auth]:
 	`POST hitsthebooks.com/api/login`
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
-	- ☭ Authentification test [Requires auth]:
-	`GET hitsthebooks.com/api/authTest`
 - Schools
 	- Get statistics for school by school ID:
 	`GET hitsthebooks.com/api/school/id`

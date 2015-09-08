@@ -9,7 +9,7 @@ var users = require('./controllers/users.controller'),
 
 var authenticate = function (req, res, next) {
     if (!req.user) {
-        res.status(401).send("Not authorized.");
+        res.status(401).send("Unauthorized");
     } else {
         next();
     }
