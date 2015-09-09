@@ -77,7 +77,19 @@ exports.setup = function(app) {
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
-             responder.formatCurrentUser);
+             responder.formatCurrentUser)
+
+    // Update current user
+        .put(authenticate, 
+             function (req, res) {
+                res.status(500).send("Call not implemented yet")
+             })
+
+    // Delete current user
+        .delete(authenticate, 
+             function (req, res) {
+                res.status(500).send("Call not implemented yet")
+             });
 
     // Get user with user ID
     app.route('/api/user/:userID')
