@@ -59,7 +59,7 @@ var junkUsers = [
 	    provider: 'local',
 	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 	    providerData: {},
-	    subscriptions: [],
+	    subscriptions: ['9781590282410'],
 	    avatar: 'http://graph.facebook.com/613262579/picture?type=square',
 	    bio: 'a great guy',
 	    gradYear: 2016,
