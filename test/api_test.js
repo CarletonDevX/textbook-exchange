@@ -4,6 +4,10 @@ var app = require("../server"),
 	}),
     assert = require("chai").assert;
 
+// Will hold David's userID
+var userID;
+var testISBN = '9781590282410';
+
 var David = {
 	    name: {
 	        givenName: "David",
@@ -16,16 +20,13 @@ var David = {
 	    provider: 'local',
 	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 	    providerData: {},
-	    subscriptions: ['9781590282410'],
+	    subscriptions: [testISBN],
 	    avatar: 'http://graph.facebook.com/613262579/picture?type=square',
 	    bio: 'a great guy',
 	    gradYear: 2016,
 	    reports: [],
 	    created: new Date()
 	}
-
-// Will hold David's userID
-var userID;
 
 var JoeLogin = { username: "slotej@carleton.edu", password: "BigB00ty" }
 var JimmyLogin = { username: "spook@carleton.edu", password: "im_a_ghost" }
@@ -46,6 +47,22 @@ var postRejectTest = function (url) {
 	it("Rejects unauthorized users", function(done) {
 		unauthRequest
 			.post(url)
+			.expect(401, "Unauthorized", done);
+    });
+}
+
+var putRejectTest = function (url) {
+	it("Rejects unauthorized users", function(done) {
+		unauthRequest
+			.put(url)
+			.expect(401, "Unauthorized", done);
+    });
+}
+
+var deleteRejectTest = function (url) {
+	it("Rejects unauthorized users", function(done) {
+		unauthRequest
+			.delete(url)
 			.expect(401, "Unauthorized", done);
     });
 }
@@ -144,7 +161,34 @@ describe("API", function() {
 	    	});
 	  	});
 
+		describe("PUT user", function() {
+
+			var url = '/api/user';
+			putRejectTest(url);
+	    	it("Updates the user correctly", function(done) {
+				authRequest
+					.put(url)
+					.send({bio: "test!"})
+					.end(function(err, res) {
+				        assert.equal(res.body.bio, "test!");
+				        done();
+				    });
+	    	});
+	  	});
+
+	  	describe("DELETE user", function() {
+
+			var url = '/api/user';
+			deleteRejectTest(url);
+	    	it("Deletes the current user", function(done) {
+				authRequest
+					.delete(url)
+					.expect(200, "User deleted.", done);
+	    	});
+	  	});
+
 		describe("GET user/id", function() {
+
 			var url = '/api/user/';
 	    	it("Returns the correct user with ID", function(done) {
 				Request
@@ -200,30 +244,20 @@ describe("API", function() {
 		
 		describe("POST subscriptions/add/id", function() {
 
-			var url = '/api/subscriptions/add/' + David.subscriptions[0];
+			var url = '/api/subscriptions/add/' + testISBN;
 			postRejectTest(url);
 	    	it("Adds correct subscription to user", function(done) {
-	    		// Add subscription, then check to make sure it's there
 				authRequest
 					.post(url)
 					.end(function(err, res) {
-						if (err) {
-					    	done(err);
-					    } else {
-							authRequest
-								.get('/api/subscriptions')
-								.end(function(err, res) {
-							        assert.deepEqual(res.body, David.subscriptions);
-							        done();
-							    });
-						}
-				        
+				        assert.deepEqual(res.body, David.subscriptions);
+				        done();
 				    });
 	    	});
 
 	    	it("Adds correct subscriber to book", function(done) {
 				authRequest
-					.get('/api/book/'+David.subscriptions[0])
+					.get('/api/book/'+ testISBN)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body.subscribers, [userID]);
 				        done();
@@ -233,30 +267,21 @@ describe("API", function() {
 
 		describe("POST subscriptions/remove/id", function() {
 
-			var url = '/api/subscriptions/remove/' + David.subscriptions[0];
+			var url = '/api/subscriptions/remove/' + testISBN;
 			postRejectTest(url);
 	    	it("Removes correct subscription from user", function(done) {
 	    		// Remove subscription, then check to make sure it was removed
 				authRequest
 					.post(url)
 					.end(function(err, res) {
-						if (err) {
-					    	done(err);
-					    } else {
-							authRequest
-								.get('/api/subscriptions')
-								.end(function(err, res) {
-							        assert.deepEqual(res.body, []);
-							        done();
-							    });
-						}
-				        
+				        assert.deepEqual(res.body, []);
+				        done(); 
 				    });
 	    	});
 
 	    	it("Removes correct subscriber from book", function(done) {
 				authRequest
-					.get('/api/book/'+David.subscriptions[0])
+					.get('/api/book/'+ testISBN)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body.subscribers, []);
 				        done();
@@ -265,4 +290,21 @@ describe("API", function() {
 	  	});
 	});
 
+	/*** BOOKS ***/
+	describe("Books", function() {
+
+		describe("GET book/id", function() {
+
+			var url = '/api/book/' + testISBN;
+
+	    	it("Returns the correct book", function(done) {
+				authRequest
+					.get(url)
+					.end(function(err, res) {
+				        assert.equal(res.body.ISBN, testISBN);
+				        done();
+				    });
+	    	});
+	  	});
+	});
 });
