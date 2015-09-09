@@ -4,15 +4,37 @@ var app = require("../server"),
 	}),
     assert = require("chai").assert;
 
-var David = { username: "pickartd@carleton.edu", password: "JoesButt" }
-var Joe = { username: "slotej@carleton.edu", password: "BigB00ty" }
-var Jimmy = { username: "spook@carleton.edu", password: "im_a_ghost" }
+var David = {
+	    name: {
+	        givenName: "David",
+	        familyName: "Pickart",
+	        fullName: "David Pickart"
+	    },
+	    email: 'pickartd@carleton.edu',
+	    verified: true,
+	    password: 'JoesButt',
+	    provider: 'local',
+	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
+	    providerData: {},
+	    subscriptions: ['9781590282410'],
+	    avatar: 'http://graph.facebook.com/613262579/picture?type=square',
+	    bio: 'a great guy',
+	    gradYear: 2016,
+	    reports: [],
+	    created: new Date()
+	}
+
+// Will hold David's userID
+var userID;
+
+var JoeLogin = { username: "slotej@carleton.edu", password: "BigB00ty" }
+var JimmyLogin = { username: "spook@carleton.edu", password: "im_a_ghost" }
 
 var Request;
 var authRequest = new Session();
 var unauthRequest = new Session();
 
-var rejectTest = function (url) {
+var getRejectTest = function (url) {
 	it("Rejects unauthorized users", function(done) {
 		unauthRequest
 			.get(url)
@@ -20,14 +42,31 @@ var rejectTest = function (url) {
     });
 }
 
+var postRejectTest = function (url) {
+	it("Rejects unauthorized users", function(done) {
+		unauthRequest
+			.post(url)
+			.expect(401, "Unauthorized", done);
+    });
+}
+
 describe("API", function() {
 
-	// Log in authRequest
+	// Populate DB and log in authRequest
 	before(function (done) {
-	    authRequest.post('/api/login')
-			.send(David)
-			.expect(200, "Logged in.", done);
+	    authRequest.post('/populate')
+	    .end(function(err, res) {
+			if (err) {
+		    	done(err);
+		    } else {
+				authRequest.post('/api/login')
+				.send({username: David.email, password: David.password})
+				.expect(200, "Logged in.", done);
+			}
+		});
 	});
+
+
 
 	/*** AUTH ***/
 	describe("Auth", function() {
@@ -41,7 +80,7 @@ describe("API", function() {
 		describe("GET authTest", function() {
 
 			var url = '/api/authTest';
-			rejectTest(url);
+			getRejectTest(url);
 	    	it("Accepts authorized users", function(done) {
 				authRequest
 					.get(url)
@@ -55,13 +94,13 @@ describe("API", function() {
 			it("Rejects invalid users", function(done) {
 				Request
 					.post(url)
-					.send(Jimmy)
+					.send(JimmyLogin)
 					.expect(401, "Unauthorized", done);
 		    });
 		    it("Accepts valid users", function(done) {
 				Request
 					.post(url)
-					.send(Joe)
+					.send(JoeLogin)
 					.expect(200, "Logged in.", done);
 		    });
 		});
@@ -70,6 +109,7 @@ describe("API", function() {
 
 			var url = '/api/logout';
 		    it("Logs out authorized users", function(done) {
+		    	// Log out, then check AuthTest
 				Request
 					.post(url)
 					.expect(200, "Logged out.", function (err) {
@@ -91,15 +131,138 @@ describe("API", function() {
 		describe("GET user", function() {
 
 			var url = '/api/user';
-			rejectTest(url);
+			getRejectTest(url);
 	    	it("Returns the correct user", function(done) {
 				authRequest
 					.get(url)
 					.end(function(err, res) {
-				        assert.equal(res.body.email, David.username);
+						// SET USER_ID HERE
+						userID = res.body.userID;
+				        assert.equal(res.body.email, David.email);
+				        done();
+				    });
+	    	});
+	  	});
+
+		describe("GET user/id", function() {
+			var url = '/api/user/';
+	    	it("Returns the correct user with ID", function(done) {
+				Request
+				.get(url + userID)
+				.end(function(err, res) {
+			        assert.equal(res.body.userID, userID);
+			        done();
+			    });
+	    	});
+	  	});
+	});
+
+	/*** SUBSCRIPTIONS ***/
+	describe("Subscriptions", function() {
+
+		describe("GET subscriptions", function() {
+
+			var url = '/api/subscriptions';
+			getRejectTest(url);
+	    	it("Returns the correct subscriptions", function(done) {
+				authRequest
+					.get(url)
+					.end(function(err, res) {
+				        assert.deepEqual(res.body, David.subscriptions);
+				        done();
+				    });
+	    	});
+	  	});
+
+	  	describe("POST subscriptions/clear", function() {
+
+			var url = '/api/subscriptions/clear';
+			postRejectTest(url);
+	    	it("Clears subscriptions", function(done) {
+	    		// Clear subscriptions, then check to make sure they're empty
+				authRequest
+					.post(url)
+					.end(function(err, res) {
+						if (err) {
+					    	done(err);
+					    } else {
+							authRequest
+								.get('/api/subscriptions')
+								.end(function(err, res) {
+							        assert.deepEqual(res.body, []);
+							        done();
+							    });
+						}
+				        
+				    });
+	    	});
+	  	});
+		
+		describe("POST subscriptions/add/id", function() {
+
+			var url = '/api/subscriptions/add/' + David.subscriptions[0];
+			postRejectTest(url);
+	    	it("Adds correct subscription to user", function(done) {
+	    		// Add subscription, then check to make sure it's there
+				authRequest
+					.post(url)
+					.end(function(err, res) {
+						if (err) {
+					    	done(err);
+					    } else {
+							authRequest
+								.get('/api/subscriptions')
+								.end(function(err, res) {
+							        assert.deepEqual(res.body, David.subscriptions);
+							        done();
+							    });
+						}
+				        
+				    });
+	    	});
+
+	    	it("Adds correct subscriber to book", function(done) {
+				authRequest
+					.get('/api/book/'+David.subscriptions[0])
+					.end(function(err, res) {
+				        assert.deepEqual(res.body.subscribers, [userID]);
+				        done();
+				    });
+	    	});
+	  	});
+
+		describe("POST subscriptions/remove/id", function() {
+
+			var url = '/api/subscriptions/remove/' + David.subscriptions[0];
+			postRejectTest(url);
+	    	it("Removes correct subscription from user", function(done) {
+	    		// Remove subscription, then check to make sure it was removed
+				authRequest
+					.post(url)
+					.end(function(err, res) {
+						if (err) {
+					    	done(err);
+					    } else {
+							authRequest
+								.get('/api/subscriptions')
+								.end(function(err, res) {
+							        assert.deepEqual(res.body, []);
+							        done();
+							    });
+						}
+				        
+				    });
+	    	});
+
+	    	it("Removes correct subscriber from book", function(done) {
+				authRequest
+					.get('/api/book/'+David.subscriptions[0])
+					.end(function(err, res) {
+				        assert.deepEqual(res.body.subscribers, []);
 				        done();
 				    });
 	    	});
 	  	});
 	});
+
 });
