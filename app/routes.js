@@ -52,9 +52,12 @@ exports.setup = function(app) {
 
     // Login
     app.route('/api/login')
-        .post(passport.authenticate('local'), function (req, res) {
-            res.status(200).send("Logged in.");
-        });
+        .post(passport.authenticate('local'),
+            users.getCurrentUser,
+            listings.getUserListings,
+            inject.BooksIntoListings,
+            responder.formatCurrentUser
+        );
 
     // Logout
     app.route('/api/logout')
@@ -86,10 +89,9 @@ exports.setup = function(app) {
              })
 
     // Delete current user
-        .delete(authenticate, 
-             function (req, res) {
-                res.status(500).send("Call not implemented yet")
-             });
+        .delete(authenticate,
+                users.getCurrentUser,
+                users.deleteUser);
 
     // Get user with user ID
     app.route('/api/user/:userID')

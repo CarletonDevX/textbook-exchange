@@ -4,11 +4,10 @@ var app = require("../server"),
 	}),
     assert = require("chai").assert;
 
-// Will hold David's userID
-var userID;
 var testISBN = '9781590282410';
 
 var David = {
+		userID: null,
 	    name: {
 	        givenName: "David",
 	        familyName: "Pickart",
@@ -28,11 +27,31 @@ var David = {
 	    created: new Date()
 	}
 
-var JoeLogin = { username: "slotej@carleton.edu", password: "BigB00ty" }
-var JimmyLogin = { username: "spook@carleton.edu", password: "im_a_ghost" }
+var Joe = {
+	    name: {
+	        givenName: "Joe",
+	        familyName: "Slote",
+	        fullName: "Joe Slote"
+	    },
+	    email: 'slotej@carleton.edu',
+	    verified: true,
+	    password: 'BigB00ty',
+	    provider: 'local',
+	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
+	    providerData: {},
+	    subscriptions: [],
+	    avatar: 'http://graph.facebook.com/100000903098201/picture?type=square',
+	    bio: 'an OK guy',
+	    gradYear: 2016,
+	    reports: [],
+	    created: new Date()
+	}
+
+var Jimmy = { username: "spook@carleton.edu", password: "im_a_ghost" }
 
 var Request;
-var authRequest = new Session();
+var davidRequest = new Session();
+var joeRequest = new Session();
 var unauthRequest = new Session();
 
 var getRejectTest = function (url) {
@@ -69,18 +88,22 @@ var deleteRejectTest = function (url) {
 
 describe("API", function() {
 
-	// Populate DB and log in authRequest
+	// Populate DB and log everyone in
 	before(function (done) {
-	    authRequest.post('/populate')
-	    .end(function(err, res) {
-			if (err) {
-		    	done(err);
-		    } else {
-				authRequest.post('/api/login')
-				.send({username: David.email, password: David.password})
-				.expect(200, "Logged in.", done);
-			}
-		});
+		unauthRequest.post('/populate')
+			.end(function(err, res) {
+				davidRequest.post('/api/login')
+					.send({username: David.email, password: David.password})
+				    .end(function(err, res) {
+				    	David.userID = res.body.userID;
+				    	joeRequest.post('/api/login')
+							.send({username: Joe.email, password: Joe.password})
+						    .end(function(err, res) {
+						    	Joe.userID = res.body.userID;
+						    	done();
+						    });
+					});
+				});
 	});
 
 
@@ -99,7 +122,7 @@ describe("API", function() {
 			var url = '/api/authTest';
 			getRejectTest(url);
 	    	it("Accepts authorized users", function(done) {
-				authRequest
+				davidRequest
 					.get(url)
 	        		.expect(200, "Yay", done);
 	    	});
@@ -111,14 +134,17 @@ describe("API", function() {
 			it("Rejects invalid users", function(done) {
 				Request
 					.post(url)
-					.send(JimmyLogin)
+					.send(Jimmy)
 					.expect(401, "Unauthorized", done);
 		    });
 		    it("Accepts valid users", function(done) {
 				Request
 					.post(url)
-					.send(JoeLogin)
-					.expect(200, "Logged in.", done);
+					.send({username: Joe.email, password: Joe.password})
+					.end(function(err, res) {
+				    	Joe.userID = res.body.userID;
+				    	done();
+				    });
 		    });
 		});
 
@@ -150,11 +176,9 @@ describe("API", function() {
 			var url = '/api/user';
 			getRejectTest(url);
 	    	it("Returns the correct user", function(done) {
-				authRequest
+				davidRequest
 					.get(url)
 					.end(function(err, res) {
-						// SET USER_ID HERE
-						userID = res.body.userID;
 				        assert.equal(res.body.email, David.email);
 				        done();
 				    });
@@ -166,7 +190,7 @@ describe("API", function() {
 			var url = '/api/user';
 			putRejectTest(url);
 	    	it("Updates the user correctly", function(done) {
-				authRequest
+				davidRequest
 					.put(url)
 					.send({bio: "test!"})
 					.end(function(err, res) {
@@ -181,20 +205,28 @@ describe("API", function() {
 			var url = '/api/user';
 			deleteRejectTest(url);
 	    	it("Deletes the current user", function(done) {
-				authRequest
+				joeRequest
 					.delete(url)
-					.expect(200, "User deleted.", done);
+					.end(function(err, res) {
+						if (err) {
+					    	done(err);
+					    } else {
+							davidRequest
+								.get('/api/user/'+Joe.userID)
+								.expect(404, done);
+						}
+				        
+				    });
 	    	});
 	  	});
 
 		describe("GET user/id", function() {
-
 			var url = '/api/user/';
 	    	it("Returns the correct user with ID", function(done) {
 				Request
-				.get(url + userID)
+				.get(url + David.userID)
 				.end(function(err, res) {
-			        assert.equal(res.body.userID, userID);
+			        assert.equal(res.body.userID, David.userID);
 			        done();
 			    });
 	    	});
@@ -209,7 +241,7 @@ describe("API", function() {
 			var url = '/api/subscriptions';
 			getRejectTest(url);
 	    	it("Returns the correct subscriptions", function(done) {
-				authRequest
+				davidRequest
 					.get(url)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body, David.subscriptions);
@@ -224,13 +256,13 @@ describe("API", function() {
 			postRejectTest(url);
 	    	it("Clears subscriptions", function(done) {
 	    		// Clear subscriptions, then check to make sure they're empty
-				authRequest
+				davidRequest
 					.post(url)
 					.end(function(err, res) {
 						if (err) {
 					    	done(err);
 					    } else {
-							authRequest
+							davidRequest
 								.get('/api/subscriptions')
 								.end(function(err, res) {
 							        assert.deepEqual(res.body, []);
@@ -247,7 +279,7 @@ describe("API", function() {
 			var url = '/api/subscriptions/add/' + testISBN;
 			postRejectTest(url);
 	    	it("Adds correct subscription to user", function(done) {
-				authRequest
+				davidRequest
 					.post(url)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body, David.subscriptions);
@@ -256,10 +288,10 @@ describe("API", function() {
 	    	});
 
 	    	it("Adds correct subscriber to book", function(done) {
-				authRequest
+				davidRequest
 					.get('/api/book/'+ testISBN)
 					.end(function(err, res) {
-				        assert.deepEqual(res.body.subscribers, [userID]);
+				        assert.deepEqual(res.body.subscribers, [David.userID]);
 				        done();
 				    });
 	    	});
@@ -271,7 +303,7 @@ describe("API", function() {
 			postRejectTest(url);
 	    	it("Removes correct subscription from user", function(done) {
 	    		// Remove subscription, then check to make sure it was removed
-				authRequest
+				davidRequest
 					.post(url)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body, []);
@@ -280,7 +312,7 @@ describe("API", function() {
 	    	});
 
 	    	it("Removes correct subscriber from book", function(done) {
-				authRequest
+				davidRequest
 					.get('/api/book/'+ testISBN)
 					.end(function(err, res) {
 				        assert.deepEqual(res.body.subscribers, []);
@@ -298,7 +330,7 @@ describe("API", function() {
 			var url = '/api/book/' + testISBN;
 
 	    	it("Returns the correct book", function(done) {
-				authRequest
+				davidRequest
 					.get(url)
 					.end(function(err, res) {
 				        assert.equal(res.body.ISBN, testISBN);
