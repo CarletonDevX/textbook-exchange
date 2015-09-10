@@ -11,6 +11,17 @@ exports.getCurrentUser = function (req, res, next) {
     next();
 }
 
+exports.deleteUser = function (req, res, next) {
+    var user = req.rUser;
+    user.remove(function (err) {
+        if (!err) {
+            res.status(200).send("User deleted.");
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.getUser = function (req, res, next) {
     var userID = req.params.userID;
     User.findOne({_id: userID}, function(err, user) {
