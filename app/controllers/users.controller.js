@@ -11,6 +11,29 @@ exports.getCurrentUser = function (req, res, next) {
     next();
 }
 
+exports.updateUser = function(req, res, next) {
+    var user = req.rUser;
+    if (req.user._id != user._id) {
+        Error.errorWithStatus(req, res, 401, 'Unauthorized to update user.');
+    } else {
+        var updates = req.body;
+        // Only these updates are allowed
+        if (updates.name) user.name = updates.name;
+        if (updates.avatar) user.avatar = updates.avatar;
+        if (updates.bio) user.bio = updates.bio;
+        if (updates.gradYear) user.gradYear = updates.gradYear;
+
+        user.save(function(err, user) {
+            if (!err) {
+                req.rUser = user;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
+};
+
 exports.deleteUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {

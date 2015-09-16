@@ -192,9 +192,10 @@ describe("API", function() {
 	    	it("Updates the user correctly", function(done) {
 				davidRequest
 					.put(url)
-					.send({bio: "test!"})
+					.send({bio: "test!", gradYear: 2014})
 					.end(function(err, res) {
 				        assert.equal(res.body.bio, "test!");
+				        assert.equal(res.body.gradYear, 2014);
 				        done();
 				    });
 	    	});
