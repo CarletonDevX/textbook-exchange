@@ -138,6 +138,7 @@ div#search #search-box{
   border-bottom: solid 2px black;
   width: 10em;
   margin: 20px;
+  text-overflow: ellipsis;
   }
 
 div#search.behind-detail {
@@ -155,8 +156,6 @@ div#search-results ul{
 div#search-results ul li{
   border-bottom: solid black 1px;
 }
-
-
 
 div#detail-wrapper{
   background-color: white;
