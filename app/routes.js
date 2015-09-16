@@ -84,9 +84,11 @@ exports.setup = function(app) {
 
     // Update current user
         .put(authenticate, 
-             function (req, res) {
-                res.status(500).send("Call not implemented yet")
-             })
+             users.getCurrentUser,
+             users.updateUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatCurrentUser)
 
     // Delete current user
         .delete(authenticate,

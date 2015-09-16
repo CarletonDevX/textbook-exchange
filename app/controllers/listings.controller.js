@@ -71,17 +71,17 @@ exports.createListing = function(req, res, next) {
 };
 
 exports.updateListing = function(req, res, next) {
-    var updateListing = req.rListing;
-    if (req.user._id != updateListing.userID) {
+    var listing = req.rListing;
+    if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
     } else {
         var updates = req.body;
         // Only these updates are allowed
-        if (updates.condition) updateListing.condition = updates.condition;
-        if (updates.sellingPrice) updateListing.sellingPrice = updates.sellingPrice;
-        if (updates.rentingPrice) updateListing.rentingPrice = updates.rentingPrice;
+        if (updates.condition) listing.condition = updates.condition;
+        if (updates.sellingPrice) listing.sellingPrice = updates.sellingPrice;
+        if (updates.rentingPrice) listing.rentingPrice = updates.rentingPrice;
 
-        updateListing.save(function(err, listing) {
+        listing.save(function(err, listing) {
             if (!err) {
                 req.rListing = listing;
                 next();
