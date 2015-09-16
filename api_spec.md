@@ -17,9 +17,9 @@ Communist calls have been implemented already.
 - Users
 	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`
-	- Update current user (with user details) [Requires auth]: 
+	- ☭ Update current user (with user details) [Requires auth]: 
 	`PUT hitsthebooks.com/api/user`
-	- Delete current user account [Requires auth]:
+	- ☭ Delete current user account [Requires auth]:
 	`DELETE hitsthebooks.com/api/user`
 	- ☭ Get user with user ID:
 	`GET hitsthebooks.com/api/user/id`	
