@@ -151,6 +151,20 @@ exports.formatSingleListing = function(req, res) {
     res.json(formattedListing);
 }
 
+exports.formatOffer = function (req, res) {
+  var offer = {
+          "offerID": req.rOffer._id,
+        "listingID": req.rOffer.listingID,
+          "buyerID": req.rOffer.buyerID,
+         "sellerID": req.rOffer.sellerID,
+             "ISBN": req.rOffer.ISBN,
+             "date": req.rOffer.date,
+        "completed": req.rOffer.completed
+  }
+
+  res.json(offer);
+}
+
 /** BOOKS **/
 
 exports.formatBook = function(req, res) {
