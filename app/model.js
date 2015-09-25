@@ -113,7 +113,7 @@ mongoose.model('listings', ListingSchema, 'listings');
 Transactions 
 ***********/
 
-var TransactionSchema = new Schema({
+var OfferSchema = new Schema({
     listingID: String,
     buyerID: String,
     sellerID: String,
@@ -123,7 +123,7 @@ var TransactionSchema = new Schema({
 });
 
 // Add schema to db
-mongoose.model('transactions', TransactionSchema, 'transactions');
+mongoose.model('offers', OfferSchema, 'offers');
 
 
 /***********
