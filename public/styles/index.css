@@ -1,19 +1,15 @@
 /*minimal WIP!!!*/
 
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 
 body,html{
   margin:0;
   padding:0;
 }
 
-body{
-  padding-top:80px;
-
-}
-
 body::before{
-    content : "asdf";
+    content : "";
     display: block;
     position: absolute;
     top: 0;
@@ -31,21 +27,90 @@ div#about, div#register{
 }
 
 div#sub-box{
+  font-family: 'Droid Serif', serif;
   position:absolute;
-  right:0;
-  top:0;
+  right:10px;
+  top:10px;
+  background-color:rgba(255,255,255,.34);
+  padding:14px 6px;
+  box-shadow: 0px 1px 4px 1px rgba(0,0,0,.2);
+  transition: all .4s;
+}
+
+div#sub-box a {
+  color: black;
+  text-decoration: none;
+  margin: 10px;
+  position: relative;
+  font-size: 12px;
+  z-index:1;
+}
+
+div#sub-box a::before{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height:100%;
+  bottom:-2px;
+  left:0;
+  border-bottom: solid rgba(41, 255, 53,.25) 5px;
+  z-index: -1;
+  transition: border .2s, padding .2s, left .2s;
+}
+
+div#sub-box a:hover::before{
+  border-bottom: solid rgba(41, 255, 53,.25) 20px;
+  padding:6px;
+  left:-6px;
+}
+
+header{
+  transition: all .4s;
+}
+
+header.home-view{
+  margin: 80px 0;
+}
+
+header.minimized{
+  margin: 0 0;
+}
+
+header.minimized div#main-box{
+  width:100%
+}
+
+header.minimized div#main-box #wordmark{
+  margin:0;
+}
+
+header.minimized div#main-box #college-info{
+  height:0;
+  margin:0;
+  overflow: hidden;
+}
+
+header.minimized div#sub-box{
+  background-color:rgba(255,255,255,0);
+  box-shadow: 0 0 0 0;
+  padding: 0px;
+}
+
+header *{
+    transition: all .4s;
 }
 
 div#main-box{
   box-shadow: 0 3px 7px 0 rgba(0,0,0,.2);
   width: 500px;
-  margin: 0 auto 100px auto;
+  margin: 0 auto 0 auto;
   background-color: white;
 }
 
 div#main-box #wordmark-link{
   text-decoration: none;
   color:black;
+  outline:0;
 }
 
 div#main-box #wordmark{
@@ -53,6 +118,10 @@ div#main-box #wordmark{
   padding-bottom:10px;
   font-family: 'Droid Serif', serif;
   text-align: center;
+}
+
+header.minimized div#main-box #wordmark{
+  padding-top:0px;
 }
 
 div#main-box .college-name, div#main-box .app-name{
@@ -64,9 +133,19 @@ div#main-box .college-name{
   font-size: 80px;
 }
 
+header.minimized div#main-box .college-name{
+  font-size: 40px;
+}
+
 div#main-box .app-name{
   font-weight: 400;
   font-size: 35px;
+  position: relative;
+}
+
+header.minimized div#main-box .app-name{
+  font-weight: 400;
+  font-size: 20px;
   position: relative;
 }
 
@@ -81,7 +160,13 @@ div#main-box .app-name::before{
   transition: all .2s;
 }
 
-div#main-box #wordmark-link:hover .app-name::before{
+header.minimized div#main-box .app-name::before{
+  width:12%;
+  margin: 0 44%;
+  top:-3px;
+}
+
+header.home-view div#main-box #wordmark-link:hover .app-name::before{
   border-top: solid black 3px;
   content: '';
   width:50%;
@@ -90,6 +175,13 @@ div#main-box #wordmark-link:hover .app-name::before{
   left:0;
   top:-6px
 }
+
+header.minimized div#main-box:hover .app-name::before{
+  width:15%;
+  margin: 0 42.5%;
+  top:-3px;
+}
+
 
 .interject{
   font-size: smaller;
@@ -103,6 +195,7 @@ div#main-box #wordmark-link:hover .app-name::before{
 div#main-box #college-info{
   list-style-type: none;
   display:flex;
+  transition: height .4s, margin .4s;
 }
 
 div#main-box #college-info li{
@@ -124,7 +217,7 @@ div#search{
 }
 
 div#search label{
-  font-family: 'Roboto Serif';
+  font-family: 'Droid Serif';
   font-size: 24px;
   display:block;
 }
@@ -133,7 +226,7 @@ div#search #search-box{
   border: none;
   text-align: center;
   outline: none;
-  font-family: 'Roboto Serif';
+  font-family: 'Droid Serif';
   font-size: 24px;
   border-bottom: solid 2px black;
   width: 10em;
@@ -151,14 +244,76 @@ div#search.searching{
 
 div#search-results ul{
   list-style-type: none;
+  padding: 0;
 }
 
 div#search-results ul li{
-  border-bottom: solid black 1px;
+  box-shadow: 0px 1px 6px 0px rgba(0,0,0,.15);
+  width: 500px;
+  margin:0 auto 30px auto;
+  text-align: left;
+  display: flex;
 }
+
+div#search-results ul li div.preview{
+  padding: 20px;
+}
+
+div#search-results ul li div.info{
+  flex-grow: 1;
+}
+
+div#search-results ul li a.book{
+  text-decoration: none;
+}
+
+div#search-results ul li h4{
+  font-family: 'Droid Sans', serif;
+  margin-bottom: 0;
+  font-weight: bold;
+  color:black;
+}
+
+div#search-results ul li h5{
+  font-family: 'Droid Sans', serif;
+  font-weight: 400;
+  margin-top:0;
+}
+
+
+div#search-results ul li table{
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border:solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0;
+}
+
+div#search-results ul li table td{
+  padding: 5px;
+  border-bottom: solid 2px #ddd;
+  border-right: solid 2px #eee;
+}
+
+div#search-results ul li table tr:last-child td{
+  border-bottom: solid 0px;
+}
+
+div#search-results ul li table tr td:first-child{
+  text-align: right;
+}
+
+div#search-results ul li table tr td:last-child{
+  border-right: solid 0px;
+  text-align: left;
+}
+
+
+
 
 div#detail-wrapper{
   background-color: white;
+  position: relative;
   z-index: 100;
   overflow: hidden;
   transition: max-height .5s;

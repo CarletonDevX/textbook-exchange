@@ -1,4 +1,8 @@
-header
+header(ng-class="\
+  {\
+    'minimized'    : !is('main'),\
+    'home-view'    : is('main')\
+  }")
   div#main-box
     a#wordmark-link(ui-sref="main")
       h1#wordmark
