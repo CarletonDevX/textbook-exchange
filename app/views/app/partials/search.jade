@@ -1,9 +1,21 @@
-p You searched for "{{ query }}," and, well, it doesn't look good. This is all we have: 
 ul
 	li(ng-repeat="book in results")
-		h4 {{ book.name }}
-		img(src="{{book.coverImage}}")
-		a(ui-sref="main.detail.book({isbn: book.ISBN})") View Details
+		div.preview
+			img(src="{{book.coverImage}}")
+		div.info
+			a.book(ui-sref="main.detail.book({isbn: book.ISBN})")
+				h4 {{ book.name }}
+			h5 {{ book.author }}
+			table
+				tr
+					td Edition:
+					td {{ book.edition }}
+				tr
+					td Published:
+					td {{ book.publishYear }}
+				tr
+					td ISBN:
+					td {{ book.ISBN }}
 
-p Can't find what you're looking for? 
+p Can't find what you're looking for when you search for "{{ query }}"? 
 	a(href="#") Send us an email.
