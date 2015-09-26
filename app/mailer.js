@@ -4,22 +4,18 @@ var sender = require('./config/nodemailer'),
     Error = require('./errors');
 
 exports.sendOfferEmail = function (req, res, next) {
-	var listing = req.rListings[0];
+	var listing = req.rListing;
 	var book = listing.book;
-	var user = req.rUser;
-	// Get lister email
-	User.findOne({_id: listing.userID}, function (err, lister) {
-		if (!err) {
-			options = {
-				to : lister.email,
-				subject : "Someone has made an offer on your book " + book.name,
-				html : "Hello, <br> " + user.name.fullName + " has made an offer on your book." 
-			}
-			sendMail(req, res, next, options)
-		} else {
-            Error.mongoError(req, res, err);
-		}
-	});
+	var lister = listing.user;
+	var offerer = req.rUser;
+
+	options = {
+		to : lister.email,
+		subject : "Someone has made an offer on your book " + book.name,
+		html : "Hello, <br> " + offerer.name.fullName + " has made an offer on your book " + book.name + ". Email them back at " + offerer.email + " to discuss this offer." 
+	}
+
+	sendMail(req, res, next, options);
 }
 
 var sendMail = function (req, res, next, options) {
@@ -27,7 +23,6 @@ var sendMail = function (req, res, next, options) {
         if(!err){
             next();
         } else {
-        	console.log(err);
 	        Error.errorWithStatus(req, res, 500, 'A required email did not send.');
         }
     });
