@@ -191,6 +191,7 @@ exports.setup = function(app) {
               users.getCurrentUser,
               listings.getListing,
               inject.BooksIntoListings,
+              inject.UsersIntoListings,
               offers.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);

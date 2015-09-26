@@ -13,7 +13,7 @@ exports.UsersIntoListings = function(req, res, next) {
         ID: 'userID',
         localID: '_id',
         newKey: 'user',
-        propsNeeded: ['name','gradYear','avatar']
+        propsNeeded: ['name','gradYear','avatar', 'email']
     };
 
     //inject req'd user data into each listing
