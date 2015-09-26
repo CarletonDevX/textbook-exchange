@@ -2,6 +2,7 @@ var users = require('./controllers/users.controller'),
     books = require('./controllers/books.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
+    mailer = require('./mailer')
     data = require('./data'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
@@ -187,9 +188,11 @@ exports.setup = function(app) {
     // Make an offer on a listing
     app.route('/api/listings/offer/:listingID')
         .post(authenticate,
-            users.getCurrentUser,
+              users.getCurrentUser,
               listings.getListing,
+              inject.BooksIntoListings,
               offers.makeOffer,
+              mailer.sendOfferEmail,
               responder.formatOffer);
 
     /* Books */
