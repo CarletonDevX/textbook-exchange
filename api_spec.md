@@ -7,7 +7,7 @@ Communist calls have been implemented already.
 - Auth
 	- ☭ Authentification test [Requires auth]:
 	`GET hitsthebooks.com/api/authTest`
-	- ☭ Login (with credentials) [Requires auth]:
+	- ☭ Login (with username and password) [Requires auth]:
 	`POST hitsthebooks.com/api/login`
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
@@ -15,6 +15,10 @@ Communist calls have been implemented already.
 	- Get statistics for school by school ID:
 	`GET hitsthebooks.com/api/school/id`
 - Users
+ 	- Register a user (with username and password):
+	`POST hitsthebooks.com/api/register`
+	- Verify a user (with username and verifier):
+	`POST hitsthebooks.com/api/verify`
 	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`
 	- ☭ Update current user (with user details) [Requires auth]: 
@@ -50,8 +54,10 @@ Communist calls have been implemented already.
 	`DELETE hitsthebooks.com/api/listings/id`
 	- ☭ Make an offer on a listing with listing ID [Requires auth]:
 	`POST hitsthebooks.com/api/listings/offer/id`
-		
-		TODO: Complete an offer?
+
+- Offers
+	- Complete an offer with offer ID [Requires auth]:
+	`POST hitsthebooks.com/api/offers/complete/id`
 	
 - Books
 	- ☭ Get book with book ID:
