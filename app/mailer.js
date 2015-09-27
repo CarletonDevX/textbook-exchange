@@ -18,10 +18,44 @@ exports.sendOfferEmail = function (req, res, next) {
 	sendMail(req, res, next, options);
 }
 
+exports.sendSubscribersEmail = function (req, res, next) {
+	var listing = req.rListing;
+	var book = req.rBook;
+	var subscribers = req.rSubscribers;
+	var recipients = []
+	for (var i = 0; i < subscribers.length; i++) {
+		recipients.push(subscribers[i].email);
+	};
+	options = {
+		toMultiple: recipients,
+		subject : "Someone has posted a listing for a book on your watchlist.",
+		html : "Hello, <br> Someone has posted a listing for " + book.name + ". The listing ID is " + listing._id 
+	}
+
+	sendMailToMultipleRecipients(req, res, next, options);
+}
+
+var sendMailToMultipleRecipients = function (req, res, next, options) {
+	var recipients = options.toMultiple;
+	if (recipients.length == 0) {
+		next();
+	} else {
+		var sendOptions = options;
+		sendOptions.to = recipients.pop();
+		sendOptions.toMultiple = recipients;
+		sendOptions.callback = sendMailToMultipleRecipients
+		sendMail(req, res, next, sendOptions);
+	}
+}
+
 var sendMail = function (req, res, next, options) {
     sender.sendMail(options, function(err) {
         if(!err){
-            next();
+			if (options.callback) {
+				options.callback(req, res, next, options);
+			} else {
+				next();
+			}
         } else {
 	        Error.errorWithStatus(req, res, 500, 'A required email did not send.');
         }
