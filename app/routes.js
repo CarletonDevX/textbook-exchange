@@ -153,6 +153,8 @@ exports.setup = function(app) {
              listings.getUserListings,
              books.getBook,
              listings.createListing,
+             users.getSubscribers,
+             mailer.sendSubscribersEmail,
              responder.formatSingleListing);
 
     // Get listings for user with user ID
