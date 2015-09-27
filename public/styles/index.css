@@ -8,6 +8,10 @@ body,html{
   padding:0;
 }
 
+a{
+  outline: none;
+}
+
 body::before{
     content : "";
     display: block;
@@ -251,8 +255,6 @@ div#search-results ul li{
   box-shadow: 0px 1px 6px 0px rgba(0,0,0,.15);
   width: 500px;
   margin:0 auto 30px auto;
-  text-align: left;
-  display: flex;
 }
 
 div#search-results ul li div.preview{
@@ -265,6 +267,11 @@ div#search-results ul li div.info{
 
 div#search-results ul li a.book{
   text-decoration: none;
+  color:black;
+  text-align: left;
+  display: flex;
+  height:100%;
+  width:100%;
 }
 
 div#search-results ul li h4{
@@ -307,8 +314,6 @@ div#search-results ul li table tr td:last-child{
   border-right: solid 0px;
   text-align: left;
 }
-
-
 
 
 div#detail-wrapper{

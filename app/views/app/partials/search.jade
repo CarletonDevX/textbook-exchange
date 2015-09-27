@@ -1,21 +1,21 @@
 ul
 	li(ng-repeat="book in results")
-		div.preview
-			img(src="{{book.coverImage}}")
-		div.info
-			a.book(ui-sref="main.detail.book({isbn: book.ISBN})")
+		a.book(ui-sref="main.detail.book({isbn: book.ISBN})")
+			div.preview
+				img(src="{{book.coverImage}}")
+			div.info
 				h4 {{ book.name }}
-			h5 {{ book.author }}
-			table
-				tr
-					td Edition:
-					td {{ book.edition }}
-				tr
-					td Published:
-					td {{ book.publishYear }}
-				tr
-					td ISBN:
-					td {{ book.ISBN }}
+				h5 {{ book.author }}
+				table
+					tr
+						td Edition:
+						td {{ book.edition }}
+					tr
+						td Published:
+						td {{ book.publishYear }}
+					tr
+						td ISBN:
+						td {{ book.ISBN }}
 
 p Can't find what you're looking for when you search for "{{ query }}"? 
 	a(href="#") Send us an email.
