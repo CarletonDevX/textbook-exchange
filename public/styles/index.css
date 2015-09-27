@@ -255,6 +255,11 @@ div#search-results ul li{
   box-shadow: 0px 1px 6px 0px rgba(0,0,0,.15);
   width: 500px;
   margin:0 auto 30px auto;
+  transition: box-shadow .1s;
+}
+
+div#search-results ul li:hover{
+  box-shadow: 0px 1px 10px 0px rgba(41, 220, 53,.5) ;
 }
 
 div#search-results ul li div.preview{
@@ -270,8 +275,6 @@ div#search-results ul li a.book{
   color:black;
   text-align: left;
   display: flex;
-  height:100%;
-  width:100%;
 }
 
 div#search-results ul li h4{
