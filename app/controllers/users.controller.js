@@ -6,7 +6,19 @@ var User = require('mongoose').model('users'),
 
 // API Calls
 
-exports.getCurrentUser = function (req, res, next) {
+exports.countUsers = function(req, res, next) {
+    if (!req.rSchoolStats) req.rSchoolStats = {};
+    User.count({}, function (err, count) {
+        if (!err) {
+            req.rSchoolStats.numUsers = count;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.getCurrentUser = function(req, res, next) {
     req.rUser = req.user;
     next();
 }
