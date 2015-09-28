@@ -81,16 +81,15 @@ header.minimized{
 }
 
 header.minimized div#main-box{
-  width:100%
 }
 
 header.minimized div#main-box #wordmark{
-  margin:0;
+  margin-bottom: 0;
 }
 
 header.minimized div#main-box #college-info{
-  height:0;
-  margin:0;
+  margin:-1em;
+  opacity: 0;
   overflow: hidden;
 }
 
@@ -213,11 +212,15 @@ div#main-box #college-info li{
 div#search{
   overflow: hidden;
   transition: max-height .5s;
-  box-shadow: 0px 20px 20px 20px rgba(0,0,0,.3);
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,.3);
   z-index: 10;
   padding:20px;
+  box-sizing: border-box;
   background-color:white;
   text-align: center;
+  width: 500px;
+  margin: 0 auto;
+  transition: width .2s;
 }
 
 div#search label{
@@ -244,6 +247,7 @@ div#search.behind-detail {
 
 div#search.searching{
   max-height:50em;
+  width: 550px;
 }
 
 div#search-results ul{
