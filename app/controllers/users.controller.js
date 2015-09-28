@@ -61,6 +61,18 @@ exports.getUser = function (req, res, next) {
     });
 }
 
+exports.getSubscribers = function (req, res, next) {
+    var book = req.rBook;
+    User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
+        if (!err) {
+            req.rSubscribers = subscribers;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.subscribe = function (req, res, next) {
     var book = req.rBook;
     var user = req.rUser;
