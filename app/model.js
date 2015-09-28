@@ -127,13 +127,12 @@ mongoose.model('offers', OfferSchema, 'offers');
 
 
 /***********
-School Stats 
+School Info 
 ***********/
 
-var SchoolStatsSchema = new Schema({
-    booksSold: Number,
-    booksListed: Number
+var SchoolInfoSchema = new Schema({
+    // Name, logo?
 });
 
 // Add schema to db
-mongoose.model('schoolStats', SchoolStatsSchema, 'schoolStats');
+mongoose.model('schoolInfo', SchoolInfoSchema, 'schoolInfo');
