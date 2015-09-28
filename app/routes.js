@@ -74,6 +74,13 @@ exports.setup = function(app) {
             res.status(200).send("Yay");
         });
 
+    /* Schools */
+    app.route('/api/schoolStats')
+        .get(users.countUsers,
+             listings.countListings,
+             offers.countOffers,
+             responder.formatSchoolStats);
+
     /* Users */
 
     // Get current user

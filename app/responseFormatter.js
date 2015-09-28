@@ -1,5 +1,16 @@
 // Formats API responses from retrieved objects
 
+/** SCHOOLS **/
+
+exports.formatSchoolStats = function(req, res) {
+    var stats = {
+      "numUsers": req.rSchoolStats.numUsers,
+      "numListings": req.rSchoolStats.numListings,
+      "numOffers": req.rSchoolStats.numOffers
+    }
+    res.json(stats);
+}
+
 /** USERS **/
 
 exports.formatCurrentUser = function(req, res) {

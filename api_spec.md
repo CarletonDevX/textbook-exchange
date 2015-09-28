@@ -12,8 +12,8 @@ Communist calls have been implemented already.
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
 - Schools
-	- Get statistics for school by school ID:
-	`GET hitsthebooks.com/api/school/id`
+	- ☭ Get statistics for current school:
+	`GET hitsthebooks.com/api/schoolStats`
 - Users
  	- Register a user (with username and password):
 	`POST hitsthebooks.com/api/register`
