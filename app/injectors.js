@@ -4,23 +4,31 @@ var utils = require('./utilities')
 
 
 exports.UsersIntoListings = function(req, res, next) {
+    // Single listing case
+    if (!req.rListings) req.rListings = [req.rListing];
+
     //config for injector
     var configParams = {
         collection: User,
         ID: 'userID',
         localID: '_id',
         newKey: 'user',
-        propsNeeded: ['name','gradYear','avatar']
+        propsNeeded: ['name','gradYear','avatar', 'email']
     };
 
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
         req.rListings = augListings;
+        // Single listing case
+        if (augListings.length > 1) req.rListing = augListings[0];
         next();
     });
 }
 
 exports.BooksIntoListings = function(req, res, next) {
+    // Single listing case
+    if (!req.rListings) req.rListings = [req.rListing];
+
     //config for injector
     var configParams = {
         collection: Book,
@@ -33,6 +41,8 @@ exports.BooksIntoListings = function(req, res, next) {
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
         req.rListings = augListings;
+        // Single listing case
+        if (augListings.length > 1) req.rListing = augListings[0];
         next();
     });
 }
