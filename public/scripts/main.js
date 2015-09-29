@@ -61,8 +61,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 				  });
 				}
 			},
-			sticky: true,
 			url : 'search?query',
+			sticky: true,
 			views:{
 				'search' : {
 					templateUrl : '/partials/search',
@@ -120,6 +120,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
 hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 	var streamSearchDelay = 200;//ms
+	var initSearch = false;
 
 	//inject the query if we init on the search page
 	if($state.is('main.search')){
@@ -136,12 +137,22 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 	$scope.search = function() {
 		$state.go('main.search',{query:$scope.searchInput})
 	}
+	
+	$scope.resetInitSearch = function(){ initSearch = false }
+
+	$scope.initSearch = function(){
+		if (!initSearch) {
+			initSearch = true;
+			$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+		}
+	}
 
 	//when typing, perform a throttled search
 	$scope.streamSearch = debounce(function(){
 		console.log("queried", $scope.searchInput)
 		$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
 	},streamSearchDelay);
+
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
