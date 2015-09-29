@@ -4,7 +4,7 @@ header(ng-class="\
     'home-view'    : is('main')\
   }")
   div#main-box
-    a#wordmark-link(ui-sref="main")
+    a#wordmark-link(ui-sref="main" ui-sref-opts="{reload: true}")
       h1#wordmark
         span.college-name Carleton
         span.app-name
