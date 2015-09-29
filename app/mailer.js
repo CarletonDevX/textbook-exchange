@@ -1,7 +1,8 @@
 // For sending mail.
 var sender = require('./config/nodemailer'),
 	User = require('mongoose').model('users'),
-    Error = require('./errors');
+    Error = require('./errors'),
+    config = require('./config/config');
 
 exports.sendOfferEmail = function (req, res, next) {
 	var listing = req.rListing;
@@ -49,15 +50,19 @@ var sendMailToMultipleRecipients = function (req, res, next, options) {
 }
 
 var sendMail = function (req, res, next, options) {
-    sender.sendMail(options, function(err) {
-        if(!err){
-			if (options.callback) {
-				options.callback(req, res, next, options);
-			} else {
-				next();
-			}
-        } else {
-	        Error.errorWithStatus(req, res, 500, 'A required email did not send.');
-        }
-    });
+	if (config.mailEnabled) {
+	    sender.sendMail(options, function(err) {
+	        if(!err){
+				if (options.callback) {
+					options.callback(req, res, next, options);
+				} else {
+					next();
+				}
+	        } else {
+		        Error.errorWithStatus(req, res, 500, 'A required email did not send.');
+	        }
+	    });
+	} else {
+		next();
+	}
 }

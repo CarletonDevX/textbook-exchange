@@ -26,10 +26,12 @@ module.exports = function () {
 		case "development":
 			var settings = settingsWithPort(1337);
 			settings.db = "mongodb://localhost/textbook-exchange-development";
+			settings.mailEnabled = false;
 			return settings;
 		case "test":
 			var settings = settingsWithPort(6969);
 			settings.db = "mongodb://localhost/textbook-exchange-test";
+			settings.mailEnabled = false;
 			return settings;
 		case "production":
 			return null;
