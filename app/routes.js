@@ -209,6 +209,7 @@ exports.setup = function(app) {
               listings.getListing,
               inject.BooksIntoListings,
               inject.UsersIntoListings,
+              offers.getOffersForListing,
               offers.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
