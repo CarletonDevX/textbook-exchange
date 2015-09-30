@@ -20,9 +20,17 @@ var authenticate = function (req, res, next) {
 exports.setup = function(app) {
 
     // Workin on dem angular stuff inside /app/whatever
-    app.get('/app/*', function (req, res) {
-        res.render('app/index.jade',{});
-    });
+    app.route('/app/*')
+        .get(users.countUsers,
+             listings.countListings,
+             offers.countOffers,
+             function (req, res) {
+                res.render('app/index.jade', {
+                    numListings: req.rSchoolStats.numListings,
+                    numOffers: req.rSchoolStats.numOffers,
+                    numUsers: req.rSchoolStats.numUsers
+                });
+             }); 
     app.get('/partials/:partial', function (req, res) {
         res.render('app/partials/'+req.params.partial+'.jade',{});
     });
