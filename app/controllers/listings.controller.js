@@ -1,6 +1,18 @@
 var Listing = require('mongoose').model('listings'),
     Error = require('../errors');
 
+exports.countListings = function(req, res, next) {
+    if (!req.rSchoolStats) req.rSchoolStats = {};
+    Listing.count({}, function (err, count) {
+        if (!err) {
+            req.rSchoolStats.numListings = count;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.getUserListings = function(req, res, next) {
     var userID = req.rUser._id;
     Listing.find({userID: userID}).lean().exec(function(err, listings) {
