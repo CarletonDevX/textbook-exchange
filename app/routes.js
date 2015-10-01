@@ -200,6 +200,8 @@ exports.setup = function(app) {
     // Remove listing with listing ID
         .delete(authenticate,
                 listings.getListing,
+                offers.getOffersForListing,
+                offers.removeOffers,
                 listings.removeListing);
 
     // Make an offer on a listing
@@ -207,8 +209,8 @@ exports.setup = function(app) {
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
-              inject.BooksIntoListings,
-              inject.UsersIntoListings,
+              inject.BooksIntoListings, // necessary for the email
+              inject.UsersIntoListings, // -----------------------
               offers.getOffersForListing,
               offers.makeOffer,
               mailer.sendOfferEmail,
@@ -220,6 +222,8 @@ exports.setup = function(app) {
               users.getCurrentUser,
               offers.getOffer,
               offers.completeOffer,
+              listings.getListing,
+              listings.completeListing,
               responder.formatOffer)
 
     /* Books */

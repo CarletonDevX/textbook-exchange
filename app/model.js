@@ -85,7 +85,8 @@ var ListingSchema = new Schema({
     condition: { type: String, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
-    created: { type: Date, required: true }
+    created: { type: Date, required: true },
+    completed: Boolean
 });
 
 var validatePrice = function (value) {

@@ -40,6 +40,7 @@ exports.formatCurrentUser = function(req, res) {
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
+               "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
@@ -76,6 +77,7 @@ exports.formatUser = function(req, res) {
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
+               "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
@@ -109,6 +111,7 @@ exports.formatBookListings = function(req, res) {
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
+               "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
                     "user": formattedUser
@@ -134,6 +137,7 @@ exports.formatUserListings = function(req, res) {
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
+               "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
@@ -155,6 +159,7 @@ exports.formatSingleListing = function(req, res) {
            "listingId": lstng._id, 
            "condition": lstng.condition, 
              "created": lstng.created, 
+           "completed": lstng.completed,
         "rentingPrice": lstng.rentingPrice, 
         "sellingPrice": lstng.sellingPrice,
     }
@@ -207,6 +212,7 @@ exports.formatBook = function(req, res) {
                "listingId": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
+               "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
                     "user": formattedUser

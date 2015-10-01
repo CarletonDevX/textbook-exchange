@@ -3,7 +3,7 @@ var Listing = require('mongoose').model('listings'),
 
 exports.countListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
-    Listing.count({}, function (err, count) {
+    Listing.count({"completed": false}, function (err, count) {
         if (!err) {
             req.rSchoolStats.numListings = count;
             next();
@@ -27,7 +27,7 @@ exports.getUserListings = function (req, res, next) {
 
 exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
-    Listing.find({ISBN: ISBN}).lean().exec(function(err, listings) {
+    Listing.find({"completed": false, ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
             req.rListings = listings
             next();
@@ -38,7 +38,10 @@ exports.getBookListings = function (req, res, next) {
 };
 
 exports.getListing = function (req, res, next) {
-    var listingID = req.params.listingID;
+    // Get ID from either params or previous middleware
+    var listingID = req.rListingID;
+    if (!listingID) listingID = req.params.listingID;
+
     Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {
             if (!listing) {
@@ -71,6 +74,7 @@ exports.createListing = function (req, res, next) {
     newListing.userID = req.user._id;
     newListing.ISBN = req.rBook.ISBN;
     newListing.created = new Date();
+    newListing.completed = false;
 
     newListing.save(function(err, listing) {
         if (!err) {
@@ -118,3 +122,21 @@ exports.removeListing = function (req, res, next) {
         });
     }
 };
+
+exports.completeListing = function (req, res, next) {
+    var user = req.rUser;
+    var listing = req.rListing;
+    if (listing.userID != user._id) {
+        Error.errorWithStatus(req, res, 401, 'Unauthorized to complete listing.');
+    } else {
+        listing.completed = true;
+        listing.save(function(err, listing) {
+            if (!err) {
+                req.rListing = listing;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
+}
