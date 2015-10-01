@@ -1,7 +1,7 @@
 var Listing = require('mongoose').model('listings'),
     Error = require('../errors');
 
-exports.countListings = function(req, res, next) {
+exports.countListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     Listing.count({}, function (err, count) {
         if (!err) {
@@ -13,7 +13,7 @@ exports.countListings = function(req, res, next) {
     });
 }
 
-exports.getUserListings = function(req, res, next) {
+exports.getUserListings = function (req, res, next) {
     var userID = req.rUser._id;
     Listing.find({userID: userID}).lean().exec(function(err, listings) {
         if (!err) {
@@ -25,7 +25,7 @@ exports.getUserListings = function(req, res, next) {
     });
 };
 
-exports.getBookListings = function(req, res, next) {
+exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
     Listing.find({ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
@@ -37,7 +37,7 @@ exports.getBookListings = function(req, res, next) {
     });
 };
 
-exports.getListing = function(req, res, next) {
+exports.getListing = function (req, res, next) {
     var listingID = req.params.listingID;
     Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {
@@ -53,7 +53,7 @@ exports.getListing = function(req, res, next) {
     });
 };
 
-exports.createListing = function(req, res, next) {
+exports.createListing = function (req, res, next) {
     var userListings = req.rListings;
     for (var i = 0; i < userListings.length; i++) {
         if (userListings[i].ISBN == req.rBook.ISBN) {
@@ -82,7 +82,7 @@ exports.createListing = function(req, res, next) {
     });
 };
 
-exports.updateListing = function(req, res, next) {
+exports.updateListing = function (req, res, next) {
     var listing = req.rListing;
     if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
@@ -104,7 +104,7 @@ exports.updateListing = function(req, res, next) {
     }
 };
 
-exports.removeListing = function(req, res, next) {
+exports.removeListing = function (req, res, next) {
     var listing = req.rListing;
     if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to delete listing.');
