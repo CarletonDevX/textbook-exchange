@@ -6,7 +6,7 @@ var User = require('mongoose').model('users'),
 
 // API Calls
 
-exports.countUsers = function(req, res, next) {
+exports.countUsers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     User.count({}, function (err, count) {
         if (!err) {

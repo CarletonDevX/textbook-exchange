@@ -214,6 +214,14 @@ exports.setup = function(app) {
               mailer.sendOfferEmail,
               responder.formatOffer);
 
+    /* Offers */
+    app.route('/api/offers/complete/:offerID')
+        .post(authenticate,
+              users.getCurrentUser,
+              offers.getOffer,
+              offers.completeOffer,
+              responder.formatOffer)
+
     /* Books */
 
     // Get book with book ID
