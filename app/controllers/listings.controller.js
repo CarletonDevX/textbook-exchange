@@ -1,7 +1,19 @@
 var Listing = require('mongoose').model('listings'),
     Error = require('../errors');
 
-exports.getUserListings = function(req, res, next) {
+exports.countListings = function (req, res, next) {
+    if (!req.rSchoolStats) req.rSchoolStats = {};
+    Listing.count({"completed": false}, function (err, count) {
+        if (!err) {
+            req.rSchoolStats.numListings = count;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.getUserListings = function (req, res, next) {
     var userID = req.rUser._id;
     Listing.find({userID: userID}).lean().exec(function(err, listings) {
         if (!err) {
@@ -13,9 +25,9 @@ exports.getUserListings = function(req, res, next) {
     });
 };
 
-exports.getBookListings = function(req, res, next) {
+exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
-    Listing.find({ISBN: ISBN}).lean().exec(function(err, listings) {
+    Listing.find({"completed": false, ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
             req.rListings = listings
             next();
@@ -25,8 +37,11 @@ exports.getBookListings = function(req, res, next) {
     });
 };
 
-exports.getListing = function(req, res, next) {
-    var listingID = req.params.listingID;
+exports.getListing = function (req, res, next) {
+    // Get ID from either params or previous middleware
+    var listingID = req.rListingID;
+    if (!listingID) listingID = req.params.listingID;
+
     Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {
             if (!listing) {
@@ -41,7 +56,7 @@ exports.getListing = function(req, res, next) {
     });
 };
 
-exports.createListing = function(req, res, next) {
+exports.createListing = function (req, res, next) {
     var userListings = req.rListings;
     for (var i = 0; i < userListings.length; i++) {
         if (userListings[i].ISBN == req.rBook.ISBN) {
@@ -59,6 +74,7 @@ exports.createListing = function(req, res, next) {
     newListing.userID = req.user._id;
     newListing.ISBN = req.rBook.ISBN;
     newListing.created = new Date();
+    newListing.completed = false;
 
     newListing.save(function(err, listing) {
         if (!err) {
@@ -70,7 +86,7 @@ exports.createListing = function(req, res, next) {
     });
 };
 
-exports.updateListing = function(req, res, next) {
+exports.updateListing = function (req, res, next) {
     var listing = req.rListing;
     if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
@@ -92,7 +108,7 @@ exports.updateListing = function(req, res, next) {
     }
 };
 
-exports.removeListing = function(req, res, next) {
+exports.removeListing = function (req, res, next) {
     var listing = req.rListing;
     if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to delete listing.');
@@ -106,3 +122,21 @@ exports.removeListing = function(req, res, next) {
         });
     }
 };
+
+exports.completeListing = function (req, res, next) {
+    var user = req.rUser;
+    var listing = req.rListing;
+    if (listing.userID != user._id) {
+        Error.errorWithStatus(req, res, 401, 'Unauthorized to complete listing.');
+    } else {
+        listing.completed = true;
+        listing.save(function(err, listing) {
+            if (!err) {
+                req.rListing = listing;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
+}

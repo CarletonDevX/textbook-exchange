@@ -85,7 +85,8 @@ var ListingSchema = new Schema({
     condition: { type: String, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
-    created: { type: Date, required: true }
+    created: { type: Date, required: true },
+    completed: Boolean
 });
 
 var validatePrice = function (value) {
@@ -127,13 +128,12 @@ mongoose.model('offers', OfferSchema, 'offers');
 
 
 /***********
-School Stats 
+School Info 
 ***********/
 
-var SchoolStatsSchema = new Schema({
-    booksSold: Number,
-    booksListed: Number
+var SchoolInfoSchema = new Schema({
+    // Name, logo?
 });
 
 // Add schema to db
-mongoose.model('schoolStats', SchoolStatsSchema, 'schoolStats');
+mongoose.model('schoolInfo', SchoolInfoSchema, 'schoolInfo');

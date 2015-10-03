@@ -20,9 +20,17 @@ var authenticate = function (req, res, next) {
 exports.setup = function(app) {
 
     // Workin on dem angular stuff inside /app/whatever
-    app.get('/app/*', function (req, res) {
-        res.render('app/index.jade',{});
-    });
+    app.route('/app/*')
+        .get(users.countUsers,
+             listings.countListings,
+             offers.countOffers,
+             function (req, res) {
+                res.render('app/index.jade', {
+                    numListings: req.rSchoolStats.numListings,
+                    numOffers: req.rSchoolStats.numOffers,
+                    numUsers: req.rSchoolStats.numUsers
+                });
+             }); 
     app.get('/partials/:partial', function (req, res) {
         res.render('app/partials/'+req.params.partial+'.jade',{});
     });
@@ -73,6 +81,13 @@ exports.setup = function(app) {
         .get(authenticate, function (req, res) {
             res.status(200).send("Yay");
         });
+
+    /* Schools */
+    app.route('/api/schoolStats')
+        .get(users.countUsers,
+             listings.countListings,
+             offers.countOffers,
+             responder.formatSchoolStats);
 
     /* Users */
 
@@ -185,6 +200,8 @@ exports.setup = function(app) {
     // Remove listing with listing ID
         .delete(authenticate,
                 listings.getListing,
+                offers.getOffersForListing,
+                offers.removeOffers,
                 listings.removeListing);
 
     // Make an offer on a listing
@@ -192,11 +209,22 @@ exports.setup = function(app) {
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
-              inject.BooksIntoListings,
-              inject.UsersIntoListings,
+              inject.BooksIntoListings, // necessary for the email
+              inject.UsersIntoListings, // -----------------------
+              offers.getOffersForListing,
               offers.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
+
+    /* Offers */
+    app.route('/api/offers/complete/:offerID')
+        .post(authenticate,
+              users.getCurrentUser,
+              offers.getOffer,
+              offers.completeOffer,
+              listings.getListing,
+              listings.completeListing,
+              responder.formatOffer)
 
     /* Books */
 

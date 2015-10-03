@@ -12,10 +12,10 @@ Communist calls have been implemented already.
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
 - Schools
-	- Get statistics for school by school ID:
-	`GET hitsthebooks.com/api/school/id`
+	- ☭ Get statistics for current school:
+	`GET hitsthebooks.com/api/schoolStats`
 - Users
- 	- Register a user (with username and password):
+ 	- Register/create a user (with username and password):
 	`POST hitsthebooks.com/api/register`
 	- Verify a user (with username and verifier):
 	`POST hitsthebooks.com/api/verify`
@@ -56,7 +56,7 @@ Communist calls have been implemented already.
 	`POST hitsthebooks.com/api/listings/offer/id`
 
 - Offers
-	- Complete an offer with offer ID [Requires auth]:
+	- ☭ Complete an offer with offer ID [Requires auth]:
 	`POST hitsthebooks.com/api/offers/complete/id`
 	
 - Books
