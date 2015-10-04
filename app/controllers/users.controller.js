@@ -42,24 +42,23 @@ exports.createUser = function (req, res, next) {
         return;
     }
 
-    var user = new User({"email": email, "password": password});
-    user.verified = false;
-    user.provider = 'local';
+    var newUser = new User({"email": email, "password": password});
+    newUser.verified = false;
+    newUser.provider = 'local';
     var md5 = crypto.createHash('md5');
-    user.verifier = md5.update((Math.random()*100).toString()).digest('hex');
+    newUser.verifier = md5.update((Math.random()*100).toString()).digest('hex');
 
     // Optional details
-    if (info.name) user.name = info.name;
-    if (info.avatar) user.avatar = info.avatar;
-    if (info.bio) user.bio = info.bio;
-    if (info.gradYear) user.gradYear = info.gradYear;
+    if (info.name) newUser.name = info.name;
+    if (info.avatar) newUser.avatar = info.avatar;
+    if (info.bio) newUser.bio = info.bio;
+    if (info.gradYear) newUser.gradYear = info.gradYear;
 
     avatars.getAvatarWithID(null, function (image) {
-        user.avatar = image;
-        user.save(function(err, user) {
+        newUser.avatar = image;
+        newUser.save(function(err, user) {
             if (!err) {
                 req.rUser = user;
-                req.rListings = [];
                 next();
             } else {
                 Error.mongoError(req, res, err);
@@ -67,6 +66,29 @@ exports.createUser = function (req, res, next) {
         });
     });
 }
+
+exports.verifyUser = function (req, res, next) {
+    var user = req.rUser;
+    var verifier = req.body.verifier;
+    if (verifier == user.verifier) {
+        user.verified = true;
+
+        // Update is used to prevent re-hashing of password
+        User.update(
+        {_id: user._id},
+        {verified : true},
+        function (err, result) {
+            if (!err) {
+                res.status(200).send("User verified.");
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
+    }
+}
+
 
 exports.getCurrentUser = function (req, res, next) {
     req.rUser = req.user;

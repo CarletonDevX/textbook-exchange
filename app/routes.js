@@ -93,6 +93,13 @@ exports.setup = function(app) {
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
 
+    // Verify a user with user ID
+    app.route('/api/verify/:userID')
+        .post(users.getUser,
+             users.verifyUser
+             //login?
+             );
+
     // Get current user
     app.route('/api/user')
         .get(authenticate, 

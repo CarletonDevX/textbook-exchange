@@ -17,7 +17,7 @@ Communist calls have been implemented already.
 - Users
  	- ☭ Register/create a user (with username and password):
 	`POST hitsthebooks.com/api/register`
-	- Verify a user with user ID (with verifier string):
+	- ☭ Verify a user with user ID (with verifier string):
 	`POST hitsthebooks.com/api/verify/id`
 	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`

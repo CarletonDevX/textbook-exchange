@@ -14,6 +14,9 @@ exports.formatSchoolStats = function(req, res) {
 /** USERS **/
 
 exports.formatCurrentUser = function(req, res) {
+    // Case with no listings
+    if (!req.rListings) req.rListings = [];
+
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
@@ -53,6 +56,9 @@ exports.formatCurrentUser = function(req, res) {
 }
 
 exports.formatUser = function(req, res) {
+    // Case with no listings
+    if (!req.rListings) req.rListings = [];
+
     var user = {
           "userID": req.rUser._id, 
           "avatar": req.rUser.avatar, 
