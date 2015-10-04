@@ -185,6 +185,14 @@ header.minimized div#main-box:hover .app-name::before{
   top:-3px;
 }
 
+header.minimized .interject{
+  font-size:16px;
+}
+
+header.home-view .interject{
+  font-size:28px;
+}
+
 
 .interject{
   font-size: smaller;
@@ -329,7 +337,6 @@ div#detail-wrapper{
   z-index: 100;
   overflow: hidden;
   transition: max-height .5s;
-  box-shadow: 0px 20px 20px 20px rgba(0,0,0,.3);
 }
 
 div#detail-wrapper.maximized{
