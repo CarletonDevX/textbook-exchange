@@ -141,7 +141,7 @@ main #search {
   text-align: center;
   width: 500px;
   margin: 0 auto;
-  transition: width 2s; }
+  transition: width 0.2s; }
 
 main #search.home-view {
   width: 500px; }
