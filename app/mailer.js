@@ -4,6 +4,18 @@ var sender = require('./config/nodemailer'),
     Error = require('./errors'),
     config = require('./config/config');
 
+exports.sendRegistrationEmail = function (req, res, next) {
+	var user = req.rUser;
+
+	options = {
+		to : user.email,
+		subject : "Complete your registration to hitsTheBooks",
+		html : "Hello, <br> Complete your registration by making a fun API call! Your verifier is" + user.verifier
+	}
+
+	sendMail(req, res, next, options);
+}
+
 exports.sendOfferEmail = function (req, res, next) {
 	var listing = req.rListing;
 	var book = listing.book;

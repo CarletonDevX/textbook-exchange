@@ -39,9 +39,10 @@ var UserSchema = new Schema({
         familyName: String,
         fullName: String
     },
-    email: { type: String, unique: true },
+    email: { type: String, unique: true, required: true },
+    verifier: String,
     verified: { type: Boolean, default: true },
-    password: String,
+    password: { type: String, required: true},
     provider: String,
     providerId: String,
     providerData: {},

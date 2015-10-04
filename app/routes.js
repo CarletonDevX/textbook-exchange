@@ -19,6 +19,11 @@ var authenticate = function (req, res, next) {
 
 exports.setup = function(app) {
 
+    // Main page
+    app.get('/', function (req, res) {
+        res.redirect('/app/');
+    });
+
     // Workin on dem angular stuff inside /app/whatever
     app.route('/app/*')
         .get(users.countUsers,
@@ -33,15 +38,6 @@ exports.setup = function(app) {
              }); 
     app.get('/partials/:partial', function (req, res) {
         res.render('app/partials/'+req.params.partial+'.jade',{});
-    });
-
-	// Main page
-    app.get('/', function (req, res) {
-        if (!req.user) {
-            users.renderLogin(req, res);
-        } else {
-            users.renderUsers(req, res);
-        }
     });
 
     // db stuff for testing
@@ -90,6 +86,19 @@ exports.setup = function(app) {
              responder.formatSchoolStats);
 
     /* Users */
+
+    // Register/create a user
+    app.route('/api/register')
+        .post(users.createUser,
+              mailer.sendRegistrationEmail,
+              responder.formatCurrentUser);
+
+    // Verify a user with user ID
+    app.route('/api/verify/:userID')
+        .post(users.getUser,
+             users.verifyUser
+             //login?
+             );
 
     // Get current user
     app.route('/api/user')
@@ -243,48 +252,31 @@ exports.setup = function(app) {
 
 
     /************
-    MOSTLY LEGACY
+        LEGACY
     *************/
 
-    // Local strategy login and registration
-    app.route('/login')
-        .get(users.renderLogin)
-        .post(passport.authenticate('local', {
-            successRedirect: '/',
-            failureRedirect: '/',
-            failureFlash: true
-        }));
+    // // Facebook
+    // app.get('/oauth/facebook', passport.authenticate('facebook', {
+    //     failureRedirect: '/',
+    //     scope:['email', 'user_education_history']
+    // }));
 
-    app.route('/register')
-        .get(users.renderRegister)
-        .post(users.register);
+    // app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
+    //     failureRedirect: '/',
+    //     successRedirect: '/',
+    //     failureFlash: true,
+    // }));
 
-    app.get('/verify', users.verify);
+    // // Google
+    // app.get('/oauth/google', passport.authenticate('google', {
+    //     failureRedirect: '/',
+    //     scope:['email']
+    // }));
 
-    app.get('/logout', users.logout);
-
-    // Facebook
-    app.get('/oauth/facebook', passport.authenticate('facebook', {
-        failureRedirect: '/',
-        scope:['email', 'user_education_history']
-    }));
-
-    app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
-        failureRedirect: '/',
-        successRedirect: '/',
-        failureFlash: true,
-    }));
-
-    // Google
-    app.get('/oauth/google', passport.authenticate('google', {
-        failureRedirect: '/',
-        scope:['email']
-    }));
-
-    app.get('/oauth/google/callback', passport.authenticate('google', {
-        failureRedirect: '/',
-        successRedirect: '/',
-        failureFlash: true,
-        scope:['email']
-    }));
+    // app.get('/oauth/google/callback', passport.authenticate('google', {
+    //     failureRedirect: '/',
+    //     successRedirect: '/',
+    //     failureFlash: true,
+    //     scope:['email']
+    // }));
 };
