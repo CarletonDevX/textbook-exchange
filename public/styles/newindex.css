@@ -29,6 +29,7 @@ body::before {
 
 header #sub-box, header #blurb {
   box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
+
 header #sub-box {
   background-color: rgba(255, 255, 255, 0.34);
   position: absolute;
@@ -51,11 +52,12 @@ header #sub-box {
     left: 0;
     border-bottom: solid rgba(41, 255, 53, 0.25) 5px;
     z-index: -1;
-    transition: border .2s, padding .2s, left .2s; }
+    transition: border 0.2s, padding 0.2s, left 0.2s; }
   header #sub-box a:hover::before {
     border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
     padding: 6px;
     left: -6px; }
+
 header #main-box {
   box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
   width: 500px;
@@ -92,7 +94,7 @@ header #main-box {
         background-color: black;
         border-radius: 10px;
         position: absolute;
-        transition: width .2s, height .2s, margin .2s, top .2s; }
+        transition: width 0.2s, height 0.2s, margin 0.2s, top 0.2s; }
     header #main-box #wordmark-link #wordmark:hover .app-name::before {
       width: 50%;
       height: 3px;
@@ -101,13 +103,14 @@ header #main-box {
   header #main-box #college-info {
     list-style-type: none;
     display: flex;
-    transition: height .4s, margin .4s; }
+    transition: height 0.4s, margin 0.4s; }
     header #main-box #college-info li {
       font-size: 12px;
       color: gray;
       font-style: italic;
       flex-grow: 1;
       padding-bottom: 10px; }
+
 header #blurb {
   width: 500px;
   margin: 0 auto;
@@ -123,12 +126,13 @@ header #blurb {
     color: #222222;
     margin-top: 5px;
     font-size: 12px; }
+
 header #about, header #register {
   display: none; }
 
 main #search {
   overflow: hidden;
-  transition: max-height .5s;
+  transition: max-height 0.5s;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
   z-index: 10;
   padding: 20px;
@@ -138,7 +142,9 @@ main #search {
   width: 500px;
   margin: 0 auto;
   transition: width 2s; }
+
+main #search.home-view {
+  width: 500px; }
+
 main #search.searching {
   width: 550px; }
-
-/*# sourceMappingURL=newindex.css.map */
