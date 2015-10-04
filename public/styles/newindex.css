@@ -8,6 +8,12 @@ body, html {
 a, input {
   outline: none; }
 
+.interject {
+  font-size: smaller;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: 400; }
+
 body::before {
   content: "";
   display: block;
@@ -22,13 +28,13 @@ body::before {
   z-index: -1; }
 
 header #sub-box, header #blurb {
-  background-color: rgba(255, 255, 255, 0.34);
-  padding: 14px 6px;
-  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2);
-  transition: all .4s; }
+  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
 header #sub-box {
+  background-color: rgba(255, 255, 255, 0.34);
   position: absolute;
-  top: 10px; }
+  padding: 14px 6px;
+  top: 25px;
+  left: calc(50vw + 260px); }
   header #sub-box a {
     color: black;
     text-decoration: none;
@@ -50,7 +56,89 @@ header #sub-box {
     border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
     padding: 6px;
     left: -6px; }
+header #main-box {
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
+  width: 500px;
+  margin: 0 auto 0 auto;
+  background-color: white;
+  margin-top: 25px; }
+  header #main-box #wordmark-link {
+    text-decoration: none;
+    color: black;
+    outline: 0; }
+    header #main-box #wordmark-link #wordmark {
+      padding-top: 20px;
+      padding-bottom: 10px;
+      text-align: center;
+      margin: 0; }
+      header #main-box #wordmark-link #wordmark .college-name {
+        font-size: 80px;
+        display: block; }
+      header #main-box #wordmark-link #wordmark .app-name {
+        font-weight: 400;
+        font-size: 35px;
+        position: relative;
+        font-variant: small-caps;
+        display: block; }
+      header #main-box #wordmark-link #wordmark .interject {
+        font-size: 28px; }
+      header #main-box #wordmark-link #wordmark .app-name::before {
+        content: '';
+        width: 35%;
+        margin: 0 32.5%;
+        left: 0;
+        height: 1px;
+        top: -5px;
+        background-color: black;
+        border-radius: 10px;
+        position: absolute;
+        transition: width .2s, height .2s, margin .2s, top .2s; }
+    header #main-box #wordmark-link #wordmark:hover .app-name::before {
+      width: 50%;
+      height: 3px;
+      top: -6px;
+      margin: 0 25%; }
+  header #main-box #college-info {
+    list-style-type: none;
+    display: flex;
+    transition: height .4s, margin .4s; }
+    header #main-box #college-info li {
+      font-size: 12px;
+      color: gray;
+      font-style: italic;
+      flex-grow: 1;
+      padding-bottom: 10px; }
+header #blurb {
+  width: 500px;
+  margin: 0 auto;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 17px;
+  color: #555555;
+  background-color: rgba(255, 255, 255, 0.7); }
+  header #blurb a {
+    width: 100%;
+    text-align: right;
+    display: block;
+    color: #222222;
+    margin-top: 5px;
+    font-size: 12px; }
 header #about, header #register {
   display: none; }
+
+main #search {
+  overflow: hidden;
+  transition: max-height .5s;
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: white;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+  transition: width 2s; }
+main #search.searching {
+  width: 550px; }
 
 /*# sourceMappingURL=newindex.css.map */

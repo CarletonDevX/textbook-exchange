@@ -11,6 +11,13 @@ a, input{
   outline: none;
 }
 
+.interject{
+  font-size: smaller;
+  font-style: italic;
+  font-variant: normal;
+  font-weight: 400;
+}
+
 body::before{
   content : "";
   display: block;
@@ -26,16 +33,18 @@ body::before{
 }
 
 header{
+  $init-top-margin: 25px;
+
   #sub-box, #blurb{
-    background-color:rgba(255,255,255,.34);
-    padding:14px 6px;
     box-shadow: 0px 1px 4px 1px rgba(0,0,0,.2);
-    transition: all .4s;
   }
 
   #sub-box{
+    background-color:rgba(255,255,255,.34);
     position:absolute;
-    top:10px;
+    padding:14px 6px;
+    top: $init-top-margin;
+    left: calc(50vw + 260px);
 
     a {
       color: black;
@@ -65,7 +74,127 @@ header{
     }
   }
 
+  #main-box{
+    box-shadow: 0 3px 7px 0 rgba(0,0,0,.2);
+    width: 500px;
+    margin: 0 auto 0 auto;
+    background-color: white;
+    margin-top: $init-top-margin;
+
+    #wordmark-link{
+      text-decoration: none;
+      color:black;
+      outline:0;
+
+      #wordmark{
+        padding-top:20px;
+        padding-bottom:10px;
+        text-align: center;
+        margin:0;
+
+        .college-name{
+          font-size: 80px;
+          // font-variant: small-caps;
+          display:block;
+        }
+
+        .app-name{
+          font-weight: 400;
+          font-size: 35px;
+          position: relative;
+          font-variant: small-caps;
+          display:block;
+        }
+
+        .interject{
+          font-size:28px;
+        }
+
+        // the line between college name and HTB
+        .app-name::before{
+          content: '';
+          width:35%;
+          margin: 0 32.5%;
+          left:0;
+          height: 1px;
+          top:-5px;
+          background-color: black;
+          border-radius: 10px;
+
+          position: absolute;
+          transition: width .2s,
+                      height .2s,
+                      margin .2s,
+                      top .2s;
+        }
+      }
+
+      #wordmark:hover{
+        .app-name::before{
+          width:50%;
+          height:3px;
+          top: -6px;
+          margin: 0 25%;
+        }
+      }
+    }
+
+    #college-info{
+      list-style-type: none;
+      display:flex;
+      transition: height .4s, margin .4s;
+
+      li{
+        font-size: 12px;
+        color:gray;
+        font-style: italic;
+        flex-grow: 1;
+        padding-bottom: 10px;
+      }
+    }
+  }
+  
+  
+  #blurb{
+    width: 500px;
+    margin: 0 auto;
+    padding:15px;
+    box-sizing: border-box;
+    font-size: 17px;
+    color: rgb(85, 85, 85);
+    background-color:rgba(255,255,255,.7);
+
+    a {
+      width: 100%;
+      text-align: right;
+      display: block;
+      color: rgb(34, 34, 34);
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+
   #about, #register{
     display:none;
+  }
+}
+
+main{
+  #search{
+    overflow: hidden;
+    transition: max-height .5s;
+    box-shadow: 0px 5px 10px 0px rgba(0,0,0,.3);
+    z-index: 10;
+    padding:20px;
+    box-sizing: border-box;
+    background-color:white;
+    text-align: center;
+    width: 500px;
+    margin: 0 auto;
+    transition: width 2s;
+  }
+
+  #search.searching{
+    width: 550px;
   }
 }
