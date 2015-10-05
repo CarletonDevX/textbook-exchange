@@ -146,7 +146,7 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 	$scope.resetInitSearch = function(){ initSearch = false }
 
 	$scope.initSearch = function(){
-		if (!initSearch and $scope.searchInput) {
+		if (!initSearch && $scope.searchInput) {
 			initSearch = true;
 			$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
 		}

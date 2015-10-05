@@ -218,7 +218,6 @@ header{
 main{
   #search{
     overflow: hidden;
-    transition: max-height .5s;
     box-shadow: 0px 5px 10px 0px rgba(0,0,0,.3);
     z-index: 10;
     padding:20px;
@@ -231,7 +230,7 @@ main{
 
     label{
       font-family: 'Droid Serif';
-      font-size: 24px;
+      font-size: 18px;
     }
 
     #search-box{
@@ -239,7 +238,7 @@ main{
       text-align: center;
       outline: none;
       font-family: 'Droid Serif';
-      font-size: 24px;
+      font-size: 18px;
       border-bottom: solid 2px black;
       width: 10em;
       margin: 20px;
