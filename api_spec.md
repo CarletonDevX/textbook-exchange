@@ -15,10 +15,10 @@ Communist calls have been implemented already.
 	- ☭ Get statistics for current school:
 	`GET hitsthebooks.com/api/schoolStats`
 - Users
- 	- Register/create a user (with username and password):
+ 	- ☭ Register/create a user (with username and password):
 	`POST hitsthebooks.com/api/register`
-	- Verify a user (with username and verifier):
-	`POST hitsthebooks.com/api/verify`
+	- ☭ Verify a user with user ID (with verifier string):
+	`POST hitsthebooks.com/api/verify/id`
 	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`
 	- ☭ Update current user (with user details) [Requires auth]: 

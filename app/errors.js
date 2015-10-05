@@ -46,6 +46,9 @@ var mongoError = function (req, res, err) {
   for (var name in err.errors) {
       messages.push(err.errors[name].message);
   }
+  if (err.message) {
+    messages.push(err.message);
+  }
   res.json({errors: messages});
 }
 
