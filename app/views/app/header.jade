@@ -1,5 +1,5 @@
-header(ng-class="\
-  {\
+header(ng-controller="headerController",
+  ng-class="{\
     'minimized'    : !is('main'),\
     'home-view'    : is('main')\
   }")
@@ -19,7 +19,8 @@ header(ng-class="\
   div#blurb
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
     | By Carls for Carls. 
-    a(href="#aboute") Learn more...
+    a(class="toAbout", href="#about") Learn more...
+    a(class="close", ng-click="closeBlurb()") ×
   div#sub-box
     a(href="#about") About
     a(href="#register") Sign in or Register

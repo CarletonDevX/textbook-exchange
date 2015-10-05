@@ -117,9 +117,14 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 })
 
 
+hitsTheBooks.controller('headerController', function($scope, $state, $document) {
+	$scope.closeBlurb = function(){
+		$("#blurb").addClass("hidden");
+	}
+})
 
 hitsTheBooks.controller('mainController', function($scope, $state, $document) {
-	var streamSearchDelay = 200;//ms
+	var streamSearchDelay = 200; //ms
 	var initSearch = false;
 
 	//inject the query if we init on the search page
