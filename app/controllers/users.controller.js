@@ -118,7 +118,7 @@ exports.updateUser = function (req, res, next) {
     }
 };
 
-exports.deleteUser = function (req, res, next) {
+exports.removeUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {
         if (!err) {

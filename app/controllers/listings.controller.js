@@ -123,6 +123,26 @@ exports.removeListing = function (req, res, next) {
     }
 };
 
+exports.removeListings = function (req, res, next) {
+    var listings = req.rListings;
+    var listingIDs = [];
+    for (var i = 0; i < listings.length; i++) {
+        var listing = listings[i];
+        if (req.user._id != listing.userID) {
+            Error.errorWithStatus(req, res, 401, 'Unauthorized to delete listing.');
+            return;
+        }
+        listingIDs.push(listing._id);
+    };
+    Listing.remove({_id: {$in: listingIDs}}, function(err) {
+        if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+};
+
 exports.completeListing = function (req, res, next) {
     var user = req.rUser;
     var listing = req.rListing;

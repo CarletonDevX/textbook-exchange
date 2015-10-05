@@ -119,7 +119,11 @@ exports.setup = function(app) {
     // Delete current user
         .delete(authenticate,
                 users.getCurrentUser,
-                users.deleteUser);
+                listings.getUserListings,
+                offers.getOffersForListings,
+                offers.removeOffers,
+                listings.removeListings,
+                users.removeUser);
 
     // Get user with user ID
     app.route('/api/user/:userID')
