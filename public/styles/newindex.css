@@ -50,7 +50,7 @@ header #sub-box {
     height: 100%;
     bottom: -2px;
     left: 0;
-    border-bottom: solid rgba(41, 255, 53, 0.25) 5px;
+    border-bottom: solid rgba(41, 255, 53, 0.25) 3px;
     z-index: -1;
     transition: border 0.2s, padding 0.2s, left 0.2s; }
   header #sub-box a:hover::before {
