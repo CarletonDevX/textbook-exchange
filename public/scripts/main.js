@@ -146,7 +146,7 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 	$scope.resetInitSearch = function(){ initSearch = false }
 
 	$scope.initSearch = function(){
-		if (!initSearch) {
+		if (!initSearch and $scope.searchInput) {
 			initSearch = true;
 			$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
 		}
@@ -154,8 +154,9 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 
 	//when typing, perform a throttled search
 	$scope.streamSearch = debounce(function(){
-		console.log("queried", $scope.searchInput)
-		$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+		if($scope.searchInput) {
+			$state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+		}
 	},streamSearchDelay);
 
 });
