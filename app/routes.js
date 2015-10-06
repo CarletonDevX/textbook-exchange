@@ -17,27 +17,26 @@ var authenticate = function (req, res, next) {
     }
 }
 
-exports.setup = function(app) {
-
-    // Main page
-    app.get('/', function (req, res) {
-        res.redirect('/app/');
-    });
-
-    // Workin on dem angular stuff inside /app/whatever
-    app.route('/app/*')
+exports.setupMain = function (app) {
+    // Main page, in a separate function so it doesn't get buried at the bottom of the file.
+    // Only reached if no other routes are engaged (see server.js)
+    app.route('/*')
         .get(users.countUsers,
              listings.countListings,
              offers.countOffers,
              function (req, res) {
-                res.render('app/index.jade', {
+                res.render('index.jade', {
                     numListings: req.rSchoolStats.numListings,
                     numOffers: req.rSchoolStats.numOffers,
                     numUsers: req.rSchoolStats.numUsers
                 });
              }); 
+}
+
+exports.setup = function (app) {
+
     app.get('/partials/:partial', function (req, res) {
-        res.render('app/partials/'+req.params.partial+'.jade',{});
+        res.render('partials/'+req.params.partial+'.jade',{});
     });
 
     // db stuff for testing

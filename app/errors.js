@@ -14,22 +14,11 @@ var ajaxErrorHandler = function (err, req, res, next) {
 };
 
 var endOfWorld = function (err, req, res, next) {
-  res.status(500).render('error', {
-    status: 500,
-    heading: 'Server Error',
-    message: 'Sorry, something went wrong. Please try again.'
-  });
+  res.status(500).send({ errors: ['Sorry, something went wrong. Please try again.'] });
 };
 
 var send404 = function (req, res, next){
   res.status(404);
-
-  // respond with html page
-  if (req.accepts('html')) {
-    return res.status(404).render('error', {
-      message: "404: we goofed"
-    });
-  }
 
   // respond with json
   if (req.accepts('json')) {
