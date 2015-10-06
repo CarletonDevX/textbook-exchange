@@ -13,8 +13,8 @@ div#search(ng-class="\
     input#search-box(type="text",
              ng-model="searchInput",
              ng-focus="resetInitSearch()"
-             ng-change="initSearch();streamSearch();resizeSearchBox($event)",
-             ng-htb-keypress="{13:'search()'}"
+             ng-change="updateSearchBox();search()",
+             ng-htb-keypress="{13:'classicSearch()'}"
              placeholder="ISBN")
     //- TODO: using ng-model searchInput is most-def not the best way to do this.
     //- a(ui-sref="main.search({query: searchInput})") Search

@@ -151,18 +151,19 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 
   $scope.$on('$stateChangeStart', 
   function(event, toState, toParams, fromState, fromParams){
+    //if we're heading home, erase the search box
     if (toState.name=="main"){
-      $('input#search-box').val('')
+      //while this ↴ looks superfluous, it's necessary to change
+      //the input value in time for updateSearchBox to resize.
+      $('input#search-box').val('');
+      $scope.searchInput = '';
+      $scope.updateSearchBox();
     }
   })
 
-  $scope.resizeSearchBox = function(){
-    var $this = $('input#search-box');
-    $this.width($this.textWidth()+25);
-  }
-  
+
   //the classic type and hit [enter] search
-  $scope.search = function() {
+  $scope.classicSearch = function() {
     if (!initSearch && $scope.searchInput) {
       $state.go('main.search',{query:$scope.searchInput})
     }
@@ -170,20 +171,31 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
   
   $scope.resetInitSearch = function(){ initSearch = false }
 
-  $scope.initSearch = function(){
-    if (!initSearch && $scope.searchInput) {
-      initSearch = true;
+  //when typing, perform a throttled search
+  var streamSearch = debounce(function(){
       $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+  },streamSearchDelay);
+
+  $scope.updateSearchBox = function() {
+    var $this = $('input#search-box');
+    $this.width($this.textWidth()+25);
+  }
+
+  $scope.search = function(){
+    if ($scope.searchInput){
+      streamSearch();
+      if(!initSearch) {
+        initSearch = true;
+        $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+      }
     }
   }
 
-  //when typing, perform a throttled search
-  $scope.streamSearch = debounce(function(){
-    if($scope.searchInput) {
-      $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
-    }
-  },streamSearchDelay);
-
+  //this is absolutely absolutely gross.
+  //TODO: Find something tastier.
+  setTimeout(function(){
+    $scope.updateSearchBox();
+  }, 1);
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
