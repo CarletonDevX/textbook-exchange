@@ -173,7 +173,9 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 
   //when typing, perform a throttled search
   var streamSearch = debounce(function(){
+    if ($scope.searchInput){
       $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
+    }
   },streamSearchDelay);
 
   $scope.updateSearchBox = function() {
@@ -193,9 +195,9 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
 
   //this is absolutely absolutely gross.
   //TODO: Find something tastier.
-  setTimeout(function(){
-    $scope.updateSearchBox();
-  }, 1);
+  // setTimeout(function(){
+  //   $scope.updateSearchBox();
+  // }, 1);
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {

@@ -27,183 +27,188 @@ body::before {
   opacity: .5;
   z-index: -1; }
 
-header #sub-box, header #blurb {
-  box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
-
-header #sub-box {
-  background-color: rgba(255, 255, 255, 0.34);
-  position: absolute;
-  padding: 14px 6px;
-  top: 25px;
-  left: calc(50vw + 260px); }
-  header #sub-box a {
-    color: black;
-    text-decoration: none;
-    margin: 10px;
-    position: relative;
-    font-size: 12px;
-    z-index: 1; }
-  header #sub-box a::before {
-    content: '';
+header {
+  transition: height 0.2s; }
+  header #sub-box, header #blurb {
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
+  header #sub-box {
+    background-color: rgba(255, 255, 255, 0.34);
     position: absolute;
-    width: 100%;
-    height: 100%;
-    bottom: -2px;
-    left: 0;
-    border-bottom: solid rgba(41, 255, 53, 0.25) 3px;
-    z-index: -1;
-    transition: border 0.2s, padding 0.2s, left 0.2s; }
-  header #sub-box a:hover::before {
-    border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
-    padding: 6px;
-    left: -6px; }
-
-header #main-box {
-  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
-  width: 500px;
-  margin: 25px auto 15px auto;
-  background-color: white; }
-  header #main-box #wordmark-link {
-    text-decoration: none;
-    color: black;
-    outline: 0; }
-    header #main-box #wordmark-link #wordmark {
-      padding-top: 20px;
-      padding-bottom: 10px;
-      text-align: center;
-      margin: 0; }
-      header #main-box #wordmark-link #wordmark .college-name {
-        font-size: 80px;
-        display: block; }
-      header #main-box #wordmark-link #wordmark .app-name {
-        font-weight: 400;
-        font-size: 35px;
-        position: relative;
-        font-variant: small-caps;
-        display: block; }
-      header #main-box #wordmark-link #wordmark .interject {
-        font-size: 28px; }
-      header #main-box #wordmark-link #wordmark .app-name::before {
-        content: '';
-        width: 35%;
-        margin: 0 32.5%;
-        left: 0;
-        height: 1px;
-        top: -5px;
-        background-color: black;
-        border-radius: 10px;
-        position: absolute;
-        transition: width 0.2s, height 0.2s, margin 0.2s, top 0.2s; }
-    header #main-box #wordmark-link #wordmark:hover .app-name::before {
-      width: 50%;
-      height: 3px;
-      top: -6px;
-      margin: 0 25%; }
-  header #main-box #college-info {
-    list-style-type: none;
-    display: flex;
-    transition: height 0.4s, margin 0.4s;
-    margin: 0;
-    padding: 0; }
-    header #main-box #college-info li {
+    padding: 14px 6px;
+    top: 25px;
+    left: calc(50vw + 260px); }
+    header #sub-box a {
+      color: black;
+      text-decoration: none;
+      margin: 10px;
+      position: relative;
       font-size: 12px;
-      color: gray;
-      flex-grow: 1;
-      padding: 10px 0;
-      text-align: center; }
+      z-index: 1; }
+    header #sub-box a::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: -2px;
+      left: 0;
+      border-bottom: solid rgba(41, 255, 53, 0.25) 3px;
+      z-index: -1;
+      transition: border 0.2s, padding 0.2s, left 0.2s; }
+    header #sub-box a:hover::before {
+      border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
+      padding: 6px;
+      left: -6px; }
+  header #main-box {
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
+    width: 500px;
+    margin: 25px auto 15px auto;
+    background-color: white; }
+    header #main-box #wordmark-link {
+      text-decoration: none;
+      color: black;
+      outline: 0; }
+      header #main-box #wordmark-link #wordmark {
+        padding-top: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+        margin: 0; }
+        header #main-box #wordmark-link #wordmark .college-name {
+          font-size: 80px;
+          display: block; }
+        header #main-box #wordmark-link #wordmark .app-name {
+          font-weight: 400;
+          font-size: 35px;
+          position: relative;
+          font-variant: small-caps;
+          display: block; }
+        header #main-box #wordmark-link #wordmark .interject {
+          font-size: 28px; }
+        header #main-box #wordmark-link #wordmark .app-name::before {
+          content: '';
+          width: 35%;
+          margin: 0 32.5%;
+          left: 0;
+          height: 1px;
+          top: -5px;
+          background-color: black;
+          border-radius: 10px;
+          position: absolute;
+          transition: width 0.2s, height 0.2s, margin 0.2s, top 0.2s; }
+      header #main-box #wordmark-link #wordmark:hover .app-name::before {
+        width: 50%;
+        height: 3px;
+        top: -6px;
+        margin: 0 25%; }
+    header #main-box #college-info {
+      list-style-type: none;
+      display: flex;
+      transition: height 0.4s, margin 0.4s;
+      margin: 0;
+      padding: 0; }
+      header #main-box #college-info li {
+        font-size: 12px;
+        color: gray;
+        flex-grow: 1;
+        padding: 10px 0;
+        text-align: center; }
+  header #blurb {
+    width: 480px;
+    height: 65px;
+    margin: 0 auto 15px auto;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14.5px;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+    opacity: 1;
+    position: relative;
+    line-height: 130%;
+    transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin-bottom 0.2s; }
+    header #blurb a.toAbout {
+      color: #888;
+      margin-left: 5px; }
+    header #blurb a.toAbout:hover {
+      color: #555; }
+    header #blurb a.close {
+      position: absolute;
+      line-height: 110%;
+      top: 0;
+      right: 0;
+      font-size: 22px;
+      color: #AEAEAE;
+      text-align: center;
+      width: 20px;
+      height: 20px;
+      font-family: "Times New Roman", Serif; }
+    header #blurb a.close:hover {
+      cursor: pointer;
+      color: gray; }
+  header #blurb.hidden {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    margin-bottom: 0;
+    opacity: 0; }
+  header #about, header #register {
+    display: none; }
 
-header #blurb {
-  width: 480px;
-  height: 65px;
-  margin: 0 auto 15px auto;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14.5px;
-  color: #555;
-  background-color: rgba(255, 255, 255, 0.7);
-  overflow: hidden;
-  opacity: 1;
-  position: relative;
-  line-height: 130%;
-  transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin-bottom 0.2s; }
-  header #blurb a.toAbout {
-    color: #888;
-    margin-left: 5px; }
-  header #blurb a.toAbout:hover {
-    color: #555; }
-  header #blurb a.close {
-    position: absolute;
-    line-height: 110%;
-    top: 0;
-    right: 0;
-    font-size: 22px;
-    color: #AEAEAE;
-    text-align: center;
-    width: 20px;
-    height: 20px;
-    font-family: "Times New Roman", Serif; }
-  header #blurb a.close:hover {
-    cursor: pointer;
-    color: gray; }
-
-header #blurb.hidden {
-  width: 0px;
-  height: 0px;
-  padding: 0px;
+header.minimized {
   margin-bottom: 0;
-  opacity: 0; }
-
-header #about, header #register {
-  display: none; }
+  height: 100px;
+  overflow: hidden; }
 
 main #search {
   overflow: hidden;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   z-index: 10;
-  padding: 20px;
+  position: relative;
   box-sizing: border-box;
   background-color: white;
   text-align: center;
   width: 500px;
-  margin: 0 auto;
-  transition: width 0.2s; }
-  main #search #search-form #search-labels {
-    display: inline-block;
-    position: relative;
-    text-align: right; }
-    main #search #search-form #search-labels label {
-      font-size: 18px;
+  margin: 0 auto; }
+  main #search #search-form {
+    margin: 30px; }
+    main #search #search-form #search-labels {
       display: inline-block;
-      transition: opacity 0.2s, width 0.2s; }
-    main #search #search-form #search-labels label.pre-search {
-      opacity: 1;
-      width: 250px;
-      overflow: hidden;
-      white-space: nowrap; }
-    main #search #search-form #search-labels label.post-search {
-      opacity: 0;
-      position: absolute;
-      right: 0; }
-  main #search #search-form #search-box {
-    border: none;
-    text-align: center;
-    vertical-align: top;
-    outline: none;
-    font-size: 18px;
-    font-family: 'Droid Serif', Serif;
-    border-bottom: solid 2px black;
-    width: 70px;
-    min-width: 70px;
-    max-width: 300px;
-    margin: 0 20px;
-    text-overflow: ellipsis;
-    transition: width 0.2s; }
+      position: relative;
+      text-align: right; }
+      main #search #search-form #search-labels label {
+        font-size: 18px;
+        display: inline-block;
+        transition: opacity 0.2s, width 0.2s; }
+      main #search #search-form #search-labels label.pre-search {
+        opacity: 1;
+        width: 250px;
+        overflow: hidden;
+        white-space: nowrap; }
+      main #search #search-form #search-labels label.post-search {
+        opacity: 0;
+        position: absolute;
+        right: 0; }
+    main #search #search-form #search-box {
+      border: none;
+      text-align: center;
+      vertical-align: top;
+      outline: none;
+      font-size: 18px;
+      font-family: 'Droid Serif', Serif;
+      border-bottom: solid 2px black;
+      width: 70px;
+      min-width: 70px;
+      max-width: 300px;
+      margin: 0 20px;
+      text-overflow: ellipsis;
+      transition: width 0.2s; }
+  main #search #search-results {
+    overflow: hidden; }
   main #search #search-results ul {
     list-style-type: none;
     padding: 0; }
     main #search #search-results ul li {
       box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
-      width: 500px;
+      width: 490px;
       margin: 0 auto 30px auto;
       transition: box-shadow 0.1s; }
       main #search #search-results ul li div.preview {
@@ -247,13 +252,37 @@ main #search {
 main #search.home-view {
   width: 500px; }
   main #search.home-view #search-results {
-    height: 0;
-    overflow: hidden; }
+    height: 0; }
 
-main #search.searching {
-  width: 550px; }
-  main #search.searching #search-form #search-labels label.pre-search {
+main #search.searching, main #search.behind-detail {
+  width: 530px; }
+  main #search.searching #search-form #search-labels label.pre-search, main #search.behind-detail #search-form #search-labels label.pre-search {
     opacity: 0;
     width: 100px; }
-  main #search.searching #search-form #search-labels label.post-search {
+  main #search.searching #search-form #search-labels label.post-search, main #search.behind-detail #search-form #search-labels label.post-search {
     opacity: 1; }
+
+main #search.behind-detail #search-results {
+  height: 0; }
+
+main #detail-wrapper {
+  background-color: white;
+  width: 500px;
+  margin: 0 auto 40px auto;
+  padding: 20px;
+  position: relative;
+  z-index: 20;
+  overflow: hidden;
+  box-sizing: border-box; }
+
+main #detail-wrapper.minimized {
+  opacity: 0;
+  box-shadow: 0px 3px 10px 2px transparent;
+  height: 0;
+  margin-bottom: 0; }
+
+main #detail-wrapper.maximized {
+  width: 570px;
+  opacity: 1;
+  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
+  height: auto; }
