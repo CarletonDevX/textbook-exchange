@@ -176,7 +176,7 @@ exports.formatUserListings = function (req, res) {
 }
 
 exports.formatSingleListing = function (req, res) {
-    var lstng = req.rListing;
+    var lstng = req.rListings[0];
     if (!lstng) {
       res.status(404).send('Listing not found by those conditions.');
     }

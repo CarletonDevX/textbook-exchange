@@ -224,9 +224,9 @@ exports.setup = function (app) {
     // Remove listing with listing ID
         .delete(authenticate,
                 listings.getListing,
-                offers.getOffersForListing,
+                offers.getOffersForListings,
                 offers.removeOffers,
-                listings.removeListing,
+                listings.removeListings,
                 responder.successRemoveListing);
 
     // Make an offer on a listing
@@ -236,7 +236,7 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.getOffersForListing,
+              offers.getOffersForListings,
               offers.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
