@@ -1,4 +1,5 @@
 var User = require('mongoose').model('users'),
+    Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
     avatars = require('../config/avatars'),
@@ -70,7 +71,9 @@ exports.createUser = function (req, res, next) {
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.body.verifier;
-    if (verifier == user.verifier) {
+    if (verifier != user.verifier) {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
+    } else {
         user.verified = true;
 
         // Update is used to prevent re-hashing of password
@@ -84,8 +87,6 @@ exports.verifyUser = function (req, res, next) {
                 Error.mongoError(req, res, err);
             }
         });
-    } else {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     }
 }
 
@@ -127,6 +128,30 @@ exports.removeUser = function (req, res, next) {
             Error.mongoError(req, res, err);
         }
     });
+}
+
+exports.reportUser = function (req, res, next) {
+    var user = req.rUser;
+    var description = req.body.description;
+    if (!description) {
+        Error.errorWithStatus(req, res, 400, 'Must include "description" attribute.');
+    } else {
+        var report = new Report({
+            "userID": user._id,
+            "reporterID": req.user._id,
+            "description": description,
+            "created": new Date()
+        });
+        user.reports.push(report);
+        user.save(function(err, user) {
+            if (!err) {
+                req.rUser = user;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
 }
 
 exports.getUser = function (req, res, next) {

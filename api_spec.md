@@ -11,9 +11,11 @@ Communist calls have been implemented already.
 	`POST hitsthebooks.com/api/login`
 	- ☭ [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 	`POST hitsthebooks.com/api/logout`
+	
 - Schools
 	- ☭ Get statistics for current school:
 	`GET hitsthebooks.com/api/schoolStats`
+	
 - Users
  	- ☭ Register/create a user (with username and password):
 	`POST hitsthebooks.com/api/register`
@@ -27,6 +29,11 @@ Communist calls have been implemented already.
 	`DELETE hitsthebooks.com/api/user`
 	- ☭ Get user with user ID:
 	`GET hitsthebooks.com/api/user/id`	
+	
+- Reports
+	- ☭ Report a user with user ID (with report details) [Requires auth]:
+	`POST hitsthebooks.com/api/report/id`
+	
 - Subscriptions
 	- ☭ Get subscriptions of current user [Requires auth]:
 	`GET hitsthebooks.com/api/subscriptions`

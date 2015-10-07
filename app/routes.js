@@ -131,6 +131,15 @@ exports.setup = function (app) {
              inject.BooksIntoListings,
              responder.formatUser);
 
+    /* Reports */
+
+    // Report user with user ID
+    app.route('/api/report/:userID')
+        .post(authenticate,
+             users.getUser,
+             users.reportUser,
+             responder.successReport);
+
     /* Subscriptions */
 
     // Get subscriptions of current user

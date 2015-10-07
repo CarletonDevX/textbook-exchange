@@ -40,6 +40,9 @@ var reportSchema = new Schema({
     created: { type: Date, required: true }
 });
 
+// Add schema to db
+mongoose.model('reports', reportSchema, 'reports');
+
 var UserSchema = new Schema({
     name: {
         givenName: String,
