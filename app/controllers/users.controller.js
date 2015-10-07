@@ -76,13 +76,13 @@ exports.verifyUser = function (req, res, next) {
     } else {
         user.verified = true;
 
-        // Update is used to prevent re-hashing of password
+        // Use Update to prevent re-hashing of password
         User.update(
         {_id: user._id},
         {verified : true},
         function (err, result) {
             if (!err) {
-                res.status(200).send("User verified.");
+                next();
             } else {
                 Error.mongoError(req, res, err);
             }
@@ -123,7 +123,7 @@ exports.removeUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {
         if (!err) {
-            res.status(200).send("User deleted.");
+            next();
         } else {
             Error.mongoError(req, res, err);
         }
@@ -231,7 +231,7 @@ exports.clearUserSubscriptions = function (req, res, next) {
     user.subscriptions = [];
     user.save(function(err) {
         if (!err) {
-            res.status(200).send("Subscriptions cleared.");
+            next();
         } else {
             Error.mongoError(req, res, err);
         }
@@ -243,22 +243,22 @@ exports.clearUserSubscriptions = function (req, res, next) {
 *************/
 
 // Verify an account with a given provider ID
-exports.verify = function (req, res, next) {
-    User.update(
-        {email: req.query.email, providerId: req.query.id},
-        {verified : true},
-        function(err, result) {
-            if (!err) {
-                if (result.nModified > 0) {
-                    req.flash('alert', 'Your account has been verified.');
-                }
-                return res.redirect('/');
-            } else {
-                req.flash('error', getErrorMessage(err));
-                return res.redirect('/');
-            }
-        });
-};
+// exports.verify = function (req, res, next) {
+//     User.update(
+//         {email: req.query.email, providerId: req.query.id},
+//         {verified : true},
+//         function(err, result) {
+//             if (!err) {
+//                 if (result.nModified > 0) {
+//                     req.flash('alert', 'Your account has been verified.');
+//                 }
+//                 return res.redirect('/');
+//             } else {
+//                 req.flash('error', getErrorMessage(err));
+//                 return res.redirect('/');
+//             }
+//         });
+// };
 
 // Return a user with the profile ID if it exists, else create a new one
 exports.saveOAuthUserProfile = function (req, profile, done) {

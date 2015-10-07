@@ -13,6 +13,18 @@ exports.formatSchoolStats = function (req, res) {
 
 /** USERS **/
 
+exports.successVerify = function (req, res) {
+  res.status(200).send("User verified.");
+}
+
+exports.successRemoveUser = function (req, res) {
+  res.status(200).send("User deleted.");
+}
+
+exports.successClearSubscriptions = function (req, res) {
+  res.status(200).send("Subscriptions cleared.");
+}
+
 exports.formatCurrentUser = function (req, res) {
     // Case with no listings
     if (!req.rListings) req.rListings = [];
@@ -25,7 +37,6 @@ exports.formatCurrentUser = function (req, res) {
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
             "name": req.rUser.name,
-         "reports": req.rUser.reports,
    "subscriptions": req.rUser.subscriptions
     }
 
@@ -66,7 +77,6 @@ exports.formatUser = function (req, res) {
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
             "name": req.rUser.name,
-         "reports": req.rUser.reports
     }
 
     var listings = [];
@@ -107,6 +117,11 @@ exports.successReport = function (req, res) {
 }
 
 /** LISTINGS **/
+
+
+exports.successRemoveListing = function (req, res) {
+  res.status(200).send("Listing deleted.");
+}
 
 exports.formatBookListings = function (req, res) {
     var listings = [];

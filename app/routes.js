@@ -95,8 +95,9 @@ exports.setup = function (app) {
     // Verify a user with user ID
     app.route('/api/verify/:userID')
         .post(users.getUser,
-             users.verifyUser
+             users.verifyUser,
              //login?
+             responder.successVerify
              );
 
     // Get current user
@@ -122,7 +123,8 @@ exports.setup = function (app) {
                 offers.getOffersForListings,
                 offers.removeOffers,
                 listings.removeListings,
-                users.removeUser);
+                users.removeUser,
+                responder.successRemoveUser);
 
     // Get user with user ID
     app.route('/api/user/:userID')
@@ -152,7 +154,8 @@ exports.setup = function (app) {
     app.route('/api/subscriptions/clear')
         .post(authenticate,
              users.getCurrentUser,
-             users.clearUserSubscriptions);
+             users.clearUserSubscriptions,
+             responder.successClearSubscriptions);
 
     // Subscribe current user to book with book ID
     app.route('/api/subscriptions/add/:ISBN')
@@ -223,7 +226,8 @@ exports.setup = function (app) {
                 listings.getListing,
                 offers.getOffersForListing,
                 offers.removeOffers,
-                listings.removeListing);
+                listings.removeListing,
+                responder.successRemoveListing);
 
     // Make an offer on a listing
     app.route('/api/listings/offer/:listingID')

@@ -115,7 +115,7 @@ exports.removeListing = function (req, res, next) {
     } else {
         Listing.remove({_id: listing._id}, function(err) {
             if (!err) {
-                res.status(200).send("Listing deleted.");
+                next();
             } else {
                 Error.mongoError(req, res, err);
             }
