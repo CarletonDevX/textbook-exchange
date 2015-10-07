@@ -2,7 +2,7 @@
 
 /** SCHOOLS **/
 
-exports.formatSchoolStats = function(req, res) {
+exports.formatSchoolStats = function (req, res) {
     var stats = {
       "numUsers": req.rSchoolStats.numUsers,
       "numListings": req.rSchoolStats.numListings,
@@ -13,7 +13,19 @@ exports.formatSchoolStats = function(req, res) {
 
 /** USERS **/
 
-exports.formatCurrentUser = function(req, res) {
+exports.successVerify = function (req, res) {
+  res.status(200).send("User verified.");
+}
+
+exports.successRemoveUser = function (req, res) {
+  res.status(200).send("User deleted.");
+}
+
+exports.successClearSubscriptions = function (req, res) {
+  res.status(200).send("Subscriptions cleared.");
+}
+
+exports.formatCurrentUser = function (req, res) {
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -25,7 +37,6 @@ exports.formatCurrentUser = function(req, res) {
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
             "name": req.rUser.name,
-         "reports": req.rUser.reports,
    "subscriptions": req.rUser.subscriptions
     }
 
@@ -55,7 +66,7 @@ exports.formatCurrentUser = function(req, res) {
     res.json(user);
 }
 
-exports.formatUser = function(req, res) {
+exports.formatUser = function (req, res) {
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -66,7 +77,6 @@ exports.formatUser = function(req, res) {
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
             "name": req.rUser.name,
-         "reports": req.rUser.reports
     }
 
     var listings = [];
@@ -95,14 +105,25 @@ exports.formatUser = function(req, res) {
     res.json(user);
 }
 
-exports.formatSubscriptions = function(req, res) {
+exports.formatSubscriptions = function (req, res) {
     var subscriptions = req.rUser.subscriptions;
     res.json(subscriptions);
 }
 
+/** REPORTS **/
+
+exports.successReport = function (req, res) {
+  res.status(200).send("Report submitted.");
+}
+
 /** LISTINGS **/
 
-exports.formatBookListings = function(req, res) {
+
+exports.successRemoveListing = function (req, res) {
+  res.status(200).send("Listing deleted.");
+}
+
+exports.formatBookListings = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
@@ -128,7 +149,7 @@ exports.formatBookListings = function(req, res) {
     res.json(listings);
 }
 
-exports.formatUserListings = function(req, res) {
+exports.formatUserListings = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
@@ -154,7 +175,7 @@ exports.formatUserListings = function(req, res) {
     res.json(listings);
 }
 
-exports.formatSingleListing = function(req, res) {
+exports.formatSingleListing = function (req, res) {
     var lstng = req.rListing;
     if (!lstng) {
       res.status(404).send('Listing not found by those conditions.');
@@ -189,7 +210,7 @@ exports.formatOffer = function (req, res) {
 
 /** BOOKS **/
 
-exports.formatBook = function(req, res) {
+exports.formatBook = function (req, res) {
     var book = { 
                 "ISBN": req.rBook.ISBN, 
           "amazonInfo": req.rBook.amazonInfo,

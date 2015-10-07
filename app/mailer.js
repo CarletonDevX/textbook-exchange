@@ -2,7 +2,7 @@
 var sender = require('./config/nodemailer'),
 	User = require('mongoose').model('users'),
     Error = require('./errors'),
-    config = require('./config/config');
+    config = require('./config/config')();
 
 exports.sendRegistrationEmail = function (req, res, next) {
 	var user = req.rUser;
