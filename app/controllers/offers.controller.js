@@ -43,6 +43,22 @@ exports.getOffersForListing = function (req, res, next) {
     });
 }
 
+exports.getOffersForListings = function (req, res, next) {
+    var listings = req.rListings;
+    var listingIDs = [];
+    for (var i = 0; i < listings.length; i++) {
+        listingIDs.push(listings[i]._id);
+    };
+    Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
+        if (!err) {
+            req.rOffers = offers;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.makeOffer = function (req, res, next) {
     var listing = req.rListing;
     var user = req.rUser;

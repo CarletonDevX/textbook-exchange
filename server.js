@@ -66,6 +66,7 @@ app.use(errorHandlers.endOfWorld);
 
 // Our routes
 routes.setup(app);
+routes.setupMain(app);
 
 app.use(errorHandlers.send404);
 

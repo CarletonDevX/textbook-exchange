@@ -1,4 +1,5 @@
 var User = require('mongoose').model('users'),
+    Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
     avatars = require('../config/avatars'),
@@ -42,7 +43,7 @@ exports.createUser = function (req, res, next) {
         return;
     }
 
-    var newUser = new User({"email": email, "password": password});
+    var newUser = new User({"email": email, "password": password, "created": new Date()});
     newUser.verified = false;
     newUser.provider = 'local';
     var md5 = crypto.createHash('md5');
@@ -54,8 +55,8 @@ exports.createUser = function (req, res, next) {
     if (info.bio) newUser.bio = info.bio;
     if (info.gradYear) newUser.gradYear = info.gradYear;
 
-    avatars.getAvatarWithID(null, function (image) {
-        newUser.avatar = image;
+    // avatars.getAvatarWithID(null, function (image) {
+    //     newUser.avatar = image;
         newUser.save(function(err, user) {
             if (!err) {
                 req.rUser = user;
@@ -64,28 +65,28 @@ exports.createUser = function (req, res, next) {
                 Error.mongoError(req, res, err);
             }
         });
-    });
+    // });
 }
 
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.body.verifier;
-    if (verifier == user.verifier) {
+    if (verifier != user.verifier) {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
+    } else {
         user.verified = true;
 
-        // Update is used to prevent re-hashing of password
+        // Use Update to prevent re-hashing of password
         User.update(
         {_id: user._id},
         {verified : true},
         function (err, result) {
             if (!err) {
-                res.status(200).send("User verified.");
+                next();
             } else {
                 Error.mongoError(req, res, err);
             }
         });
-    } else {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     }
 }
 
@@ -118,15 +119,39 @@ exports.updateUser = function (req, res, next) {
     }
 };
 
-exports.deleteUser = function (req, res, next) {
+exports.removeUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {
         if (!err) {
-            res.status(200).send("User deleted.");
+            next();
         } else {
             Error.mongoError(req, res, err);
         }
     });
+}
+
+exports.reportUser = function (req, res, next) {
+    var user = req.rUser;
+    var description = req.body.description;
+    if (!description) {
+        Error.errorWithStatus(req, res, 400, 'Must include "description" attribute.');
+    } else {
+        var report = new Report({
+            "userID": user._id,
+            "reporterID": req.user._id,
+            "description": description,
+            "created": new Date()
+        });
+        user.reports.push(report);
+        user.save(function(err, user) {
+            if (!err) {
+                req.rUser = user;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
 }
 
 exports.getUser = function (req, res, next) {
@@ -206,7 +231,7 @@ exports.clearUserSubscriptions = function (req, res, next) {
     user.subscriptions = [];
     user.save(function(err) {
         if (!err) {
-            res.status(200).send("Subscriptions cleared.");
+            next();
         } else {
             Error.mongoError(req, res, err);
         }
@@ -218,22 +243,22 @@ exports.clearUserSubscriptions = function (req, res, next) {
 *************/
 
 // Verify an account with a given provider ID
-exports.verify = function (req, res, next) {
-    User.update(
-        {email: req.query.email, providerId: req.query.id},
-        {verified : true},
-        function(err, result) {
-            if (!err) {
-                if (result.nModified > 0) {
-                    req.flash('alert', 'Your account has been verified.');
-                }
-                return res.redirect('/');
-            } else {
-                req.flash('error', getErrorMessage(err));
-                return res.redirect('/');
-            }
-        });
-};
+// exports.verify = function (req, res, next) {
+//     User.update(
+//         {email: req.query.email, providerId: req.query.id},
+//         {verified : true},
+//         function(err, result) {
+//             if (!err) {
+//                 if (result.nModified > 0) {
+//                     req.flash('alert', 'Your account has been verified.');
+//                 }
+//                 return res.redirect('/');
+//             } else {
+//                 req.flash('error', getErrorMessage(err));
+//                 return res.redirect('/');
+//             }
+//         });
+// };
 
 // Return a user with the profile ID if it exists, else create a new one
 exports.saveOAuthUserProfile = function (req, profile, done) {
