@@ -42,7 +42,7 @@ exports.createUser = function (req, res, next) {
         return;
     }
 
-    var newUser = new User({"email": email, "password": password});
+    var newUser = new User({"email": email, "password": password, "created": new Date()});
     newUser.verified = false;
     newUser.provider = 'local';
     var md5 = crypto.createHash('md5');
@@ -54,8 +54,8 @@ exports.createUser = function (req, res, next) {
     if (info.bio) newUser.bio = info.bio;
     if (info.gradYear) newUser.gradYear = info.gradYear;
 
-    avatars.getAvatarWithID(null, function (image) {
-        newUser.avatar = image;
+    // avatars.getAvatarWithID(null, function (image) {
+    //     newUser.avatar = image;
         newUser.save(function(err, user) {
             if (!err) {
                 req.rUser = user;
@@ -64,7 +64,7 @@ exports.createUser = function (req, res, next) {
                 Error.mongoError(req, res, err);
             }
         });
-    });
+    // });
 }
 
 exports.verifyUser = function (req, res, next) {
