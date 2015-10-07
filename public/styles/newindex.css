@@ -28,7 +28,8 @@ body::before {
   z-index: -1; }
 
 header {
-  transition: height 0.2s; }
+  transition: height 0.2s;
+  height: 212px; }
   header #sub-box, header #blurb {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
   header #sub-box {

@@ -36,6 +36,7 @@ $pane-spacing: 15px;
 
 header{
   transition: height .2s;
+  height: 212px;
   $init-top-margin: 25px;
 
   #sub-box, #blurb{
