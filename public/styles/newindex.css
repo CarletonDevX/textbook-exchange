@@ -104,7 +104,6 @@ header {
     header #main-box #college-info {
       list-style-type: none;
       display: flex;
-      transition: height 0.4s, margin 0.4s;
       margin: 0;
       padding: 0; }
       header #main-box #college-info li {
