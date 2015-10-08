@@ -23,6 +23,89 @@ var debounce = function (func, threshold, execAsap) {
   };
 };
 
+//wrapper for $.addClass, $.removeClass, $toggleClass
+$.fn.updateClasses = function(cAlter){
+  if (cAlter.add){
+    for (var i = cAlter.add.length - 1; i >= 0; i--) {
+      this.addClass(cAlter.add[i]);
+    }
+  }
+  if (cAlter.remove){
+    for (var i = cAlter.remove.length - 1; i >= 0; i--) {
+      this.removeClass(cAlter.remove[i]);
+    }
+  }
+  if (cAlter.toggle){
+    for (var i = cAlter.toggle.length - 1; i >= 0; i--) {
+      this.toggleClass(cAlter.toggle[i]);
+    }
+  }
+
+  return this;
+}
+
+//transition assist (to and from 'auto')
+$.fn.transist = function(classesToAlter, propsToHelp, transTime) {
+  /*
+  propsToHelp is a list of strings
+  classesToAlter = {'add':['classname','bla'], 'remove':['asfd'], 'toggle': ['as']}
+  */
+
+  var snapshot = function(element, props){
+    var $el = $(element);
+
+    var measurer =  { //things we know how to measure
+      top: $el.position().top + "px",
+      left: $el.position().left + "px",
+      height: $el.css("height"),
+      width: $el.css("width")
+    };
+
+    var snap = {}
+
+    for (var i = props.length - 1; i >= 0; i--) {
+      if (measurer[props[i]]){
+        snap[props[i]] = measurer[props[i]];
+      } else {
+        throw new Error("Sorry, transit doesn't know how to measure '"+props[i]+"'.");
+      }
+    };
+
+    return snap;
+  }
+
+  var $el = this;
+
+  // 1. Take a snapshot
+  originSnap = snapshot($el, propsToHelp);
+  
+  // 2. Copy element invisibly, applying styles
+  var $clone = $el.clone()
+                  .css({"visibility":"hidden", "transition":"none"})
+                  .updateClasses(classesToAlter)
+                  .appendTo($el.parent());
+
+  // 3. Take end snapshot of propsToHelp
+  targetSnap = snapshot($clone, propsToHelp);
+
+  // 4. Delete the invisible copy
+  $clone.remove();
+
+  // 5. Apply the origin snapshot to the actual element
+  $el.css(originSnap);
+  // a settimeout to get the css to register
+  setTimeout(function(){
+    //Apply the target snapshot and styles
+    $el.updateClasses(classesToAlter)
+       .css(targetSnap);
+    //Once transition is over, remove the target snapshot.
+    setTimeout(function(){
+      $el.removeAttr("style");
+    }, transTime)
+  },0)
+
+}
+
 //measure width of text, e.g. in input element
 //based on http://stackoverflow.com/a/18109656
 $.fn.textWidth = function(text, font) {
@@ -132,6 +215,25 @@ hitsTheBooks.controller('headerController', function($scope, $state, $document) 
   $scope.closeBlurb = function(){
     $("#blurb").addClass("hidden");
   }
+
+  // $('header').addClass($state.is('main')?'home-view':'minimized');
+
+  $scope.$on('$stateChangeStart', 
+  function(event, toState, toParams, fromState, fromParams){
+    if (toState.name=="main"){
+      $('#search-results').transist({'add':['minimized']},['height'],200);
+    }
+
+    if (toState.name !== "main"){
+      $('#search-results').transist({'remove':['minimized']},['height'],200)
+    }
+    //if we're heading home, erase the search box
+    if (toState.name=="main"){
+      $('header').transist({'remove':['minimized']},['height'],200)
+    } else if(fromState.name=="main"){
+      $('header').transist({'add':['minimized']},['height'],200)
+    }
+  })
 })
 
 hitsTheBooks.controller('mainController', function($scope, $state, $document) {
@@ -159,6 +261,7 @@ hitsTheBooks.controller('mainController', function($scope, $state, $document) {
       $scope.searchInput = '';
       $scope.updateSearchBox();
     }
+
   })
 
 

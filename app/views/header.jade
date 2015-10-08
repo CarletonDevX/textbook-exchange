@@ -1,8 +1,4 @@
-header(ng-controller="headerController",
-  ng-class="{\
-    'minimized'    : !is('main'),\
-    'home-view'    : is('main')\
-  }")
+header(ng-controller="headerController")
   div#main-box
     a#wordmark-link(ui-sref="main")
       //-  ui-sref-opts="{reload: true}" to forget prev search

@@ -29,7 +29,8 @@ body::before {
 
 header {
   transition: height 0.2s;
-  height: 212px; }
+  padding-bottom: 15px;
+  overflow: hidden; }
   header #sub-box, header #blurb {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
   header #sub-box {
@@ -62,7 +63,7 @@ header {
   header #main-box {
     box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
     width: 500px;
-    margin: 25px auto 15px auto;
+    margin: 25px auto 0 auto;
     background-color: white; }
     header #main-box #wordmark-link {
       text-decoration: none;
@@ -115,7 +116,7 @@ header {
   header #blurb {
     width: 480px;
     height: 65px;
-    margin: 0 auto 15px auto;
+    margin: 15px auto 0 auto;
     padding: 15px;
     box-sizing: border-box;
     font-size: 14.5px;
@@ -150,6 +151,7 @@ header {
     height: 0px;
     padding: 0px;
     margin-bottom: 0;
+    margin-top: 0;
     opacity: 0; }
   header #about, header #register {
     display: none; }
@@ -170,7 +172,8 @@ main #search {
   width: 500px;
   margin: 0 auto; }
   main #search #search-form {
-    margin: 30px; }
+    margin: 30px;
+    transition: margin 0.2s; }
     main #search #search-form #search-labels {
       display: inline-block;
       position: relative;
@@ -203,7 +206,10 @@ main #search {
       text-overflow: ellipsis;
       transition: width 0.2s; }
   main #search #search-results {
-    overflow: hidden; }
+    overflow: hidden;
+    transition: height 0.2s; }
+  main #search #search-results.minimized {
+    height: 0; }
   main #search #search-results ul {
     list-style-type: none;
     padding: 0; }
@@ -252,8 +258,6 @@ main #search {
 
 main #search.home-view {
   width: 500px; }
-  main #search.home-view #search-results {
-    height: 0; }
 
 main #search.searching, main #search.behind-detail {
   width: 530px; }
@@ -262,6 +266,9 @@ main #search.searching, main #search.behind-detail {
     width: 100px; }
   main #search.searching #search-form #search-labels label.post-search, main #search.behind-detail #search-form #search-labels label.post-search {
     opacity: 1; }
+
+main #search.behind-detail #search-form {
+  margin: 15px; }
 
 main #search.behind-detail #search-results {
   height: 0; }
