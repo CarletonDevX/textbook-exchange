@@ -57,7 +57,6 @@ var UserSchema = new Schema({
     providerId: String,
     providerData: {},
     subscriptions: [],
-    avatar: String,
     bio: String,
     gradYear: Number,
     reports: [reportSchema],

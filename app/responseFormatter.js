@@ -32,7 +32,6 @@ exports.formatCurrentUser = function (req, res) {
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
-          "avatar": req.rUser.avatar, 
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
@@ -72,7 +71,6 @@ exports.formatUser = function (req, res) {
 
     var user = {
           "userID": req.rUser._id, 
-          "avatar": req.rUser.avatar, 
              "bio": req.rUser.bio, 
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
@@ -129,7 +127,6 @@ exports.formatBookListings = function (req, res) {
         var lstng = req.rListings[i];
         var formattedUser = {
             "name": lstng.user.name,
-            "avatar": lstng.user.avatar,
             "gradYear": lstng.user.gradYear
         };
         var formattedListing = {
@@ -231,7 +228,6 @@ exports.formatBook = function (req, res) {
         var lstng = req.rListings[i];
         var formattedUser = {
             "name": lstng.user.name,
-            "avatar": lstng.user.avatar,
             "gradYear": lstng.user.gradYear
         };
         var formattedListing = {

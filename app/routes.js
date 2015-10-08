@@ -133,6 +133,16 @@ exports.setup = function (app) {
              inject.BooksIntoListings,
              responder.formatUser);
 
+    /* Avatars */
+
+    // Upload an avatar photo
+    app.route('/api/avatar')
+        .post(authenticate,
+            users.getCurrentUser,
+            users.updateAvatar,
+            responder.formatCurrentUser);
+
+
     /* Reports */
 
     // Report user with user ID

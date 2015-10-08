@@ -3,7 +3,22 @@ var User = require('mongoose').model('users'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
     avatars = require('../config/avatars'),
-    Error = require('../errors');
+    Error = require('../errors'),
+    multer = require('multer');
+
+// Multer setup for uploads
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'avatars/');
+  },
+  filename: function (req, file, cb) {
+    var ext = file.originalname.split(".").pop();
+    cb(null, req.rUser._id + "." + ext);
+  }
+});
+
+var upload = multer({ storage: storage }).single('file');
 
 // API Calls
 
@@ -51,21 +66,17 @@ exports.createUser = function (req, res, next) {
 
     // Optional details
     if (info.name) newUser.name = info.name;
-    if (info.avatar) newUser.avatar = info.avatar;
     if (info.bio) newUser.bio = info.bio;
     if (info.gradYear) newUser.gradYear = info.gradYear;
 
-    // avatars.getAvatarWithID(null, function (image) {
-    //     newUser.avatar = image;
-        newUser.save(function(err, user) {
-            if (!err) {
-                req.rUser = user;
-                next();
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
-    // });
+    newUser.save(function(err, user) {
+        if (!err) {
+            req.rUser = user;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
 }
 
 exports.verifyUser = function (req, res, next) {
@@ -96,6 +107,38 @@ exports.getCurrentUser = function (req, res, next) {
     next();
 }
 
+exports.updateAvatar = function (req, res, next) {
+    upload(req, res, function (err) {
+        if (err) {
+            Error.errorWithStatus(req, res, 400, err);
+            return;
+        } else {
+            next();
+        }
+    });
+    // var user = req.rUser;
+    // var avatar = req.file;
+    // user.avatar = avatar.destination + avatar.filename;
+
+    // user.save(function(err, user) {
+    //     if (!err) {
+    //         req.rUser = user;
+    //         next();
+    //     } else {
+    //         Error.mongoError(req, res, err);
+    //     }
+    // });
+    // // res.redirect('back');
+    // // var file = req.body.file;
+    // // if (!file) {
+    // //     Error.errorWithStatus(req, res, 400, 'Must include "file" attribute.');
+    // // } else {
+    // //     avatars.uploadAvatar(file, function (avatar) {
+    // //         next();
+    // //     });
+    // // }
+}
+
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
     if (req.user._id != user._id) {
@@ -104,7 +147,6 @@ exports.updateUser = function (req, res, next) {
         var updates = req.body;
         // Only these updates are allowed
         if (updates.name) user.name = updates.name;
-        if (updates.avatar) user.avatar = updates.avatar;
         if (updates.bio) user.bio = updates.bio;
         if (updates.gradYear) user.gradYear = updates.gradYear;
 
