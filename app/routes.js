@@ -42,11 +42,11 @@ exports.setup = function (app) {
     // db stuff for testing
     app.post('/clear', function (req, res) {
         data.clear();
-        res.status(200).send();
+        res.status(200).send('Database cleared.');
     });
     app.post('/populate', function (req, res) {
         data.populate();
-        res.status(200).send();
+        res.status(200).send('Database populated.');
     });
 
     /****

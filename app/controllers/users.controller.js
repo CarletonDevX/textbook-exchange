@@ -58,11 +58,14 @@ exports.createUser = function (req, res, next) {
         return;
     }
 
-    var newUser = new User({"email": email, "password": password, "created": new Date()});
-    newUser.verified = false;
-    newUser.provider = 'local';
+    var newUser = new User({"email": email, "created": new Date()});
+
     var md5 = crypto.createHash('md5');
     newUser.verifier = md5.update((Math.random()*100).toString()).digest('hex');
+    newUser.password = md5.update(password).digest('hex');
+
+    newUser.verified = false;
+    newUser.provider = 'local';
 
     // Optional details
     if (info.name) newUser.name = info.name;
@@ -80,19 +83,15 @@ exports.createUser = function (req, res, next) {
 }
 
 exports.verifyUser = function (req, res, next) {
-    var user = req.rUser;
+    var updateUser = req.rUser;
     var verifier = req.body.verifier;
     if (verifier != user.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     } else {
-        user.verified = true;
-
-        // Use Update to prevent re-hashing of password
-        User.update(
-        {_id: user._id},
-        {verified : true},
-        function (err, result) {
+        updateUser.verified = true;
+        updateUser.save(function (err, user) {
             if (!err) {
+                req.rUser = user;
                 next();
             } else {
                 Error.mongoError(req, res, err);
@@ -116,27 +115,6 @@ exports.updateAvatar = function (req, res, next) {
             next();
         }
     });
-    // var user = req.rUser;
-    // var avatar = req.file;
-    // user.avatar = avatar.destination + avatar.filename;
-
-    // user.save(function(err, user) {
-    //     if (!err) {
-    //         req.rUser = user;
-    //         next();
-    //     } else {
-    //         Error.mongoError(req, res, err);
-    //     }
-    // });
-    // // res.redirect('back');
-    // // var file = req.body.file;
-    // // if (!file) {
-    // //     Error.errorWithStatus(req, res, 400, 'Must include "file" attribute.');
-    // // } else {
-    // //     avatars.uploadAvatar(file, function (avatar) {
-    // //         next();
-    // //     });
-    // // }
 }
 
 exports.updateUser = function (req, res, next) {

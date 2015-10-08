@@ -63,17 +63,6 @@ var UserSchema = new Schema({
     created: { type: Date, required: true }
 });
 
-// Before saving, hash password
-UserSchema.pre('save',
-    function(next) {
-        if (this.password) {
-            var md5 = crypto.createHash('md5');
-            this.password = md5.update(this.password).digest('hex');
-        }
-        next();
-    }
-);
-
 // Compare input password to user password
 UserSchema.methods.authenticate = function(password) {
     var md5 = crypto.createHash('md5');

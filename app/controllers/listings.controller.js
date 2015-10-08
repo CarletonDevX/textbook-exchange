@@ -29,7 +29,7 @@ exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
     Listing.find({"completed": false, ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
-            req.rListings = listings
+            req.rListings = listings;
             next();
         } else {
             Error.mongoError(req, res, err);
