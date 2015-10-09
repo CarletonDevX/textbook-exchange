@@ -55,7 +55,7 @@ var junkUsers = [
 	    },
 	    email: 'pickartd@carleton.edu',
 	    verified: true,
-	    password: '04759bc15b8dc4ffe289a27d387ab2c0', // hash of JoesButt
+	    password: '04759bc15b8dc4ffe289a27d387ab2c0',
 	    provider: 'local',
 	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 	    providerData: {},
@@ -73,7 +73,7 @@ var junkUsers = [
 	    },
 	    email: 'slotej@carleton.edu',
 	    verified: true,
-	    password: '1461b1e2d909819356d591e770acd604', // hash of BigB00ty
+	    password: '1461b1e2d909819356d591e770acd604',
 	    provider: 'local',
 	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 	    providerData: {},
