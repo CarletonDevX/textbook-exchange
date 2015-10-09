@@ -31,18 +31,6 @@ exports.getOffer = function (req, res, next) {
     });
 }
 
-exports.getOffersForListing = function (req, res, next) {
-    var listing = req.rListing;
-    Offer.find({listingID: listing._id}, function (err, offers) {
-        if (!err) {
-            req.rOffers = offers;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
-}
-
 exports.getOffersForListings = function (req, res, next) {
     var listings = req.rListings;
     var listingIDs = [];

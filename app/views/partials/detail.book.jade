@@ -15,7 +15,7 @@ div#book-details
         //-todo: filter on whether it's for sale or rent
         //- change hrefs to ui-srefs
         tr(ng-repeat="listing in book.listings")
-          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar.small}}")
           td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
           td {{listing.condition}}
           td {{listing.sellingPrice}}
@@ -30,7 +30,7 @@ div#book-details
       tbody
         //-todo: filter on whether it's for sale or rent
         tr(ng-repeat="listing in book.listings")
-          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar}}")
+          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar.small}}")
           td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
           td {{listing.condition}}
           td {{listing.rentingPrice}}

@@ -32,7 +32,7 @@ exports.formatCurrentUser = function (req, res) {
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
-          "avatar": req.rUser.avatar, 
+          "avatar": req.rUser.avatar,
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
@@ -72,7 +72,7 @@ exports.formatUser = function (req, res) {
 
     var user = {
           "userID": req.rUser._id, 
-          "avatar": req.rUser.avatar, 
+          "avatar": req.rUser.avatar,
              "bio": req.rUser.bio, 
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
@@ -176,7 +176,7 @@ exports.formatUserListings = function (req, res) {
 }
 
 exports.formatSingleListing = function (req, res) {
-    var lstng = req.rListing;
+    var lstng = req.rListings[0];
     if (!lstng) {
       res.status(404).send('Listing not found by those conditions.');
     }

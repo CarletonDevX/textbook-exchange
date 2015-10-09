@@ -29,7 +29,7 @@ exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
     Listing.find({"completed": false, ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
-            req.rListings = listings
+            req.rListings = listings;
             next();
         } else {
             Error.mongoError(req, res, err);
@@ -47,7 +47,7 @@ exports.getListing = function (req, res, next) {
             if (!listing) {
                 Error.errorWithStatus(req, res, 404, 'Listing not found by those conditions.');
             } else {
-                req.rListing = listing;
+                req.rListings = [listing];
                 next();
             }
         } else {
@@ -67,7 +67,7 @@ exports.createListing = function (req, res, next) {
 
     var newListing = new Listing(req.body);
     if (!(newListing.sellingPrice || newListing.rentingPrice)) {
-        Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" or "rentingPrice" attribute.');
+        Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" or "rentingPrice" attribute(s).');
         return;
     }
 
@@ -78,7 +78,7 @@ exports.createListing = function (req, res, next) {
 
     newListing.save(function(err, listing) {
         if (!err) {
-            req.rListing = listing;
+            req.rListings = [listing];
             next();
         } else {
             Error.mongoError(req, res, err);
@@ -87,7 +87,7 @@ exports.createListing = function (req, res, next) {
 };
 
 exports.updateListing = function (req, res, next) {
-    var listing = req.rListing;
+    var listing = req.rListings[0];
     if (req.user._id != listing.userID) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
     } else {
@@ -99,22 +99,7 @@ exports.updateListing = function (req, res, next) {
 
         listing.save(function(err, listing) {
             if (!err) {
-                req.rListing = listing;
-                next();
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
-    }
-};
-
-exports.removeListing = function (req, res, next) {
-    var listing = req.rListing;
-    if (req.user._id != listing.userID) {
-        Error.errorWithStatus(req, res, 401, 'Unauthorized to delete listing.');
-    } else {
-        Listing.remove({_id: listing._id}, function(err) {
-            if (!err) {
+                req.rListings = [listing];
                 next();
             } else {
                 Error.mongoError(req, res, err);
@@ -145,14 +130,14 @@ exports.removeListings = function (req, res, next) {
 
 exports.completeListing = function (req, res, next) {
     var user = req.rUser;
-    var listing = req.rListing;
+    var listing = req.rListings[0];
     if (listing.userID != user._id) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to complete listing.');
     } else {
         listing.completed = true;
         listing.save(function(err, listing) {
             if (!err) {
-                req.rListing = listing;
+                req.rListings = [listing];
                 next();
             } else {
                 Error.mongoError(req, res, err);

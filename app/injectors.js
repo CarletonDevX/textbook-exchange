@@ -4,8 +4,6 @@ var utils = require('./utilities')
 
 
 exports.UsersIntoListings = function(req, res, next) {
-    // Single listing case
-    if (!req.rListings) req.rListings = [req.rListing];
 
     //config for injector
     var configParams = {
@@ -19,15 +17,11 @@ exports.UsersIntoListings = function(req, res, next) {
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
         req.rListings = augListings;
-        // Single listing case
-        if (augListings.length > 1) req.rListing = augListings[0];
         next();
     });
 }
 
 exports.BooksIntoListings = function(req, res, next) {
-    // Single listing case
-    if (!req.rListings) req.rListings = [req.rListing];
 
     //config for injector
     var configParams = {
@@ -41,8 +35,6 @@ exports.BooksIntoListings = function(req, res, next) {
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
         req.rListings = augListings;
-        // Single listing case
-        if (augListings.length > 1) req.rListing = augListings[0];
         next();
     });
 }

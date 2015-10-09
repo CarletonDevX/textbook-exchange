@@ -2,7 +2,6 @@ var User = require('mongoose').model('users'),
     Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
-    avatars = require('../config/avatars'),
     Error = require('../errors');
 
 // API Calls
@@ -43,45 +42,40 @@ exports.createUser = function (req, res, next) {
         return;
     }
 
-    var newUser = new User({"email": email, "password": password, "created": new Date()});
-    newUser.verified = false;
-    newUser.provider = 'local';
+    var newUser = new User({"email": email, "created": new Date()});
+
     var md5 = crypto.createHash('md5');
     newUser.verifier = md5.update((Math.random()*100).toString()).digest('hex');
+    newUser.password = md5.update(password).digest('hex');
+
+    newUser.verified = false;
+    newUser.provider = 'local';
 
     // Optional details
     if (info.name) newUser.name = info.name;
-    if (info.avatar) newUser.avatar = info.avatar;
     if (info.bio) newUser.bio = info.bio;
     if (info.gradYear) newUser.gradYear = info.gradYear;
 
-    // avatars.getAvatarWithID(null, function (image) {
-    //     newUser.avatar = image;
-        newUser.save(function(err, user) {
-            if (!err) {
-                req.rUser = user;
-                next();
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
-    // });
+    newUser.save(function(err, user) {
+        if (!err) {
+            req.rUser = user;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
 }
 
 exports.verifyUser = function (req, res, next) {
-    var user = req.rUser;
+    var updateUser = req.rUser;
     var verifier = req.body.verifier;
     if (verifier != user.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     } else {
-        user.verified = true;
-
-        // Use Update to prevent re-hashing of password
-        User.update(
-        {_id: user._id},
-        {verified : true},
-        function (err, result) {
+        updateUser.verified = true;
+        updateUser.save(function (err, user) {
             if (!err) {
+                req.rUser = user;
                 next();
             } else {
                 Error.mongoError(req, res, err);
@@ -90,10 +84,24 @@ exports.verifyUser = function (req, res, next) {
     }
 }
 
-
 exports.getCurrentUser = function (req, res, next) {
     req.rUser = req.user;
     next();
+}
+
+exports.updateAvatar = function (req, res, next) {
+    var user = req.rUser;
+    var avatar = req.rAvatar;
+    user.avatar = avatar;
+
+    user.save(function(err, user) {
+        if (!err) {
+            req.rUser = user;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
 }
 
 exports.updateUser = function (req, res, next) {
@@ -104,7 +112,6 @@ exports.updateUser = function (req, res, next) {
         var updates = req.body;
         // Only these updates are allowed
         if (updates.name) user.name = updates.name;
-        if (updates.avatar) user.avatar = updates.avatar;
         if (updates.bio) user.bio = updates.bio;
         if (updates.gradYear) user.gradYear = updates.gradYear;
 
