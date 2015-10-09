@@ -30,6 +30,10 @@ Communist calls have been implemented already.
 	- ☭ Get user with user ID:
 	`GET hitsthebooks.com/api/user/id`	
 	
+- Avatars
+	- ☭ Upload an avatar photo (with file) [Requires auth]:
+	`POST hitsthebooks.com/api/avatar`
+	
 - Reports
 	- ☭ Report a user with user ID (with report details) [Requires auth]:
 	`POST hitsthebooks.com/api/report/id`

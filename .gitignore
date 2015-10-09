@@ -3,3 +3,4 @@ node_modules
 npm-debug.log
 secure-config.js
 .sass-cache
+avatars

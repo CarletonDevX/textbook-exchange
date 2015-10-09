@@ -2,6 +2,7 @@ var users = require('./controllers/users.controller'),
     books = require('./controllers/books.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
+    avatars = require('./controllers/avatars.controller'),
     mailer = require('./mailer')
     data = require('./data'),
     passport = require('passport'),
@@ -42,11 +43,11 @@ exports.setup = function (app) {
     // db stuff for testing
     app.post('/clear', function (req, res) {
         data.clear();
-        res.status(200).send();
+        res.status(200).send('Database cleared.');
     });
     app.post('/populate', function (req, res) {
         data.populate();
-        res.status(200).send();
+        res.status(200).send('Database populated.');
     });
 
     /****
@@ -132,6 +133,17 @@ exports.setup = function (app) {
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUser);
+
+    /* Avatars */
+
+    // Upload an avatar photo
+    app.route('/api/avatar')
+        .post(authenticate,
+            users.getCurrentUser,
+            avatars.uploadAvatar,
+            users.updateAvatar,
+            responder.formatCurrentUser);
+
 
     /* Reports */
 
@@ -224,9 +236,9 @@ exports.setup = function (app) {
     // Remove listing with listing ID
         .delete(authenticate,
                 listings.getListing,
-                offers.getOffersForListing,
+                offers.getOffersForListings,
                 offers.removeOffers,
-                listings.removeListing,
+                listings.removeListings,
                 responder.successRemoveListing);
 
     // Make an offer on a listing
@@ -236,7 +248,7 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.getOffersForListing,
+              offers.getOffersForListings,
               offers.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
