@@ -3,14 +3,14 @@ var User = require('mongoose').model('users'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
     avatars = require('../config/avatars'),
-    Error = require('../errors'),
-    multer = require('multer');
-
+    multer = require('multer'),
+    Error = require('../errors');
+ 
 // Multer setup for uploads
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'avatars/');
+    cb(null, '/tmp/');
   },
   filename: function (req, file, cb) {
     var ext = file.originalname.split(".").pop();
@@ -100,19 +100,36 @@ exports.verifyUser = function (req, res, next) {
     }
 }
 
-
 exports.getCurrentUser = function (req, res, next) {
     req.rUser = req.user;
     next();
 }
 
 exports.updateAvatar = function (req, res, next) {
+    var user = req.rUser;
+
+    // Upload locally
     upload(req, res, function (err) {
         if (err) {
             Error.errorWithStatus(req, res, 400, err);
-            return;
         } else {
-            next();
+            // Upload to DYP
+            avatars.uploadAvatar(req.file, function (err, avatar) {
+                if (err) {
+                    Error.errorWithStatus(req, res, 500, err);
+                } else {
+                    // Set to user
+                    user.avatar = avatar;
+                    user.save(function(err, user) {
+                        if (!err) {
+                            req.rUser = user;
+                            next();
+                        } else {
+                            Error.mongoError(req, res, err);
+                        }
+                    });
+                }
+            });
         }
     });
 }

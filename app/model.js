@@ -33,6 +33,7 @@ mongoose.model('books', BookSchema, 'books');
 Users 
 ****/
 
+// Reports
 var reportSchema = new Schema({
     userID: { type: String, required: true },
     reporterID: { type: String, required: true },
@@ -58,6 +59,12 @@ var UserSchema = new Schema({
     providerData: {},
     subscriptions: [],
     bio: String,
+    avatar: {
+        avatarID: String,
+        small: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/small/34dc8201eb03c03019f39aab0e9f5fcc.png"},
+        medium: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/medium/34dc8201eb03c03019f39aab0e9f5fcc.png"},
+        large: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/large/34dc8201eb03c03019f39aab0e9f5fcc.png"}
+    },
     gradYear: Number,
     reports: [reportSchema],
     created: { type: Date, required: true }
@@ -65,6 +72,7 @@ var UserSchema = new Schema({
 
 // Compare input password to user password
 UserSchema.methods.authenticate = function(password) {
+
     var md5 = crypto.createHash('md5');
     md5 = md5.update(password).digest('hex');
 
