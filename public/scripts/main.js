@@ -77,7 +77,7 @@ $.fn.transist = function(classesToAlter, propsToHelp, transTime) {
   var $el = this;
 
   // 1. Take a snapshot
-  originSnap = snapshot($el, propsToHelp);
+  var originSnap = snapshot($el, propsToHelp);
   
   // 2. Copy element invisibly, applying styles
   var $clone = $el.clone()
@@ -86,8 +86,7 @@ $.fn.transist = function(classesToAlter, propsToHelp, transTime) {
                   .appendTo($el.parent());
 
   // 3. Take end snapshot of propsToHelp
-  targetSnap = snapshot($clone, propsToHelp);
-  console.log("targetSnap", targetSnap);
+  var targetSnap = snapshot($clone, propsToHelp);
 
   // 4. Delete the invisible copy
   $clone.remove();
@@ -216,17 +215,15 @@ hitsTheBooks.controller('headerController', function($scope, $state, $document) 
     $("#blurb").addClass("hidden");
   }
 
+  //transists for header
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
     //header transitions
-    console.log("hello")
     if (toState.name=="main"){
       if(fromState.name){
-        console.log("remove minimized from header");
         $('header').transist({'remove':['minimized']},['height'],200)
       }
     } else if(fromState.name=="main"){
-      console.log("add minimized to header");
       $('header').transist({'add':['minimized']},['height'],200)
     } else { //init
       $('header').addClass('minimized');
@@ -240,7 +237,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   var initSearch = false;
 
   //inject the query if we init on the search page
-  if($state.is('main.search')){
+  if ($state.is('main.search')) {
     $scope.searchInput = $state.params.query;
   }
 
@@ -263,31 +260,44 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     }
   });
 
-  // big ugly set of transitions for anims
-  // $rootScope.$on('$stateChangeStart',
+  // transists for search view
+  $rootScope.$on('$stateChangeStart',
+  function(event, toState, toParams, fromState, fromParams){
+    var $sr = $('#search-results');
+    
+    if (fromState.name=="main.search" && toState.name !== "main.search") {
+      $sr.transist({'add':['minimized']},['height'],200);
+    }
+
+    if (fromState.name.indexOf("main.detail") > -1 &&
+        toState.name == "main.search"){
+      $sr.transist({'remove':['minimized']},['height'],200);
+    }
+  });
+  //transists continued...
+  $rootScope.$on('$stateChangeSuccess',
+  function(event, toState, toParams, fromState, fromParams){
+    var $sr = $('#search-results');
+    if (fromState.name=="main" && toState.name=="main.search") {
+      $sr.transist({'remove':['minimized']},['height'],200);
+    }
+  });
+
+  //TODO:
+  //transists for detail view
+  // $rootScope.$on('$stateChangeSuccess',
   // function(event, toState, toParams, fromState, fromParams){
-  //   console.log('toState', toState.name, 'fromState', fromState.name)
-
   //   var $sr = $('#search-results');
-  //   if (fromState.name=="main.search") {
-  //     console.log("add minimized to search-results")
-  //     $sr.transist({'add':['minimized']},['height'],2000);
-  //   }
-
-  //   if (toState.name=="main.search") {
-  //     if (fromState.name) {
-  //       $sr.transist({'remove':['minimized']},['height'],2000)
-  //     } else { //init
-  //       $sr.removeClass('minimized')
-  //     }
+  //   if (fromState.name !== "main.detail" &&
+  //       toState.name.indexOf()=="main.detail") {
+  //     $sr.transist({'remove':['minimized']},['height'],200);
   //   }
   // });
 
   //the classic type and hit [enter] search
   $scope.classicSearch = function() {
     if (!initSearch && $scope.searchInput) {
-      // $state.go('main.search',{query:$scope.searchInput})
-      $state.go('main.search',{})
+      $state.go('main.search',{query:$scope.searchInput})
     }
   }
   
