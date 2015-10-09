@@ -2,6 +2,7 @@ var users = require('./controllers/users.controller'),
     books = require('./controllers/books.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
+    avatars = require('./controllers/avatars.controller'),
     mailer = require('./mailer')
     data = require('./data'),
     passport = require('passport'),
@@ -139,6 +140,7 @@ exports.setup = function (app) {
     app.route('/api/avatar')
         .post(authenticate,
             users.getCurrentUser,
+            avatars.uploadAvatar,
             users.updateAvatar,
             responder.formatCurrentUser);
 

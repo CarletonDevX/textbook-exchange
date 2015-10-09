@@ -2,23 +2,7 @@ var User = require('mongoose').model('users'),
     Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
-    avatars = require('../config/avatars'),
-    multer = require('multer'),
     Error = require('../errors');
- 
-// Multer setup for uploads
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, '/tmp/');
-  },
-  filename: function (req, file, cb) {
-    var ext = file.originalname.split(".").pop();
-    cb(null, req.rUser._id + "." + ext);
-  }
-});
-
-var upload = multer({ storage: storage }).single('file');
 
 // API Calls
 
@@ -107,29 +91,15 @@ exports.getCurrentUser = function (req, res, next) {
 
 exports.updateAvatar = function (req, res, next) {
     var user = req.rUser;
+    var avatar = req.rAvatar;
+    user.avatar = avatar;
 
-    // Upload locally
-    upload(req, res, function (err) {
-        if (err) {
-            Error.errorWithStatus(req, res, 400, err);
+    user.save(function(err, user) {
+        if (!err) {
+            req.rUser = user;
+            next();
         } else {
-            // Upload to DYP
-            avatars.uploadAvatar(req.file, function (err, avatar) {
-                if (err) {
-                    Error.errorWithStatus(req, res, 500, err);
-                } else {
-                    // Set to user
-                    user.avatar = avatar;
-                    user.save(function(err, user) {
-                        if (!err) {
-                            req.rUser = user;
-                            next();
-                        } else {
-                            Error.mongoError(req, res, err);
-                        }
-                    });
-                }
-            });
+            Error.mongoError(req, res, err);
         }
     });
 }
