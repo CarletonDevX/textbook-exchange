@@ -1,348 +1,297 @@
-/*minimal WIP!!!*/
-
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+html {
+  overflow-y: scroll; }
 
-body,html{
-  margin:0;
-  padding:0;
-}
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Droid Serif', serif; }
 
-a{
-  outline: none;
-}
+a, input {
+  outline: none; }
 
-body::before{
-    content : "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-image: url(http://www.radionorthland.org/wp-content/uploads/2012/01/Library-Books.jpg); 
-    background-size:cover;
-    width: 100%;
-    height: 100%;
-    opacity : .5;
-    z-index: -1;
-}
-
-div#about, div#register{
-  display:none;
-}
-
-div#sub-box{
-  font-family: 'Droid Serif', serif;
-  position:absolute;
-  right:10px;
-  top:10px;
-  background-color:rgba(255,255,255,.34);
-  padding:14px 6px;
-  box-shadow: 0px 1px 4px 1px rgba(0,0,0,.2);
-  transition: all .4s;
-}
-
-div#sub-box a {
-  color: black;
-  text-decoration: none;
-  margin: 10px;
-  position: relative;
-  font-size: 12px;
-  z-index:1;
-}
-
-div#sub-box a::before{
-  content: '';
-  position: absolute;
-  width: 100%;
-  height:100%;
-  bottom:-2px;
-  left:0;
-  border-bottom: solid rgba(41, 255, 53,.25) 5px;
-  z-index: -1;
-  transition: border .2s, padding .2s, left .2s;
-}
-
-div#sub-box a:hover::before{
-  border-bottom: solid rgba(41, 255, 53,.25) 20px;
-  padding:6px;
-  left:-6px;
-}
-
-header{
-  transition: all .4s;
-}
-
-header.home-view{
-  margin: 80px 0;
-}
-
-header.minimized{
-  margin: 0 0;
-}
-
-header.minimized div#main-box{
-}
-
-header.minimized div#main-box #wordmark{
-  margin-bottom: 0;
-}
-
-header.minimized div#main-box #college-info{
-  margin:-1em;
-  opacity: 0;
-  overflow: hidden;
-}
-
-header.minimized div#sub-box{
-  background-color:rgba(255,255,255,0);
-  box-shadow: 0 0 0 0;
-  padding: 0px;
-}
-
-header *{
-    transition: all .4s;
-}
-
-div#main-box{
-  box-shadow: 0 3px 7px 0 rgba(0,0,0,.2);
-  width: 500px;
-  margin: 0 auto 0 auto;
-  background-color: white;
-}
-
-div#main-box #wordmark-link{
-  text-decoration: none;
-  color:black;
-  outline:0;
-}
-
-div#main-box #wordmark{
-  padding-top:20px;
-  padding-bottom:10px;
-  font-family: 'Droid Serif', serif;
-  text-align: center;
-}
-
-header.minimized div#main-box #wordmark{
-  padding-top:0px;
-}
-
-div#main-box .college-name, div#main-box .app-name{
-  font-variant: small-caps;
-  display:block;
-}
-
-div#main-box .college-name{
-  font-size: 80px;
-}
-
-header.minimized div#main-box .college-name{
-  font-size: 40px;
-}
-
-div#main-box .app-name{
-  font-weight: 400;
-  font-size: 35px;
-  position: relative;
-}
-
-header.minimized div#main-box .app-name{
-  font-weight: 400;
-  font-size: 20px;
-  position: relative;
-}
-
-div#main-box .app-name::before{
-  border-top: solid black 1px;
-  content: '';
-  width:35%;
-  margin: 0 32.5%;
-  position: absolute;
-  left:0;
-  top:-5px;
-  transition: all .2s;
-}
-
-header.minimized div#main-box .app-name::before{
-  width:12%;
-  margin: 0 44%;
-  top:-3px;
-}
-
-header.home-view div#main-box #wordmark-link:hover .app-name::before{
-  border-top: solid black 3px;
-  content: '';
-  width:50%;
-  margin: 0 25%;
-  position: absolute;
-  left:0;
-  top:-6px
-}
-
-header.minimized div#main-box:hover .app-name::before{
-  width:15%;
-  margin: 0 42.5%;
-  top:-3px;
-}
-
-header.minimized .interject{
-  font-size:16px;
-}
-
-header.home-view .interject{
-  font-size:28px;
-}
-
-
-.interject{
+.interject {
   font-size: smaller;
   font-style: italic;
   font-variant: normal;
-  font-weight: 400;
-  position: relative;
-  right: 1px;
-}
+  font-weight: 400; }
 
-div#main-box #college-info{
-  list-style-type: none;
-  display:flex;
-  transition: height .4s, margin .4s;
-}
+body::before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-image: url(http://www.radionorthland.org/wp-content/uploads/2012/01/Library-Books.jpg);
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  z-index: -1; }
 
-div#main-box #college-info li{
-  font-size: 12px;
-  color:gray;
-  font-style: italic;
-  flex-grow: 1;
-  padding-bottom: 10px;
-}
+header {
+  transition: height 0.2s;
+  padding-bottom: 15px;
+  overflow: hidden; }
+  header #sub-box, header #blurb {
+    box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
+  header #sub-box {
+    background-color: rgba(255, 255, 255, 0.34);
+    position: absolute;
+    padding: 14px 6px;
+    top: 25px;
+    left: calc(50vw + 260px); }
+    header #sub-box a {
+      color: black;
+      text-decoration: none;
+      margin: 10px;
+      position: relative;
+      font-size: 12px;
+      z-index: 1; }
+    header #sub-box a::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: -2px;
+      left: 0;
+      border-bottom: solid rgba(41, 255, 53, 0.25) 3px;
+      z-index: -1;
+      transition: border 0.2s, padding 0.2s, left 0.2s; }
+    header #sub-box a:hover::before {
+      border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
+      padding: 6px;
+      left: -6px; }
+  header #main-box {
+    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
+    width: 500px;
+    margin: 25px auto 0 auto;
+    background-color: white; }
+    header #main-box #wordmark-link {
+      text-decoration: none;
+      color: black;
+      outline: 0; }
+      header #main-box #wordmark-link #wordmark {
+        padding-top: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+        margin: 0; }
+        header #main-box #wordmark-link #wordmark .college-name {
+          font-size: 80px;
+          display: block; }
+        header #main-box #wordmark-link #wordmark .app-name {
+          font-weight: 400;
+          font-size: 35px;
+          position: relative;
+          font-variant: small-caps;
+          display: block; }
+        header #main-box #wordmark-link #wordmark .interject {
+          font-size: 28px; }
+        header #main-box #wordmark-link #wordmark .app-name::before {
+          content: '';
+          width: 35%;
+          margin: 0 32.5%;
+          left: 0;
+          height: 1px;
+          top: -5px;
+          background-color: black;
+          border-radius: 10px;
+          position: absolute;
+          transition: width 0.2s, height 0.2s, margin 0.2s, top 0.2s; }
+      header #main-box #wordmark-link #wordmark:hover .app-name::before {
+        width: 50%;
+        height: 3px;
+        top: -6px;
+        margin: 0 25%; }
+    header #main-box #college-info {
+      list-style-type: none;
+      display: flex;
+      margin: 0;
+      padding: 0; }
+      header #main-box #college-info li {
+        font-size: 12px;
+        color: gray;
+        flex-grow: 1;
+        padding: 10px 0;
+        text-align: center; }
+  header #blurb {
+    width: 480px;
+    height: 65px;
+    margin: 15px auto 0 auto;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14.5px;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+    opacity: 1;
+    position: relative;
+    line-height: 130%;
+    transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin-bottom 0.2s; }
+    header #blurb a.toAbout {
+      color: #888;
+      margin-left: 5px; }
+    header #blurb a.toAbout:hover {
+      color: #555; }
+    header #blurb a.close {
+      position: absolute;
+      line-height: 110%;
+      top: 0;
+      right: 0;
+      font-size: 22px;
+      color: #AEAEAE;
+      text-align: center;
+      width: 20px;
+      height: 20px;
+      font-family: "Times New Roman", Serif; }
+    header #blurb a.close:hover {
+      cursor: pointer;
+      color: gray; }
+  header #blurb.hidden {
+    width: 0px;
+    height: 0px;
+    padding: 0px;
+    margin-bottom: 0;
+    margin-top: 0;
+    opacity: 0; }
+  header #about, header #register {
+    display: none; }
 
-div#search{
+header.minimized {
+  margin-bottom: 0;
+  height: 100px;
+  overflow: hidden; }
+
+main #search {
   overflow: hidden;
-  transition: max-height .5s;
-  box-shadow: 0px 5px 10px 0px rgba(0,0,0,.3);
+  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   z-index: 10;
-  padding:20px;
+  position: relative;
   box-sizing: border-box;
-  background-color:white;
+  background-color: white;
   text-align: center;
   width: 500px;
   margin: 0 auto;
-  transition: width .2s;
-}
+  transition: width 0.3s; }
+  main #search #search-form {
+    margin: 30px;
+    transition: margin 0.2s; }
+    main #search #search-form #search-labels {
+      display: inline-block;
+      position: relative;
+      text-align: right; }
+      main #search #search-form #search-labels label {
+        font-size: 18px;
+        display: inline-block;
+        transition: opacity 0.2s, width 0.2s; }
+      main #search #search-form #search-labels label.pre-search {
+        opacity: 1;
+        width: 250px;
+        overflow: hidden;
+        white-space: nowrap; }
+      main #search #search-form #search-labels label.post-search {
+        opacity: 0;
+        position: absolute;
+        right: 0; }
+    main #search #search-form #search-box {
+      border: none;
+      text-align: center;
+      vertical-align: top;
+      outline: none;
+      font-size: 18px;
+      font-family: 'Droid Serif', Serif;
+      border-bottom: solid 2px black;
+      width: 70px;
+      min-width: 70px;
+      max-width: 300px;
+      margin: 0 20px;
+      text-overflow: ellipsis;
+      transition: width 0.2s; }
+  main #search #search-results {
+    overflow: hidden;
+    transition: height 0.2s; }
+  main #search #search-results.minimized {
+    height: 0; }
+  main #search #search-results ul {
+    list-style-type: none;
+    padding: 0; }
+    main #search #search-results ul li {
+      box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
+      width: 490px;
+      margin: 0 auto 30px auto;
+      transition: box-shadow 0.1s; }
+      main #search #search-results ul li div.preview {
+        padding: 20px; }
+      main #search #search-results ul li div.info {
+        flex-grow: 1; }
+      main #search #search-results ul li a.book {
+        text-decoration: none;
+        color: black;
+        text-align: left;
+        display: flex; }
+      main #search #search-results ul li h4 {
+        font-family: 'Droid Sans', serif;
+        margin-bottom: 0;
+        font-weight: bold;
+        color: black; }
+      main #search #search-results ul li h5 {
+        font-family: 'Droid Sans', serif;
+        font-weight: 400;
+        margin-top: 0; }
+      main #search #search-results ul li table {
+        font-family: 'Droid Sans', sans-serif;
+        font-size: 12px;
+        border: solid 2px #ddd;
+        border-radius: 10px;
+        border-spacing: 0; }
+        main #search #search-results ul li table td {
+          padding: 5px;
+          border-bottom: solid 2px #ddd;
+          border-right: solid 2px #eee; }
+        main #search #search-results ul li table tr:last-child td {
+          border-bottom: solid 0px; }
+        main #search #search-results ul li table tr td:first-child {
+          text-align: right; }
+        main #search #search-results ul li table tr td:last-child {
+          border-right: solid 0px;
+          text-align: left; }
+    main #search #search-results ul li:hover {
+      box-shadow: 0px 1px 10px 0px rgba(41, 220, 53, 0.5); }
 
-div#search label{
-  font-family: 'Droid Serif';
-  font-size: 24px;
-  display:block;
-}
+main #search.home-view {
+  width: 500px; }
 
-div#search #search-box{
-  border: none;
-  text-align: center;
-  outline: none;
-  font-family: 'Droid Serif';
-  font-size: 24px;
-  border-bottom: solid 2px black;
-  width: 10em;
-  margin: 20px;
-  text-overflow: ellipsis;
-  }
+main #search.searching, main #search.behind-detail {
+  width: 530px; }
+  main #search.searching #search-form #search-labels label.pre-search, main #search.behind-detail #search-form #search-labels label.pre-search {
+    opacity: 0;
+    width: 100px; }
+  main #search.searching #search-form #search-labels label.post-search, main #search.behind-detail #search-form #search-labels label.post-search {
+    opacity: 1; }
 
-div#search.behind-detail {
-  max-height:2em;
-}
+main #search.behind-detail #search-form {
+  margin: 15px; }
 
-div#search.searching{
-  max-height:50em;
-  width: 550px;
-}
-
-div#search-results ul{
-  list-style-type: none;
-  padding: 0;
-}
-
-div#search-results ul li{
-  box-shadow: 0px 1px 6px 0px rgba(0,0,0,.15);
-  width: 500px;
-  margin:0 auto 30px auto;
-  transition: box-shadow .1s;
-}
-
-div#search-results ul li:hover{
-  box-shadow: 0px 1px 10px 0px rgba(41, 220, 53,.5) ;
-}
-
-div#search-results ul li div.preview{
-  padding: 20px;
-}
-
-div#search-results ul li div.info{
-  flex-grow: 1;
-}
-
-div#search-results ul li a.book{
-  text-decoration: none;
-  color:black;
-  text-align: left;
-  display: flex;
-}
-
-div#search-results ul li h4{
-  font-family: 'Droid Sans', serif;
-  margin-bottom: 0;
-  font-weight: bold;
-  color:black;
-}
-
-div#search-results ul li h5{
-  font-family: 'Droid Sans', serif;
-  font-weight: 400;
-  margin-top:0;
-}
-
-
-div#search-results ul li table{
-  font-family: 'Droid Sans', sans-serif;
-  font-size: 12px;
-  border:solid 2px #ddd;
-  border-radius: 10px;
-  border-spacing: 0;
-}
-
-div#search-results ul li table td{
-  padding: 5px;
-  border-bottom: solid 2px #ddd;
-  border-right: solid 2px #eee;
-}
-
-div#search-results ul li table tr:last-child td{
-  border-bottom: solid 0px;
-}
-
-div#search-results ul li table tr td:first-child{
-  text-align: right;
-}
-
-div#search-results ul li table tr td:last-child{
-  border-right: solid 0px;
-  text-align: left;
-}
-
-
-div#detail-wrapper{
+main #detail-wrapper {
   background-color: white;
+  width: 500px;
+  margin: 0 auto 40px auto;
+  padding: 20px;
   position: relative;
-  z-index: 100;
+  z-index: 20;
   overflow: hidden;
-  transition: max-height .5s;
-}
+  box-sizing: border-box;
+  transition: opacity 0.2s; }
 
-div#detail-wrapper.maximized{
-  max-height: 50em;
-}
+main #detail-wrapper.minimized {
+  opacity: 0;
+  box-shadow: 0px 3px 10px 2px transparent;
+  height: 0;
+  margin-bottom: 0; }
 
-div#detail-wrapper.minimized{
-  max-height: 0px;
-}
+main #detail-wrapper.maximized {
+  width: 570px;
+  opacity: 1;
+  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
+  height: auto; }

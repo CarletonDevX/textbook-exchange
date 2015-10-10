@@ -1,6 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 
+html{
+  overflow-y: scroll; 
+}
+
 body,html{
   margin:0;
   padding:0;
@@ -416,3 +420,50 @@ main{
     height:auto;
   }
 }
+
+
+// header.minimized div#main-box:hover .app-name::before{
+//   width:15%;
+//   margin: 0 42.5%;
+//   top:-3px;
+// }
+
+// header.minimized .interject{
+//   font-size:16px;
+// }
+
+// header.minimized div#main-box .app-name::before{
+//   width:12%;
+//   margin: 0 44%;
+//   top:-3px;
+// }
+
+// header.minimized div#main-box .app-name{
+//   font-weight: 400;
+//   font-size: 20px;
+//   position: relative;
+// }
+// header.minimized div#main-box .college-name{
+//   font-size: 40px;
+// }
+
+// header.minimized div#main-box #wordmark{
+//   padding-top:0px;
+// }
+
+// header.minimized{
+//   margin: 0 0;
+// }
+
+// header.minimized div#main-box{
+// }
+
+// header.minimized div#main-box #wordmark{
+//   margin-bottom: 0;
+// }
+
+// header.minimized div#main-box #college-info{
+//   margin:-1em;
+//   opacity: 0;
+//   overflow: hidden;
+// }
