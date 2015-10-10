@@ -1,10 +1,7 @@
-header(ng-class="\
-  {\
-    'minimized'    : !is('main'),\
-    'home-view'    : is('main')\
-  }")
+header(ng-controller="headerController")
   div#main-box
-    a#wordmark-link(ui-sref="main" ui-sref-opts="{reload: true}")
+    a#wordmark-link(ui-sref="main")
+      //-  ui-sref-opts="{reload: true}" to forget prev search
       h1#wordmark
         span.college-name Carleton
         span.app-name
@@ -15,6 +12,11 @@ header(ng-class="\
       li #{numListings} books available
       li #{numOffers} successful listings
       li #{numUsers} active users
+  div#blurb
+    | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
+    | By Carls for Carls. 
+    a(class="toAbout", href="#about") Learn more...
+    a(class="close", ng-click="closeBlurb()") ×
   div#sub-box
     a(href="#about") About
     a(href="#register") Sign in or Register
