@@ -29,7 +29,8 @@ exports.setupMain = function (app) {
                 res.render('index.jade', {
                     numListings: req.rSchoolStats.numListings,
                     numOffers: req.rSchoolStats.numOffers,
-                    numUsers: req.rSchoolStats.numUsers
+                    numUsers: req.rSchoolStats.numUsers,
+                    loggedIn: (req.user != null)
                 });
              }); 
 }
