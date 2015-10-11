@@ -18,8 +18,11 @@ header(ng-controller="headerController")
     a(class="toAbout", href="#about") Learn more...
     a(class="close", ng-click="closeBlurb()") ×
   div#sub-box
-    a(href="#about") About
-    a(href="#register") Sign in or Register
+    if loggedIn
+      a(href="#dashboard") Dashboard
+    else
+      a(href="#about") About
+      a(href="#register") Sign in or Register
   div#about
     h2 About
     p
