@@ -63,14 +63,16 @@ exports.unsubscribe = function (req, res, next) {
 exports.search = function(req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
-    //TODO: Implement a more general search function
-    // Right now, we assume we've got the first digits of an ISBN
-    var regex = new RegExp("^" + query + "[0-9]*");
-    Book.find({ ISBN: regex}, function(err, results) {
-        if (!err) {
-            res.json(results);
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+
+    var regex = new RegExp(query, 'i');
+
+    Book.find({$or: [{ISBN: regex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
+        .sort({score : {$meta : 'textScore'}})
+        .exec(function(err, results) {
+            if (!err) {
+                res.json(results);
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
 };

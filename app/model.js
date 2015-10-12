@@ -8,9 +8,9 @@ Books
 
 var BookSchema = new Schema({
     ISBN: { type: String, unique: true, index: true },
-    name: String,
+    name: { type: String, index: true },
     coverImage: String,
-    author: String,
+    author: { type: String, index: true },
     edition: String,
     pageCount: Number,
     publishYear: Number,
@@ -24,6 +24,12 @@ var BookSchema = new Schema({
         rentingPrice: Number
     },
     lastSearched: Date
+});
+
+BookSchema.index({ 
+    name: 'text', 
+    author: 'text',
+    description: 'text'
 });
 
 // Add schema to db
