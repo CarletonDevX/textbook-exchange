@@ -312,8 +312,15 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
 
   $scope.updateSearchBox = function() {
     var $this = $('input#search-box');
-    $this.width($this.textWidth()+25);
+    var lenVal = $this.textWidth();
+    var lenPh = $this.textWidth($this.attr("placeholder"));
+    $this.width(Math.max(lenVal, lenPh) + 25);
   }
+
+  setTimeout(function () {
+    // Needs to wait until next tick for some reason :P seems hacky
+    $scope.updateSearchBox();
+  }, 0);
 
   $scope.search = function(){
     if ($scope.searchInput){
