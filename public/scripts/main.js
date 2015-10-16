@@ -317,11 +317,6 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     $this.width(Math.max(lenVal, lenPh) + 25);
   }
 
-  setTimeout(function () {
-    // Needs to wait until next tick for some reason :P seems hacky
-    $scope.updateSearchBox();
-  }, 0);
-
   $scope.search = function(){
     if ($scope.searchInput){
       streamSearch();
@@ -332,11 +327,12 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     }
   }
 
-  //this is absolutely absolutely gross.
-  //TODO: Find something tastier.
-  // setTimeout(function(){
-  //   $scope.updateSearchBox();
-  // }, 1);
+  // this is absolutely absolutely gross.
+  // TODO: Find something tastier.
+  setTimeout(function(){
+    $scope.updateSearchBox();
+  }, 0);
+  
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {

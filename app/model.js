@@ -18,8 +18,8 @@ var BookSchema = new Schema({
     description: String,
     subscribers: [],
     amazonInfo: {
-        id: String,
-        lastUpdated: Date,
+        id: { type: String, required: true },
+        lastUpdated: { type: Date, required: true },
         sellingPrice: Number,
         rentingPrice: Number
     },

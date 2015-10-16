@@ -1,6 +1,7 @@
 var Book = require('mongoose').model('books'),
     Listing = require('mongoose').model('listings'),
     User = require('mongoose').model('users'),
+    Amazon = require('../config/amazon.js'),
     Error = require('../errors');
 
 exports.getBook = function(req, res, next) {
@@ -60,7 +61,25 @@ exports.unsubscribe = function (req, res, next) {
     });
 }
 
-exports.search = function(req, res, next) {
+exports.updateAmazonInfo = function (req, res, next) {
+    var book = req.rBook;
+    Amazon.infoWithISBN(book.ISBN, function (err, info) {
+        if (!err) {
+            book.amazonInfo = info;
+            book.save(function(err) {
+                if (!err) {
+                    next();
+                } else {
+                    Error.mongoError(req, res, err);
+                }
+            });
+        } else {
+            Error.errorWithStatus(req, res, 500, err.message);
+        }
+    })
+}
+
+exports.search = function (req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
 
