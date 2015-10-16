@@ -65,8 +65,10 @@ exports.search = function(req, res, next) {
     if (query == 'undefined') query = '';
 
     var regex = new RegExp(query, 'i');
+    var ISBNquery = query.replace(/[- ]/g, "");
+    var ISBNregex = new RegExp(ISBNquery, 'i');
 
-    Book.find({$or: [{ISBN: regex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
+    Book.find({$or: [{ISBN: ISBNregex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
         .sort({score : {$meta : 'textScore'}})
         .exec(function(err, results) {
             if (!err) {
