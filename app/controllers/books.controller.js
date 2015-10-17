@@ -76,24 +76,28 @@ exports.updateAmazonInfo = function (req, res, next) {
         } else {
             Error.errorWithStatus(req, res, 500, err.message);
         }
-    })
+    });
 }
 
 exports.search = function (req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
+    Amazon.searchWithKeywords(query, function (err, books) {
+        console.log(books);
+        res.json([]);
+    });
 
-    var regex = new RegExp(query, 'i');
-    var ISBNquery = query.replace(/[- ]/g, "");
-    var ISBNregex = new RegExp(ISBNquery, 'i');
+    // var regex = new RegExp(query, 'i');
+    // var ISBNquery = query.replace(/[- ]/g, "");
+    // var ISBNregex = new RegExp(ISBNquery, 'i');
 
-    Book.find({$or: [{ISBN: ISBNregex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
-        .sort({score : {$meta : 'textScore'}})
-        .exec(function(err, results) {
-            if (!err) {
-                res.json(results);
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
+    // Book.find({$or: [{ISBN: ISBNregex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
+    //     .sort({score : {$meta : 'textScore'}})
+    //     .exec(function(err, results) {
+    //         if (!err) {
+    //             res.json(results);
+    //         } else {
+    //             Error.mongoError(req, res, err);
+    //         }
+    //     });
 };
