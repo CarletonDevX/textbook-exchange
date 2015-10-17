@@ -19,9 +19,11 @@ var BookSchema = new Schema({
     subscribers: [],
     amazonInfo: {
         id: { type: String, required: true },
+        url: { type: String, required: true },
         lastUpdated: { type: Date, required: true },
-        sellingPrice: Number,
-        rentingPrice: Number
+        numNew: { type: Number, required: true },
+        numUsed: { type: Number, required: true },
+        sellingPrice: { type: Number, required: true }
     },
     lastSearched: Date
 });

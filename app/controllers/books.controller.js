@@ -63,7 +63,7 @@ exports.unsubscribe = function (req, res, next) {
 
 exports.updateAmazonInfo = function (req, res, next) {
     var book = req.rBook;
-    Amazon.infoWithISBN(book.ISBN, function (err, info) {
+    Amazon.infoForBook(book, function (err, info) {
         if (!err) {
             book.amazonInfo = info;
             book.save(function(err) {
