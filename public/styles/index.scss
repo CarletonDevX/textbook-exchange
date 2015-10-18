@@ -321,6 +321,10 @@ main{
           color:black;
           text-align: left;
           display: flex;
+
+          .preview img {
+                      width:125px;
+          }
         }
         h4{
           font-family: 'Droid Sans', serif;

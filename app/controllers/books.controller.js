@@ -83,8 +83,7 @@ exports.search = function (req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
     Amazon.searchWithKeywords(query, function (err, books) {
-        console.log(books);
-        res.json([]);
+        res.json(books);
     });
 
     // var regex = new RegExp(query, 'i');
