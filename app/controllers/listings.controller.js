@@ -39,8 +39,7 @@ exports.getBookListings = function (req, res, next) {
 
 exports.getListing = function (req, res, next) {
     // Get ID from either params or previous middleware
-    var listingID = req.rListingID;
-    if (!listingID) listingID = req.params.listingID;
+    var listingID = req.rListingID || req.params.listingID;
 
     Listing.findOne({_id: listingID}, function(err, listing) {
         if (!err) {

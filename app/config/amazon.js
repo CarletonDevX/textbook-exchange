@@ -10,7 +10,7 @@ exports.searchWithKeywords = function (keywords, callback) {
 		var items = result.Items.Item || [];
 		var books = [];
 
-		// Check if there are multiple items.
+		// Response type can be {} or [{}, {}...] so we check if there are multiple items.
 		if (items.constructor === Array) {
 			for (var i = 0; i < items.length; i++) {
 				// Fuck ebooks
@@ -24,13 +24,37 @@ exports.searchWithKeywords = function (keywords, callback) {
 	});
 }
 
+exports.bookWithISBN = function (ISBN, callback) {
+	var prodAdv = webservices.createProdAdvClient(config.amazon.clientID, config.amazon.clientSecret, config.amazon.tag);
+	var options = {SearchIndex: "Books", Keywords: ISBN,  ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"}
+
+	prodAdv.call("ItemSearch", options, function(err, result) {
+
+		var items = result.Items.Item || [];
+		var book = null;
+
+		// Response type can be {} or [{}, {}...] so we check if there are multiple items.
+		// If so, we grab the one with the right ISBN.
+		if (items.constructor === Array) {
+			for (var i = 0; i < items.length; i++) {
+				if (items[i].ItemAttributes.ISBN == book.ISBN) {
+					book = bookify(items[i]);
+				}
+			};
+		} else {
+			book = bookify(items);
+		}
+
+		callback(err, book);
+	});
+}
+
 exports.infoForBook = function (book, callback) {
+	// This function needs a LOT of improvement.
 	// TODO: If we already have the amazon ID, we can find the specific book instead of searching
 
-	var keywords = book.ISBN;
-
 	var prodAdv = webservices.createProdAdvClient(config.amazon.clientID, config.amazon.clientSecret, config.amazon.tag);
-	var options = {SearchIndex: "Books", Keywords: keywords,  ResponseGroup: "ItemAttributes,Offers,OfferSummary"}
+	var options = {SearchIndex: "Books", Keywords: book.ISBN,  ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"}
 
 	prodAdv.call("ItemSearch", options, function(err, result) {
 
@@ -78,6 +102,8 @@ var bookify = function (item) {
 
 	var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
 	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
+	// Remove HTML tags (http://stackoverflow.com/a/5002161)
+	description = description.replace(/<\/?[^>]+(>|$)/g, "");
 	var imageURL =  get(item, 'LargeImage.URL') || "";
 
 	var price = Math.floor(new Number(priceString) / 100);

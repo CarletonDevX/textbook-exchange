@@ -4,12 +4,12 @@ var Book = require('mongoose').model('books'),
     Amazon = require('../config/amazon.js'),
     Error = require('../errors');
 
-exports.getBook = function(req, res, next) {
-    var ISBN = req.params.ISBN;
-    Book.findOne({ISBN: ISBN}, function(err, book) {
+exports.getBook = function (req, res, next) {
+    req.rISBN = req.rISBN || req.params.ISBN;
+    Book.findOne({ISBN: req.rISBN}, function(err, book) {
         if (!err) {
             if (!book) {
-                Error.errorWithStatus(req, res, 404, 'Book not found by those conditions.');
+                downloadBook(req, res, next);
             } else {
                 req.rBook = book;
                 next();
@@ -19,6 +19,26 @@ exports.getBook = function(req, res, next) {
         }
     });
 };
+
+// Separated because over-indentation makes me sad
+var downloadBook = function (req, res, next) {
+    Amazon.bookWithISBN(req.rISBN, function (err, bookResult) {
+        if (!err) {
+            if (!bookResult) {
+                Error.errorWithStatus(req, res, 404, 'Book not found by those conditions.');
+            } else {
+                req.rBook = bookResult;
+                next();
+
+                // Save it for faster lookup next time
+                var newBook = new Book(bookResult);
+                newBook.save();
+            }
+        } else {
+            Error.errorWithStatus(req, res, 500, err.message);
+        }
+    });
+}
 
 exports.subscribe = function (req, res, next) {
     var book = req.rBook;

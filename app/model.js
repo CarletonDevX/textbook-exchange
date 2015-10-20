@@ -13,7 +13,7 @@ var BookSchema = new Schema({
     author: { type: String, index: true },
     edition: String,
     pageCount: Number,
-    publishDate: Number,
+    publishDate: String,
     publisher: String,
     description: String,
     subscribers: [],
