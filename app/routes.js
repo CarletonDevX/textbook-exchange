@@ -284,7 +284,8 @@ exports.setup = function (app) {
 
     // Search
     app.route('/api/search')
-        .get(books.search);
+        .get(books.search,
+             responder.formatSearchResults);
 
 
     /************

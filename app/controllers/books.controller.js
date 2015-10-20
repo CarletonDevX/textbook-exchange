@@ -83,9 +83,11 @@ exports.search = function (req, res, next) {
     var query = req.query.query;
     if (query == 'undefined') query = '';
     Amazon.searchWithKeywords(query, function (err, books) {
-        res.json(books);
+        req.rBooks = books;
+        next();
     });
 
+    // // local search
     // var regex = new RegExp(query, 'i');
     // var ISBNquery = query.replace(/[- ]/g, "");
     // var ISBNregex = new RegExp(ISBNquery, 'i');
