@@ -37,7 +37,7 @@ exports.bookWithISBN = function (ISBN, callback) {
 		// If so, we grab the one with the right ISBN.
 		if (items.constructor === Array) {
 			for (var i = 0; i < items.length; i++) {
-				if (items[i].ItemAttributes.ISBN == book.ISBN) {
+				if (items[i].ItemAttributes.ISBN == ISBN) {
 					book = bookify(items[i]);
 				}
 			};
@@ -49,52 +49,6 @@ exports.bookWithISBN = function (ISBN, callback) {
 	});
 }
 
-exports.infoForBook = function (book, callback) {
-	// This function needs a LOT of improvement.
-	// TODO: If we already have the amazon ID, we can find the specific book instead of searching
-
-	var prodAdv = webservices.createProdAdvClient(config.amazon.clientID, config.amazon.clientSecret, config.amazon.tag);
-	var options = {SearchIndex: "Books", Keywords: book.ISBN,  ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"}
-
-	prodAdv.call("ItemSearch", options, function(err, result) {
-
-		var items = result.Items.Item || [];
-		var item = null;
-
-		// Check if there are multiple items. If so, grab the one with the right ISBN.
-		if (items.constructor === Array) {
-			for (var i = 0; i < items.length; i++) {
-				if (items[i].ItemAttributes.ISBN == book.ISBN) {
-					item = items[i];
-				}
-			};
-		} else {
-			item = items;
-		}
-
-		if (!item) {
-			callback({message: "Item not found on Amazon."}, null);
-			return;
-		}
-
-		// Turn price string with hundreths place into integer e.g. 1747 -> 17
-		// TODO: make sure responses always have these properties, handle exceptions
-		var priceString = item.Offers.Offer.OfferListing.Price.Amount;
-		var price = Math.floor(new Number(priceString) / 100);
-
-		info = {
-			id: item.ASIN,
-			url: item.DetailPageURL,
-			lastUpdated: new Date(),
-			numNew: item.OfferSummary.TotalNew,
-			numUsed: item.OfferSummary.TotalUsed,
-			sellingPrice: price
-		}
-
-		callback(err, info);
-	});
-}
-
 var bookify = function (item) {
 
 	var info = item.ItemAttributes;
@@ -102,10 +56,12 @@ var bookify = function (item) {
 
 	var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
 	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
-	// Remove HTML tags (http://stackoverflow.com/a/5002161)
-	description = description.replace(/<\/?[^>]+(>|$)/g, "");
 	var imageURL =  get(item, 'LargeImage.URL') || "";
 
+	// Remove HTML tags (http://stackoverflow.com/a/5002161)
+	description = description.replace(/<\/?[^>]+(>|$)/g, "");
+
+	// Turn price string with hundreths place into integer e.g. 1747 -> 17
 	var price = Math.floor(new Number(priceString) / 100);
 
 	return {

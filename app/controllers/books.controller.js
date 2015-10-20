@@ -30,7 +30,7 @@ var downloadBook = function (req, res, next) {
                 req.rBook = bookResult;
                 next();
 
-                // Save it for faster lookup next time
+                // Save it for faster lookup next time (async)
                 var newBook = new Book(bookResult);
                 newBook.save();
             }
@@ -51,8 +51,9 @@ exports.subscribe = function (req, res, next) {
     }
 
     book.subscribers.push(user._id);
-    book.save(function(err) {
+    book.save(function(err, book) {
         if (!err) {
+            req.rBook = book;
             next();
         } else {
             Error.mongoError(req, res, err);
@@ -72,8 +73,9 @@ exports.unsubscribe = function (req, res, next) {
     }
 
     book.subscribers = newSubs;
-    book.save(function(err) {
+    book.save(function(err, book) {
         if (!err) {
+            req.rBook = book;
             next();
         } else {
             Error.mongoError(req, res, err);
@@ -83,16 +85,22 @@ exports.unsubscribe = function (req, res, next) {
 
 exports.updateAmazonInfo = function (req, res, next) {
     var book = req.rBook;
-    Amazon.infoForBook(book, function (err, info) {
+    Amazon.bookWithISBN(book.ISBN, function (err, bookResult) {
         if (!err) {
-            book.amazonInfo = info;
-            book.save(function(err) {
-                if (!err) {
-                    next();
-                } else {
-                    Error.mongoError(req, res, err);
-                }
-            });
+            if (!bookResult) {
+                Error.errorWithStatus(req, res, 404, 'Amazon info not found for ISBN: ' + book.ISBN);
+            } else {
+                // Should we update more than just the pricing info?
+                book.amazonInfo = bookResult.amazonInfo;
+                book.save(function(err, book) {
+                    if (!err) {
+                        req.rBook = book;
+                        next();
+                    } else {
+                        Error.mongoError(req, res, err);
+                    }
+                });
+            }
         } else {
             Error.errorWithStatus(req, res, 500, err.message);
         }
