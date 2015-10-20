@@ -3,7 +3,8 @@ div#book-details
   h3#book-author {{book.author}}
   img(src="{{book.coverImage}}")
   //TODO: make this h4 into a table of details about the book
-  h4#isbn {{book.ISBN}}
+  p {{book.description}}
+  h4#isbn ISBN: {{book.ISBN}}
   div.listing#selling
     table
       thead

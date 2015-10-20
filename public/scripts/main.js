@@ -312,7 +312,9 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
 
   $scope.updateSearchBox = function() {
     var $this = $('input#search-box');
-    $this.width($this.textWidth()+25);
+    var lenVal = $this.textWidth();
+    var lenPh = $this.textWidth($this.attr("placeholder"));
+    $this.width(Math.max(lenVal, lenPh) + 25);
   }
 
   $scope.search = function(){
@@ -325,11 +327,12 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     }
   }
 
-  //this is absolutely absolutely gross.
-  //TODO: Find something tastier.
-  // setTimeout(function(){
-  //   $scope.updateSearchBox();
-  // }, 1);
+  // this is absolutely absolutely gross.
+  // TODO: Find something tastier.
+  setTimeout(function(){
+    $scope.updateSearchBox();
+  }, 0);
+  
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {

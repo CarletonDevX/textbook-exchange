@@ -230,6 +230,8 @@ main #search {
         color: black;
         text-align: left;
         display: flex; }
+        main #search #search-results ul li a.book .preview img {
+          width: 125px; }
       main #search #search-results ul li h4 {
         font-family: 'Droid Sans', serif;
         margin-bottom: 0;

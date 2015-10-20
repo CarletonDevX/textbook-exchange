@@ -73,6 +73,8 @@ Communist calls have been implemented already.
 - Books
 	- ☭ Get book with book ID:
 	`GET hitsthebooks.com/api/book/id`
+	- Update amazon info of book with book ID (temporary):
+	`POST hitsthebooks.com/api/book/id`
 
 - Search
 	- Search for a book (with queries):
