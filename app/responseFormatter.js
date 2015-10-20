@@ -221,7 +221,7 @@ exports.formatBook = function (req, res) {
         "lastSearched": req.rBook.lastSearched, 
                 "name": req.rBook.name, 
            "pageCount": req.rBook.pageCount, 
-         "publishYear": req.rBook.publishYear, 
+         "publishDate": req.rBook.publishDate, 
            "publisher": req.rBook.publisher,
          "subscribers": req.rBook.subscribers
     };
@@ -265,7 +265,7 @@ exports.formatSearchResults = function (req, res) {
                 "lastSearched": book.lastSearched, 
                         "name": book.name, 
                    "pageCount": book.pageCount, 
-                 "publishYear": book.publishYear, 
+                 "publishDate": book.publishDate, 
                    "publisher": book.publisher,
                  "subscribers": book.subscribers
             };
