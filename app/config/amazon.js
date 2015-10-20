@@ -76,21 +76,9 @@ var bookify = function (item) {
 	var info = item.ItemAttributes;
 	var OfferSummary = item.OfferSummary || { TotalNew: 0, TotalUsed: 0 };
 
-	var priceString = "0";
-	var description = "No description available";
-	var imageURL = "";
-
-
-	// TODO: make this less gross
-	try {
-		description = item.EditorialReviews.EditorialReview.Content;
-	} catch (err) {}
-	try {
-		imageURL = item.LargeImage.URL;
-	} catch (err) {}
-	try {
-		priceString = item.Offers.Offer.OfferListing.Price.Amount;
-	} catch (err) {}
+	var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
+	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
+	var imageURL =  get(item, 'LargeImage.URL') || "";
 
 	var price = Math.floor(new Number(priceString) / 100);
 
@@ -115,4 +103,12 @@ var bookify = function (item) {
 	    },
 	    lastSearched: new Date()
 	}
+}
+
+// Get nested property if it exists
+// http://stackoverflow.com/a/23809123
+var get = function(obj, key) {
+    return key.split(".").reduce(function(o, x) {
+        return (typeof o == "undefined" || o === null) ? null : o[x];
+    }, obj);
 }
