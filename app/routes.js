@@ -271,13 +271,21 @@ exports.setup = function (app) {
         .get(books.getBook,
              listings.getBookListings,
              inject.UsersIntoListings,
+             responder.formatBook)
+
+    // Update amazon info of book with book ID (temporary)
+        .post(books.getBook,
+             books.updateAmazonInfo,
+             listings.getBookListings,
+             inject.UsersIntoListings,
              responder.formatBook);
 
     /* Search */
 
     // Search
     app.route('/api/search')
-        .get(books.search);
+        .get(books.search,
+             responder.formatSearchResults);
 
 
     /************

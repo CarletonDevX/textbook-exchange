@@ -8,22 +8,30 @@ Books
 
 var BookSchema = new Schema({
     ISBN: { type: String, unique: true, index: true },
-    name: String,
+    name: { type: String, index: true },
     coverImage: String,
-    author: String,
+    author: { type: String, index: true },
     edition: String,
     pageCount: Number,
-    publishYear: Number,
+    publishDate: String,
     publisher: String,
     description: String,
     subscribers: [],
     amazonInfo: {
-        id: String,
-        lastUpdated: Date,
-        sellingPrice: Number,
-        rentingPrice: Number
+        id: { type: String, required: true },
+        url: { type: String, required: true },
+        lastUpdated: { type: Date, required: true },
+        numNew: { type: Number, required: true },
+        numUsed: { type: Number, required: true },
+        sellingPrice: { type: Number, required: true }
     },
     lastSearched: Date
+});
+
+BookSchema.index({ 
+    name: 'text', 
+    author: 'text',
+    description: 'text'
 });
 
 // Add schema to db

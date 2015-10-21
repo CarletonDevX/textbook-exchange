@@ -4,9 +4,9 @@
 
 exports.formatSchoolStats = function (req, res) {
     var stats = {
-      "numUsers": req.rSchoolStats.numUsers,
+         "numUsers": req.rSchoolStats.numUsers,
       "numListings": req.rSchoolStats.numListings,
-      "numOffers": req.rSchoolStats.numOffers
+        "numOffers": req.rSchoolStats.numOffers
     }
     res.json(stats);
 }
@@ -14,15 +14,15 @@ exports.formatSchoolStats = function (req, res) {
 /** USERS **/
 
 exports.successVerify = function (req, res) {
-  res.status(200).send("User verified.");
+    res.status(200).send("User verified.");
 }
 
 exports.successRemoveUser = function (req, res) {
-  res.status(200).send("User deleted.");
+    res.status(200).send("User deleted.");
 }
 
 exports.successClearSubscriptions = function (req, res) {
-  res.status(200).send("Subscriptions cleared.");
+    res.status(200).send("Subscriptions cleared.");
 }
 
 exports.formatCurrentUser = function (req, res) {
@@ -113,14 +113,14 @@ exports.formatSubscriptions = function (req, res) {
 /** REPORTS **/
 
 exports.successReport = function (req, res) {
-  res.status(200).send("Report submitted.");
+    res.status(200).send("Report submitted.");
 }
 
 /** LISTINGS **/
 
 
 exports.successRemoveListing = function (req, res) {
-  res.status(200).send("Listing deleted.");
+    res.status(200).send("Listing deleted.");
 }
 
 exports.formatBookListings = function (req, res) {
@@ -178,7 +178,7 @@ exports.formatUserListings = function (req, res) {
 exports.formatSingleListing = function (req, res) {
     var lstng = req.rListings[0];
     if (!lstng) {
-      res.status(404).send('Listing not found by those conditions.');
+        res.status(404).send('Listing not found by those conditions.');
     }
     var formattedListing = {
               "userID": lstng.userID,
@@ -195,7 +195,7 @@ exports.formatSingleListing = function (req, res) {
 }
 
 exports.formatOffer = function (req, res) {
-  var offer = {
+    var offer = {
           "offerID": req.rOffer._id,
         "listingID": req.rOffer.listingID,
           "buyerID": req.rOffer.buyerID,
@@ -203,9 +203,9 @@ exports.formatOffer = function (req, res) {
              "ISBN": req.rOffer.ISBN,
              "date": req.rOffer.date,
         "completed": req.rOffer.completed
-  }
+    }
 
-  res.json(offer);
+    res.json(offer);
 }
 
 /** BOOKS **/
@@ -221,7 +221,7 @@ exports.formatBook = function (req, res) {
         "lastSearched": req.rBook.lastSearched, 
                 "name": req.rBook.name, 
            "pageCount": req.rBook.pageCount, 
-         "publishYear": req.rBook.publishYear, 
+         "publishDate": req.rBook.publishDate, 
            "publisher": req.rBook.publisher,
          "subscribers": req.rBook.subscribers
     };
@@ -249,4 +249,27 @@ exports.formatBook = function (req, res) {
 
   	book.listings = listings;
     res.json(book);
+}
+
+exports.formatSearchResults = function (req, res) {
+    var books = [];
+    for (var i = 0; i < req.rBooks.length; i++) {
+        var book = req.rBooks[i];
+        var formattedBook = {
+                        "ISBN": book.ISBN, 
+                  "amazonInfo": book.amazonInfo,
+                      "author": book.author, 
+                  "coverImage": book.coverImage, 
+                 "description": book.description, 
+                     "edition": book.edition, 
+                "lastSearched": book.lastSearched, 
+                        "name": book.name, 
+                   "pageCount": book.pageCount, 
+                 "publishDate": book.publishDate, 
+                   "publisher": book.publisher,
+                 "subscribers": book.subscribers
+            };
+        books.push(formattedBook);
+    }
+    res.json(books);
 }
