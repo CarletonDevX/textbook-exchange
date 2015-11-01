@@ -13,8 +13,8 @@ var express = require('express'),
     bodyParser = require('body-parser'),
 	sass = require('node-sass-middleware'),
 	errorHandlers = require('./app/errors'),
+    assetManager = require('connect-assetmanager'),
 	passport = require('./app/config/passport'),
-    flash = require('connect-flash'),
     session = require('express-session'),
     mailer = require('./app/config/nodemailer'),
 	routes = require('./app/routes');
@@ -26,7 +26,25 @@ app.use(sass({
     src: __dirname + '/public'
 }));
 
-app.use(express.static(__dirname + '/public/'));
+// Concatenate and minify JS
+var assetsManagerMiddleware = assetManager({
+    'js': {
+        'route': /\/static\/scripts\/client\.js/,
+        'path': "./public/scripts/",
+        'dataType': 'javascript',
+        'files': [
+            "main.js",
+            "api.js" // This order is important
+        ]
+    }
+});
+
+app.use('/'
+    , assetsManagerMiddleware
+    , express.static(__dirname + '/public')
+);
+
+
 app.set('views', './app/views');
 app.set('view engine', 'jade');
 //force terse attributes on jade templates (e.g. ui-view not ui-view="ui-view")
@@ -53,9 +71,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Flash
-app.use(flash());
-
+// Form parsing
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

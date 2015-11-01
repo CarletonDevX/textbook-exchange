@@ -12,7 +12,7 @@
     "aws-lib": "^0.3.0",
     "body-parser": "^1.14.1",
     "chai": "^3.2.0",
-    "connect-flash": "^0.1.1",
+    "connect-assetmanager": "0.0.28",
     "express": "^4.12.4",
     "express-session": "^1.11.3",
     "fbgraph": "^1.0.0",
