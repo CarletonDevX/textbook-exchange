@@ -33,11 +33,6 @@ var assetsManagerMiddleware = assetManager({
         'path': "./public/scripts/",
         'dataType': 'javascript',
         'files': [
-            "https://code.jquery.com/jquery-1.11.3.min.js",
-            "https://rawgit.com/Box9/jss/master/jss.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.js",
-            "https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js",
-            "https://rawgit.com/christopherthielen/ui-router-extras/master/release/ct-ui-router-extras.js",
             "*" // All our files
         ]
     }
