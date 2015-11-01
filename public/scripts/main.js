@@ -139,10 +139,32 @@ hitsTheBooks.run(function($rootScope, $state){
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
 
+    .state('account', { url: '',
+      views:{'account' : {
+          templateUrl: 'partials/account',
+          controller: 'accountController' }}
+    })
+    .state('account.access', { url: '',
+      templateUrl : '/partials/account.access',
+      controller  : 'accountAccessController'
+    })
+    .state('account.details', { url : '',
+      templateUrl : '/partials/account.details',
+      controller  : 'accountDetailsController'
+    })
+    .state('account.edit',{ url: '',
+      templateUrl : '/partials/account.edit',
+      controller  : 'accountEditController'
+    })
     .state('main',{
       url: '/',
-      templateUrl : '/partials/main',
-      controller  : 'mainController'
+      sticky: true,
+      views:{
+        'main' : {
+          templateUrl: 'partials/main',
+          controller: 'mainController'
+        }
+      }
     })
     .state('main.search',{
       resolve : {
@@ -223,14 +245,31 @@ hitsTheBooks.controller('headerController', function($scope, $state, $document) 
       if(fromState.name){
         $('header').transist({'remove':['minimized']},['height'],200)
       }
-    } else if(fromState.name=="main"){
+    } else if(fromState.name=="main" && toState.name.indexOf('account') == -1){
       $('header').transist({'add':['minimized']},['height'],200)
-    } else { //init
+    } else if(!fromState.name){ //init
       $('header').addClass('minimized');
     }
   });
 
-})
+});
+
+hitsTheBooks.controller('accountController', function($scope, $state) {
+  //yea
+  return
+});
+
+hitsTheBooks.controller('accountAccessController', function($scope, $state) {
+  return
+});
+
+hitsTheBooks.controller('accountDetailsController', function($scope, $state) {
+  return
+});
+
+hitsTheBooks.controller('accountEditController', function($scope, $state) {
+  return
+});
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $document) {
   var streamSearchDelay = 200; //ms
