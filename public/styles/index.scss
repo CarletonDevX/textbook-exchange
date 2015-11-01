@@ -425,6 +425,34 @@ main{
   }
 }
 
+.modal-wrapper{
+  opacity: 0;
+  position: fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: rgba(0,0,0,.1);
+  z-index: -10;
+  display: none;
+  opacity: 0
+}
+
+.modal-wrapper.visible{
+  display: block;
+  z-index: 50;
+  opacity: 1;
+
+  .modal{
+    background-color: white;
+    box-sizing: border-box;
+    width: 500px;
+    margin: 100px calc(50vw - 250px);
+    padding: 10px;
+  }
+}
+
 
 // header.minimized div#main-box:hover .app-name::before{
 //   width:15%;
