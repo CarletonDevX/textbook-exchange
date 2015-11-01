@@ -33,7 +33,8 @@ var assetsManagerMiddleware = assetManager({
         'path': "./public/scripts/",
         'dataType': 'javascript',
         'files': [
-            "*" // All our files
+            "main.js",
+            "api.js" // This order is important
         ]
     }
 });

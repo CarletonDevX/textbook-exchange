@@ -147,11 +147,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function($http, $stateParams) {
-          return $http({
-            method : 'GET',
-               url : '/api/search?query=' + $stateParams.query
-          });
+        results: function(api, $stateParams) {
+          return api.search($stateParams.query);
         }
       },
       url : 'search?query',
@@ -174,11 +171,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     })
     .state('main.detail.book',{
       resolve : {
-        bookInfo: function($http, $stateParams) {
-          return $http({
-            method : 'GET',
-            url : '/api/book/' + $stateParams.isbn
-          });
+        bookInfo: function(api, $stateParams) {
+          return api.getBook($stateParams.isbn);
         }
       },
       url : 'book/:isbn',
@@ -188,11 +182,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.detail.user',{
       url : 'user/:userID',
       resolve : {
-        userInfo: function($http, $stateParams) {
-          return $http({
-            method : 'GET',
-            url : '/api/user/' + $stateParams.userID
-          });
+        userInfo: function(api, $stateParams) {
+          return api.getUser($stateParams.userID);
         }
       },
       templateUrl : '/partials/detail.user',
