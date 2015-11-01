@@ -306,15 +306,17 @@ main #detail-wrapper.maximized {
   width: 100vw;
   height: 100vh;
   overflow-y: scroll;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: -10;
   display: none;
-  opacity: 0; }
+  opacity: 0;
+  transition: opacity 2s; }
 
 .modal-wrapper.visible {
   display: block;
   z-index: 50;
-  opacity: 1; }
+  opacity: 1;
+  transition: opacity 2s; }
   .modal-wrapper.visible .modal {
     background-color: white;
     box-sizing: border-box;
