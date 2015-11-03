@@ -36,9 +36,15 @@ exports.setupMain = function (app) {
 
 exports.setup = function (app) {
 
-    app.get('/partials/:partial', function (req, res) {
-        res.render('partials/'+req.params.partial+'.jade',{});
-    });
+    app.route('/partials/:partial')
+        .get(function (req, res) {
+            res.render('partials/'+req.params.partial+'.jade',{});
+        });
+
+    // Workaround for browser autofill
+    app.route('/sink')
+        .get(function (req, res) {res.status(200).send()})
+        .post(function (req, res) {res.status(200).send()});
 
     // db stuff for testing
     app.post('/clear', function (req, res) {
