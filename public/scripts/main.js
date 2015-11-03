@@ -301,6 +301,7 @@ hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope,
 
   $scope.logout = function () {
     Api.logout().then(function () {
+      $scope.setCurrentUser(null);
       $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
       $state.go("main");
     });
@@ -467,7 +468,6 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
   $scope.$on(AUTH_EVENTS.logoutSuccess, 
   function(event, args){
     console.log("Logged out.");
-    $scope.setCurrentUser(null);
   });
 
 });
