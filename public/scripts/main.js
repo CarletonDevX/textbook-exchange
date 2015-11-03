@@ -144,7 +144,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
           templateUrl: 'partials/account',
           controller: 'accountController' }}
     })
-    .state('account.access', { url: '/login',
+    .state('account.access', { url: '',
       templateUrl : '/partials/account.access',
       controller  : 'accountAccessController'
     })
@@ -246,7 +246,6 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 });
 
 hitsTheBooks.controller('accountController', function($scope, $state) {
-  //yea
   return
 });
 
@@ -259,11 +258,12 @@ hitsTheBooks.constant('AUTH_EVENTS', {
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
 
-  // Click background of modal to exit (probably not the best way to do this, just put it in for convenience)
-  $('#account-wrapper').click(function (){
+  // Click background of modal to exit.
+  // (definitely not the best way to do this, just put it in for now, for convenience)
+  $('.modal-wrapper').click(function (){
     $state.go('main');
   })
-  $('#account').click(function (e){
+  $('.modal').click(function (e){
     e.stopPropagation();
   });
 
@@ -288,7 +288,23 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   };
 });
 
-hitsTheBooks.controller('accountDetailsController', function($scope, $state) {
+hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+
+  // Click background of modal to exit.
+  // (definitely not the best way to do this, just put it in for now, for convenience)
+  $('.modal-wrapper').click(function (){
+    $state.go('main');
+  })
+  $('.modal').click(function (e){
+    e.stopPropagation();
+  });
+
+  $scope.logout = function () {
+    Api.logout().then(function () {
+      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+      $state.go("main");
+    });
+  }
 });
 
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
@@ -413,13 +429,6 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateP
 
 // Top-level shit
 hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
-
-  // We'll move this the the account detail controller soon...
-  $scope.logout = function () {
-    Api.logout().then(function () {
-      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
-    });
-  }
 
   Api.getCurrentUser().then(function (res) {
     $scope.setCurrentUser(res.data);

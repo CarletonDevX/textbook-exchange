@@ -22,7 +22,5 @@ header(ng-controller="headerController")
       a(href="#about") About
       a(ui-sref='account.access') Sign in or Register
     div#account-details-buttons
-      a(href="#dashboard") Dashboard
-      //- For testing purposes
-      a(href="#logout" ng-click="logout()") Logout 
+      a(ui-sref='account.details') Dashboard
   include modals
