@@ -223,30 +223,10 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 })
 
 
-hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $document, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $document) {
   $scope.closeBlurb = function() {
     $("#blurb").addClass("hidden");
   }
-
-  $scope.logout = function () {
-    Api.logout().then(function () {
-      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
-    });
-  }
-
-  //Auth listeners (for testing)
-  $scope.$on(AUTH_EVENTS.loginSuccess, 
-  function(event, args){
-    console.log("Logged in.");
-  });
-  $scope.$on(AUTH_EVENTS.loginFailed, 
-  function(event, args){
-    console.log("Login failed.");
-  });
-  $scope.$on(AUTH_EVENTS.logoutSuccess, 
-  function(event, args){
-    console.log("Logged out.");
-  });
 
   //transists for header
   $scope.$on('$stateChangeStart',
@@ -278,13 +258,23 @@ hitsTheBooks.constant('AUTH_EVENTS', {
 });
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+
+  // Click background of modal to exit (probably not the best way to do this, just put it in for convenience)
+  $('#account-wrapper').click(function (){
+    $state.go('main');
+  })
+  $('#account').click(function (e){
+    e.stopPropagation();
+  });
+
   // Login
   $scope.loginData = { username: '', password: '' };
 
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-      console.log(res.data);
+      $scope.setCurrentUser(res.data);
       $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+      $state.go("main");
     }, function () {
       $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
     });
@@ -294,11 +284,11 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
 
   $scope.register = function (loginData) {
+    // Nothing here yet :(
   };
 });
 
 hitsTheBooks.controller('accountDetailsController', function($scope, $state) {
-  return
 });
 
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
@@ -419,4 +409,56 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $st
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
   $scope.user = userInfo.data;
+});
+
+// Top-level shit
+hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
+
+  // We'll move this the the account detail controller soon...
+  $scope.logout = function () {
+    Api.logout().then(function () {
+      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+    });
+  }
+
+  Api.getCurrentUser().then(function (res) {
+    $scope.setCurrentUser(res.data);
+  });
+
+  // This is probably not the best way to do this...
+  $scope.showAccountAccess = function () {
+    $("#account-details-buttons").hide();
+    $("#account-access-buttons").show();
+  }
+  $scope.showAccountDetails = function () {
+    $("#account-details-buttons").show();
+    $("#account-access-buttons").hide();
+  }
+
+  $scope.setCurrentUser = function (user) {
+    $scope.currentUser = user;
+    if (user) {
+      $scope.showAccountDetails();
+    } else {
+      $scope.showAccountAccess();
+    }
+  };
+
+  $scope.setCurrentUser(null);
+
+  //Auth listeners (for testing)
+  $scope.$on(AUTH_EVENTS.loginSuccess, 
+  function(event, args){
+    console.log("Logged in.");
+  });
+  $scope.$on(AUTH_EVENTS.loginFailed, 
+  function(event, args){
+    console.log("Login failed.");
+  });
+  $scope.$on(AUTH_EVENTS.logoutSuccess, 
+  function(event, args){
+    console.log("Logged out.");
+    $scope.setCurrentUser(null);
+  });
+
 });

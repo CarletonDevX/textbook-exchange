@@ -22,15 +22,14 @@ exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
     app.route('/*')
-        .get(users.countUsers,
+        .get(users.countUsers,          // Should we cache this stuff?
              listings.countListings,
              offers.countOffers,
              function (req, res) {
                 res.render('index.jade', {
                     numListings: req.rSchoolStats.numListings,
                     numOffers: req.rSchoolStats.numOffers,
-                    numUsers: req.rSchoolStats.numUsers,
-                    loggedIn: (req.user != null)
+                    numUsers: req.rSchoolStats.numUsers
                 });
              }); 
 }

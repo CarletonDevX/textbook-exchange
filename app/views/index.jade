@@ -11,6 +11,6 @@ html(ng-app="hitsTheBooks")
     link(rel="shortcut icon" type="image/x-icon" href="/images/favicon.png")
     link(rel="stylesheet" type="text/css" href="/styles/index.css")
     base(href="/")
-  body
+  body(ng-controller="applicationController")
     include header
     main(ui-view='main')

@@ -18,11 +18,11 @@ header(ng-controller="headerController")
     a(class="toAbout", href="#about") Learn more...
     a(class="close", ng-click="closeBlurb()") ×
   div#sub-box
-    if loggedIn
+    div#account-access-buttons
+      a(href="#about") About
+      a(ui-sref='account.access') Sign in or Register
+    div#account-details-buttons
       a(href="#dashboard") Dashboard
       //- For testing purposes
       a(href="#logout" ng-click="logout()") Logout 
-    else
-      a(href="#about") About
-      a(ui-sref='account.access') Sign in or Register
   include modals
