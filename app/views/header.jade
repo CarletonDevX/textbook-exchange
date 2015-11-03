@@ -20,6 +20,8 @@ header(ng-controller="headerController")
   div#sub-box
     if loggedIn
       a(href="#dashboard") Dashboard
+      //- For testing purposes
+      a(href="#logout" ng-click="logout()") Logout 
     else
       a(href="#about") About
       a(ui-sref='account.access') Sign in or Register

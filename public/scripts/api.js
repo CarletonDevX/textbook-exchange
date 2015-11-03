@@ -1,6 +1,14 @@
-angular.module('hitsTheBooks').factory('api', function($http, $q) {
+angular.module('hitsTheBooks').factory('Api', function($http) {
     return {
-        // Users
+        login: function (loginData) {
+            return $http.post('/api/login/', loginData);
+        },
+        logout: function () {
+            return $http.post('/api/logout');
+        },
+        getCurrentUser: function () {
+            return $http.get('/api/user');
+        },
         getUser: function (userID) {
             return $http.get('/api/user/'+userID);
         },

@@ -144,7 +144,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
           templateUrl: 'partials/account',
           controller: 'accountController' }}
     })
-    .state('account.access', { url: '',
+    .state('account.access', { url: '/login',
       templateUrl : '/partials/account.access',
       controller  : 'accountAccessController'
     })
@@ -169,8 +169,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function(api, $stateParams) {
-          return api.search($stateParams.query);
+        results: function(Api, $stateParams) {
+          return Api.search($stateParams.query);
         }
       },
       url : 'search?query',
@@ -193,8 +193,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     })
     .state('main.detail.book',{
       resolve : {
-        bookInfo: function(api, $stateParams) {
-          return api.getBook($stateParams.isbn);
+        bookInfo: function(Api, $stateParams) {
+          return Api.getBook($stateParams.isbn);
         }
       },
       url : 'book/:isbn',
@@ -204,8 +204,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.detail.user',{
       url : 'user/:userID',
       resolve : {
-        userInfo: function(api, $stateParams) {
-          return api.getUser($stateParams.userID);
+        userInfo: function(Api, $stateParams) {
+          return Api.getUser($stateParams.userID);
         }
       },
       templateUrl : '/partials/detail.user',
@@ -223,10 +223,30 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 })
 
 
-hitsTheBooks.controller('headerController', function($scope, $state, $document) {
-  $scope.closeBlurb = function(){
+hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $document, Api, AUTH_EVENTS) {
+  $scope.closeBlurb = function() {
     $("#blurb").addClass("hidden");
   }
+
+  $scope.logout = function () {
+    Api.logout().then(function () {
+      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+    });
+  }
+
+  //Auth listeners (for testing)
+  $scope.$on(AUTH_EVENTS.loginSuccess, 
+  function(event, args){
+    console.log("Logged in.");
+  });
+  $scope.$on(AUTH_EVENTS.loginFailed, 
+  function(event, args){
+    console.log("Login failed.");
+  });
+  $scope.$on(AUTH_EVENTS.logoutSuccess, 
+  function(event, args){
+    console.log("Logged out.");
+  });
 
   //transists for header
   $scope.$on('$stateChangeStart',
@@ -250,8 +270,31 @@ hitsTheBooks.controller('accountController', function($scope, $state) {
   return
 });
 
-hitsTheBooks.controller('accountAccessController', function($scope, $state) {
-  return
+// Enum for events that will be broadcasted
+hitsTheBooks.constant('AUTH_EVENTS', {
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success'
+});
+
+hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+  // Login
+  $scope.loginData = { username: '', password: '' };
+
+  $scope.login = function (loginData) {
+    Api.login(loginData).then(function (res) {
+      console.log(res.data);
+      $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+    }, function () {
+      $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+    });
+  };
+
+  // Registration
+  $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+
+  $scope.register = function (loginData) {
+  };
 });
 
 hitsTheBooks.controller('accountDetailsController', function($scope, $state) {
