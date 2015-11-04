@@ -13,7 +13,7 @@ header(ng-controller="headerController")
       li #{numListings} books available
       li #{numOffers} successful listings
       li #{numUsers} active users
-  div#blurb(ng-class="{'hidden': !modalStates.blurb}")
+  div#blurb(ng-class="{'hidden': !modalStates.blurb||currentUser}")
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
     | By Carls for Carls.
     a(href="" class="toAbout", ng-click="modalStates.about = true") Learn more...
