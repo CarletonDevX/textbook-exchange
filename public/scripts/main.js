@@ -5,6 +5,8 @@ hitsTheBooks.run(function($rootScope, $state){
   $rootScope.includes = function(name){ return $state.includes(name) };
 });
 
+
+//a more flexible keypress directive that maps keycodes to functions
 hitsTheBooks.directive('ngHtbKeypress', function() {
     return function(scope, element, attrs) {
 
@@ -19,6 +21,8 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
     };
 });
 
+// Like ng-click but not activated when click event 
+// is bubbled up the the el with the directive
 hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($parse, $rootScope) {
   return {
     restrict: 'A',
@@ -97,7 +101,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       }
     })
     .state('main.detail.book',{
-      // sticky:true,
       resolve : {
         bookInfo: function(Api, $stateParams) {
           return Api.getBook($stateParams.isbn);
@@ -108,7 +111,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       controller  : 'bookController'
     })
     .state('main.detail.user',{
-      // sticky:true,
       url : 'user/:userID',
       resolve : {
         userInfo: function(Api, $stateParams) {
