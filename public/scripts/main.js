@@ -75,6 +75,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       }
     })
     .state('main.detail.book',{
+      sticky:true,
       resolve : {
         bookInfo: function(Api, $stateParams) {
           return Api.getBook($stateParams.isbn);
@@ -85,6 +86,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       controller  : 'bookController'
     })
     .state('main.detail.user',{
+      sticky:true,
       url : 'user/:userID',
       resolve : {
         userInfo: function(Api, $stateParams) {
@@ -130,7 +132,12 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 });
 
 hitsTheBooks.controller('accountController', function($scope, $state) {
-  return
+  //redirect to view depending on user state
+  if ($scope.currentUser) {
+    $state.go('account.details')
+  } else {
+    $state.go('account.access')
+  }
 });
 
 // Enum for events that will be broadcasted
@@ -142,6 +149,7 @@ hitsTheBooks.constant('AUTH_EVENTS', {
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
 
+  // TODO: for some reason the ng-click version isn't working
   // Click background of modal to exit.
   // (definitely not the best way to do this, just put it in for now, for convenience)
   $('.modal-wrapper').click(function (){
@@ -319,24 +327,8 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
     $scope.setCurrentUser(res.data);
   });
 
-  // TODO: fix
-  // This is probably not the best way to do this...
-  $scope.showAccountAccess = function () {
-    $("#account-details-buttons").hide();
-    $("#account-access-buttons").show();
-  }
-  $scope.showAccountDetails = function () {
-    $("#account-details-buttons").show();
-    $("#account-access-buttons").hide();
-  }
-
   $scope.setCurrentUser = function (user) {
     $scope.currentUser = user;
-    if (user) {
-      $scope.showAccountDetails();
-    } else {
-      $scope.showAccountAccess();
-    }
   };
 
   $scope.setCurrentUser(null);

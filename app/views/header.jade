@@ -18,10 +18,10 @@ header(ng-controller="headerController")
     a(class="toAbout", ng-click="modalStates.about = true") Learn more...
     a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
-    div#account-access-buttons
-      a(ng-click="modalStates.about = true") About
-      a(ui-sref="account.access") Sign in or Register
-    div#account-details-buttons
-      a(ui-sref="account.details") Dashboard
+    //- div#account-access-buttons
+    a(ng-click="modalStates.about = true") About
+    a(ui-sref="account") {{currentUser?'Dashboard':'Sign in/Register'}}
+    //- div#account-details-buttons
+    //-   a(ui-sref="account.details") Dashboard
 
   include modals
