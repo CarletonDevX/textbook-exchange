@@ -42,7 +42,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main',{
       url: '/',
       sticky: true,
-      deepStateRedirect: true,
+      // deepStateRedirect: true,
       views:{
         'main' : {
           templateUrl: 'partials/main',
@@ -76,7 +76,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       }
     })
     .state('main.detail.book',{
-      sticky:true,
+      // sticky:true,
       resolve : {
         bookInfo: function(Api, $stateParams) {
           return Api.getBook($stateParams.isbn);
@@ -87,7 +87,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       controller  : 'bookController'
     })
     .state('main.detail.user',{
-      sticky:true,
+      // sticky:true,
       url : 'user/:userID',
       resolve : {
         userInfo: function(Api, $stateParams) {
@@ -108,11 +108,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 })
 
 
-hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $document) {
+hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $previousState, $document) {
 
   $scope.modalStates = {
     'blurb':true,
     'about':false
+  }
+
+  $scope.openAccount = function(){
+    $state.go('account')
+    $previousState.memo('accountEntryPoint');
   }
 
   //transists for header
@@ -132,12 +137,16 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 
 });
 
-hitsTheBooks.controller('accountController', function($scope, $state) {
+hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
   if ($scope.currentUser) {
     $state.go('account.details')
   } else {
     $state.go('account.access')
+  }
+
+  $scope.closeAccount = function(){
+    $previousState.go('accountEntryPoint');
   }
 });
 
@@ -153,12 +162,12 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   // TODO: for some reason the ng-click version isn't working
   // Click background of modal to exit.
   // (definitely not the best way to do this, just put it in for now, for convenience)
-  $('.modal-wrapper').click(function (){
-    $state.go('main');
-  })
-  $('.modal').click(function (e){
-    e.stopPropagation();
-  });
+  // $('.modal-wrapper').click(function (){
+  //   $state.go('main');
+  // })
+  // $('.modal').click(function (e){
+  //   e.stopPropagation();
+  // });
 
   // Login
   $scope.loginData = { username: '', password: '' };
