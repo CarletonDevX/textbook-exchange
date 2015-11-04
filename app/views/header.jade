@@ -16,7 +16,7 @@ header(ng-controller="headerController")
   div#blurb(ng-class="{'hidden': !modalStates.blurb}")
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
     | By Carls for Carls.
-    a(class="toAbout", ng-click="modalStates.about = true") Learn more...
+    a(href="" class="toAbout", ng-click="modalStates.about = true") Learn more...
     a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
     //- div#account-access-buttons
