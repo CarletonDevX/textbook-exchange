@@ -6,21 +6,22 @@ header(ng-controller="headerController")
         span.college-name Carleton
         span.app-name
           | Hits
-          span.interject  the 
+          span.interject the 
           | Books
     ul#college-info
       li #{numListings} books available
       li #{numOffers} successful listings
       li #{numUsers} active users
-  div#blurb
+  div#blurb(ng-class="{'hidden': !modalStates.blurb}")
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
-    | By Carls for Carls. 
-    a(class="toAbout", href="#about") Learn more...
-    a(class="close", ng-click="closeBlurb()") ×
+    | By Carls for Carls.
+    a(class="toAbout", ng-click="modalStates.about = true") Learn more...
+    a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
     div#account-access-buttons
-      a(href="#about") About
-      a(ui-sref='account.access') Sign in or Register
+      a(ng-click="modalStates.about = true") About
+      a(ui-sref="account.access") Sign in or Register
     div#account-details-buttons
-      a(ui-sref='account.details') Dashboard
+      a(ui-sref="account.details") Dashboard
+
   include modals

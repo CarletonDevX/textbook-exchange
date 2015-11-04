@@ -95,7 +95,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       controller  : 'userPageController'
     })
 
-
     .state('otherwise', {
       url: "*path",
       template: "Oops! We don't know how to serve you (404)"
@@ -107,8 +106,10 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
 
 hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $document) {
-  $scope.closeBlurb = function() {
-    $("#blurb").addClass("hidden");
+
+  $scope.modalStates = {
+    'blurb':true,
+    'about':false
   }
 
   //transists for header
@@ -318,6 +319,7 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
     $scope.setCurrentUser(res.data);
   });
 
+  // TODO: fix
   // This is probably not the best way to do this...
   $scope.showAccountAccess = function () {
     $("#account-details-buttons").hide();
@@ -355,6 +357,7 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
 
 });
 
+// TODO: What is this?
 // Use autofilled form data. From the magical mind of Gert Hengeveld.
 hitsTheBooks.directive('formAutofillFix', function ($timeout) {
   return function (scope, element, attrs) {

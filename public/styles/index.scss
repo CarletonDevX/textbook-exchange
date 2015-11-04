@@ -183,7 +183,7 @@ header{
                 height .2s,
                 padding .2s,
                 opacity .2s,
-                margin-bottom .2s;
+                margin .2s;
 
     a.toAbout {
       color: #888;
@@ -217,13 +217,9 @@ header{
     width: 0px;
     height: 0px;
     padding: 0px;
-    margin-bottom: 0;
-    margin-top: 0;
+    margin-bottom: -$pane-spacing/2;
+    margin-top: $pane-spacing/2;
     opacity: 0;
-  }
-
-  #about, #register{
-    display:none;
   }
 }
 
@@ -434,14 +430,12 @@ main{
   height: 100vh;
   overflow-y: scroll;
   background-color: rgba(0,0,0,.4);
-  z-index: -10;
   display: none;
 }
 
 .modal-wrapper.visible{
   display: block;
   z-index: 50;
-
 
   .modal{
     background-color: white;
