@@ -22,20 +22,20 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
 
-    .state('account', { url: '',
+    .state('account', { url: '/account',
       views:{'account' : {
           templateUrl: 'partials/account',
           controller: 'accountController' }}
     })
-    .state('account.access', { url: '',
+    .state('account.access', { url: '/access',
       templateUrl : '/partials/account.access',
       controller  : 'accountAccessController'
     })
-    .state('account.details', { url : '',
+    .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
       controller  : 'accountDetailsController'
     })
-    .state('account.edit',{ url: '',
+    .state('account.edit',{ url: '/edit',
       templateUrl : '/partials/account.edit',
       controller  : 'accountEditController'
     })
