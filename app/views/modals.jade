@@ -1,5 +1,5 @@
 div#about-wrapper.modal-wrapper(
-  ng-class="{'visible': modalStates.about}",
+  ng-class="{'visible' : modalStates.about}",
   ng-click="modalStates.about = false")
   div#about.modal
     h2 About
@@ -9,5 +9,5 @@ div#about-wrapper.modal-wrapper(
       | It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
       | It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 div#account-wrapper.modal-wrapper(ui-view="account",
-  ng-class="includes('account')?'visible':''",
+  ng-class="{'visible' : includes('account')}",
   ng-click="$state.go('main')")

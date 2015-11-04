@@ -357,8 +357,7 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
 
 });
 
-// TODO: What is this?
-// Use autofilled form data. From the magical mind of Gert Hengeveld.
+// Update model when form data is autofilled. From the magical mind of Gert Hengeveld.
 hitsTheBooks.directive('formAutofillFix', function ($timeout) {
   return function (scope, element, attrs) {
     element.prop('method', 'post');
