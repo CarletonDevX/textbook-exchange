@@ -42,6 +42,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main',{
       url: '/',
       sticky: true,
+      deepStateRedirect: true,
       views:{
         'main' : {
           templateUrl: 'partials/main',
