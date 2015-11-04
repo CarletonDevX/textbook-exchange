@@ -19,6 +19,27 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
     };
 });
 
+hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($parse, $rootScope) {
+  return {
+    restrict: 'A',
+    compile: function($element, attrs){
+      var fn = $parse(attrs['ngHtbSelfClick'], null, true);
+      return function ngHtbEventHandler(scope, element) {
+        element.on('click', function(event) {
+          var callback = function() {
+            fn(scope, {$event:event});
+          };
+
+          var target = event.target;
+          if (element[0] === target) {
+            scope.$apply(callback);
+          }
+        })
+      }
+    }
+  }
+}]);
+
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
 
@@ -146,7 +167,12 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
   }
 
   $scope.closeAccount = function(){
-    $previousState.go('accountEntryPoint');
+    if ($previousState.get('accountEntryPoint')){
+      $previousState.go('accountEntryPoint');
+    } else {
+      $state.go('main')
+    }
+
   }
 });
 
@@ -158,16 +184,6 @@ hitsTheBooks.constant('AUTH_EVENTS', {
 });
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
-
-  // TODO: for some reason the ng-click version isn't working
-  // Click background of modal to exit.
-  // (definitely not the best way to do this, just put it in for now, for convenience)
-  // $('.modal-wrapper').click(function (){
-  //   $state.go('main');
-  // })
-  // $('.modal').click(function (e){
-  //   e.stopPropagation();
-  // });
 
   // Login
   $scope.loginData = { username: '', password: '' };
