@@ -34,6 +34,7 @@ var assetsManagerMiddleware = assetManager({
         'dataType': 'javascript',
         'debug': true, // don't minify for now
         'files': [
+            "utils.js",
             "main.js",
             "api.js" // This order is important
         ]
