@@ -192,11 +192,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-      $scope.setCurrentUser(res.data);
-      $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
       $state.go("main");
-    }, function () {
-      $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
     });
   };
 
@@ -221,8 +217,6 @@ hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope,
 
   $scope.logout = function () {
     Api.logout().then(function () {
-      $scope.setCurrentUser(null);
-      $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
       $state.go("main");
     });
   }
@@ -337,34 +331,37 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
   $scope.query = $stateParams.query;
-  $scope.results = results.data;
+  $scope.results = results;
 });
 
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams) {
-  $scope.book = bookInfo.data;
+  $scope.book = bookInfo;
 });
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
-  $scope.user = userInfo.data;
+  $scope.user = userInfo;
 });
 
 // Top-level shit
 hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
 
-  Api.getCurrentUser().then(function (res) {
-    $scope.setCurrentUser(res.data);
-  });
+  $scope.setCurrentUser = function () {
+    Api.getCurrentUser().then(function (res) {
+      $scope.currentUser = res;
+    }, 
+    function (err) {
+      $scope.currentUser = null;
+    });
+  }
 
-  $scope.setCurrentUser = function (user) {
-    $scope.currentUser = user;
-  };
+  $scope.currentUser = null;
+  $scope.setCurrentUser();
 
-  $scope.setCurrentUser(null);
-
-  //Auth listeners (for testing)
+  //Auth listeners
   $scope.$on(AUTH_EVENTS.loginSuccess, 
   function(event, args){
     console.log("Logged in.");
+    $scope.setCurrentUser();
   });
   $scope.$on(AUTH_EVENTS.loginFailed, 
   function(event, args){
@@ -373,6 +370,7 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
   $scope.$on(AUTH_EVENTS.logoutSuccess, 
   function(event, args){
     console.log("Logged out.");
+    $scope.setCurrentUser();
   });
 
 });
