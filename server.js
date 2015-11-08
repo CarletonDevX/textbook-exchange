@@ -43,7 +43,7 @@ var assetsManagerMiddleware = assetManager({
 
 app.use('/'
     , assetsManagerMiddleware
-    , express.static(__dirname + '/public')
+    , express.static(__dirname + '/public', { maxAge: 172800000 }) // 2 days
 );
 
 
