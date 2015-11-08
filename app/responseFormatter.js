@@ -1,5 +1,9 @@
 // Formats API responses from retrieved objects
 
+exports.successUpdateEmail = function (req, res) {
+    res.status(200).send("Update email sent.");
+}
+
 /** SCHOOLS **/
 
 exports.formatSchoolStats = function (req, res) {

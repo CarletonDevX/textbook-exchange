@@ -6,6 +6,17 @@ var User = require('mongoose').model('users'),
 
 // API Calls
 
+exports.getAllUsers = function (req, res, next) {
+    User.find({}, function(err, users) {
+        if (!err) {
+            req.rUsers = users;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.countUsers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     User.count({verified: true}, function (err, count) {

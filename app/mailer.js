@@ -4,6 +4,25 @@ var sender = require('./config/nodemailer'),
     Error = require('./errors'),
     config = require('./config/config')();
 
+exports.sendUpdateEmail = function (req, res, next) {
+	if (!(req.body.password && req.body.subject && req.body.text)) {
+		Error.errorWithStatus(req, res, 400, 'Must provide "password", "subject", and "text" attributes.');
+		return;
+	}
+	if (req.body.password == config.emailPassword) {
+		options = {
+			subject: req.body.subject,
+			html: req.body.text,
+			users: req.rUsers,
+			setting: "updates"
+		}
+		sendMailToMultipleRecipients(req, res, next, options);
+
+	} else {
+		Error.errorWithStatus(req, res, 401, 'Not authorized to send email.');
+	}
+}
+
 exports.sendRegistrationEmail = function (req, res, next) {
 	var user = req.rUser;
 
@@ -63,8 +82,8 @@ var sendMailToMultipleRecipients = function (req, res, next, options) {
 }
 
 var sendMail = function (req, res, next, options) {
-	if (config.mailEnabled && user.emailSettings[options.setting]) {
-		options.to = user.email;
+	if (config.mailEnabled && options.user.emailSettings[options.setting]) {
+		options.to = options.user.email;
 	    sender.sendMail(options, function(err) {
 	        if(!err){
 				if (options.callback) {
