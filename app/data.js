@@ -18,9 +18,11 @@ var junkBooks = [
 	    description: 'This book is designed to be used as the primary textbook in a college-level first course in computing.',
 	    amazonInfo: {
 	        id: '1590282418',
+	        url: 'default',
 	        lastUpdated: new Date(),
-	        sellingPrice: 19.99,
-	        rentingPrice: 13.00
+	        numUsed: 1,
+	        numNew: 1,
+	        sellingPrice: 19.99
 	    },
 	    subscribers: [],
 	    lastSearched: new Date()
@@ -37,9 +39,11 @@ var junkBooks = [
 	    description: 'Whether you use your computer for bookkeeping, making travel plans, socializing, shopping, or just plain fun, computers are now an essential part of daily life. But it can be overwhelming to keep up with the technology as it continually evolves. This clear, friendly guide not only gets you up to speed on computer basics, it also covers the very latest information, like the changes you\'ll see with Windows 8.',
 	    amazonInfo: {
 	        id: '1118115538',
+	        url: 'default',
 	        lastUpdated: new Date(),
-	        sellingPrice: 17.47,
-	        rentingPrice: 13.00
+	        numUsed: 1,
+	        numNew: 1,
+	        sellingPrice: 17.47
 	    },
 	    subscribers: [],
 	    lastSearched: new Date()
@@ -117,9 +121,7 @@ exports.populate = function () {
 
     for (var i = 0; i < junkUsers.length; i++) {
         var junkuser = new User(junkUsers[i]);
-        junkuser.save(function (err, user) {
-            addListingWithUser(user);
-        });
+        junkuser.save();
     }
 }
 
