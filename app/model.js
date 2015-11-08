@@ -59,6 +59,11 @@ var UserSchema = new Schema({
         fullName: String
     },
     email: { type: String, unique: true, required: true },
+    emailSettings: {
+        watchlist: { type: Boolean, default: true },
+        undercut: { type: Boolean, default: false },
+        updates: { type: Boolean, default: true }
+    },
     verifier: String,
     verified: { type: Boolean, default: true },
     password: { type: String, required: true},
