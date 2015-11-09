@@ -1,6 +1,7 @@
 var Book = require('mongoose').model('books');
 var User = require('mongoose').model('users');
-var utils = require('./utilities')
+var Error = require('./errors.js');
+var utils = require('./utilities');
 
 
 exports.UsersIntoListings = function(req, res, next) {
@@ -16,8 +17,12 @@ exports.UsersIntoListings = function(req, res, next) {
 
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
-        req.rListings = augListings;
-        next();
+        if (!err) {
+            req.rListings = augListings;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
     });
 }
 
@@ -34,7 +39,11 @@ exports.BooksIntoListings = function(req, res, next) {
 
     //inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
-        req.rListings = augListings;
-        next();
+        if (!err) {
+            req.rListings = augListings;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
     });
 }

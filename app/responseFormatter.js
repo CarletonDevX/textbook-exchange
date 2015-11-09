@@ -1,5 +1,9 @@
 // Formats API responses from retrieved objects
 
+exports.successUpdateEmail = function (req, res) {
+    res.status(200).send("Update email sent.");
+}
+
 /** SCHOOLS **/
 
 exports.formatSchoolStats = function (req, res) {
@@ -32,6 +36,7 @@ exports.formatCurrentUser = function (req, res) {
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
+   "emailSettings": req.rUser.emailSettings,
           "avatar": req.rUser.avatar,
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
