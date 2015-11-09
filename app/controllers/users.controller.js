@@ -125,6 +125,14 @@ exports.updateUser = function (req, res, next) {
         if (updates.name) user.name = updates.name;
         if (updates.bio) user.bio = updates.bio;
         if (updates.gradYear) user.gradYear = updates.gradYear;
+        if (updates.emailSettings) {
+            try {
+                 user.emailSettings = JSON.parse(updates.emailSettings);
+            } catch (err) {
+                Error.errorWithStatus(req, res, 400, "Couldn't parse emailSettings object: "+err.message);
+                return;
+            }
+        }
 
         user.save(function(err, user) {
             if (!err) {

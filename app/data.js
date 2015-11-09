@@ -63,7 +63,7 @@ var junkUsers = [
 	    provider: 'local',
 	    providerId: '1f5bed9f3ae7e009140ef745a17c19a3',
 	    providerData: {},
-	    subscriptions: ['9781590282410'],
+	    subscriptions: [],
 	    bio: 'a great guy',
 	    gradYear: 2016,
 	    reports: [],
@@ -121,6 +121,7 @@ exports.populate = function () {
 
     for (var i = 0; i < junkUsers.length; i++) {
         var junkuser = new User(junkUsers[i]);
+        addListingWithUser(junkuser);
         junkuser.save();
     }
 }

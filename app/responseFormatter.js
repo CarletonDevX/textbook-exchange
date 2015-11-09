@@ -36,6 +36,7 @@ exports.formatCurrentUser = function (req, res) {
     var user = {
           "userID": req.rUser._id, 
            "email": req.rUser.email,
+   "emailSettings": req.rUser.emailSettings,
           "avatar": req.rUser.avatar,
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
