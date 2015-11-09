@@ -6,6 +6,17 @@ var User = require('mongoose').model('users'),
 
 // API Calls
 
+exports.getAllUsers = function (req, res, next) {
+    User.find({}, function(err, users) {
+        if (!err) {
+            req.rUsers = users;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.countUsers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     User.count({verified: true}, function (err, count) {
@@ -114,6 +125,14 @@ exports.updateUser = function (req, res, next) {
         if (updates.name) user.name = updates.name;
         if (updates.bio) user.bio = updates.bio;
         if (updates.gradYear) user.gradYear = updates.gradYear;
+        if (updates.emailSettings) {
+            try {
+                 user.emailSettings = JSON.parse(updates.emailSettings);
+            } catch (err) {
+                Error.errorWithStatus(req, res, 400, "Couldn't parse emailSettings object: "+err.message);
+                return;
+            }
+        }
 
         user.save(function(err, user) {
             if (!err) {
