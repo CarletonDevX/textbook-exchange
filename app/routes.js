@@ -51,6 +51,11 @@ exports.setup = function (app) {
         res.status(200).send('Database populated.');
     });
 
+    // Send test email
+    app.post('/emailTest',
+        mailer.sendTestEmail,
+        responder.successTestEmail);
+
     // Send mass update email with email body
     app.post('/email', 
         users.getAllUsers,
