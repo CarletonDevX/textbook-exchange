@@ -9,7 +9,7 @@ var readEmail = function (file) {
 	return String(fs.readFileSync(__dirname + "/emails/" + file, "utf8"));
 }
 
-// Basic string formatting function (http://stackoverflow.com/a/4673436)
+// Basic string formatting function for templates (http://stackoverflow.com/a/4673436)
 if (!String.prototype.format) {
   String.prototype.format = function() {
   	var args = arguments;
@@ -50,7 +50,7 @@ exports.sendRegistrationEmail = function (req, res, next) {
 	var user = req.rUser;
 	
 	options = {
-		subject: "Complete your Hits The Books registration"
+		subject: "Complete your Hits The Books registration",
 		html: readEmail("registration.html").format(user.verifier),
 		user: user
 	}
@@ -58,7 +58,7 @@ exports.sendRegistrationEmail = function (req, res, next) {
 }
 
 exports.sendOfferEmail = function (req, res, next) {
-	var listing = req.rListing;
+	var listing = req.rListings[0];
 	var book = listing.book;
 	var lister = listing.user;
 	var offerer = req.rUser;
@@ -72,7 +72,7 @@ exports.sendOfferEmail = function (req, res, next) {
 }
 
 exports.sendSubscribersEmail = function (req, res, next) {
-	var listing = req.rListing;
+	var listing = req.rListings[0];
 	var book = req.rBook;
 	var subscribers = req.rSubscribers;
 
@@ -85,7 +85,21 @@ exports.sendSubscribersEmail = function (req, res, next) {
 	sendMailToMultipleRecipients(req, res, next, options);
 }
 
-/* SENDING */
+exports.sendUndercutEmail = function (req, res, next) {
+	var listing = req.rListings[0];
+	var book = req.rBook;
+	var users = req.rUndercutUsers;
+
+	options = {
+		subject: "Someone has undercut your price for " + book.name,
+		html: readEmail("undercut.html").format(book.name, listing._id),
+		users: users,
+		setting: "undercut" 
+	}
+	sendMailToMultipleRecipients(req, res, next, options);
+}
+
+/* SENDING HELPERS */
 
 var sendMailToMultipleRecipients = function (req, res, next, options) {
 	var users = options.users;

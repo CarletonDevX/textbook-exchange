@@ -218,6 +218,9 @@ exports.setup = function (app) {
              listings.createListing,
              users.getSubscribers,
              mailer.sendSubscribersEmail,
+             listings.getUndercutListings,
+             users.getUndercutUsers,
+             mailer.sendUndercutEmail,
              responder.formatSingleListing);
 
     // Get listings for user with user ID
