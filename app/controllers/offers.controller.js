@@ -48,7 +48,7 @@ exports.getOffersForListings = function (req, res, next) {
 }
 
 exports.makeOffer = function (req, res, next) {
-    var listing = req.rListing;
+    var listing = req.rListings[0];
     var user = req.rUser;
     var offers = req.rOffers;
     for (var i = 0; i < offers.length; i++) {

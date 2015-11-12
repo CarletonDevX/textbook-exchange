@@ -211,6 +211,22 @@ exports.getSubscribers = function (req, res, next) {
     });
 }
 
+exports.getUndercutUsers = function (req, res, next) {
+    var listings = req.rUndercutListings;
+    var userIDs = [];
+    for (var i = 0; i < listings.length; i++) {
+        userIDs.push(listings[i].userID);
+    };
+    User.find({_id: {$in : userIDs}}, function (err, users) {
+        if (!err) {
+            req.rUndercutUsers = users;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.subscribe = function (req, res, next) {
     var book = req.rBook;
     var user = req.rUser;

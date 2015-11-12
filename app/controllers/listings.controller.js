@@ -3,7 +3,7 @@ var Listing = require('mongoose').model('listings'),
 
 exports.countListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
-    Listing.count({"completed": false}, function (err, count) {
+    Listing.count({completed: false}, function (err, count) {
         if (!err) {
             req.rSchoolStats.numListings = count;
             next();
@@ -27,9 +27,31 @@ exports.getUserListings = function (req, res, next) {
 
 exports.getBookListings = function (req, res, next) {
     var ISBN = req.rBook.ISBN;
-    Listing.find({"completed": false, ISBN: ISBN}).lean().exec(function(err, listings) {
+    Listing.find({completed: false, ISBN: ISBN}).lean().exec(function(err, listings) {
         if (!err) {
             req.rListings = listings;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+};
+
+exports.getUndercutListings = function (req, res, next) {
+    var ISBN = req.rBook.ISBN;
+    var listing = req.rListings[0];
+
+    // Get listings with prices higher than the new listing
+    var orClause = []
+    if (listing.rentingPrice) {
+        orClause.push({"rentingPrice": {$gt: listing.rentingPrice}});
+    }
+    if (listing.sellingPrice) {
+        orClause.push({"sellingPrice": {$gt: listing.sellingPrice}});
+    }
+    Listing.find({completed: false, ISBN: ISBN, $or: orClause}).lean().exec(function(err, listings) {
+        if (!err) {
+            req.rUndercutListings = listings;
             next();
         } else {
             Error.mongoError(req, res, err);
