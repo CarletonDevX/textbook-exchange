@@ -32,6 +32,20 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        getWatchlist: function () {
+            return $http.get('/api/subscriptions').then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
+        addToWatchlist: function (isbn) {
+            return $http.post('/api/subscriptions/add/'+isbn).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
         getBook: function (isbn) {
             return $http.get('/api/book/'+isbn).then(
                 function (res) {

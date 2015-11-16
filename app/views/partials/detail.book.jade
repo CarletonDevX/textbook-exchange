@@ -4,6 +4,7 @@ div#book-details
   img(src="{{book.coverImage}}")
   //TODO: make this h4 into a table of details about the book
   p {{book.description}}
+  button(ng-click="addToWatchlist()") Add To Watchlist
   h4#isbn ISBN: {{book.ISBN}}
   div.listing#selling
     table

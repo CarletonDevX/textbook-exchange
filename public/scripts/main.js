@@ -58,7 +58,12 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     })
     .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
-      controller  : 'accountDetailsController'
+      controller  : 'accountDetailsController',
+      resolve : {
+        watchlist: function(Api, $stateParams) {
+          return Api.getWatchlist();
+        }
+      }
     })
     .state('account.edit',{ url: '/edit',
       templateUrl : '/partials/account.edit',
@@ -204,7 +209,9 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   };
 });
 
-hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {
+
+  $scope.watchlist = watchlist;
 
   // Click background of modal to exit.
   // (definitely not the best way to do this, just put it in for now, for convenience)
@@ -220,6 +227,8 @@ hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope,
       $state.go("main");
     });
   }
+
+
 });
 
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
@@ -334,8 +343,15 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
   $scope.results = results;
 });
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams) {
+hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
   $scope.book = bookInfo;
+  $scope.addToWatchlist = function () {
+    Api.addToWatchlist($scope.book.ISBN).then(function () {
+      console.log("Added to watchlist.");
+    }, function (err) {
+      console.log(err);
+    });
+  }
 });
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {

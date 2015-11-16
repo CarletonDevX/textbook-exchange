@@ -1,5 +1,7 @@
 h2 Account Details
-	h3 {{currentUser.name.fullName}}
-	h4 {{currentUser.bio}}
-	form(ng-submit="logout()")
-		button(type='submit') Log Out
+h3 {{currentUser.name.fullName}}
+h4 {{currentUser.bio}}
+
+h2 My Watchlist:
+p(ng-repeat="book in watchlist") ISBN: {{book}}
+button(ng-click='logout()') Log Out
