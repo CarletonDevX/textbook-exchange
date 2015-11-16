@@ -3,8 +3,9 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
-    mailer = require('./mailer')
+    mailer = require('./mailer'),
     data = require('./data'),
+    Error = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
     inject = require('./injectors'),
@@ -305,6 +306,9 @@ exports.setup = function (app) {
     app.route('/api/search')
         .get(books.search,
              responder.formatSearchResults);
+
+    // Catchall 404 for API
+    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404)
 
 
     /************
