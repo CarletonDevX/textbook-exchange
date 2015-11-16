@@ -260,7 +260,7 @@ exports.formatBook = function (req, res) {
     res.json(book);
 }
 
-exports.formatSearchResults = function (req, res) {
+exports.formatBooks = function (req, res) {
     var books = [];
     for (var i = 0; i < req.rBooks.length; i++) {
         var book = req.rBooks[i];

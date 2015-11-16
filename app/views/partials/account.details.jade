@@ -3,5 +3,8 @@ h3 {{currentUser.name.fullName}}
 h4 {{currentUser.bio}}
 
 h2 My Watchlist:
-p(ng-repeat="book in watchlist") ISBN: {{book}}
+ul
+	li(ng-repeat="book in watchlist") 
+		h4 {{book.name}}
+		p {{book.author}}
 button(ng-click='logout()') Log Out

@@ -178,7 +178,8 @@ exports.setup = function (app) {
     app.route('/api/subscriptions')
         .get(authenticate,
              users.getCurrentUser,
-             responder.formatSubscriptions);
+             books.getSubscriptionBooks,
+             responder.formatBooks);
 
     // Clear subscriptions of current user
     app.route('/api/subscriptions/clear')
@@ -305,7 +306,7 @@ exports.setup = function (app) {
     // Search
     app.route('/api/search')
         .get(books.search,
-             responder.formatSearchResults);
+             responder.formatBooks);
 
     // Catchall 404 for API
     app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404)
