@@ -44,6 +44,28 @@ hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($par
   }
 }]);
 
+// Update model when form data is autofilled. From the magical mind of Gert Hengeveld.
+hitsTheBooks.directive('formAutofillFix', function ($timeout) {
+  return function (scope, element, attrs) {
+    element.prop('method', 'post');
+    if (attrs.ngSubmit) {
+      $timeout(function () {
+        element
+          .unbind('submit')
+          .bind('submit', function (event) {
+            event.preventDefault();
+            element
+              .find('input, textarea, select')
+              .trigger('input')
+              .trigger('change')
+              .trigger('keydown');
+            scope.$apply(attrs.ngSubmit);
+          });
+      });
+    }
+  };
+});
+
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
 
@@ -389,26 +411,4 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
     $scope.setCurrentUser();
   });
 
-});
-
-// Update model when form data is autofilled. From the magical mind of Gert Hengeveld.
-hitsTheBooks.directive('formAutofillFix', function ($timeout) {
-  return function (scope, element, attrs) {
-    element.prop('method', 'post');
-    if (attrs.ngSubmit) {
-      $timeout(function () {
-        element
-          .unbind('submit')
-          .bind('submit', function (event) {
-            event.preventDefault();
-            element
-              .find('input, textarea, select')
-              .trigger('input')
-              .trigger('change')
-              .trigger('keydown');
-            scope.$apply(attrs.ngSubmit);
-          });
-      });
-    }
-  };
 });
