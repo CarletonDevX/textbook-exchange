@@ -103,7 +103,7 @@ header{
 
         .college-name{
           font-size: 80px;
-          // font-variant: small-caps;
+          font-variant: small-caps;
           display:block;
         }
 
@@ -309,19 +309,20 @@ main{
         transition: box-shadow .1s;
         div.preview{
           padding: 20px;
+          img {
+            width:125px;
+          }
         }
         div.info{
           flex-grow: 1;
+          padding-right: 20px;
+          padding-bottom: 20px;
         }
         a.book{
           text-decoration: none;
           color:black;
           text-align: left;
           display: flex;
-
-          .preview img {
-                      width:125px;
-          }
         }
         h4{
           font-family: 'Droid Sans', serif;
@@ -334,36 +335,41 @@ main{
           font-weight: 400;
           margin-top:0;
         }
-        table{
-          font-family: 'Droid Sans', sans-serif;
-          font-size: 12px;
-          border:solid 2px #ddd;
-          border-radius: 10px;
-          border-spacing: 0;
-          td{
-            padding: 5px;
-            border-bottom: solid 2px #ddd;
-            border-right: solid 2px #eee;
-          }
-          tr:last-child td{
-            border-bottom: solid 0px;
-          }
-
-          tr td:first-child{
-            text-align: right;
-          }
-
-          tr td:last-child{
-            border-right: solid 0px;
-            text-align: left;
-          }
-        }
       }
       li:hover{
-        box-shadow: 0px 1px 10px 0px rgba(41, 220, 53,.5) ;
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, .3) ;
       }
     }
   }
+
+table.info-table{
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border:solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0;
+  td{
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 2px #eee;
+  }
+  tr:last-child td{
+    border-bottom: solid 0px;
+  }
+
+  tr td:first-child{
+    text-align: right;
+  }
+
+  tr td:last-child{
+    border-right: solid 0px;
+    text-align: left;
+  }
+
+  tfoot td{
+    border-top: solid 2px #ddd;
+  }
+}
 
   #search.home-view{
     width: 500px;
@@ -422,6 +428,112 @@ main{
   }
 }
 
+#book-details{
+  .info-wrapper{
+    display: flex;
+    .preview{
+      padding: 0 20px;
+      img{
+        width:200px;
+      }
+    }
+    .info{
+      flex-grow: 1;
+
+      .info-table tfoot td {
+        padding: 0;
+        border-top: solid 2px #ddd;
+        button {
+          border: none;
+          background: none;
+          padding: 5px;
+          width:100%;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+      }
+    }
+  }
+
+  h5{
+    font-weight: 400;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-variant: small-caps;
+  }
+  .listing table{
+    width:100%;
+    $dark-border-color: #666;
+    $light-border-color: #eee;
+    border-spacing: 0;
+    border: solid 1px $dark-border-color;
+    border-top: 3px solid black;
+    thead{
+      tr{
+        th{
+          font-weight: 400;
+          font-style: italic;
+          height: 40px;
+          border-bottom: 1px solid $dark-border-color;
+          border-right: 1px solid $light-border-color;
+          }
+        th:last-child{
+          border-right: none;
+        }
+      }
+    }
+    tbody{
+      font-family: 'Droid Sans', sans-serif;
+      font-size: 14px;
+      tr{
+        td{
+          text-align: center;
+          border-bottom: solid 1px $dark-border-color;
+          border-right:solid 1px $light-border-color;
+          img{
+            width:40px;
+            height:40px;
+            vertical-align: middle;
+            margin:5px;
+          }
+        }
+        td:last-child{
+          border-right: none;
+        }
+        td.image{
+          text-align: right;
+          border-right: none;
+          padding-right: 5px;
+        }
+        td.username{
+          text-align:left;
+          padding-left: 5px;
+        }
+      }
+
+      td.make-an-offer{
+        padding: 0;
+        button{
+          width: 100%;
+          border: none;
+          padding: 0;
+          background: none;
+          height: 100%;
+        }
+
+        button:hover{
+          background: #dcfbdc;
+        }
+      }
+    }
+    tfoot{
+      text-align: center;
+    }
+  }
+}
+
+
 .modal-wrapper{
   position: fixed;
   top:0;
@@ -445,6 +557,7 @@ main{
     padding: 10px;
   }
 }
+
 
 
 // header.minimized div#main-box:hover .app-name::before{

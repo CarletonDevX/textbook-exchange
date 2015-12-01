@@ -66,6 +66,18 @@ hitsTheBooks.directive('formAutofillFix', function ($timeout) {
   };
 });
 
+hitsTheBooks.filter('ordinal', function() {
+  return function(input) {
+    //if input is an integer
+    if (input == parseInt(input, 10)) {
+      input = input || '';
+      var lastDig = input % 10;
+      var suffixMap = {0: 'th', 1:'st', 2:'nd', 3:'rd'};
+      return suffixMap[lastDig] || suffixMap[0]; 
+    } else return '';
+  };
+});
+
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
 
@@ -197,6 +209,7 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
 
   $scope.closeAccount = function(){
     if ($previousState.get('accountEntryPoint')){
+      console.log('previousState is', $previousState.get('accountEntryPoint'))
       $previousState.go('accountEntryPoint');
     } else {
       $state.go('main')

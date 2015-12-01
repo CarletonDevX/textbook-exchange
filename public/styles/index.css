@@ -79,6 +79,7 @@ header {
         margin: 0; }
         header #main-box #wordmark-link #wordmark .college-name {
           font-size: 80px;
+          font-variant: small-caps;
           display: block; }
         header #main-box #wordmark-link #wordmark .app-name {
           font-weight: 400;
@@ -221,15 +222,17 @@ main #search {
       transition: box-shadow 0.1s; }
       main #search #search-results ul li div.preview {
         padding: 20px; }
+        main #search #search-results ul li div.preview img {
+          width: 125px; }
       main #search #search-results ul li div.info {
-        flex-grow: 1; }
+        flex-grow: 1;
+        padding-right: 20px;
+        padding-bottom: 20px; }
       main #search #search-results ul li a.book {
         text-decoration: none;
         color: black;
         text-align: left;
         display: flex; }
-        main #search #search-results ul li a.book .preview img {
-          width: 125px; }
       main #search #search-results ul li h4 {
         font-family: 'Droid Sans', serif;
         margin-bottom: 0;
@@ -239,25 +242,28 @@ main #search {
         font-family: 'Droid Sans', serif;
         font-weight: 400;
         margin-top: 0; }
-      main #search #search-results ul li table {
-        font-family: 'Droid Sans', sans-serif;
-        font-size: 12px;
-        border: solid 2px #ddd;
-        border-radius: 10px;
-        border-spacing: 0; }
-        main #search #search-results ul li table td {
-          padding: 5px;
-          border-bottom: solid 2px #ddd;
-          border-right: solid 2px #eee; }
-        main #search #search-results ul li table tr:last-child td {
-          border-bottom: solid 0px; }
-        main #search #search-results ul li table tr td:first-child {
-          text-align: right; }
-        main #search #search-results ul li table tr td:last-child {
-          border-right: solid 0px;
-          text-align: left; }
     main #search #search-results ul li:hover {
-      box-shadow: 0px 1px 10px 0px rgba(41, 220, 53, 0.5); }
+      box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
+
+main table.info-table {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border: solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0; }
+  main table.info-table td {
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 2px #eee; }
+  main table.info-table tr:last-child td {
+    border-bottom: solid 0px; }
+  main table.info-table tr td:first-child {
+    text-align: right; }
+  main table.info-table tr td:last-child {
+    border-right: solid 0px;
+    text-align: left; }
+  main table.info-table tfoot td {
+    border-top: solid 2px #ddd; }
 
 main #search.home-view {
   width: 500px; }
@@ -295,6 +301,79 @@ main #detail-wrapper.maximized {
   opacity: 1;
   box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   height: auto; }
+
+#book-details .info-wrapper {
+  display: flex; }
+  #book-details .info-wrapper .preview {
+    padding: 0 20px; }
+    #book-details .info-wrapper .preview img {
+      width: 200px; }
+  #book-details .info-wrapper .info {
+    flex-grow: 1; }
+    #book-details .info-wrapper .info .info-table tfoot td {
+      padding: 0;
+      border-top: solid 2px #ddd; }
+      #book-details .info-wrapper .info .info-table tfoot td button {
+        border: none;
+        background: none;
+        padding: 5px;
+        width: 100%;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px; }
+
+#book-details h5 {
+  font-weight: 400;
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-variant: small-caps; }
+
+#book-details .listing table {
+  width: 100%;
+  border-spacing: 0;
+  border: solid 1px #666;
+  border-top: 3px solid black; }
+  #book-details .listing table thead tr th {
+    font-weight: 400;
+    font-style: italic;
+    height: 40px;
+    border-bottom: 1px solid #666;
+    border-right: 1px solid #eee; }
+  #book-details .listing table thead tr th:last-child {
+    border-right: none; }
+  #book-details .listing table tbody {
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 14px; }
+    #book-details .listing table tbody tr td {
+      text-align: center;
+      border-bottom: solid 1px #666;
+      border-right: solid 1px #eee; }
+      #book-details .listing table tbody tr td img {
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+        margin: 5px; }
+    #book-details .listing table tbody tr td:last-child {
+      border-right: none; }
+    #book-details .listing table tbody tr td.image {
+      text-align: right;
+      border-right: none;
+      padding-right: 5px; }
+    #book-details .listing table tbody tr td.username {
+      text-align: left;
+      padding-left: 5px; }
+    #book-details .listing table tbody td.make-an-offer {
+      padding: 0; }
+      #book-details .listing table tbody td.make-an-offer button {
+        width: 100%;
+        border: none;
+        padding: 0;
+        background: none;
+        height: 100%; }
+      #book-details .listing table tbody td.make-an-offer button:hover {
+        background: #dcfbdc; }
+  #book-details .listing table tfoot {
+    text-align: center; }
 
 .modal-wrapper {
   position: fixed;
