@@ -3,8 +3,8 @@ td.image: a(href="user/{{listing.userID}}")
 td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
 td {{listing.condition}}
 td
-	p(ng-if="whichListings !== 'selling'").
+	p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== undefined").
 		{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
-	p(ng-if="whichListings !== 'renting'").
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== undefined").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
-td.make-an-offer: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
+td.make-an-offer: button.confirm(data-listingId="{{listing.ID}}"): img(src="/images/email.png")

@@ -28,7 +28,7 @@ div#book-details
           tr: td(colspan="2")
             button(ng-click="addToWatchlist()") + Add To Watchlist
 
-  p {{book.description}}
+  //- p {{book.description}}
   div.listings
     div.tabs
       button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
@@ -43,9 +43,9 @@ div#book-details
     table
       thead
         tr
-          th(colspan="2") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th Condition
-          th Price
+          th.sortable(colspan="2", ng-click="listingOrder='lastName'", ng-class="{'active':listingOrder=='lastName'}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.sortable(ng-click="listingOrder='condition'", ng-class="{'active':listingOrder=='condition'}") Condition
+          th.sortable(ng-click="listingOrder='price'", ng-class="{'active':listingOrder=='price'}") Price
           th Buy/Get
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
@@ -82,4 +82,9 @@ div#book-details
           td.confirm
             button +
         tr.add-listing: td(colspan="5")
-          button(ng-class="{'cancel':newListing.active}", ng-click="newListing.active = !newListing.active") {{newListing.active?'Cancel':'+ Add a Listing'}}
+          button.cancel(ng-if="newListing.active", ng-click="newListing.active = false")
+            span.symbol ×
+            |  cancel
+          button.confirm(ng-if="!newListing.active", ng-click="newListing.active = true")
+            span.symbol +
+            |  add a listing

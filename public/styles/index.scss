@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 
 html{
@@ -429,10 +429,21 @@ table.info-table{
 }
 
 #book-details{
+  h2, h3{
+    font-family: 'Droid Sans', Sans-serif;
+  }
+  h2{
+    font-weight: 700;
+    margin:0;
+  }
+  h3{
+    font-weight: 400;
+    margin-top: 10px;
+  }
   .info-wrapper{
     display: flex;
     .preview{
-      padding: 0 20px;
+      padding-right: 20px;
       img{
         width:200px;
       }
@@ -464,10 +475,17 @@ table.info-table{
   }
 
   .listings{
+    .confirm:hover{
+      box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+    }
+    .cancel:hover{
+      box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130,.4);
+    }
     .tabs{
       display: flex;
       button{
-        flex-basis: 100%;
+        // flex-basis: 100%;
+        flex-grow: 1;
         background: none;
         font-family: 'Droid Serif', Serif;
         font-size: 20px;
@@ -477,8 +495,10 @@ table.info-table{
         // font-style: italic;
         // font-variant: inherit;
         font-variant: small-caps;
-        transition: color .2s;
+        transition: color .2s, font-size .2s;
         color: gray;
+        height: 75px;
+        font-size: 18px;
       }
       button.active{
         border-bottom: solid black 2px;
@@ -500,6 +520,7 @@ table.info-table{
       border-top: 3px solid black;
       thead{
         tr{
+          height: 4em;
           th{
             font-weight: 400;
             font-style: italic;
@@ -507,6 +528,15 @@ table.info-table{
             border-bottom: 1px solid $dark-border-color;
             border-right: 1px solid $light-border-color;
             }
+          th.sortable{
+            cursor: pointer;
+          }
+          th.sortable:hover{
+            text-decoration: underline;
+          }
+          th.active{
+            text-decoration: underline;
+          }
           th:last-child{
             border-right: none;
           }
@@ -550,10 +580,11 @@ table.info-table{
             background: none;
             height: 100%;
           }
-
-          button:hover{
-            background: #dcfbdc;
-          }
+        }
+      }
+      tbody{
+        td{
+          height: 80px;
         }
       }
       tfoot{
@@ -577,6 +608,22 @@ table.info-table{
           td{
             text-align: center;
             border-bottom: none;
+            padding: 0;
+
+            button{
+              font-style: italic;
+              font-family: 'Droid Serif', Serif;
+              width: 100%;
+              background-color:white;
+              border:none;
+              height: 2.5em;
+              span.symbol{
+                font-size: 24px;
+                display: inline-block;
+                vertical-align: middle;
+              }
+              transition: box-shadow .1s;
+            }
           }
         }
       }

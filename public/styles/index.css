@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 html {
   overflow-y: scroll; }
@@ -302,10 +302,21 @@ main #detail-wrapper.maximized {
   box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   height: auto; }
 
+#book-details h2, #book-details h3 {
+  font-family: 'Droid Sans', Sans-serif; }
+
+#book-details h2 {
+  font-weight: 700;
+  margin: 0; }
+
+#book-details h3 {
+  font-weight: 400;
+  margin-top: 10px; }
+
 #book-details .info-wrapper {
   display: flex; }
   #book-details .info-wrapper .preview {
-    padding: 0 20px; }
+    padding-right: 20px; }
     #book-details .info-wrapper .preview img {
       width: 200px; }
   #book-details .info-wrapper .info {
@@ -328,10 +339,16 @@ main #detail-wrapper.maximized {
   text-align: center;
   font-variant: small-caps; }
 
+#book-details .listings .confirm:hover {
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
+
+#book-details .listings .cancel:hover {
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
+
 #book-details .listings .tabs {
   display: flex; }
   #book-details .listings .tabs button {
-    flex-basis: 100%;
+    flex-grow: 1;
     background: none;
     font-family: 'Droid Serif', Serif;
     font-size: 20px;
@@ -339,8 +356,10 @@ main #detail-wrapper.maximized {
     border: none;
     outline: none;
     font-variant: small-caps;
-    transition: color 0.2s;
-    color: gray; }
+    transition: color 0.2s, font-size 0.2s;
+    color: gray;
+    height: 75px;
+    font-size: 18px; }
   #book-details .listings .tabs button.active {
     border-bottom: solid black 2px;
     font-style: inherit;
@@ -354,14 +373,22 @@ main #detail-wrapper.maximized {
   border-spacing: 0;
   border: solid 1px #666;
   border-top: 3px solid black; }
-  #book-details .listings table thead tr th {
-    font-weight: 400;
-    font-style: italic;
-    height: 40px;
-    border-bottom: 1px solid #666;
-    border-right: 1px solid #eee; }
-  #book-details .listings table thead tr th:last-child {
-    border-right: none; }
+  #book-details .listings table thead tr {
+    height: 4em; }
+    #book-details .listings table thead tr th {
+      font-weight: 400;
+      font-style: italic;
+      height: 40px;
+      border-bottom: 1px solid #666;
+      border-right: 1px solid #eee; }
+    #book-details .listings table thead tr th.sortable {
+      cursor: pointer; }
+    #book-details .listings table thead tr th.sortable:hover {
+      text-decoration: underline; }
+    #book-details .listings table thead tr th.active {
+      text-decoration: underline; }
+    #book-details .listings table thead tr th:last-child {
+      border-right: none; }
   #book-details .listings table tbody, #book-details .listings table tfoot {
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px; }
@@ -391,8 +418,8 @@ main #detail-wrapper.maximized {
         padding: 0;
         background: none;
         height: 100%; }
-      #book-details .listings table tbody td.make-an-offer button:hover, #book-details .listings table tbody td.confirm button:hover, #book-details .listings table tfoot td.make-an-offer button:hover, #book-details .listings table tfoot td.confirm button:hover {
-        background: #dcfbdc; }
+  #book-details .listings table tbody td {
+    height: 80px; }
   #book-details .listings table tfoot tr.make-listing {
     background-color: #FCFFEE; }
     #book-details .listings table tfoot tr.make-listing p {
@@ -406,7 +433,20 @@ main #detail-wrapper.maximized {
     display: none; }
   #book-details .listings table tfoot tr.add-listing td {
     text-align: center;
-    border-bottom: none; }
+    border-bottom: none;
+    padding: 0; }
+    #book-details .listings table tfoot tr.add-listing td button {
+      font-style: italic;
+      font-family: 'Droid Serif', Serif;
+      width: 100%;
+      background-color: white;
+      border: none;
+      height: 2.5em;
+      transition: box-shadow 0.1s; }
+      #book-details .listings table tfoot tr.add-listing td button span.symbol {
+        font-size: 24px;
+        display: inline-block;
+        vertical-align: middle; }
 
 .modal-wrapper {
   position: fixed;
