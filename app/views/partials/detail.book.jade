@@ -29,54 +29,57 @@ div#book-details
             button(ng-click="addToWatchlist()") + Add To Watchlist
 
   p {{book.description}}
-
-  h5
-    | Selling
-    span.interject  or
-    |  Giving
-  div.listing#selling
+  div.listings
+    div.tabs
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
+      button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
+        | Selling
+        span.interject  and
+        |  Giving
+      button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
+        | Renting
+        span.interject  and
+        |  Lending
     table
       thead
         tr
-          th(colspan="2") Seller
+          th(colspan="2") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
           th Condition
           th Price
           th Buy/Get
-      tbody
+      tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
-        //- The '!!' requires that the property is defined on the object.
-        tr(ng-repeat="listing in book.listings | filter:{sellingPrice:'!!'}")
-          td.image: a(href="user/{{listing.userID}}")
-            img(src="{{listing.user.avatar.small}}")
-          td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-          td {{listing.condition}}
-          td {{listing.sellingPrice | currency }}
-          td.make-an-offer: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
-      tfoot
-        tr: td(colspan="5")
-          button + Add a Listing
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
 
-  h5
-    | Renting
-    span.interject  or
-    |  Lending
-  div.listing#renting
-    table
-      thead
-        tr
-          th(colspan="2") Renter
-          th Condition
-          th Price
-          th Buy/Get
-      tbody
+      tbody(ng-if="whichListings=='selling'")
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
+
+      tbody(ng-if="whichListings=='renting'")
         //- TODO: change hrefs to ui-srefs
-        tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'}")
-          td.image: a(href="user/{{listing.userID}}")
-            img(src="{{listing.user.avatar.small}}")
-          td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-          td {{listing.condition}}
-          td {{listing.rentingPrice | currency }}
-          td.make-an-offer: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
       tfoot
-        tr: td(colspan="5")
-          button + Add a Listing
+        tr.make-listing(ng-class="{'inactive':!newListing.active}")
+          td(colspan="2") Add a listing:
+          td
+            select(ng-model="newListing.condition")
+              option Used
+              option New
+          td
+            p
+              input(type="checkbox" ng-model="newListing.selling", ng-disabled="newListing.selling && !newListing.renting")
+              span.label Sell for 
+              input.price(type="number", ng-model="newListing.sellingPrice", placeholder="$12", ng-disabled="!newListing.selling")
+            p
+              input(type="checkbox" ng-model="newListing.renting", ng-disabled="!newListing.selling && newListing.renting")
+              span.label Rent for 
+              input.price(type="number", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
+          td.confirm
+            button +
+        tr.add-listing: td(colspan="5")
+          button(ng-class="{'cancel':newListing.active}", ng-click="newListing.active = !newListing.active") {{newListing.active?'Cancel':'+ Add a Listing'}}

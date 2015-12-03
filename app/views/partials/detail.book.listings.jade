@@ -1,0 +1,10 @@
+td.image: a(href="user/{{listing.userID}}")
+	img(src="{{listing.user.avatar.small}}")
+td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
+td {{listing.condition}}
+td
+	p(ng-if="whichListings !== 'selling'").
+		{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
+	p(ng-if="whichListings !== 'renting'").
+		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+td.make-an-offer: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")

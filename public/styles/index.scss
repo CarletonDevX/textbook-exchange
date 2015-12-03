@@ -462,73 +462,124 @@ table.info-table{
     text-align: center;
     font-variant: small-caps;
   }
-  .listing table{
-    width:100%;
-    $dark-border-color: #666;
-    $light-border-color: #eee;
-    border-spacing: 0;
-    border: solid 1px $dark-border-color;
-    border-top: 3px solid black;
-    thead{
-      tr{
-        th{
-          font-weight: 400;
-          font-style: italic;
-          height: 40px;
-          border-bottom: 1px solid $dark-border-color;
-          border-right: 1px solid $light-border-color;
-          }
-        th:last-child{
-          border-right: none;
-        }
+
+  .listings{
+    .tabs{
+      display: flex;
+      button{
+        flex-basis: 100%;
+        background: none;
+        font-family: 'Droid Serif', Serif;
+        font-size: 20px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        // font-style: italic;
+        // font-variant: inherit;
+        font-variant: small-caps;
+        transition: color .2s;
+        color: gray;
+      }
+      button.active{
+        border-bottom: solid black 2px;
+        font-style: inherit;
+        font-size: 22px;
+        color: black;
+      }
+      button:hover{
+        // background-color: #eee;
+        color: black;
       }
     }
-    tbody{
-      font-family: 'Droid Sans', sans-serif;
-      font-size: 14px;
-      tr{
-        td{
-          text-align: center;
-          border-bottom: solid 1px $dark-border-color;
-          border-right:solid 1px $light-border-color;
-          img{
-            width:40px;
-            height:40px;
-            vertical-align: middle;
-            margin:5px;
+    table{
+      width:100%;
+      $dark-border-color: #666;
+      $light-border-color: #eee;
+      border-spacing: 0;
+      border: solid 1px $dark-border-color;
+      border-top: 3px solid black;
+      thead{
+        tr{
+          th{
+            font-weight: 400;
+            font-style: italic;
+            height: 40px;
+            border-bottom: 1px solid $dark-border-color;
+            border-right: 1px solid $light-border-color;
+            }
+          th:last-child{
+            border-right: none;
           }
         }
-        td:last-child{
-          border-right: none;
-        }
-        td.image{
-          text-align: right;
-          border-right: none;
-          padding-right: 5px;
-        }
-        td.username{
-          text-align:left;
-          padding-left: 5px;
-        }
       }
+      tbody,tfoot{
+        font-family: 'Droid Sans', sans-serif;
+        font-size: 14px;
+        tr{
+          td{
+            text-align: center;
+            border-bottom: solid 1px $dark-border-color;
+            border-right:solid 1px $light-border-color;
+            img{
+              width:40px;
+              height:40px;
+              vertical-align: middle;
+              margin:5px;
+            }
+          }
+          td:last-child{
+            border-right: none;
+          }
+          td.image{
+            text-align: right;
+            border-right: none;
+            padding-right: 5px;
+          }
+          td.username{
+            text-align:left;
+            padding-left: 5px;
+          }
+        }
 
-      td.make-an-offer{
-        padding: 0;
-        button{
-          width: 100%;
-          border: none;
+        td.make-an-offer, td.confirm{
           padding: 0;
-          background: none;
-          height: 100%;
-        }
+          button{
+            width: 100%;
+            border: none;
+            padding: 0;
+            background: none;
+            height: 100%;
+          }
 
-        button:hover{
-          background: #dcfbdc;
+          button:hover{
+            background: #dcfbdc;
+          }
         }
       }
-    }
-    tfoot{
-      text-align: center;
+      tfoot{
+        tr.make-listing{
+          background-color: #FCFFEE;
+          p{
+            text-align: center;
+          }
+          span.label{
+            width: 4.5em;
+            display: inline-block;
+          }
+          input.price{
+            width:4em;
+          }
+        }
+        tr.make-listing.inactive{
+          display:none;
+        }
+        tr.add-listing{
+          td{
+            text-align: center;
+            border-bottom: none;
+          }
+        }
+      }
     }
   }
 }

@@ -332,7 +332,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   //   }
   // });
 
-  //the classic type and hit [enter] search
+  //the classic type-and-hit-[enter] search
   $scope.classicSearch = function() {
     if (!initSearch && $scope.searchInput) {
       $state.go('main.search',{query:$scope.searchInput})
@@ -380,6 +380,17 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
 
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
   $scope.book = bookInfo;
+  $scope.whichListings = "both"
+  $scope.listingOrder = "price";
+  $scope.reverseSort = true;
+  //TODO: for some reason, default selling and renting prices aren't working
+  $scope.newListing = {
+    active: false,
+    selling:true,
+    sellingPrice: 10.00,
+    rentingPrice: 10.00
+  }
+
   $scope.addToWatchlist = function () {
     Api.addToWatchlist($scope.book.ISBN).then(function () {
       console.log("Added to watchlist.");
