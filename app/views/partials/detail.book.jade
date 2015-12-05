@@ -26,6 +26,8 @@ div#book-details
             td {{ book.pageCount }}
         tfoot
           tr: td(colspan="2")
+            //- span Watching
+            //- button(ng-click="removeFromWatchlist()") Remove
             button(ng-click="addToWatchlist()") + Add To Watchlist
 
   //- p {{book.description}}
