@@ -55,9 +55,8 @@ exports.createUser = function (req, res, next) {
 
     var newUser = new User({"email": email, "created": new Date()});
 
-    var md5 = crypto.createHash('md5');
-    newUser.verifier = md5.update((Math.random()*100).toString()).digest('hex');
-    newUser.password = md5.update(password).digest('hex');
+    newUser.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+    newUser.password = crypto.createHash('md5').update(password).digest('hex');
 
     newUser.verified = false;
     newUser.provider = 'local';
@@ -80,7 +79,7 @@ exports.createUser = function (req, res, next) {
 exports.verifyUser = function (req, res, next) {
     var updateUser = req.rUser;
     var verifier = req.body.verifier;
-    if (verifier != user.verifier) {
+    if (verifier != updateUser.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     } else {
         updateUser.verified = true;

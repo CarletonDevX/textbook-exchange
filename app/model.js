@@ -102,7 +102,7 @@ Listings
 var ListingSchema = new Schema({
     userID: { type: String, required: true },
     ISBN: { type: String, required: true }, //which is the book id
-    condition: { type: String, required: true },
+    condition: { type: Number, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
     created: { type: Date, required: true },
@@ -119,13 +119,20 @@ var validatePrice = function (value) {
     return false;
 }
 
+var validateCondition = function (value) {
+    // Integer?
+    if(value % 1 === 0) {
+        if (0 <= value && value <= 3) {
+            return true;
+        }
+    }
+    return false;
+}
+
 ListingSchema.path('sellingPrice').validate(validatePrice, "'sellingPrice' must be an integer between 0-100");
 ListingSchema.path('rentingPrice').validate(validatePrice, "'rentingPrice' must be an integer between 0-100");
 
-ListingSchema.path('condition').validate(function (value) {
-    return /New|Used/i.test(value);
-}, "'condition' must be either New or Used");
-
+ListingSchema.path('condition').validate(validateCondition, "'condition' must be be an integer between 0-3");
 
 // Add schema to db
 mongoose.model('listings', ListingSchema, 'listings');
