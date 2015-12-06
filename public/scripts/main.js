@@ -392,6 +392,7 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
   });
 
   // Used to determine whether back button is available
+  // TODO: this method will break if the browser's back button is used. Fixable?
   $scope.navIndex = 0
 
   // Hide or show nav buttons based on previous states
