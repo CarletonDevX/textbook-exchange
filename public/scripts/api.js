@@ -53,6 +53,32 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        getListings: function(isbn) {
+            return $http.get('/api/listings/book/'+isbn)
+                .then( function (res) {
+                    console.log(res);
+                    return res.data;
+                })
+        },
+        addListing: function (isbn, data) {
+            console.log('data', data);
+            return $http.post('/api/listings/add/'+isbn, data)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        updateListing: function (isbn, data) {
+            return $http.delete('/api/listings/add/'+isbn, data)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        removeListing: function (isbn, data) {
+            return $http.delete('/api/listings/add/'+isbn)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
         getBook: function (isbn) {
             return $http.get('/api/book/'+isbn).then(
                 function (res) {

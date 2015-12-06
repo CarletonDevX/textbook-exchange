@@ -209,7 +209,7 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
 
   $scope.closeAccount = function(){
     if ($previousState.get('accountEntryPoint')){
-      console.log('previousState is', $previousState.get('accountEntryPoint'))
+      // console.log('previousState is', $previousState.get('accountEntryPoint'))
       $previousState.go('accountEntryPoint');
     } else {
       $state.go('main')
@@ -386,9 +386,11 @@ hitsTheBooks.controller('bookController', function($scope, $rootScope, bookInfo,
   //TODO: for some reason, default selling and renting prices aren't working
   $scope.newListing = {
     active: false,
-    selling:true,
+    selling: true,
+    renting: false,
     sellingPrice: 10.00,
-    rentingPrice: 10.00
+    rentingPrice: 10.00,
+    condition: 'new'
   }
 
   $scope.handleReorder = function(category) {
@@ -417,6 +419,28 @@ hitsTheBooks.controller('bookController', function($scope, $rootScope, bookInfo,
     }, function (err) {
       console.log(err);
     });
+  }
+
+  $scope.submitListing = function () {
+    console.log($scope.book);
+    var data = {
+      condition: $scope.newListing.condition
+    }
+    if ($scope.newListing.selling) {
+      data['sellingPrice'] = $scope.newListing.sellingPrice;
+    }
+    if($scope.newListing.renting) {
+      data['rentingPrice'] = $scope.newListing.rentingPrice;
+    }
+    Api.addListing($scope.book.ISBN, data).then(function (res) {
+      Api.getListings($scope.book.ISBN).then( function(listings) {
+        $scope.book.listings = listings;
+      }, function(err) {
+        console.log(err);
+      });
+    }, function (err) {
+      console.log(err);
+    })
   }
 });
 

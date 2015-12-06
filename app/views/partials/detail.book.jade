@@ -1,9 +1,7 @@
 div#book-details
-  h2#book-title {{book.name}}
+  h2#book-title(style="text-wrap:balanced") {{book.name}}
   h3#book-author {{ book.author.toString().replace(',',', ') }}
   div.info-wrapper
-    div.preview
-      img(src="{{book.coverImage}}")
     div.info
       table.info-table
         tbody
@@ -28,13 +26,18 @@ div#book-details
           tr: td(colspan="2")
             //- span Watching
             //- button(ng-click="removeFromWatchlist()") Remove
-            a(ng-if="!currentUser", ng-click="openAccount()") log in
-              | to track this book
+            div(ng-if="!currentUser")
+              span
+                a(href, ng-click="openAccount()") log in
+                |  to track this book
             button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
               span.symbol +
               |  add to watchlist
             button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
+              span.symbol ✓
               span watching
+    div.preview
+      img(src="{{book.coverImage}}")
 
   //- p {{book.description}}
   div.listings
@@ -84,11 +87,16 @@ div#book-details
               span.label Rent for 
               input.price(type="number", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
           td.confirm
-            button +
+            button(ng-click="submitListing()")
+              span.symbol +
+              | list!
         tr.add-listing: td(colspan="5")
-          button.cancel(ng-if="newListing.active", ng-click="newListing.active = false")
+          div(ng-if="!currentUser")
+            a(href, ng-click="openAccount()") log in
+            |  to add a listing
+          button.cancel(ng-if="newListing.active && currentUser", ng-click="newListing.active = false")
             span.symbol ×
             |  cancel
-          button.confirm(ng-if="!newListing.active", ng-click="newListing.active = true")
+          button.confirm(ng-if="!newListing.active && currentUser", ng-click="newListing.active = true")
             span.symbol +
             |  add a listing
