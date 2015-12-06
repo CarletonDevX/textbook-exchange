@@ -177,7 +177,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
     'about':false
   }
 
-  $scope.openAccount = function(){
+  $rootScope.openAccount = function(){
     $state.go('account')
     $previousState.memo('accountEntryPoint');
   }
@@ -232,7 +232,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-      $state.go("main");
+      $scope.closeAccount();
     });
   };
 
@@ -251,7 +251,7 @@ hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, 
   // Click background of modal to exit.
   // (definitely not the best way to do this, just put it in for now, for convenience)
   $('.modal-wrapper').click(function (){
-    $state.go('main');
+    $scope.closeAccount();
   })
   $('.modal').click(function (e){
     e.stopPropagation();
@@ -259,7 +259,7 @@ hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, 
 
   $scope.logout = function () {
     Api.logout().then(function () {
-      $state.go("main");
+      $scope.closeAccount();
     });
   }
 
@@ -378,7 +378,7 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
   $scope.results = results;
 });
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
+hitsTheBooks.controller('bookController', function($scope, $rootScope, bookInfo, $state, $stateParams, Api) {
   $scope.book = bookInfo;
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
@@ -391,9 +391,29 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $st
     rentingPrice: 10.00
   }
 
+  $scope.handleReorder = function(category) {
+    if ($scope.listingOrder == category) $scope.reverseSort = !$scope.reverseSort;
+    else {
+      $scope.listingOrder = category;
+      $scope.reverseSort = {'lastName':true,
+                            'condition':false,
+                            'price':true}[category];
+    }
+  }
+
   $scope.addToWatchlist = function () {
-    Api.addToWatchlist($scope.book.ISBN).then(function () {
-      console.log("Added to watchlist.");
+    Api.addToWatchlist($scope.book.ISBN).then(function (data) {
+      $rootScope.currentUser.subscriptions = data;
+    }, function (err) {
+      console.log(err);
+    });
+  }
+
+  $scope.removeFromWatchlist = function () {
+    Api.removeFromWatchlist($scope.book.ISBN).then(function (data) {
+      $rootScope.currentUser.subscriptions = data;
+      // console.log($scope.currentUser.subscriptions);
+      // console.log($scope.currentUser.subscriptions.indexOf($scope.book.ISBN) > -1);
     }, function (err) {
       console.log(err);
     });
@@ -409,14 +429,15 @@ hitsTheBooks.controller('applicationController', function($scope, $rootScope, Ap
 
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
-      $scope.currentUser = res;
+      $rootScope.currentUser = res;
+      console.log(res);
     }, 
     function (err) {
-      $scope.currentUser = null;
+      $rootScope.currentUser = null;
     });
   }
 
-  $scope.currentUser = null;
+  $rootScope.currentUser = null;
   $scope.setCurrentUser();
 
   //Auth listeners

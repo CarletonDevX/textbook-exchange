@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 html {
@@ -248,13 +249,13 @@ main #search {
 main table.info-table {
   font-family: 'Droid Sans', sans-serif;
   font-size: 12px;
-  border: solid 2px #ddd;
+  border: solid 3px #ddd;
   border-radius: 10px;
   border-spacing: 0; }
   main table.info-table td {
     padding: 5px;
-    border-bottom: solid 2px #ddd;
-    border-right: solid 2px #eee; }
+    border-bottom: solid 3px #ddd;
+    border-right: solid 1px #eee; }
   main table.info-table tr:last-child td {
     border-bottom: solid 0px; }
   main table.info-table tr td:first-child {
@@ -263,7 +264,7 @@ main table.info-table {
     border-right: solid 0px;
     text-align: left; }
   main table.info-table tfoot td {
-    border-top: solid 2px #ddd; }
+    border-top: solid 3px #ddd; }
 
 main #search.home-view {
   width: 500px; }
@@ -302,6 +303,27 @@ main #detail-wrapper.maximized {
   box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   height: auto; }
 
+button.confirm:hover, button.confirm:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
+
+button.confirm:active, button.confirm:active:focus {
+  background-color: rgba(130, 255, 130, 0.08); }
+
+button.cancel:hover, button.cancel:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
+
+button.cancel:active, button.cancel:active:focus {
+  background-color: rgba(255, 130, 130, 0.08); }
+
+button.cancel, button.confirm {
+  outline: none;
+  background: none;
+  border: none;
+  transition: box-shadow 0.1s; }
+
+button.cancel:focus, button.confirm:focus {
+  box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, 0.4); }
+
 #book-details h2, #book-details h3 {
   font-family: 'Droid Sans', Sans-serif; }
 
@@ -323,14 +345,33 @@ main #detail-wrapper.maximized {
     flex-grow: 1; }
     #book-details .info-wrapper .info .info-table tfoot td {
       padding: 0;
-      border-top: solid 2px #ddd; }
+      border-top: solid 3px #ddd; }
       #book-details .info-wrapper .info .info-table tfoot td button {
-        border: none;
-        background: none;
+        height: 30px;
         padding: 5px;
         width: 100%;
         border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px; }
+        border-bottom-right-radius: 8px;
+        font-style: italic;
+        font-family: 'Droid Serif', Serif; }
+      #book-details .info-wrapper .info .info-table tfoot td button span.symbol {
+        font-size: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 0; }
+      #book-details .info-wrapper .info .info-table tfoot td button.cancel span::before {
+        content: '×';
+        color: transparent;
+        font-size: 24px;
+        right: .8em;
+        position: relative;
+        width: 0;
+        display: inline-block;
+        vertical-align: middle;
+        transition: color 0.2s;
+        line-height: 0; }
+      #book-details .info-wrapper .info .info-table tfoot td button.cancel:hover span::before {
+        color: black; }
 
 #book-details h5 {
   font-weight: 400;
@@ -338,12 +379,6 @@ main #detail-wrapper.maximized {
   margin-bottom: 10px;
   text-align: center;
   font-variant: small-caps; }
-
-#book-details .listings .confirm:hover {
-  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
-
-#book-details .listings .cancel:hover {
-  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
 
 #book-details .listings .tabs {
   display: flex; }
@@ -371,22 +406,40 @@ main #detail-wrapper.maximized {
 #book-details .listings table {
   width: 100%;
   border-spacing: 0;
-  border: solid 1px #666;
-  border-top: 3px solid black; }
+  border: solid 1px #ccc;
+  border-top: 3px solid black;
+  overflow: hidden; }
   #book-details .listings table thead tr {
     height: 4em; }
     #book-details .listings table thead tr th {
       font-weight: 400;
       font-style: italic;
       height: 40px;
-      border-bottom: 1px solid #666;
-      border-right: 1px solid #eee; }
+      border-bottom: 3px solid #ccc;
+      border-right: 1px solid #eee;
+      position: relative; }
     #book-details .listings table thead tr th.sortable {
+      padding: 0 20px;
       cursor: pointer; }
     #book-details .listings table thead tr th.sortable:hover {
       text-decoration: underline; }
-    #book-details .listings table thead tr th.active {
-      text-decoration: underline; }
+    #book-details .listings table thead tr th.active::before {
+      content: '';
+      background-color: rgba(252, 255, 100, 0.07);
+      width: 100%;
+      height: 2000px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1; }
+    #book-details .listings table thead tr th.active::after {
+      content: '▴';
+      position: absolute;
+      width: 1.5em;
+      color: gray;
+      font-style: normal; }
+    #book-details .listings table thead tr th.active.reversed::after {
+      content: '▾'; }
     #book-details .listings table thead tr th:last-child {
       border-right: none; }
   #book-details .listings table tbody, #book-details .listings table tfoot {
@@ -394,7 +447,7 @@ main #detail-wrapper.maximized {
     font-size: 14px; }
     #book-details .listings table tbody tr td, #book-details .listings table tfoot tr td {
       text-align: center;
-      border-bottom: solid 1px #666;
+      border-bottom: solid 3px #ccc;
       border-right: solid 1px #eee; }
       #book-details .listings table tbody tr td img, #book-details .listings table tfoot tr td img {
         width: 40px;
@@ -414,39 +467,36 @@ main #detail-wrapper.maximized {
       padding: 0; }
       #book-details .listings table tbody td.make-an-offer button, #book-details .listings table tbody td.confirm button, #book-details .listings table tfoot td.make-an-offer button, #book-details .listings table tfoot td.confirm button {
         width: 100%;
-        border: none;
         padding: 0;
-        background: none;
         height: 100%; }
   #book-details .listings table tbody td {
     height: 80px; }
-  #book-details .listings table tfoot tr.make-listing {
-    background-color: #FCFFEE; }
-    #book-details .listings table tfoot tr.make-listing p {
-      text-align: center; }
-    #book-details .listings table tfoot tr.make-listing span.label {
-      width: 4.5em;
-      display: inline-block; }
-    #book-details .listings table tfoot tr.make-listing input.price {
-      width: 4em; }
-  #book-details .listings table tfoot tr.make-listing.inactive {
-    display: none; }
-  #book-details .listings table tfoot tr.add-listing td {
-    text-align: center;
-    border-bottom: none;
-    padding: 0; }
-    #book-details .listings table tfoot tr.add-listing td button {
-      font-style: italic;
-      font-family: 'Droid Serif', Serif;
-      width: 100%;
-      background-color: white;
-      border: none;
-      height: 2.5em;
-      transition: box-shadow 0.1s; }
-      #book-details .listings table tfoot tr.add-listing td button span.symbol {
-        font-size: 24px;
-        display: inline-block;
-        vertical-align: middle; }
+  #book-details .listings table tfoot {
+    background-color: white; }
+    #book-details .listings table tfoot tr.make-listing {
+      background-color: #FCFFEE; }
+      #book-details .listings table tfoot tr.make-listing p {
+        text-align: center; }
+      #book-details .listings table tfoot tr.make-listing span.label {
+        width: 4.5em;
+        display: inline-block; }
+      #book-details .listings table tfoot tr.make-listing input.price {
+        width: 4em; }
+    #book-details .listings table tfoot tr.make-listing.inactive {
+      display: none; }
+    #book-details .listings table tfoot tr.add-listing td {
+      text-align: center;
+      border-bottom: none;
+      padding: 0; }
+      #book-details .listings table tfoot tr.add-listing td button {
+        font-style: italic;
+        font-family: 'Droid Serif', Serif;
+        width: 100%;
+        height: 2.5em; }
+        #book-details .listings table tfoot tr.add-listing td button span.symbol {
+          font-size: 24px;
+          display: inline-block;
+          vertical-align: middle; }
 
 .modal-wrapper {
   position: fixed;

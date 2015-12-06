@@ -28,7 +28,13 @@ div#book-details
           tr: td(colspan="2")
             //- span Watching
             //- button(ng-click="removeFromWatchlist()") Remove
-            button(ng-click="addToWatchlist()") + Add To Watchlist
+            a(ng-if="!currentUser", ng-click="openAccount()") log in
+              | to track this book
+            button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
+              span.symbol +
+              |  add to watchlist
+            button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
+              span watching
 
   //- p {{book.description}}
   div.listings
@@ -36,18 +42,14 @@ div#book-details
       button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
       button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
         | Selling
-        span.interject  and
-        |  Giving
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-        span.interject  and
-        |  Lending
     table
       thead
         tr
-          th.sortable(colspan="2", ng-click="listingOrder='lastName'", ng-class="{'active':listingOrder=='lastName'}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.sortable(ng-click="listingOrder='condition'", ng-class="{'active':listingOrder=='condition'}") Condition
-          th.sortable(ng-click="listingOrder='price'", ng-class="{'active':listingOrder=='price'}") Price
+          th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
           th Buy/Get
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs

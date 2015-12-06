@@ -46,6 +46,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        removeFromWatchlist: function (isbn) {
+            return $http.post('/api/subscriptions/remove/'+isbn).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
         getBook: function (isbn) {
             return $http.get('/api/book/'+isbn).then(
                 function (res) {
