@@ -448,6 +448,9 @@ main #detail-wrapper.maximized {
         display: inline-block;
         vertical-align: middle; }
 
+.detail-nav {
+  font-size: 24pt; }
+
 .modal-wrapper {
   position: fixed;
   top: 0;
