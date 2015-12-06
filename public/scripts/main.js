@@ -135,7 +135,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       sticky: true,
       views: {
         'detail' : {
-          templateUrl : '/partials/detail'
+          templateUrl : '/partials/detail',
+          controller : 'detailsController'
         }
       }
     })
@@ -378,7 +379,33 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
   $scope.results = results;
 });
 
+hitsTheBooks.controller('detailsController', function($scope, $stateParams) {
+
+  // TODO: get ng-click to work here rather than using jQuery
+  $('#detail-nav-back').click(function () {
+    window.history.back();
+  });
+
+  $('#detail-nav-forward').click(function () {
+    window.history.forward();
+  });
+
+  // Hide or show nav buttons based on previous states
+  $scope.$on('$stateChangeSuccess',
+  function(event, toState, toParams, fromState, fromParams){
+    if (fromState.name=="main.detail.book" || fromState.name=="main.detail.user") {
+      $('#detail-nav-back').show();
+      $('#detail-nav-forward').show();
+    } else {
+      $('.detail-nav').hide();
+    }
+  });
+
+});
+
+
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
+
   $scope.book = bookInfo;
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
