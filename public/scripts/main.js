@@ -379,26 +379,40 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
   $scope.results = results;
 });
 
-hitsTheBooks.controller('detailsController', function($scope, $stateParams) {
+hitsTheBooks.controller('detailsController', function($scope, $stateParams, $location) {
 
+  // Button behavior
   // TODO: get ng-click to work here rather than using jQuery
   $('#detail-nav-back').click(function () {
+    $scope.navIndex = $scope.navIndex - 2;
     window.history.back();
   });
-
   $('#detail-nav-forward').click(function () {
     window.history.forward();
   });
 
+  // Used to determine whether back button is available
+  $scope.navIndex = 0
+
   // Hide or show nav buttons based on previous states
   $scope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams){
+
+    // Hide all nav buttons, then selectively show some
+    $('.detail-nav').hide();
+
+    // Determine whether we visited from another detail state. If so, increment the nav index
     if (fromState.name=="main.detail.book" || fromState.name=="main.detail.user") {
-      $('#detail-nav-back').show();
-      $('#detail-nav-forward').show();
+      $scope.navIndex = $scope.navIndex + 1;
     } else {
-      $('.detail-nav').hide();
+      $scope.navIndex = 0
     }
+
+    // Show back button if we can go back
+    if ($scope.navIndex != 0) {
+      $('#detail-nav-back').show();
+    }
+
   });
 
 });
