@@ -1,4 +1,5 @@
 div#detail
-	a(class="detail-nav" id="detail-nav-back" ng-click="goBack()") &lt;
-	a(class="detail-nav" id="detail-nav-forward" ng-click="goForward()") &gt;
+	a.detail-nav(ng-if="historyStack.length > 1", id="detail-nav-back" ng-click="goBack()") &lt; Back
+	| 
+	a.detail-nav(ng-if="futureStack.length > 0", id="detail-nav-forward" ng-click="goForward()") Forward &gt;
 	ui-view
