@@ -53,6 +53,7 @@ var bookify = function (item) {
 
 	var info = item.ItemAttributes;
 	var OfferSummary = item.OfferSummary || { TotalNew: 0, TotalUsed: 0 };
+	var author = formatAuthor(info.Author);
 
 	var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
 	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
@@ -68,7 +69,7 @@ var bookify = function (item) {
 	    ISBN: info.ISBN,
 	    name: info.Title,
 	    coverImage: imageURL,
-	    author: info.Author,
+	    author: author,
 	    edition: info.Edition,
 	    pageCount: info.NumberOfPages,
 	    publishDate: info.PublicationDate,
@@ -85,6 +86,22 @@ var bookify = function (item) {
 	    },
 	    lastSearched: new Date()
 	}
+}
+
+// Sometimes the author is given as an array. In that case, we want to format it nicely.
+var formatAuthor = function (author) {
+	if (!author) return "";
+	string = ""
+	if (author.constructor === Array) {
+		string = author[0]
+		for (var i = 1; i < author.length; i++) {
+			string += i==author.length-1 ? " and " : ", "
+			string = string + author[i]
+		}
+	} else {
+		string = author;
+	}
+	return string;
 }
 
 // Get nested property if it exists
