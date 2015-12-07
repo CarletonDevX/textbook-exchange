@@ -10,7 +10,7 @@ var BookSchema = new Schema({
     ISBN: { type: String, unique: true, index: true },
     name: { type: String, index: true },
     coverImage: String,
-    author: { type: String, index: true },
+    author: [],
     edition: String,
     pageCount: Number,
     publishDate: String,
@@ -30,7 +30,6 @@ var BookSchema = new Schema({
 
 BookSchema.index({ 
     name: 'text', 
-    author: 'text',
     description: 'text'
 });
 
