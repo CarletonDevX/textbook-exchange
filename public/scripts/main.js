@@ -449,6 +449,11 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateP
 // Top-level shit
 hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
 
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+    console.log("State change error changing to state " + toState.name);
+    console.log(error);
+  });
+
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
       $scope.currentUser = res;
