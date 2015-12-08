@@ -381,70 +381,9 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
 
 hitsTheBooks.controller('detailsController', function($scope, $stateParams, $location) {
 
-  // Button behavior
-  // DONE: TODO: get ng-click to work here rather than using jQuery
-  // $('#detail-nav-back').click(function () {
-  //   $scope.navIndex = $scope.navIndex - 2;
-  //   window.history.back();
-  // });
-  // $('#detail-nav-forward').click(function () {
-  // });
-
-  $scope.historyStack = [];
-  $scope.futureStack = [];
-
   $scope.goBack = function(){
     window.history.back();
   }
-
-  $scope.goForward = function(){
-    window.history.forward();
-  }
-
-  // Used to determine whether back button is available
-  // TODO: this method will break if the browser's back button is used. Fixable?
-  $scope.navIndex = 0
-
-  // Hide or show nav buttons based on previous states
-  $scope.$on('$stateChangeSuccess',
-  function(event, toState, toParams, fromState, fromParams){
-    //       current↴ 
-    // [history stack][kcats erutuf]
-    console.log(fromState);
-    // if we went backwards
-    if (fromState.name == $scope.historyStack[$scope.historyStack.length-1] 
-       && toState.name == $scope.historyStack[$scope.historyStack.length-2]){
-      $scope.futureStack.push($scope.historyStack.pop());
-    }
-    //if we went forwards
-    else if(fromState.name == $scope.historyStack[$scope.historyStack.length-1]
-      && toState.name == $scope.futureStack[$scope.futureStack.length-1]){
-      $scope.historyStack.push($scope.futureStack.pop());
-    }
-    //if we're breaking new ground
-    else if(($scope.historyStack.length == 0 //&& (fromState.name=="main.detail.book" || fromState.name=="main.detail.user")
-         || fromState.name == $scope.historyStack[$scope.historyStack.length-1])
-         && (toState.name=="main.detail.book" || toState.name=="main.detail.user")){
-      $scope.historyStack.push(toState.name);
-      $scope.futureStack = [];
-    }
-
-    // // Hide all nav buttons, then selectively show some
-    // $('.detail-nav').hide();
-
-    // // Determine whether we visited from another detail state. If so, increment the nav index
-    // if (fromState.name=="main.detail.book" || fromState.name=="main.detail.user") {
-    //   $scope.navIndex = $scope.navIndex + 1;
-    // } else {
-    //   $scope.navIndex = 0
-    // }
-
-    // // Show back button if we can go back
-    // if ($scope.navIndex != 0) {
-    //   $('#detail-nav-back').show();
-    // }
-
-  });
 
 });
 
