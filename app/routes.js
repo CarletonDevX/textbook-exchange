@@ -115,8 +115,7 @@ exports.setup = function (app) {
     app.route('/api/verify/:userID')
         .post(users.getUser,
              users.verifyUser,
-             responder.successVerify
-             );
+             responder.formatCurrentUser);
 
     // Get current user
     app.route('/api/user')
