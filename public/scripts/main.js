@@ -83,7 +83,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
     .state('account', { url: '/account',
       views:{'account' : {
-          templateUrl: 'partials/account',
+          templateUrl: '/partials/account',
           controller: 'accountController' }}
     })
     .state('account.access', { url: '/access',
@@ -109,7 +109,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       // deepStateRedirect: true,
       views:{
         'main' : {
-          templateUrl: 'partials/main',
+          templateUrl: '/partials/main',
           controller: 'mainController'
         }
       }
@@ -160,15 +160,24 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
-
-    .state('otherwise', {
-      url: "*path",
-      template: "Oops! We don't know how to serve you (404)"
+    .state('main.detail.error',{
+      url : '*path',
+      resolve : {
+        message: function(){
+          return "Page not found (404)";
+        }
+      },
+      templateUrl : '/partials/detail.error',
+      controller  : 'errorController'
     })
 
     //use HTML5 History API
     $locationProvider.html5Mode(true);
-})
+});
+
+hitsTheBooks.controller('errorController', function(message, $scope, $rootScope, $state, $previousState, $document) {
+    $scope.message = message;
+});
 
 
 hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $previousState, $document) {
@@ -449,6 +458,7 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateP
 // Top-level shit
 hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
 
+  // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     console.log("State change error changing to state " + toState.name);
     console.log(error);
