@@ -429,7 +429,7 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 });
 
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
+hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
 
   $scope.book = bookInfo;
   $scope.whichListings = "both"

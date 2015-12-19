@@ -470,67 +470,68 @@ button.cancel:focus, button.confirm:focus{
     border-bottom: solid black 2px;
     padding-bottom: 10px;
   }
-  .info-wrapper{
-    display: flex;
-    .preview{
-      img{
-        box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
-        width:200px;
-      }
+
+  .preview{
+    float:right;
+    padding: 0 0 20px 20px;
+    img{
+      box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
+      width:200px;
     }
-    .info{
-      padding-right: 20px;
-      flex-grow: 1;
+  }
+  .info{
+    padding-bottom: 20px;
+    width:310px;
+    float: left;
+    
+    .info-table{
+      width:100%;
 
-      
-      .info-table{
-        width:100%;
-
-        tfoot td {
-          padding: 0;
-          border-top: solid 2px #ddd;
-          $footer-el-height: 30px;
-          div {
-            height: $footer-el-height;
-          }
-          button {
-            padding: 5px;
-            height: $footer-el-height;
-            width:100%;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            font-style: italic;
-            font-family: 'Droid Serif', Serif;
-          }
-          button span.symbol{
-            font-size: 24px;
-            display:inline-block;
-            vertical-align: middle;
-            line-height: 0;
-            position: relative;
-            transition: color .2s;
-            width:1.5em;
-          }
-          button.cancel span.symbol::before{
-            font-size: 24px;
-            content:'×';
-            color: rgba(0,0,0,0);
-            width: 0;
-            display:inline-block;
-            vertical-align: middle;
-            transition: color .2s;
-            line-height: 0;
-          }
-          button.cancel:hover span.symbol{
-            color: rgba(0,0,0,0);
-          }
-          button.cancel:hover span::before{
-            color: black;
-          }
+      tfoot td {
+        padding: 0;
+        border-top: solid 2px #ddd;
+        $footer-el-height: 30px;
+        div {
+          height: $footer-el-height;
+        }
+        button {
+          padding: 5px;
+          height: $footer-el-height;
+          width:100%;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          font-style: italic;
+          font-family: 'Droid Serif', Serif;
+        }
+        button span.symbol{
+          font-size: 24px;
+          display:inline-block;
+          vertical-align: middle;
+          line-height: 0;
+          position: relative;
+          transition: color .2s;
+          width:1.5em;
+        }
+        button.cancel span.symbol::before{
+          font-size: 24px;
+          content:'×';
+          color: rgba(0,0,0,0);
+          width: 0;
+          display:inline-block;
+          vertical-align: middle;
+          transition: color .2s;
+          line-height: 0;
+        }
+        button.cancel:hover span.symbol{
+          color: rgba(0,0,0,0);
+        }
+        button.cancel:hover span::before{
+          color: black;
         }
       }
     }
   }
+
 
   h5{
     font-weight: 400;

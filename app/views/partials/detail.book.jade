@@ -3,45 +3,45 @@ div#book-details
   h2#book-title {{book.name}}
   h3#book-author {{ book.author.join(', ') }}
 
-  div.info-wrapper
-    div.info
-      table.info-table
-        tbody
-          tr
-            td Edition:
-            td(ng-if="book.edition") {{ book.edition }}
-              sup {{ book.edition | ordinal }}
-            td(ng-if="!book.edition") N/A
-          tr
-            td Publisher:
-            td {{book.publisher}}
-          tr
-            td Published:
-            td {{ book.publishDate | date:"yyyy" }}
-          tr
-            td ISBN:
-            td {{ book.ISBN }}
-          tr
-            td Pages:
-            td {{ book.pageCount }}
-        tfoot
-          tr: td(colspan="2")
-            //- span Watching
-            //- button(ng-click="removeFromWatchlist()") Remove
-            div(ng-if="!currentUser")
-              span
-                a(href, ng-click="openAccount()") log in
-                |  to track this book
-            button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
-              span.symbol +
-              |  add to watchlist
-            button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
-              span.symbol ✓
-              span watching
-    div.preview
-      img(src="{{book.coverImage}}")
+  div.info
+    table.info-table
+      tbody
+        tr
+          td Edition:
+          td(ng-if="book.edition") {{ book.edition }}
+            sup {{ book.edition | ordinal }}
+          td(ng-if="!book.edition") N/A
+        tr
+          td Publisher:
+          td {{book.publisher}}
+        tr
+          td Published:
+          td {{ book.publishDate | date:"yyyy" }}
+        tr
+          td ISBN:
+          td {{ book.ISBN }}
+        tr
+          td Pages:
+          td {{ book.pageCount }}
+      tfoot
+        tr: td(colspan="2")
+          //- span Watching
+          //- button(ng-click="removeFromWatchlist()") Remove
+          div(ng-if="!currentUser")
+            span
+              a(href, ng-click="openAccount()") log in
+              |  to track this book
+          button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
+            span.symbol +
+            |  add to watchlist
+          button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
+            span.symbol ✓
+            span watching
+  div.preview
+    img(src="{{book.coverImage}}")
 
-  //- p {{book.description}}
+  p {{book.description}}
+
   div.listings
     div.tabs
       button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings

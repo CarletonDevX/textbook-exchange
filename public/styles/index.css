@@ -337,50 +337,53 @@ button.cancel:focus, button.confirm:focus {
   border-bottom: solid black 2px;
   padding-bottom: 10px; }
 
-#book-details .info-wrapper {
-  display: flex; }
-  #book-details .info-wrapper .preview img {
+#book-details .preview {
+  float: right;
+  padding: 0 0 20px 20px; }
+  #book-details .preview img {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
     width: 200px; }
-  #book-details .info-wrapper .info {
-    padding-right: 20px;
-    flex-grow: 1; }
-    #book-details .info-wrapper .info .info-table {
-      width: 100%; }
-      #book-details .info-wrapper .info .info-table tfoot td {
-        padding: 0;
-        border-top: solid 2px #ddd; }
-        #book-details .info-wrapper .info .info-table tfoot td div {
-          height: 30px; }
-        #book-details .info-wrapper .info .info-table tfoot td button {
-          padding: 5px;
-          height: 30px;
-          width: 100%;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-          font-style: italic;
-          font-family: 'Droid Serif', Serif; }
-        #book-details .info-wrapper .info .info-table tfoot td button span.symbol {
-          font-size: 24px;
-          display: inline-block;
-          vertical-align: middle;
-          line-height: 0;
-          position: relative;
-          transition: color 0.2s;
-          width: 1.5em; }
-        #book-details .info-wrapper .info .info-table tfoot td button.cancel span.symbol::before {
-          font-size: 24px;
-          content: '×';
-          color: transparent;
-          width: 0;
-          display: inline-block;
-          vertical-align: middle;
-          transition: color 0.2s;
-          line-height: 0; }
-        #book-details .info-wrapper .info .info-table tfoot td button.cancel:hover span.symbol {
-          color: transparent; }
-        #book-details .info-wrapper .info .info-table tfoot td button.cancel:hover span::before {
-          color: black; }
+
+#book-details .info {
+  padding-bottom: 20px;
+  width: 310px;
+  float: left; }
+  #book-details .info .info-table {
+    width: 100%; }
+    #book-details .info .info-table tfoot td {
+      padding: 0;
+      border-top: solid 2px #ddd; }
+      #book-details .info .info-table tfoot td div {
+        height: 30px; }
+      #book-details .info .info-table tfoot td button {
+        padding: 5px;
+        height: 30px;
+        width: 100%;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        font-style: italic;
+        font-family: 'Droid Serif', Serif; }
+      #book-details .info .info-table tfoot td button span.symbol {
+        font-size: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 0;
+        position: relative;
+        transition: color 0.2s;
+        width: 1.5em; }
+      #book-details .info .info-table tfoot td button.cancel span.symbol::before {
+        font-size: 24px;
+        content: '×';
+        color: transparent;
+        width: 0;
+        display: inline-block;
+        vertical-align: middle;
+        transition: color 0.2s;
+        line-height: 0; }
+      #book-details .info .info-table tfoot td button.cancel:hover span.symbol {
+        color: transparent; }
+      #book-details .info .info-table tfoot td button.cancel:hover span::before {
+        color: black; }
 
 #book-details h5 {
   font-weight: 400;
