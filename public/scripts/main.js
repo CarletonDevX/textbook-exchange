@@ -83,7 +83,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
     .state('account', { url: '/account',
       views:{'account' : {
-          templateUrl: 'partials/account',
+          templateUrl: '/partials/account',
           controller: 'accountController' }}
     })
     .state('account.access', { url: '/access',
@@ -109,7 +109,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       // deepStateRedirect: true,
       views:{
         'main' : {
-          templateUrl: 'partials/main',
+          templateUrl: '/partials/main',
           controller: 'mainController'
         }
       }
@@ -160,16 +160,26 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
-
-    .state('otherwise', {
-      url: "*path",
-      template: "Oops! We don't know how to serve you (404)"
+    .state('main.detail.error',{
+      url : 'error', // use {location:false} on $state.go so it doesn't switch to this
+      params: {
+        message: 'An error occurred.' // default message
+      },
+      templateUrl : '/partials/detail.error',
+      controller: function($scope, $stateParams) {
+        $scope.message = $stateParams.message;
+      }
+    })
+    .state('otherwise',{
+      url : '*path',
+      onEnter: function ($state){
+        $state.go('main.detail.error', {message: 'Page not found.'}, {location: false});
+      }
     })
 
     //use HTML5 History API
     $locationProvider.html5Mode(true);
-})
-
+});
 
 hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $previousState, $document) {
 
@@ -447,11 +457,11 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateP
 });
 
 // Top-level shit
-hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS) {
 
+  // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-    console.log("State change error changing to state " + toState.name);
-    console.log(error);
+    $state.go('main.detail.error', {message:error.data.errors[0]}, {location: false});
   });
 
   $scope.setCurrentUser = function () {
