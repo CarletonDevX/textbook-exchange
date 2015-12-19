@@ -83,7 +83,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
     .state('account', { url: '/account',
       views:{'account' : {
-          templateUrl: 'partials/account',
+          templateUrl: '/partials/account',
           controller: 'accountController' }}
     })
     .state('account.access', { url: '/access',
@@ -109,7 +109,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       // deepStateRedirect: true,
       views:{
         'main' : {
-          templateUrl: 'partials/main',
+          templateUrl: '/partials/main',
           controller: 'mainController'
         }
       }
@@ -135,7 +135,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       sticky: true,
       views: {
         'detail' : {
-          templateUrl : '/partials/detail'
+          templateUrl : '/partials/detail',
+          controller : 'detailsController'
         }
       }
     })
@@ -159,16 +160,26 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
-
-    .state('otherwise', {
-      url: "*path",
-      template: "Oops! We don't know how to serve you (404)"
+    .state('main.detail.error',{
+      url : 'error', // use {location:false} on $state.go so it doesn't switch to this
+      params: {
+        message: 'An error occurred.' // default message
+      },
+      templateUrl : '/partials/detail.error',
+      controller: function($scope, $stateParams) {
+        $scope.message = $stateParams.message;
+      }
+    })
+    .state('otherwise',{
+      url : '*path',
+      onEnter: function ($state){
+        $state.go('main.detail.error', {message: 'Page not found.'}, {location: false});
+      }
     })
 
     //use HTML5 History API
     $locationProvider.html5Mode(true);
-})
-
+});
 
 hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $previousState, $document) {
 
@@ -378,7 +389,48 @@ hitsTheBooks.controller('searchController', function($scope, results, $statePara
   $scope.results = results;
 });
 
-hitsTheBooks.controller('bookController', function($scope, $rootScope, bookInfo, $state, $stateParams, Api) {
+hitsTheBooks.controller('detailsController', function($scope, $stateParams, $location) {
+
+  // Button behavior
+  // TODO: get ng-click to work here rather than using jQuery
+  $('#detail-nav-back').click(function () {
+    $scope.navIndex = $scope.navIndex - 2;
+    window.history.back();
+  });
+  $('#detail-nav-forward').click(function () {
+    window.history.forward();
+  });
+
+  // Used to determine whether back button is available
+  // TODO: this method will break if the browser's back button is used. Fixable?
+  $scope.navIndex = 0
+
+  // Hide or show nav buttons based on previous states
+  $scope.$on('$stateChangeSuccess',
+  function(event, toState, toParams, fromState, fromParams){
+
+    // Hide all nav buttons, then selectively show some
+    $('.detail-nav').hide();
+
+    // Determine whether we visited from another detail state. If so, increment the nav index
+    if (fromState.name=="main.detail.book" || fromState.name=="main.detail.user") {
+      $scope.navIndex = $scope.navIndex + 1;
+    } else {
+      $scope.navIndex = 0
+    }
+
+    // Show back button if we can go back
+    if ($scope.navIndex != 0) {
+      $('#detail-nav-back').show();
+    }
+
+  });
+
+});
+
+
+hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $stateParams, Api) {
+
   $scope.book = bookInfo;
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
@@ -449,7 +501,12 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateP
 });
 
 // Top-level shit
-hitsTheBooks.controller('applicationController', function($scope, $rootScope, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS) {
+
+  // Route change error handling
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+    $state.go('main.detail.error', {message:error.data.errors[0]}, {location: false});
+  });
 
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {

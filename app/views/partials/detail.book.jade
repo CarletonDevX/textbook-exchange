@@ -1,6 +1,8 @@
 div#book-details
-  h2#book-title(style="text-wrap:balanced") {{book.name}}
-  h3#book-author {{ book.author.toString().replace(',',', ') }}
+
+  h2#book-title {{book.name}}
+  h3#book-author {{ book.author.join(', ') }}
+
   div.info-wrapper
     div.info
       table.info-table

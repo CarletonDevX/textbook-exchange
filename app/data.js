@@ -133,7 +133,7 @@ var addListingWithUser = function (user) {
 		var junklisting = new Listing ({
 			userID: user._id,
 		    ISBN: '9781118115534',
-		    condition: 'New',
+		    condition: 0,
 		    completed: false,
 		    sellingPrice: 2,
 		    rentingPrice: 2,
