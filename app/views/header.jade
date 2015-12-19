@@ -6,29 +6,24 @@ header(ng-controller="headerController")
         span.college-name Carleton
         span.app-name
           | Hits
+          //- the extra space before 'the' is important!
           span.interject  the 
           | Books
     ul#college-info
       li #{numListings} books available
       li #{numOffers} successful listings
       li #{numUsers} active users
-  div#blurb
+  div#blurb(ng-class="{'hidden': !modalStates.blurb||currentUser}")
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
-    | By Carls for Carls. 
-    a(class="toAbout", href="#about") Learn more...
-    a(class="close", ng-click="closeBlurb()") ×
+    | By Carls for Carls.
+    a(href="" class="toAbout", ng-click="modalStates.about = true") Learn more...
+    a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
-    if loggedIn
-      a(href="#dashboard") Dashboard
-    else
-      a(href="#about") About
-      a(href="#register") Sign in or Register
-  div#about
-    h2 About
-    p
-      | Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-      | Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-      | It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. 
-      | It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-  div#register
-    h2 Register or Sign in 
+    //- div#account-access-buttons
+    a(ng-click="modalStates.about = true") About
+    a(ng-click="openAccount()") {{currentUser?'Dashboard':'Sign in or Register'}}
+    //- removed ui-sref="account" 
+    //- div#account-details-buttons
+    //-   a(ui-sref="account.details") Dashboard
+
+  include modals

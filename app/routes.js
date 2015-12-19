@@ -3,8 +3,9 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
-    mailer = require('./mailer')
+    mailer = require('./mailer'),
     data = require('./data'),
+    Error = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
     inject = require('./injectors'),
@@ -22,24 +23,29 @@ exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
     app.route('/*')
-        .get(users.countUsers,
+        .get(users.countUsers,          // Should we cache this stuff?
              listings.countListings,
              offers.countOffers,
              function (req, res) {
                 res.render('index.jade', {
                     numListings: req.rSchoolStats.numListings,
                     numOffers: req.rSchoolStats.numOffers,
-                    numUsers: req.rSchoolStats.numUsers,
-                    loggedIn: (req.user != null)
+                    numUsers: req.rSchoolStats.numUsers
                 });
              }); 
 }
 
 exports.setup = function (app) {
 
-    app.get('/partials/:partial', function (req, res) {
-        res.render('partials/'+req.params.partial+'.jade',{});
-    });
+    app.route('/partials/:partial')
+        .get(function (req, res) {
+            res.render('partials/'+req.params.partial+'.jade',{});
+        });
+
+    // Workaround for browser autofill
+    app.route('/sink')
+        .get(function (req, res) {res.status(200).send()})
+        .post(function (req, res) {res.status(200).send()});
 
     // db stuff for testing
     app.post('/clear', function (req, res) {
@@ -109,9 +115,7 @@ exports.setup = function (app) {
     app.route('/api/verify/:userID')
         .post(users.getUser,
              users.verifyUser,
-             //login?
-             responder.successVerify
-             );
+             responder.formatCurrentUser);
 
     // Get current user
     app.route('/api/user')
@@ -172,7 +176,8 @@ exports.setup = function (app) {
     app.route('/api/subscriptions')
         .get(authenticate,
              users.getCurrentUser,
-             responder.formatSubscriptions);
+             books.getSubscriptionBooks,
+             responder.formatBooks);
 
     // Clear subscriptions of current user
     app.route('/api/subscriptions/clear')
@@ -299,7 +304,10 @@ exports.setup = function (app) {
     // Search
     app.route('/api/search')
         .get(books.search,
-             responder.formatSearchResults);
+             responder.formatBooks);
+
+    // Catchall 404 for API
+    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404)
 
 
     /************

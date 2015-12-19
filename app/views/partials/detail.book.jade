@@ -1,38 +1,92 @@
 div#book-details
   h2#book-title {{book.name}}
-  h3#book-author {{book.author}}
-  img(src="{{book.coverImage}}")
-  //TODO: make this h4 into a table of details about the book
-  p {{book.description}}
-  h4#isbn ISBN: {{book.ISBN}}
-  div.listing#selling
+  h3#book-author {{ book.author.join(', ') }}
+  div.info-wrapper
+    div.preview
+      img(src="{{book.coverImage}}")
+    div.info
+      table.info-table
+        tbody
+          tr
+            td Edition:
+            td(ng-if="book.edition") {{ book.edition }}
+              sup {{ book.edition | ordinal }}
+            td(ng-if="!book.edition") N/A
+          tr
+            td Publisher:
+            td {{book.publisher}}
+          tr
+            td Published:
+            td {{ book.publishDate | date:"yyyy" }}
+          tr
+            td ISBN:
+            td {{ book.ISBN }}
+          tr
+            td Pages:
+            td {{ book.pageCount }}
+        tfoot
+          tr: td(colspan="2")
+            //- span Watching
+            //- button(ng-click="removeFromWatchlist()") Remove
+            button(ng-click="addToWatchlist()") + Add To Watchlist
+
+  //- p {{book.description}}
+  div.listings
+    div.tabs
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
+      button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
+        | Selling
+        span.interject  and
+        |  Giving
+      button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
+        | Renting
+        span.interject  and
+        |  Lending
     table
       thead
         tr
-          th Seller
-          th Condition
-          th Price
-      tbody
-        //-todo: filter on whether it's for sale or rent
-        //- change hrefs to ui-srefs
-        tr(ng-repeat="listing in book.listings")
-          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar.small}}")
-          td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-          td {{listing.condition}}
-          td {{listing.sellingPrice}}
-          td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
-  div.listing#renting
-    table
-      thead
-        tr
-          th Lender
-          th Condition
-          th Price
-      tbody
-        //-todo: filter on whether it's for sale or rent
-        tr(ng-repeat="listing in book.listings")
-          td: a(href="user/{{listing.userID}}"): img(src="{{listing.user.avatar.small}}")
-          td: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-          td {{listing.condition}}
-          td {{listing.rentingPrice}}
-          td: button(data-listingId="{{listing.ID}}"): img(src="/images/email.png")
+          th.sortable(colspan="2", ng-click="listingOrder='lastName'", ng-class="{'active':listingOrder=='lastName'}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.sortable(ng-click="listingOrder='condition'", ng-class="{'active':listingOrder=='condition'}") Condition
+          th.sortable(ng-click="listingOrder='price'", ng-class="{'active':listingOrder=='price'}") Price
+          th Buy/Get
+      tbody(ng-if="whichListings=='both'")
+        //- TODO: change hrefs to ui-srefs
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
+
+      tbody(ng-if="whichListings=='selling'")
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
+
+      tbody(ng-if="whichListings=='renting'")
+        //- TODO: change hrefs to ui-srefs
+        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
+        tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.book.listings'")
+      tfoot
+        tr.make-listing(ng-class="{'inactive':!newListing.active}")
+          td(colspan="2") Add a listing:
+          td
+            select(ng-model="newListing.condition")
+              option Used
+              option New
+          td
+            p
+              input(type="checkbox" ng-model="newListing.selling", ng-disabled="newListing.selling && !newListing.renting")
+              span.label Sell for 
+              input.price(type="number", ng-model="newListing.sellingPrice", placeholder="$12", ng-disabled="!newListing.selling")
+            p
+              input(type="checkbox" ng-model="newListing.renting", ng-disabled="!newListing.selling && newListing.renting")
+              span.label Rent for 
+              input.price(type="number", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
+          td.confirm
+            button +
+        tr.add-listing: td(colspan="5")
+          button.cancel(ng-if="newListing.active", ng-click="newListing.active = false")
+            span.symbol ×
+            |  cancel
+          button.confirm(ng-if="!newListing.active", ng-click="newListing.active = true")
+            span.symbol +
+            |  add a listing

@@ -88,20 +88,15 @@ var bookify = function (item) {
 	}
 }
 
-// Sometimes the author is given as an array. In that case, we want to format it nicely.
+// Author can either be an array or a string. We want it to always be an array.
 var formatAuthor = function (author) {
 	if (!author) return "";
-	string = ""
-	if (author.constructor === Array) {
-		string = author[0]
-		for (var i = 1; i < author.length; i++) {
-			string += i==author.length-1 ? " and " : ", "
-			string = string + author[i]
-		}
+
+	if (author.constructor === String) {
+		return [author];
 	} else {
-		string = author;
+		return author;
 	}
-	return string;
 }
 
 // Get nested property if it exists

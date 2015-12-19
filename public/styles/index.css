@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 html {
   overflow-y: scroll; }
@@ -79,6 +79,7 @@ header {
         margin: 0; }
         header #main-box #wordmark-link #wordmark .college-name {
           font-size: 80px;
+          font-variant: small-caps;
           display: block; }
         header #main-box #wordmark-link #wordmark .app-name {
           font-weight: 400;
@@ -128,7 +129,7 @@ header {
     opacity: 1;
     position: relative;
     line-height: 130%;
-    transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin-bottom 0.2s; }
+    transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin 0.2s; }
     header #blurb a.toAbout {
       color: #888;
       margin-left: 5px; }
@@ -152,11 +153,9 @@ header {
     width: 0px;
     height: 0px;
     padding: 0px;
-    margin-bottom: 0;
-    margin-top: 0;
+    margin-bottom: -7.5px;
+    margin-top: 7.5px;
     opacity: 0; }
-  header #about, header #register {
-    display: none; }
 
 header.minimized {
   margin-bottom: 0;
@@ -223,15 +222,17 @@ main #search {
       transition: box-shadow 0.1s; }
       main #search #search-results ul li div.preview {
         padding: 20px; }
+        main #search #search-results ul li div.preview img {
+          width: 125px; }
       main #search #search-results ul li div.info {
-        flex-grow: 1; }
+        flex-grow: 1;
+        padding-right: 20px;
+        padding-bottom: 20px; }
       main #search #search-results ul li a.book {
         text-decoration: none;
         color: black;
         text-align: left;
         display: flex; }
-        main #search #search-results ul li a.book .preview img {
-          width: 125px; }
       main #search #search-results ul li h4 {
         font-family: 'Droid Sans', serif;
         margin-bottom: 0;
@@ -241,25 +242,28 @@ main #search {
         font-family: 'Droid Sans', serif;
         font-weight: 400;
         margin-top: 0; }
-      main #search #search-results ul li table {
-        font-family: 'Droid Sans', sans-serif;
-        font-size: 12px;
-        border: solid 2px #ddd;
-        border-radius: 10px;
-        border-spacing: 0; }
-        main #search #search-results ul li table td {
-          padding: 5px;
-          border-bottom: solid 2px #ddd;
-          border-right: solid 2px #eee; }
-        main #search #search-results ul li table tr:last-child td {
-          border-bottom: solid 0px; }
-        main #search #search-results ul li table tr td:first-child {
-          text-align: right; }
-        main #search #search-results ul li table tr td:last-child {
-          border-right: solid 0px;
-          text-align: left; }
     main #search #search-results ul li:hover {
-      box-shadow: 0px 1px 10px 0px rgba(41, 220, 53, 0.5); }
+      box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
+
+main table.info-table {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border: solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0; }
+  main table.info-table td {
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 2px #eee; }
+  main table.info-table tr:last-child td {
+    border-bottom: solid 0px; }
+  main table.info-table tr td:first-child {
+    text-align: right; }
+  main table.info-table tr td:last-child {
+    border-right: solid 0px;
+    text-align: left; }
+  main table.info-table tfoot td {
+    border-top: solid 2px #ddd; }
 
 main #search.home-view {
   width: 500px; }
@@ -276,24 +280,204 @@ main #search.behind-detail #search-form {
   margin: 15px; }
 
 main #detail-wrapper {
-  background-color: white;
   width: 500px;
-  margin: 0 auto 40px auto;
-  padding: 20px;
+  margin: -10px auto 40px auto;
   position: relative;
   z-index: 20;
   overflow: hidden;
-  box-sizing: border-box;
   transition: opacity 0.2s; }
+  main #detail-wrapper .detail-nav {
+    font-size: 24pt;
+    position: absolute;
+    top: 200px;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 64px; }
+  main #detail-wrapper .detail-nav:hover {
+    text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3); }
+  main #detail-wrapper #detail {
+    margin: 10px auto 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: white; }
 
 main #detail-wrapper.minimized {
   opacity: 0;
-  box-shadow: 0px 3px 10px 2px transparent;
   height: 0;
   margin-bottom: 0; }
+  main #detail-wrapper.minimized #detail {
+    box-shadow: 0px 3px 10px 2px transparent; }
 
 main #detail-wrapper.maximized {
-  width: 570px;
+  width: 700px;
+  max-width: 100vw;
   opacity: 1;
-  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
   height: auto; }
+  main #detail-wrapper.maximized #detail {
+    width: 570px;
+    box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3); }
+
+#book-details h2, #book-details h3 {
+  font-family: 'Droid Sans', Sans-serif; }
+
+#book-details h2 {
+  font-weight: 700;
+  margin: 0; }
+
+#book-details h3 {
+  font-weight: 400;
+  margin-top: 10px; }
+
+#book-details .info-wrapper {
+  display: flex; }
+  #book-details .info-wrapper .preview {
+    padding-right: 20px; }
+    #book-details .info-wrapper .preview img {
+      width: 200px; }
+  #book-details .info-wrapper .info {
+    flex-grow: 1; }
+    #book-details .info-wrapper .info .info-table tfoot td {
+      padding: 0;
+      border-top: solid 2px #ddd; }
+      #book-details .info-wrapper .info .info-table tfoot td button {
+        border: none;
+        background: none;
+        padding: 5px;
+        width: 100%;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px; }
+
+#book-details h5 {
+  font-weight: 400;
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-variant: small-caps; }
+
+#book-details .listings .confirm:hover {
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
+
+#book-details .listings .cancel:hover {
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
+
+#book-details .listings .tabs {
+  display: flex; }
+  #book-details .listings .tabs button {
+    flex-grow: 1;
+    background: none;
+    font-family: 'Droid Serif', Serif;
+    font-size: 20px;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-variant: small-caps;
+    transition: color 0.2s, font-size 0.2s;
+    color: gray;
+    height: 75px;
+    font-size: 18px; }
+  #book-details .listings .tabs button.active {
+    border-bottom: solid black 2px;
+    font-style: inherit;
+    font-size: 22px;
+    color: black; }
+  #book-details .listings .tabs button:hover {
+    color: black; }
+
+#book-details .listings table {
+  width: 100%;
+  border-spacing: 0;
+  border: solid 1px #666;
+  border-top: 3px solid black; }
+  #book-details .listings table thead tr {
+    height: 4em; }
+    #book-details .listings table thead tr th {
+      font-weight: 400;
+      font-style: italic;
+      height: 40px;
+      border-bottom: 1px solid #666;
+      border-right: 1px solid #eee; }
+    #book-details .listings table thead tr th.sortable {
+      cursor: pointer; }
+    #book-details .listings table thead tr th.sortable:hover {
+      text-decoration: underline; }
+    #book-details .listings table thead tr th.active {
+      text-decoration: underline; }
+    #book-details .listings table thead tr th:last-child {
+      border-right: none; }
+  #book-details .listings table tbody, #book-details .listings table tfoot {
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 14px; }
+    #book-details .listings table tbody tr td, #book-details .listings table tfoot tr td {
+      text-align: center;
+      border-bottom: solid 1px #666;
+      border-right: solid 1px #eee; }
+      #book-details .listings table tbody tr td img, #book-details .listings table tfoot tr td img {
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+        margin: 5px; }
+    #book-details .listings table tbody tr td:last-child, #book-details .listings table tfoot tr td:last-child {
+      border-right: none; }
+    #book-details .listings table tbody tr td.image, #book-details .listings table tfoot tr td.image {
+      text-align: right;
+      border-right: none;
+      padding-right: 5px; }
+    #book-details .listings table tbody tr td.username, #book-details .listings table tfoot tr td.username {
+      text-align: left;
+      padding-left: 5px; }
+    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tbody td.confirm, #book-details .listings table tfoot td.make-an-offer, #book-details .listings table tfoot td.confirm {
+      padding: 0; }
+      #book-details .listings table tbody td.make-an-offer button, #book-details .listings table tbody td.confirm button, #book-details .listings table tfoot td.make-an-offer button, #book-details .listings table tfoot td.confirm button {
+        width: 100%;
+        border: none;
+        padding: 0;
+        background: none;
+        height: 100%; }
+  #book-details .listings table tbody td {
+    height: 80px; }
+  #book-details .listings table tfoot tr.make-listing {
+    background-color: #FCFFEE; }
+    #book-details .listings table tfoot tr.make-listing p {
+      text-align: center; }
+    #book-details .listings table tfoot tr.make-listing span.label {
+      width: 4.5em;
+      display: inline-block; }
+    #book-details .listings table tfoot tr.make-listing input.price {
+      width: 4em; }
+  #book-details .listings table tfoot tr.make-listing.inactive {
+    display: none; }
+  #book-details .listings table tfoot tr.add-listing td {
+    text-align: center;
+    border-bottom: none;
+    padding: 0; }
+    #book-details .listings table tfoot tr.add-listing td button {
+      font-style: italic;
+      font-family: 'Droid Serif', Serif;
+      width: 100%;
+      background-color: white;
+      border: none;
+      height: 2.5em;
+      transition: box-shadow 0.1s; }
+      #book-details .listings table tfoot tr.add-listing td button span.symbol {
+        font-size: 24px;
+        display: inline-block;
+        vertical-align: middle; }
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none; }
+
+.modal-wrapper.visible {
+  display: block;
+  z-index: 50; }
+  .modal-wrapper.visible .modal {
+    background-color: white;
+    box-sizing: border-box;
+    width: 500px;
+    margin: 100px calc(50vw - 250px);
+    padding: 10px; }

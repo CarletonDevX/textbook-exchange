@@ -21,10 +21,6 @@ exports.formatSchoolStats = function (req, res) {
 
 /** USERS **/
 
-exports.successVerify = function (req, res) {
-    res.status(200).send("User verified.");
-}
-
 exports.successRemoveUser = function (req, res) {
     res.status(200).send("User deleted.");
 }
@@ -260,7 +256,7 @@ exports.formatBook = function (req, res) {
     res.json(book);
 }
 
-exports.formatSearchResults = function (req, res) {
+exports.formatBooks = function (req, res) {
     var books = [];
     for (var i = 0; i < req.rBooks.length; i++) {
         var book = req.rBooks[i];

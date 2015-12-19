@@ -17,7 +17,7 @@ var endOfWorld = function (err, req, res, next) {
   res.status(500).send({ errors: ['Sorry, something went wrong. Please try again.'] });
 };
 
-var send404 = function (req, res, next){
+var send404 = function (req, res, next) {
   res.status(404);
 
   // respond with json
@@ -27,6 +27,18 @@ var send404 = function (req, res, next){
 
   // default to plain-text
   res.type('txt').send('Not found');
+};
+
+var api404 = function (req, res, next) {
+  res.status(404);
+
+  // respond with json
+  if (req.accepts('json')) {
+    return res.send({ errors: ['API call does not exist'] });
+  }
+
+  // default to plain-text
+  res.type('txt').send('API call does not exist');
 };
 
 var mongoError = function (req, res, err) {
@@ -55,6 +67,7 @@ module.exports = {
   ajax: ajaxErrorHandler,
   endOfWorld: endOfWorld,
   send404: send404,
+  api404: api404,
   mongoError: mongoError,
   errorWithStatus: statusError
 }

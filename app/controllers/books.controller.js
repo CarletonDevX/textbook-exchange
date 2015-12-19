@@ -83,6 +83,18 @@ exports.unsubscribe = function (req, res, next) {
     });
 }
 
+exports.getSubscriptionBooks = function (req, res, next) {
+    var subscriptions = req.rUser.subscriptions;
+    Book.find({ISBN: {$in: subscriptions}}, function(err, books) {
+        if (!err) {
+            req.rBooks = books;
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.updateAmazonInfo = function (req, res, next) {
     var book = req.rBook;
     Amazon.bookWithISBN(book.ISBN, function (err, bookResult) {

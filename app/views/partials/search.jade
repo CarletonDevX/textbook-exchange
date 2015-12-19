@@ -5,14 +5,17 @@ ul
 				img(src="{{book.coverImage}}")
 			div.info
 				h4 {{ book.name }}
-				h5 {{ book.author }}
-				table
+				//- the toString.replace thing is to correctly format multiple authors
+				h5 {{ book.author.join(', ') }}
+				table.info-table
 					tr
 						td Edition:
-						td {{ book.edition }}
+						td(ng-if="book.edition") {{ book.edition }}
+							sup {{ book.edition | ordinal }}
+						td(ng-if="!book.edition") N/A
 					tr
 						td Published:
-						td {{ book.publishDate }}
+						td {{ book.publishDate | date:"yyyy" }}
 					tr
 						td ISBN:
 						td {{ book.ISBN }}

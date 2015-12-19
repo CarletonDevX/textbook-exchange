@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans);
 
 html{
@@ -49,6 +49,7 @@ header{
   }
 
   #sub-box{
+
     background-color:rgba(255,255,255,.34);
     position:absolute;
     padding:14px 6px;
@@ -102,7 +103,7 @@ header{
 
         .college-name{
           font-size: 80px;
-          // font-variant: small-caps;
+          font-variant: small-caps;
           display:block;
         }
 
@@ -182,7 +183,7 @@ header{
                 height .2s,
                 padding .2s,
                 opacity .2s,
-                margin-bottom .2s;
+                margin .2s;
 
     a.toAbout {
       color: #888;
@@ -216,13 +217,9 @@ header{
     width: 0px;
     height: 0px;
     padding: 0px;
-    margin-bottom: 0;
-    margin-top: 0;
+    margin-bottom: -$pane-spacing/2;
+    margin-top: $pane-spacing/2;
     opacity: 0;
-  }
-
-  #about, #register{
-    display:none;
   }
 }
 
@@ -312,19 +309,20 @@ main{
         transition: box-shadow .1s;
         div.preview{
           padding: 20px;
+          img {
+            width:125px;
+          }
         }
         div.info{
           flex-grow: 1;
+          padding-right: 20px;
+          padding-bottom: 20px;
         }
         a.book{
           text-decoration: none;
           color:black;
           text-align: left;
           display: flex;
-
-          .preview img {
-                      width:125px;
-          }
         }
         h4{
           font-family: 'Droid Sans', serif;
@@ -337,36 +335,41 @@ main{
           font-weight: 400;
           margin-top:0;
         }
-        table{
-          font-family: 'Droid Sans', sans-serif;
-          font-size: 12px;
-          border:solid 2px #ddd;
-          border-radius: 10px;
-          border-spacing: 0;
-          td{
-            padding: 5px;
-            border-bottom: solid 2px #ddd;
-            border-right: solid 2px #eee;
-          }
-          tr:last-child td{
-            border-bottom: solid 0px;
-          }
-
-          tr td:first-child{
-            text-align: right;
-          }
-
-          tr td:last-child{
-            border-right: solid 0px;
-            text-align: left;
-          }
-        }
       }
       li:hover{
-        box-shadow: 0px 1px 10px 0px rgba(41, 220, 53,.5) ;
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, .3) ;
       }
     }
   }
+
+table.info-table{
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border:solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0;
+  td{
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 2px #eee;
+  }
+  tr:last-child td{
+    border-bottom: solid 0px;
+  }
+
+  tr td:first-child{
+    text-align: right;
+  }
+
+  tr td:last-child{
+    border-right: solid 0px;
+    text-align: left;
+  }
+
+  tfoot td{
+    border-top: solid 2px #ddd;
+  }
+}
 
   #search.home-view{
     width: 500px;
@@ -400,30 +403,280 @@ main{
   }
 
   #detail-wrapper{
-    background-color:white;
     width:500px;
-    margin: 0 auto 40px auto;
-    padding:20px;
+    margin: -10px auto 40px auto;
     position: relative;
     z-index: 20;
     overflow: hidden;
-    box-sizing: border-box;
     transition: opacity .2s;
+
+    .detail-nav {
+      font-size: 24pt;
+      position: absolute;
+      top: 200px;
+      color: rgba(0,0,0,.5);
+      font-size: 64px;
+    }
+
+    .detail-nav:hover{
+      text-shadow: 0px 1px 5px rgba(0,0,0,.3);
+    }
+
+    #detail{
+      margin: 10px auto 0 auto;
+      padding:20px;
+      box-sizing: border-box;
+      background-color:white;
+    }
   }
 
   #detail-wrapper.minimized{
     opacity:0;
-    box-shadow: 0px 3px 10px 2px rgba(0,0,0,0);
+    #detail{
+      box-shadow: 0px 3px 10px 2px rgba(0,0,0,0);
+    }
     height:0;
     margin-bottom: 0;
   }
   #detail-wrapper.maximized{
-    width:570px;
+    width:700px;
+    max-width: 100vw;
+    #detail{
+      width:570px;
+      box-shadow: 0px 3px 10px 2px rgba(0,0,0,.3);
+    }
     opacity: 1;
-    box-shadow: 0px 3px 10px 2px rgba(0,0,0,.3);
     height:auto;
   }
 }
+
+#book-details{
+  h2, h3{
+    font-family: 'Droid Sans', Sans-serif;
+  }
+  h2{
+    font-weight: 700;
+    margin:0;
+  }
+  h3{
+    font-weight: 400;
+    margin-top: 10px;
+  }
+  .info-wrapper{
+    display: flex;
+    .preview{
+      padding-right: 20px;
+      img{
+        width:200px;
+      }
+    }
+    .info{
+      flex-grow: 1;
+
+      .info-table tfoot td {
+        padding: 0;
+        border-top: solid 2px #ddd;
+        button {
+          border: none;
+          background: none;
+          padding: 5px;
+          width:100%;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+        }
+      }
+    }
+  }
+
+  h5{
+    font-weight: 400;
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-variant: small-caps;
+  }
+
+  .listings{
+    .confirm:hover{
+      box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+    }
+    .cancel:hover{
+      box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130,.4);
+    }
+    .tabs{
+      display: flex;
+      button{
+        // flex-basis: 100%;
+        flex-grow: 1;
+        background: none;
+        font-family: 'Droid Serif', Serif;
+        font-size: 20px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        // font-style: italic;
+        // font-variant: inherit;
+        font-variant: small-caps;
+        transition: color .2s, font-size .2s;
+        color: gray;
+        height: 75px;
+        font-size: 18px;
+      }
+      button.active{
+        border-bottom: solid black 2px;
+        font-style: inherit;
+        font-size: 22px;
+        color: black;
+      }
+      button:hover{
+        // background-color: #eee;
+        color: black;
+      }
+    }
+    table{
+      width:100%;
+      $dark-border-color: #666;
+      $light-border-color: #eee;
+      border-spacing: 0;
+      border: solid 1px $dark-border-color;
+      border-top: 3px solid black;
+      thead{
+        tr{
+          height: 4em;
+          th{
+            font-weight: 400;
+            font-style: italic;
+            height: 40px;
+            border-bottom: 1px solid $dark-border-color;
+            border-right: 1px solid $light-border-color;
+            }
+          th.sortable{
+            cursor: pointer;
+          }
+          th.sortable:hover{
+            text-decoration: underline;
+          }
+          th.active{
+            text-decoration: underline;
+          }
+          th:last-child{
+            border-right: none;
+          }
+        }
+      }
+      tbody,tfoot{
+        font-family: 'Droid Sans', sans-serif;
+        font-size: 14px;
+        tr{
+          td{
+            text-align: center;
+            border-bottom: solid 1px $dark-border-color;
+            border-right:solid 1px $light-border-color;
+            img{
+              width:40px;
+              height:40px;
+              vertical-align: middle;
+              margin:5px;
+            }
+          }
+          td:last-child{
+            border-right: none;
+          }
+          td.image{
+            text-align: right;
+            border-right: none;
+            padding-right: 5px;
+          }
+          td.username{
+            text-align:left;
+            padding-left: 5px;
+          }
+        }
+
+        td.make-an-offer, td.confirm{
+          padding: 0;
+          button{
+            width: 100%;
+            border: none;
+            padding: 0;
+            background: none;
+            height: 100%;
+          }
+        }
+      }
+      tbody{
+        td{
+          height: 80px;
+        }
+      }
+      tfoot{
+        tr.make-listing{
+          background-color: #FCFFEE;
+          p{
+            text-align: center;
+          }
+          span.label{
+            width: 4.5em;
+            display: inline-block;
+          }
+          input.price{
+            width:4em;
+          }
+        }
+        tr.make-listing.inactive{
+          display:none;
+        }
+        tr.add-listing{
+          td{
+            text-align: center;
+            border-bottom: none;
+            padding: 0;
+
+            button{
+              font-style: italic;
+              font-family: 'Droid Serif', Serif;
+              width: 100%;
+              background-color:white;
+              border:none;
+              height: 2.5em;
+              span.symbol{
+                font-size: 24px;
+                display: inline-block;
+                vertical-align: middle;
+              }
+              transition: box-shadow .1s;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-wrapper{
+  position: fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: rgba(0,0,0,.4);
+  display: none;
+}
+
+.modal-wrapper.visible{
+  display: block;
+  z-index: 50;
+
+  .modal{
+    background-color: white;
+    box-sizing: border-box;
+    width: 500px;
+    margin: 100px calc(50vw - 250px);
+    padding: 10px;
+  }
+}
+
 
 
 // header.minimized div#main-box:hover .app-name::before{

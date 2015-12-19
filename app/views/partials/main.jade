@@ -1,4 +1,4 @@
-- var placeHolders = ["9781118115534", "Norton Anthology", "John Zelle"]
+- var placeHolders = ["9781118…", "Norton Anth…", "John Zelle"]
 - var randi = Math.floor(Math.random()*placeHolders.length);
 
 div#search(ng-class="\
@@ -19,7 +19,6 @@ div#search(ng-class="\
                      ng-change="updateSearchBox();search()",
                      ng-htb-keypress="{13:'classicSearch()'}",
                      placeholder="#{placeHolders[randi]}")
-    //- TODO: using ng-model searchInput is most-def not the best way to do this.
     //- a(ui-sref="main.search({query: searchInput})") Search
 
   div#search-results(ui-view="search")
