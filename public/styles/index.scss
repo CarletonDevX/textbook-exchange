@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,400italic,700,700italic);
 
 html{
   overflow-y: scroll; 
@@ -351,7 +351,7 @@ table.info-table{
   td{
     padding: 5px;
     border-bottom: solid 2px #ddd;
-    border-right: solid 2px #eee;
+    border-right: solid 1px #eee;
   }
   tr:last-child td{
     border-bottom: solid 0px;
@@ -428,6 +428,32 @@ table.info-table{
   }
 }
 
+button.confirm:hover, button.confirm:hover:focus{
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+}
+
+button.confirm:active, button.confirm:active:focus{
+  background-color: rgba(130, 255, 130,.08);
+}
+
+button.cancel:hover, button.cancel:hover:focus{
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130,.4);
+}
+button.cancel:active,button.cancel:active:focus{
+  background-color: rgba(255, 130, 130,.08);
+}
+
+button.cancel, button.confirm{
+  outline: none;
+  background:none;
+  border:none;
+  transition: box-shadow .1s;
+}
+
+button.cancel:focus, button.confirm:focus{
+    box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0,.4);
+}
+
 #book-details{
   h2, h3{
     font-family: 'Droid Sans', Sans-serif;
@@ -435,32 +461,72 @@ table.info-table{
   h2{
     font-weight: 700;
     margin:0;
+    // using adobe polyfill
+    // text-wrap: balanced;
   }
   h3{
     font-weight: 400;
     margin-top: 10px;
+    border-bottom: solid black 2px;
+    padding-bottom: 10px;
   }
   .info-wrapper{
     display: flex;
     .preview{
-      padding-right: 20px;
       img{
+        box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
         width:200px;
       }
     }
     .info{
+      padding-right: 20px;
       flex-grow: 1;
 
-      .info-table tfoot td {
-        padding: 0;
-        border-top: solid 2px #ddd;
-        button {
-          border: none;
-          background: none;
-          padding: 5px;
-          width:100%;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
+      
+      .info-table{
+        width:100%;
+
+        tfoot td {
+          padding: 0;
+          border-top: solid 2px #ddd;
+          $footer-el-height: 30px;
+          div {
+            height: $footer-el-height;
+          }
+          button {
+            padding: 5px;
+            height: $footer-el-height;
+            width:100%;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            font-style: italic;
+            font-family: 'Droid Serif', Serif;
+          }
+          button span.symbol{
+            font-size: 24px;
+            display:inline-block;
+            vertical-align: middle;
+            line-height: 0;
+            position: relative;
+            transition: color .2s;
+            width:1.5em;
+          }
+          button.cancel span.symbol::before{
+            font-size: 24px;
+            content:'×';
+            color: rgba(0,0,0,0);
+            width: 0;
+            display:inline-block;
+            vertical-align: middle;
+            transition: color .2s;
+            line-height: 0;
+          }
+          button.cancel:hover span.symbol{
+            color: rgba(0,0,0,0);
+          }
+          button.cancel:hover span::before{
+            color: black;
+          }
         }
       }
     }
@@ -475,12 +541,6 @@ table.info-table{
   }
 
   .listings{
-    .confirm:hover{
-      box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
-    }
-    .cancel:hover{
-      box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130,.4);
-    }
     .tabs{
       display: flex;
       button{
@@ -513,11 +573,12 @@ table.info-table{
     }
     table{
       width:100%;
-      $dark-border-color: #666;
+      $dark-border-color: #ccc;
       $light-border-color: #eee;
       border-spacing: 0;
       border: solid 1px $dark-border-color;
-      border-top: 3px solid black;
+      border-top: 2px solid black;
+      overflow: hidden;
       thead{
         tr{
           height: 4em;
@@ -525,17 +586,38 @@ table.info-table{
             font-weight: 400;
             font-style: italic;
             height: 40px;
-            border-bottom: 1px solid $dark-border-color;
+            border-bottom: 2px solid $dark-border-color;
             border-right: 1px solid $light-border-color;
+            position: relative;
             }
           th.sortable{
+            padding: 0 20px;
             cursor: pointer;
           }
           th.sortable:hover{
             text-decoration: underline;
           }
-          th.active{
-            text-decoration: underline;
+          th.active::before{
+            content: '';
+            background-color: rgba(252, 255, 100, 0.07);
+            width: 100%;
+            height: 2000px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+          }
+          th.active::after{
+            // content: '▲';
+            content: '▴';
+            position: absolute;
+            width: 1.5em;
+            color:gray;
+            font-style: normal;
+          }
+          th.active.reversed::after{
+            // content: '▼';
+            content: '▾';
           }
           th:last-child{
             border-right: none;
@@ -548,7 +630,7 @@ table.info-table{
         tr{
           td{
             text-align: center;
-            border-bottom: solid 1px $dark-border-color;
+            border-bottom: solid 2px $dark-border-color;
             border-right:solid 1px $light-border-color;
             img{
               width:40px;
@@ -575,9 +657,7 @@ table.info-table{
           padding: 0;
           button{
             width: 100%;
-            border: none;
             padding: 0;
-            background: none;
             height: 100%;
           }
         }
@@ -588,6 +668,7 @@ table.info-table{
         }
       }
       tfoot{
+        background-color: white;
         tr.make-listing{
           background-color: #FCFFEE;
           p{
@@ -610,19 +691,20 @@ table.info-table{
             border-bottom: none;
             padding: 0;
 
+            $footer-el-height: 2.5em;
+            div{
+              height: $footer-el-height;
+            }
             button{
               font-style: italic;
               font-family: 'Droid Serif', Serif;
               width: 100%;
-              background-color:white;
-              border:none;
-              height: 2.5em;
+              height: $footer-el-height;
               span.symbol{
                 font-size: 24px;
                 display: inline-block;
                 vertical-align: middle;
               }
-              transition: box-shadow .1s;
             }
           }
         }

@@ -1,9 +1,9 @@
 div#book-details
+
   h2#book-title {{book.name}}
   h3#book-author {{ book.author.join(', ') }}
+
   div.info-wrapper
-    div.preview
-      img(src="{{book.coverImage}}")
     div.info
       table.info-table
         tbody
@@ -28,7 +28,18 @@ div#book-details
           tr: td(colspan="2")
             //- span Watching
             //- button(ng-click="removeFromWatchlist()") Remove
-            button(ng-click="addToWatchlist()") + Add To Watchlist
+            div(ng-if="!currentUser")
+              span
+                a(href, ng-click="openAccount()") log in
+                |  to track this book
+            button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
+              span.symbol +
+              |  add to watchlist
+            button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
+              span.symbol ✓
+              span watching
+    div.preview
+      img(src="{{book.coverImage}}")
 
   //- p {{book.description}}
   div.listings
@@ -36,18 +47,14 @@ div#book-details
       button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
       button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
         | Selling
-        span.interject  and
-        |  Giving
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-        span.interject  and
-        |  Lending
     table
       thead
         tr
-          th.sortable(colspan="2", ng-click="listingOrder='lastName'", ng-class="{'active':listingOrder=='lastName'}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.sortable(ng-click="listingOrder='condition'", ng-class="{'active':listingOrder=='condition'}") Condition
-          th.sortable(ng-click="listingOrder='price'", ng-class="{'active':listingOrder=='price'}") Price
+          th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
           th Buy/Get
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
@@ -82,11 +89,16 @@ div#book-details
               span.label Rent for 
               input.price(type="number", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
           td.confirm
-            button +
+            button(ng-click="submitListing()")
+              span.symbol +
+              | list!
         tr.add-listing: td(colspan="5")
-          button.cancel(ng-if="newListing.active", ng-click="newListing.active = false")
+          div(ng-if="!currentUser")
+            a(href, ng-click="openAccount()") log in
+            |  to add a listing
+          button.cancel(ng-if="newListing.active && currentUser", ng-click="newListing.active = false")
             span.symbol ×
             |  cancel
-          button.confirm(ng-if="!newListing.active", ng-click="newListing.active = true")
+          button.confirm(ng-if="!newListing.active && currentUser", ng-click="newListing.active = true")
             span.symbol +
             |  add a listing
