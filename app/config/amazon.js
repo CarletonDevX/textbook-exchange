@@ -53,6 +53,7 @@ var bookify = function (item) {
 
 	var info = item.ItemAttributes;
 	var OfferSummary = item.OfferSummary || { TotalNew: 0, TotalUsed: 0 };
+	var author = formatAuthor(info.Author);
 
 	var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
 	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
@@ -68,7 +69,7 @@ var bookify = function (item) {
 	    ISBN: info.ISBN,
 	    name: info.Title,
 	    coverImage: imageURL,
-	    author: info.Author,
+	    author: author,
 	    edition: info.Edition,
 	    pageCount: info.NumberOfPages,
 	    publishDate: info.PublicationDate,
@@ -84,6 +85,17 @@ var bookify = function (item) {
 			sellingPrice: price
 	    },
 	    lastSearched: new Date()
+	}
+}
+
+// Author can either be an array or a string. We want it to always be an array.
+var formatAuthor = function (author) {
+	if (!author) return "";
+
+	if (author.constructor === String) {
+		return [author];
+	} else {
+		return author;
 	}
 }
 

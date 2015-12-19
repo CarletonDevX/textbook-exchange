@@ -6,7 +6,7 @@ ul
 			div.info
 				h4 {{ book.name }}
 				//- the toString.replace thing is to correctly format multiple authors
-				h5 {{ book.author.toString().replace(',',', ') }}
+				h5 {{ book.author.join(', ') }}
 				table.info-table
 					tr
 						td Edition:

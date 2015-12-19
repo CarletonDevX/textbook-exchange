@@ -55,9 +55,8 @@ exports.createUser = function (req, res, next) {
 
     var newUser = new User({"email": email, "created": new Date()});
 
-    var md5 = crypto.createHash('md5');
-    newUser.verifier = md5.update((Math.random()*100).toString()).digest('hex');
-    newUser.password = md5.update(password).digest('hex');
+    newUser.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+    newUser.password = crypto.createHash('md5').update(password).digest('hex');
 
     newUser.verified = false;
     newUser.provider = 'local';
@@ -80,14 +79,19 @@ exports.createUser = function (req, res, next) {
 exports.verifyUser = function (req, res, next) {
     var updateUser = req.rUser;
     var verifier = req.body.verifier;
-    if (verifier != user.verifier) {
+    if (verifier != updateUser.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     } else {
         updateUser.verified = true;
         updateUser.save(function (err, user) {
             if (!err) {
+
+                // Attempt to log in user (ignore errors)
                 req.rUser = user;
-                next();
+                req.login(user, function () {
+                    next();
+                });
+
             } else {
                 Error.mongoError(req, res, err);
             }
@@ -279,49 +283,3 @@ exports.clearUserSubscriptions = function (req, res, next) {
         }
     });
 }
-
-/************
-    LEGACY
-*************/
-
-// Verify an account with a given provider ID
-// exports.verify = function (req, res, next) {
-//     User.update(
-//         {email: req.query.email, providerId: req.query.id},
-//         {verified : true},
-//         function(err, result) {
-//             if (!err) {
-//                 if (result.nModified > 0) {
-//                     req.flash('alert', 'Your account has been verified.');
-//                 }
-//                 return res.redirect('/');
-//             } else {
-//                 req.flash('error', getErrorMessage(err));
-//                 return res.redirect('/');
-//             }
-//         });
-// };
-
-// Return a user with the profile ID if it exists, else create a new one
-exports.saveOAuthUserProfile = function (req, profile, done) {
-    User.findOne(
-        {email: profile.email},
-        function(err, user) {
-            if (!err) {
-                if (user) {
-                    return done(err, user);
-                } else {
-                    user = new User(profile);
-                    user.save(function(err) {
-                        if (!err) {
-                            return done(err, user);
-                        } else {
-                            return done(err, false, {message: getErrorMessage(err)})
-                        }
-                    });
-                }
-            } else {
-                return done(err);
-            }
-        });
-};

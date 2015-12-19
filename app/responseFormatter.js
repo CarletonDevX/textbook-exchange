@@ -21,10 +21,6 @@ exports.formatSchoolStats = function (req, res) {
 
 /** USERS **/
 
-exports.successVerify = function (req, res) {
-    res.status(200).send("User verified.");
-}
-
 exports.successRemoveUser = function (req, res) {
     res.status(200).send("User deleted.");
 }

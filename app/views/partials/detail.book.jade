@@ -1,6 +1,6 @@
 div#book-details
   h2#book-title {{book.name}}
-  h3#book-author {{ book.author.toString().replace(',',', ') }}
+  h3#book-author {{ book.author.join(', ') }}
   div.info-wrapper
     div.preview
       img(src="{{book.coverImage}}")
