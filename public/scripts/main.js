@@ -411,7 +411,21 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     renting: false,
     sellingPrice: 10.00,
     rentingPrice: 10.00,
-    condition: 'new'
+    condition: 'New'
+  }
+  $scope.removingListing = false;
+
+  $scope.beginRemovingListing = function() {
+    $scope.removingListing = true;
+  }
+
+  $scope.cancelRemovingListing = function() {
+    $scope.removingListing = false;
+  }
+
+  $scope.removeListing = function(listing, success) {
+    // Api.removeListing($scope.book.ISBN, {listingID = })
+    console.log(listing);
   }
 
   $scope.handleReorder = function(category) {
@@ -433,6 +447,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 
   $scope.removeFromWatchlist = function () {
+    //TODO: this shit shouldn't happen here.
     Api.removeFromWatchlist($scope.book.ISBN).then(function (data) {
       $rootScope.currentUser.subscriptions = data;
       // console.log($scope.currentUser.subscriptions);

@@ -67,14 +67,14 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res.data;
                 });
         },
-        updateListing: function (isbn, data) {
-            return $http.delete('/api/listings/add/'+isbn, data)
+        updateListing: function (listingID, data) {
+            return $http.delete('/api/listings/'+listingID, data)
                 .then( function (res) {
                     return res.data;
                 });
         },
-        removeListing: function (isbn, data) {
-            return $http.delete('/api/listings/add/'+isbn)
+        removeListing: function (listingID, data) {
+            return $http.delete('/api/listings/'+listingID)
                 .then( function (res) {
                     return res.data;
                 });
