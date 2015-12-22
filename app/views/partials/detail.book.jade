@@ -100,3 +100,12 @@ div#book-details
           button.confirm(ng-if="!newListing.active && currentUser", ng-click="newListing.active = true")
             span.symbol +
             |  add a listing
+
+  div.modal-wrapper(
+    ng-class="{'visible':offer.active}",
+    ng-htb-self-click="offer.active = false"
+    )
+    div.modal
+      h3 Make an offer
+      textarea(ng-model="offer.message")
+      button Send email

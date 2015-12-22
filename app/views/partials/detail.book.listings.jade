@@ -8,7 +8,9 @@ td
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== undefined").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
 td.make-an-offer
-	button.confirm(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferModal()"): img(src="/images/email.png")
+	//- p listingID = {{listing.userID}}
+	//- p currenUserID = {{currentUser.userID}}
+	button.confirm(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)"): img(src="/images/email.png")
 	button.edit(ng-if="listing.userID == currentUser.userID") &#9998;
 	button.delete(ng-if="listing.userID == currentUser.userID", ng-click="beginRemovingListing()") del
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-class="{'visible': removingListing}")

@@ -56,7 +56,6 @@ table.info-table {
 
 label, .label {
   font-family: 'Droid Serif';
-  text-transform: lowercase;
   font-style: italic; }
 
 input, select {

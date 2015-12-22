@@ -404,6 +404,12 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
   $scope.reverseSort = true;
+  $scope.removingListing = false;
+  $scope.offer = {
+    active: false,
+    listing: null,
+    message: null
+  }
   //TODO: for some reason, default selling and renting prices aren't working
   $scope.newListing = {
     active: false,
@@ -413,19 +419,26 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     rentingPrice: 10.00,
     condition: 'New'
   }
-  $scope.removingListing = false;
 
-  $scope.beginRemovingListing = function() {
-    $scope.removingListing = true;
-  }
+  $scope.beginRemovingListing = function() { $scope.removingListing = true; }
 
-  $scope.cancelRemovingListing = function() {
-    $scope.removingListing = false;
-  }
+  $scope.cancelRemovingListing = function() { $scope.removingListing = false; }
 
   $scope.removeListing = function(listing, success) {
     // Api.removeListing($scope.book.ISBN, {listingID = })
     console.log(listing);
+  }
+
+  $scope.makeOfferInit = function(listing) {
+    console.log(listing);
+    $scope.offer.listing = listing;
+    $scope.offer.message = 
+      "Hi "+$scope.offer.listing.user.name.fullName+", \n\n"
+      + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
+      + "Please let me know when we could meet.\n\n"
+      + "Thanks"
+      + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
+    $scope.offer.active = true;
   }
 
   $scope.handleReorder = function(category) {
