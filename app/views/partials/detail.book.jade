@@ -74,8 +74,8 @@ div#book-details
         tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
       tfoot
-        tr.make-listing(ng-class="{'inactive':!newListing.active}")
-          td.label(colspan="2") Add a listing:
+        tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
+          td.label(colspan="2") {{currUserListing ? 'Add a listing:' : 'Edit my listing:'}}
           td
             select(ng-model="newListing.condition")
               option(selected) Used
@@ -91,18 +91,21 @@ div#book-details
               input.price(type="text", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
           td.confirm
             button(ng-click="submitListing()")
-              span.symbol +
-              | list!
+              span.symbol {{currUserListing ? '✎':'+'}}
+              | {{currUserListing ? 'update!' : 'list!'}}
         tr.add-listing: td(colspan="5")
           div(ng-if="!currentUser")
             a(href, ng-click="openAccount()") log in
             |  to add a listing
-          button.cancel(ng-if="newListing.active && currentUser", ng-click="newListing.active = false")
+          button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
             span.symbol ×
             |  cancel
-          button.confirm(ng-if="!newListing.active && currentUser", ng-click="newListing.active = true")
+          button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
             span.symbol +
             |  add a listing
+          button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
+            span.symbol &#9998;
+            |  edit my listing
 
   div.modal-wrapper(
     ng-class="{'visible':offer.active}",

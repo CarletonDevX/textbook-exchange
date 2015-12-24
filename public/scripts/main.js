@@ -401,12 +401,30 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
 
   $scope.book = bookInfo;
+  console.log($scope.currentUser);
+  console.log($scope.book);
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
   $scope.reverseSort = true;
   $scope.descMinimized = false;
   $scope.descMinHeight = null;
   $scope.removingListing = false;
+  $scope.listingPaneOpen = false;
+  $scope.currUserListing = false;
+  var checkCurrUserListing = function() {
+    if ($scope.currentUser && $scope.currentUser.listings){
+      for (i in $scope.currentUser.listings){
+        if ($scope.book.ISBN == $scope.currentUser.listings[i].ISBN){
+          return $scope.currentUser.listings[i];
+        }
+      }
+      return false;
+    }
+  }
+  $scope.$watch('currentUser', function(){
+    $scope.currUserListing = checkCurrUserListing();
+  });
+
   $scope.offer = {
     active: false,
     listing: null,
@@ -414,7 +432,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
   //TODO: for some reason, default selling and renting prices aren't working
   $scope.newListing = {
-    active: false,
     selling: true,
     renting: false,
     sellingPrice: 10.00,
@@ -488,6 +505,19 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     }, function (err) {
       console.log(err);
     });
+  }
+
+  $scope.openListingPane = function() {
+    if ($scope.currUserListing) {
+      $scope.newListing = $scope.currUserListing
+      $scope.newListing.selling = !!($scope.newListing.sellingPrice);
+      $scope.newListing.renting = !!($scope.newListing.rentingPrice);      
+    }
+    $scope.listingPaneOpen = true;
+  }
+
+  $scope.closeListingPane = function() {
+    $scope.listingPaneOpen = false;
   }
 
   $scope.submitListing = function () {
