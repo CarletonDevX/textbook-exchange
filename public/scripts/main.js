@@ -404,6 +404,8 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.whichListings = "both"
   $scope.listingOrder = "price";
   $scope.reverseSort = true;
+  $scope.descMinimized = false;
+  $scope.descMinHeight = null;
   $scope.removingListing = false;
   $scope.offer = {
     active: false,
@@ -418,6 +420,24 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     sellingPrice: 10.00,
     rentingPrice: 10.00,
     condition: 'New'
+  }
+
+
+  var hideDesc = function(){
+    infoContentHeight = Math.max(Math.max($(".info .info-table").height(),$(".info .preview").height()))
+    totalInfoHeight = $("#book-details .info").height()
+
+    if (totalInfoHeight > infoContentHeight + 40) {
+      $scope.$apply(function(){
+        $scope.descMinimized = true;
+        $scope.descMinHeight = infoContentHeight + 40 + "px";
+      })
+    }
+  }
+  setTimeout(hideDesc);
+
+  $scope.toggleDesc = function(){
+    $scope.descMinimized = !$scope.descMinimized;
   }
 
   $scope.beginRemovingListing = function() { $scope.removingListing = true; }

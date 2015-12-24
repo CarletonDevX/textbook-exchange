@@ -42,7 +42,7 @@ body::before{
 $pane-spacing: 15px;
 
 @import "globals/info_table";
-// @import "globals/_buttons";
+@import "globals/_buttons";
 @import "globals/forms";
 @import "partials/header";
 
@@ -70,6 +70,7 @@ main{
         label{
           font-size: 18px;
           display: inline-block;
+          font-style: normal;
           transition: opacity .2s,
                       width .2s;
         }
@@ -189,6 +190,7 @@ main{
   #detail-wrapper{
     width:500px;
     margin: -10px auto 40px auto;
+    padding-bottom: 20px;
     position: relative;
     z-index: 20;
     overflow: hidden;

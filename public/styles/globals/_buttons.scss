@@ -1,0 +1,28 @@
+
+button.confirm:hover, button.confirm:hover:focus{
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+}
+
+button.confirm:active, button.confirm:active:focus{
+  background-color: rgba(130, 255, 130,.08);
+}
+
+button.cancel:hover, button.cancel:hover:focus{
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130,.4);
+}
+button.cancel:active,button.cancel:active:focus{
+  background-color: rgba(255, 130, 130,.08);
+}
+
+button{
+  outline: none;
+  background:none;
+  border:none;
+  transition: box-shadow .1s;
+  font-family: "Droid Serif", Serif;
+  font-style: italic;
+}
+
+button.cancel:focus, button.confirm:focus{
+    box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0,.4);
+}

@@ -1,9 +1,9 @@
 div#book-details
 
-  h2#book-title {{book.name}}
+  h2#book-title {{ book.name }}
   h3#book-author {{ book.author.join(', ') }}
 
-  div.info
+  div.info(ng-style="{ 'height' : (descMinimized ? descMinHeight : 'auto') }")
     table.info-table
       tbody
         tr
@@ -40,7 +40,10 @@ div#book-details
     div.preview
       img(src="{{book.coverImage}}")
 
-    p {{book.description}}
+    p {{ book.description }}
+    button.expand(href="",
+      ng-class="{'expanded':!descMinimized}",
+      ng-click="toggleDesc()") {{ descMinimized ? "- more -" : "- less -" }}
 
   div.listings
     div.tabs
@@ -56,7 +59,7 @@ div#book-details
           th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
           th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Cond.
           th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th Buy/Get
+          th Contact
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in book.listings | orderBy:listingOrder:reverseSort",
