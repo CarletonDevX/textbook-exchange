@@ -5,7 +5,7 @@ module.exports = function () {
 		case "development":
 			var settings = secureConfig.settingsWithPort(1337);
 			settings.db = "mongodb://localhost/textbook-exchange-development";
-			settings.mailEnabled = false;
+			settings.mailEnabled = true;
 			return settings;
 		case "test":
 			var settings = secureConfig.settingsWithPort(6969);
