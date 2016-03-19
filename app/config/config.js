@@ -3,9 +3,9 @@ var secureConfig = require("./secure-config");
 module.exports = function () {
 	switch(process.env.NODE_ENV) {
 		case "development":
-			var settings = secureConfig.settingsWithPort(1337);
+			var settings = secureConfig.settingsWithPort(process.env.PORT || 1337);
 			settings.db = "mongodb://localhost/textbook-exchange-development";
-			settings.mailEnabled = false;
+			settings.mailEnabled = true;
 			return settings;
 		case "test":
 			var settings = secureConfig.settingsWithPort(6969);

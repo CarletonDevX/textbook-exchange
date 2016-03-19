@@ -264,8 +264,16 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
-    // Make an offer on a listing
+
+        // Get previous offer on a listing
     app.route('/api/listings/offer/:listingID')
+        .get(authenticate, 
+             users.getCurrentUser,
+             listings.getListing,
+             offers.getUserOfferForListing,
+             responder.formatOffer)
+
+        // Make an offer on a listing
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,

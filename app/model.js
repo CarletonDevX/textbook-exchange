@@ -65,18 +65,13 @@ var UserSchema = new Schema({
     },
     verifier: String,
     verified: { type: Boolean, default: true },
-    password: { type: String, required: true},
+    password: { type: String, required: true },
     provider: String,
     providerId: String,
     providerData: {},
     subscriptions: [],
     bio: String,
-    avatar: {
-        avatarID: String,
-        small: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/small/34dc8201eb03c03019f39aab0e9f5fcc.png"},
-        medium: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/medium/34dc8201eb03c03019f39aab0e9f5fcc.png"},
-        large: { type: String, default: "https://static.dyp.im/bMqzhaPJTo/large/34dc8201eb03c03019f39aab0e9f5fcc.png"}
-    },
+    avatar: { type: String, default: "https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png" },
     gradYear: Number,
     reports: [reportSchema],
     created: { type: Date, required: true }

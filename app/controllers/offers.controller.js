@@ -31,6 +31,23 @@ exports.getOffer = function (req, res, next) {
     });
 }
 
+exports.getUserOfferForListing = function (req, res, next) {
+    var listing = req.rListings[0];
+    console.log(listing)
+    Offer.findOne({listingID: listing._id}, function (err, offer) {
+        if (!err) {
+            if (!offer) {
+                Error.errorWithStatus(req, res, 404, "You haven't made an offer on this listing.");
+            } else {
+                req.rOffer = offer;
+                next();
+            }
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.getOffersForListings = function (req, res, next) {
     var listings = req.rListings;
     var listingIDs = [];
