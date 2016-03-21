@@ -127,19 +127,4 @@ exports.search = function (req, res, next) {
         req.rBooks = books;
         next();
     });
-
-    // // local search
-    // var regex = new RegExp(query, 'i');
-    // var ISBNquery = query.replace(/[- ]/g, "");
-    // var ISBNregex = new RegExp(ISBNquery, 'i');
-
-    // Book.find({$or: [{ISBN: ISBNregex}, {name: regex}, {author: regex}, {$text: {$search: query}}]}, {score : {$meta: "textScore"}})
-    //     .sort({score : {$meta : 'textScore'}})
-    //     .exec(function(err, results) {
-    //         if (!err) {
-    //             res.json(results);
-    //         } else {
-    //             Error.mongoError(req, res, err);
-    //         }
-    //     });
 };
