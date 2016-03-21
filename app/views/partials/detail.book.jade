@@ -75,11 +75,11 @@ div#book-details
            ng-include="'partials/detail.book.listings'")
       tfoot
         tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
-          td.label(colspan="2") {{currUserListing ? 'Add a listing:' : 'Edit my listing:'}}
+          td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
           td
             select(ng-model="newListing.condition")
-              option(selected) Used
-              option New
+              option(ng-repeat="(conditionNumber, conditionName) in conditionKey",
+                     value = "{{conditionNumber}}") {{conditionName}}
           td
             p
               input(type="checkbox", id="sellbox", ng-model="newListing.selling", ng-disabled="newListing.selling && !newListing.renting")
@@ -114,4 +114,4 @@ div#book-details
     div.modal
       h3 Make an offer
       textarea(ng-model="offer.message")
-      button Send email
+      button(ng-click="makeOffer()") Send email

@@ -68,13 +68,28 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 });
         },
         updateListing: function (listingID, data) {
-            return $http.delete('/api/listings/'+listingID, data)
+            return $http.put('/api/listings/'+listingID, data)
                 .then( function (res) {
                     return res.data;
                 });
         },
         removeListing: function (listingID, data) {
             return $http.delete('/api/listings/'+listingID)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        completeListing: function (listingID, data) {
+            return $http.post('/api/listings/complete/'+listingID)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        makeOffer: function(listingID, msg) {
+            var data = {
+                message: msg
+            }
+            return $http.post('/api/listings/offer/'+listingID, data)
                 .then( function (res) {
                     return res.data;
                 });

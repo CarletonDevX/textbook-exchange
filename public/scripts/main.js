@@ -429,18 +429,38 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     active: false,
     listing: null,
     message: null
-  }
+  };
+  $scope.conditionKey = {
+    0 : "New",
+    1 : "Used, no marks",
+    2 : "Some writing",
+    3 : "Heavily used"
+  };
   //TODO: for some reason, default selling and renting prices aren't working
   $scope.newListing = {
     selling: true,
     renting: false,
     sellingPrice: 10.00,
     rentingPrice: 10.00,
-    condition: 'New'
+    condition: 1
+  };
+
+  var refreshListings = function() {
+    Api.getListings($scope.book.ISBN).then( function(listings) {
+      $scope.book.listings = listings;
+    }, function(err) {
+      console.log(err);
+    });
   }
 
+  var refreshCurrentUser = function() {
+    console.log("refreshing user");
+    $scope.setCurrentUser();
+  }
 
+  //TODO - sometimes hidedesc doesn't work either
   var hideDesc = function(){
+    //
     infoContentHeight = Math.max(Math.max($(".info .info-table").height(),$(".info .preview").height()))
     totalInfoHeight = $("#book-details .info").height()
 
@@ -453,29 +473,51 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
   setTimeout(hideDesc);
 
-  $scope.toggleDesc = function(){
-    $scope.descMinimized = !$scope.descMinimized;
-  }
+  $scope.toggleDesc = function(){ $scope.descMinimized = !$scope.descMinimized; }
 
   $scope.beginRemovingListing = function() { $scope.removingListing = true; }
 
   $scope.cancelRemovingListing = function() { $scope.removingListing = false; }
 
-  $scope.removeListing = function(listing, success) {
-    // Api.removeListing($scope.book.ISBN, {listingID = })
-    console.log(listing);
+  $scope.removeListing = function(listing, itSold) {
+    if (itSold) {
+      Api.completeListing(listing.listingID).then(
+        function (res) {
+          refreshListings();
+          refreshCurrentUser();
+        },
+        function (err) { console.log(err) }
+      );
+    } else { //it didn't sell but the user wants to remove it anyway
+      Api.removeListing(listing.listingID).then(
+        function (res) {
+          refreshListings();
+          refreshCurrentUser();
+        },
+        function (err) { console.log(err) }
+      );
+    }
   }
 
   $scope.makeOfferInit = function(listing) {
-    console.log(listing);
     $scope.offer.listing = listing;
+    console.log(listing);
     $scope.offer.message = 
-      "Hi "+$scope.offer.listing.user.name.fullName+", \n\n"
+      "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
       + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
     $scope.offer.active = true;
+  }
+
+  $scope.makeOffer = function() {
+    Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
+      .then( function (data) {
+        $scope.offer.active = false;
+      }, function (err) {
+        console.log(err);
+      })
   }
 
   $scope.handleReorder = function(category) {
@@ -489,25 +531,23 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 
   $scope.addToWatchlist = function () {
-    Api.addToWatchlist($scope.book.ISBN).then(function (data) {
-      $rootScope.currentUser.subscriptions = data;
-    }, function (err) {
-      console.log(err);
-    });
+    Api.addToWatchlist($scope.book.ISBN).then(
+      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (err) { console.log(err); }
+    );
   }
 
   $scope.removeFromWatchlist = function () {
     //TODO: this shit shouldn't happen here.
-    Api.removeFromWatchlist($scope.book.ISBN).then(function (data) {
-      $rootScope.currentUser.subscriptions = data;
-      // console.log($scope.currentUser.subscriptions);
-      // console.log($scope.currentUser.subscriptions.indexOf($scope.book.ISBN) > -1);
-    }, function (err) {
-      console.log(err);
-    });
+    Api.removeFromWatchlist($scope.book.ISBN).then(
+      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (err) { console.log(err); }
+    );
   }
 
   $scope.openListingPane = function() {
+    // cast prices to checkmarks
+    // TODO: should this be elsewhere?
     if ($scope.currUserListing) {
       $scope.newListing = $scope.currUserListing
       $scope.newListing.selling = !!($scope.newListing.sellingPrice);
@@ -522,24 +562,39 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.submitListing = function () {
     console.log($scope.book);
+
+    //build the data object
     var data = {
       condition: $scope.newListing.condition
     }
     if ($scope.newListing.selling) {
       data['sellingPrice'] = $scope.newListing.sellingPrice;
+    } else {
+      data['sellingPrice'] = null;
     }
     if($scope.newListing.renting) {
       data['rentingPrice'] = $scope.newListing.rentingPrice;
+    } else {
+      data['rentingPrice'] = null;
     }
-    Api.addListing($scope.book.ISBN, data).then(function (res) {
-      Api.getListings($scope.book.ISBN).then( function(listings) {
-        $scope.book.listings = listings;
-      }, function(err) {
+
+    if ($scope.currUserListing) { // if we're updating a listing
+      Api.updateListing($scope.currUserListing.listingID, data).then( function (res) {
+        refreshListings();
+        refreshCurrentUser();
+        $scope.closeListingPane();
+      }, function (err) {
         console.log(err);
       });
-    }, function (err) {
-      console.log(err);
-    })
+    } else { // this is a fresh listing
+      Api.addListing($scope.book.ISBN, data).then(function (res) {
+        refreshListings();
+        refreshCurrentUser();
+        $scope.closeListingPane();
+      }, function (err) {
+        console.log(err);
+      });
+    }
   }
 });
 
@@ -558,7 +613,7 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
       $rootScope.currentUser = res;
-      console.log(res);
+      console.log("current user is", res);
     }, 
     function (err) {
       $rootScope.currentUser = null;
