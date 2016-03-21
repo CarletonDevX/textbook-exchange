@@ -17,9 +17,9 @@ Communist calls have been implemented already.
 	`GET hitsthebooks.com/api/schoolStats`
 	
 - Users
- 	- ☭ Register/create a user (with username and password):
+ 	- ☭ Register/create a user (with {email: <email address>, password: <password>}):
 	`POST hitsthebooks.com/api/register`
-	- ☭ Verify a user with user ID (with verifier string):
+	- ☭ Verify a user with user ID (with {verifier: <verifier string>}):
 	`POST hitsthebooks.com/api/verify/id`
 	- ☭ Get current user [Requires auth]: 
 	`GET hitsthebooks.com/api/user`
