@@ -63,12 +63,12 @@ Communist calls have been implemented already.
 	`PUT hitsthebooks.com/api/listings/id`
 	- ☭ Remove a listing [Requires auth]:
 	`DELETE hitsthebooks.com/api/listings/id`
+	- ☭ Get previous offer on a listing with listing ID [Requires auth]:
+	`GET hitsthebooks.com/api/listings/offer/id`
 	- ☭ Make an offer on a listing with listing ID [Requires auth]:
 	`POST hitsthebooks.com/api/listings/offer/id`
-
-- Offers
-	- ☭ Complete an offer with offer ID [Requires auth]:
-	`POST hitsthebooks.com/api/offers/complete/id`
+	- ☭ Complete a listing with listing ID [Requires auth]:
+	`POST hitsthebooks.com/api/listings/complete/id`
 	
 - Books
 	- ☭ Get book with book ID:

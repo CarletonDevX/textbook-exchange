@@ -1,7 +1,6 @@
-var config = require('../config/config')(),
-	request = require('request'),
-    fs = require('fs'),
+var fs = require('fs'),
     multer = require('multer'),
+    avatars = require('../config/avatars'),
     Error = require('../errors');
 
 // Multer setup for uploads
@@ -19,64 +18,18 @@ var storage = multer.diskStorage({
 var uploadLocal = multer({ storage: storage }).single('file');
 
 exports.uploadAvatar = function (req, res, next) {
-    var user = req.rUser;
-
-    // Upload locally
+    // Upload locally to tmp
     uploadLocal(req, res, function (err) {
         if (!req.file) err = { message: 'Must include "file" attribute.' }
-            
         if (err) {
-            Error.errorWithStatus(req, res, 400, err);
+            Error.errorWithStatus(req, res, 400, err.message);
         } else {
-            uploadRemote(req.file, function (err, avatar) {
-                if (err) {
-                    Error.errorWithStatus(req, res, 500, err);
-                } else {
-                    req.rAvatar = avatar;
-                    next();
-                }
-            });
+            // Upload file to cloudinary, using user ID as the file ID. Then set avatar as URL of uploaded image
+            avatars.uploader.upload(req.file.path, function(result) { 
+                req.rAvatar = result.url;
+                next();
+            },
+            {public_id: req.user._id});
         }
     });
-}
-
-/* HELPERS */
-
-// Not being used
-var getAvatarWithID = function (id, callback) {
-    var url = config.avatars.endpoint + '/photo/' + id + config.avatars.clientSecret;
-    request(url, function (err, response, body) {
-        if (err || response.statusCode != 200) {
-            callback({ message: "DYP upload error" }, null);
-        } else {
-            var res = JSON.parse(body);
-            callback(null, avatarFromResponse(res));
-        }
-    });
-}
-
-var uploadRemote = function (file, callback) {
-    var url = config.avatars.endpoint + '/photo' + config.avatars.clientSecret;
-
-    var req = request.post({ url: url, headers: {'Accepts' : 'application/json'}}, function (err, response, body) {
-        if (err || response.statusCode != 200) {
-            callback({ message: "DYP upload error" }, null);
-        } else {
-            var res = JSON.parse(body);
-            callback(null, avatarFromResponse(res));
-        }
-    });
-
-    // Add file to request
-    var form = req.form();
-    form.append('file', fs.createReadStream(file.path));
-}
-
-var avatarFromResponse = function (res) {
-    return {
-        avatarID: res.id,
-        small: res.url.small,
-        medium: res.url.medium,
-        large: res.url.large
-    }
 }
