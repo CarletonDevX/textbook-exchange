@@ -27,11 +27,12 @@ var downloadBook = function (req, res, next) {
             if (!bookResult) {
                 Error.errorWithStatus(req, res, 404, 'Book not found by those conditions.');
             } else {
-                req.rBook = bookResult;
+                var newBook = new Book(bookResult);
+
+                req.rBook = newBook;
                 next();
 
                 // Save it for faster lookup next time (async)
-                var newBook = new Book(bookResult);
                 newBook.save();
             }
         } else {
