@@ -570,12 +570,12 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     if ($scope.newListing.selling) {
       data['sellingPrice'] = $scope.newListing.sellingPrice;
     } else {
-      data['sellingPrice'] = null;
+      data['sellingPrice'] = -1;
     }
     if($scope.newListing.renting) {
       data['rentingPrice'] = $scope.newListing.rentingPrice;
     } else {
-      data['rentingPrice'] = null;
+      data['rentingPrice'] = -1;
     }
 
     if ($scope.currUserListing) { // if we're updating a listing

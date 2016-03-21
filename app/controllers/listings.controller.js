@@ -113,10 +113,30 @@ exports.updateListing = function (req, res, next) {
         Error.errorWithStatus(req, res, 401, 'Unauthorized to update listing.');
     } else {
         var updates = req.body;
-        // Only these updates are allowed
+
+        // Only updates to condition, sellingPrice and rentingPrice are allowed
         if (updates.condition) listing.condition = updates.condition;
-        if (updates.sellingPrice) listing.sellingPrice = updates.sellingPrice;
-        if (updates.rentingPrice) listing.rentingPrice = updates.rentingPrice;
+
+        // Add null values for prices if value is < 0
+        if (updates.sellingPrice) {
+            if (updates.sellingPrice < 0) {
+                listing.sellingPrice = null;
+            } else {
+                listing.sellingPrice = updates.sellingPrice;
+            }
+        }
+        if (updates.rentingPrice) {
+            if (updates.rentingPrice < 0) {
+                listing.rentingPrice = null;
+            } else {
+                listing.rentingPrice = updates.rentingPrice;
+            }
+        }
+
+        if (!(listing.sellingPrice || listing.rentingPrice)) {
+            Error.errorWithStatus(req, res, 400, 'Listing must have a "sellingPrice" or "rentingPrice".');
+            return;
+        }
 
         listing.save(function(err, listing) {
             if (!err) {
