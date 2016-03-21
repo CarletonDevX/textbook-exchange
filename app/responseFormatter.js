@@ -56,7 +56,7 @@ exports.formatCurrentUser = function (req, res) {
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,
-               "listingId": lstng._id, 
+               "listingID": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
                "completed": lstng.completed,
@@ -95,7 +95,7 @@ exports.formatUser = function (req, res) {
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,
-               "listingId": lstng._id, 
+               "listingID": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
                "completed": lstng.completed,
@@ -140,7 +140,7 @@ exports.formatBookListings = function (req, res) {
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN, 
-               "listingId": lstng._id, 
+               "listingID": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
                "completed": lstng.completed,
@@ -166,7 +166,7 @@ exports.formatUserListings = function (req, res) {
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN, 
-               "listingId": lstng._id, 
+               "listingID": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
                "completed": lstng.completed,
@@ -188,7 +188,7 @@ exports.formatSingleListing = function (req, res) {
     var formattedListing = {
               "userID": lstng.userID,
                 "ISBN": lstng.ISBN, 
-           "listingId": lstng._id, 
+           "listingID": lstng._id, 
            "condition": lstng.condition, 
              "created": lstng.created, 
            "completed": lstng.completed,
@@ -240,7 +240,7 @@ exports.formatBook = function (req, res) {
         };
         var formattedListing = {
                   "userID": lstng.userID,
-               "listingId": lstng._id, 
+               "listingID": lstng._id, 
                "condition": lstng.condition, 
                  "created": lstng.created, 
                "completed": lstng.completed,
