@@ -140,8 +140,7 @@ var OfferSchema = new Schema({
     buyerID: String,
     sellerID: String,
     ISBN: String,
-    date: Date,
-    completed: Boolean
+    date: Date
 });
 
 // Add schema to db

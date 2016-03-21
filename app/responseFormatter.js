@@ -206,8 +206,7 @@ exports.formatOffer = function (req, res) {
           "buyerID": req.rOffer.buyerID,
          "sellerID": req.rOffer.sellerID,
              "ISBN": req.rOffer.ISBN,
-             "date": req.rOffer.date,
-        "completed": req.rOffer.completed
+             "date": req.rOffer.date
     }
 
     res.json(offer);

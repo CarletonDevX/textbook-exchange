@@ -265,7 +265,7 @@ exports.setup = function (app) {
                 responder.successRemoveListing);
 
 
-        // Get previous offer on a listing
+    // Get previous offer on a listing
     app.route('/api/listings/offer/:listingID')
         .get(authenticate, 
              users.getCurrentUser,
@@ -273,7 +273,7 @@ exports.setup = function (app) {
              offers.getUserOfferForListing,
              responder.formatOffer)
 
-        // Make an offer on a listing
+    // Make an offer on a listing
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
@@ -284,15 +284,13 @@ exports.setup = function (app) {
               mailer.sendOfferEmail,
               responder.formatOffer);
 
-    /* Offers */
-    app.route('/api/offers/complete/:offerID')
+    // Complete a listing with listing ID
+    app.route('/api/listings/complete/:listingID')
         .post(authenticate,
               users.getCurrentUser,
-              offers.getOffer,
-              offers.completeOffer,
               listings.getListing,
               listings.completeListing,
-              responder.formatOffer)
+              responder.formatSingleListing);
 
     /* Books */
 

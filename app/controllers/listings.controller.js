@@ -88,7 +88,7 @@ exports.createListing = function (req, res, next) {
 
     var newListing = new Listing(req.body);
     if (!(newListing.sellingPrice || newListing.rentingPrice)) {
-        Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" or "rentingPrice" attribute(s).');
+        Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" and/or "rentingPrice" attribute(s).');
         return;
     }
 
