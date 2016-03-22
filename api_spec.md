@@ -65,7 +65,7 @@ Communist calls have been implemented already.
 	`DELETE hitsthebooks.com/api/listings/id`
 	- ☭ Get previous offer on a listing with listing ID [Requires auth]:
 	`GET hitsthebooks.com/api/listings/offer/id`
-	- ☭ Make an offer on a listing with listing ID [Requires auth]:
+	- ☭ Make an offer on a listing with listing ID (with optional message) [Requires auth]:
 	`POST hitsthebooks.com/api/listings/offer/id`
 	- ☭ Complete a listing with listing ID [Requires auth]:
 	`POST hitsthebooks.com/api/listings/complete/id`
