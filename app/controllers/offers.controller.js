@@ -33,7 +33,6 @@ exports.getOffer = function (req, res, next) {
 
 exports.getUserOfferForListing = function (req, res, next) {
     var listing = req.rListings[0];
-    console.log(listing)
     Offer.findOne({listingID: listing._id}, function (err, offer) {
         if (!err) {
             if (!offer) {
@@ -111,6 +110,8 @@ exports.removeOffers = function (req, res, next) {
     })
 }
 
+
+// No longer used
 exports.completeOffer = function (req, res, next) {
     var offer = req.rOffer;
     var user = req.rUser;

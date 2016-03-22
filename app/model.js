@@ -95,11 +95,12 @@ Listings
 
 var ListingSchema = new Schema({
     userID: { type: String, required: true },
-    ISBN: { type: String, required: true }, //which is the book id
+    ISBN: { type: String, required: true }, // which is the book id
     condition: { type: Number, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
     created: { type: Date, required: true },
+    offeredUsers: [], // IDs of users who have made an offer on this listing
     completed: Boolean
 });
 
