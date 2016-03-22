@@ -400,17 +400,46 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
 
-  $scope.book = bookInfo;
-  console.log($scope.currentUser);
-  console.log($scope.book);
-  $scope.whichListings = "both"
-  $scope.listingOrder = "price";
-  $scope.reverseSort = true;
-  $scope.descMinimized = false;
-  $scope.descMinHeight = null;
-  $scope.removingListing = false;
-  $scope.listingPaneOpen = false;
-  $scope.currUserListing = false;
+  //View defaults & settings
+  angular.extend($scope, {
+    book : bookInfo,
+    //LISTING TABLE DEFAULTS
+    listingOrder : "price",
+    whichListings : "both",
+    reverseSort : true,
+    descMinimized : false,
+    descMinHeight : null,
+    offer : {
+        active: false,
+        listing: null,
+        message: null
+    },
+    removingListing : false,
+    // NEW LISTING DEFAULTS
+    listingPaneOpen : false,
+    currUserListing : false,
+    // conditionKey : {
+    //   0 : "New",
+    //   1 : "Used, no marks",
+    //   2 : "Some writing",
+    //   3 : "Heavily used"
+    // },
+    conditionOptions : [
+      {code: 0, name: "new"},
+      {code: 1, name: "used, no marks"},
+      {code: 2, name: "some writing"},
+      {code: 3, name: "heavily used"}
+    ],
+    newListing : {
+      selling: true,
+      renting: true,
+      sellingPrice: bookInfo.amazonInfo.sellingPrice || 0,
+      rentingPrice: bookInfo.amazonInfo.sellingPrice || 0,
+      condition: {code: 1, name: "used, no marks"}
+    }
+  });
+
+
   var checkCurrUserListing = function() {
     if ($scope.currentUser && $scope.currentUser.listings){
       for (i in $scope.currentUser.listings){
@@ -425,26 +454,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     $scope.currUserListing = checkCurrUserListing();
   });
 
-  $scope.offer = {
-    active: false,
-    listing: null,
-    message: null
-  };
-  $scope.conditionKey = {
-    0 : "New",
-    1 : "Used, no marks",
-    2 : "Some writing",
-    3 : "Heavily used"
-  };
-  //TODO: for some reason, default selling and renting prices aren't working
-  $scope.newListing = {
-    selling: true,
-    renting: false,
-    sellingPrice: 10.00,
-    rentingPrice: 10.00,
-    condition: 1
-  };
-
   var refreshListings = function() {
     Api.getListings($scope.book.ISBN).then( function(listings) {
       $scope.book.listings = listings;
@@ -454,13 +463,11 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 
   var refreshCurrentUser = function() {
-    console.log("refreshing user");
     $scope.setCurrentUser();
   }
 
   //TODO - sometimes hidedesc doesn't work either
   var hideDesc = function(){
-    //
     infoContentHeight = Math.max(Math.max($(".info .info-table").height(),$(".info .preview").height()))
     totalInfoHeight = $("#book-details .info").height()
 
@@ -501,7 +508,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.makeOfferInit = function(listing) {
     $scope.offer.listing = listing;
-    console.log(listing);
     $scope.offer.message = 
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
       + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
@@ -546,12 +552,18 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 
   $scope.openListingPane = function() {
-    // cast prices to checkmarks
-    // TODO: should this be elsewhere?
+    // initializes the listing pane with correct settings
+    // cast prices to checkmarks -- should this be done elsewhere?
     if ($scope.currUserListing) {
-      $scope.newListing = $scope.currUserListing
-      $scope.newListing.selling = !!($scope.newListing.sellingPrice);
-      $scope.newListing.renting = !!($scope.newListing.rentingPrice);      
+      //copy the deets of the user's listing into the panel
+      $scope.newListing = {
+        condition : $scope.conditionOptions[$scope.currUserListing.condition],
+        sellingPrice : $scope.currUserListing.sellingPrice || $scope.book.amazonInfo.sellingPrice || 0,
+        rentingPrice : $scope.currUserListing.rentingPrice || $scope.book.amazonInfo.sellingPrice || 0,
+        selling   : !!($scope.currUserListing.sellingPrice),
+        renting   : !!($scope.currUserListing.rentingPrice),
+        listingID : $scope.currUserListing.listingID
+      };
     }
     $scope.listingPaneOpen = true;
   }
@@ -561,21 +573,27 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 
   $scope.submitListing = function () {
-    console.log($scope.book);
-
     //build the data object
     var data = {
-      condition: $scope.newListing.condition
+      condition: $scope.newListing.condition.code
     }
+    // using -1 tells the server to wipe the selling/renting
+    // price. Null tells the server not to record it in the
+    // first place. might be more consistent to just use neg-
+    // ative numbers.
     if ($scope.newListing.selling) {
       data['sellingPrice'] = $scope.newListing.sellingPrice;
-    } else {
+    } else if ($scope.currUserListing) {
       data['sellingPrice'] = -1;
+    } else {
+      data['sellingPrice'] = null;
     }
     if($scope.newListing.renting) {
       data['rentingPrice'] = $scope.newListing.rentingPrice;
-    } else {
+    } else if ($scope.currUserListing) {
       data['rentingPrice'] = -1;
+    } else {
+      data['rentingPrice'] = null;
     }
 
     if ($scope.currUserListing) { // if we're updating a listing
