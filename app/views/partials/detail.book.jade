@@ -62,16 +62,16 @@ div#book-details
           th Contact
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
-        tr(ng-repeat="listing in book.listings | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
 
       tbody(ng-if="whichListings=='selling'")
-        tr(ng-repeat="listing in book.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
 
       tbody(ng-if="whichListings=='renting'")
         //- TODO: change hrefs to ui-srefs
-        tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
       tfoot
         tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
