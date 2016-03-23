@@ -404,6 +404,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   angular.extend($scope, {
     book : bookInfo,
     //LISTING TABLE DEFAULTS
+    mergedListings : [],
     listingOrder : "price",
     whichListings : "both",
     reverseSort : true,
@@ -434,7 +435,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   });
 
 
-  var checkCurrUserListing = function() {
+  var getCurrUserListing = function() {
     if ($scope.currentUser && $scope.currentUser.listings){
       for (i in $scope.currentUser.listings){
         if ($scope.book.ISBN == $scope.currentUser.listings[i].ISBN){
@@ -445,18 +446,24 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     }
   }
   $scope.$watch('currentUser', function(){
-    $scope.currUserListing = checkCurrUserListing();
+    $scope.currUserListing = getCurrUserListing();
   });
 
-  var insertAmazonListing = function() {
-    $scope.book.listings.push({
-
-    })
+  var insertAmazonListing = function(otherListings) {
+    var merged = otherListings.slice(0);
+    merged.push({
+      isAmazonListing: true,
+      amazonUrl: $scope.book.amazonInfo.url,
+      condition : 0,
+      sellingPrice : $scope.book.amazonInfo.sellingPrice
+    });
+    return merged
   }
   $scope.$watch('book.listings', function(){
-    console.log('book.listings changed');
-    console.log($scope.book.listings);
-  })
+    $scope.mergedListings = insertAmazonListing($scope.book.listings);
+    console.log("we're testing the merging of amazon listing");
+    console.log($scope.mergedListings);
+  });
 
   var refreshListings = function() {
     Api.getListings($scope.book.ISBN).then( function(listings) {

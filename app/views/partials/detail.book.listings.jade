@@ -1,13 +1,25 @@
-td.image: a(href="user/{{listing.userID}}")
+td.image(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}")
 	img(src="{{listing.user.avatar}}")
-td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
+td.image(ng-if="listing.isAmazonListing") [A]
+
+
+td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
+td.username(ng-if="listing.isAmazonListing") Amazon
+
+
 td {{conditionOptions[listing.condition].name}}
-td
+
+
+td(ng-if="!listing.isAmazonListing")
 	p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== null").
 		{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
-td.make-an-offer
+td(ng-if="listing.isAmazonListing")
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
+		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+
+td.make-an-offer(ng-if="!listing.isAmazonListing")
 	button.confirm(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)")
 		img(src="/images/email.png")
 	//- TODO: something about emailing state
@@ -19,3 +31,5 @@ td.make-an-offer
 		button.confirm(ng-click="removeListing(listing, true)") yes
 		button.no(ng-click="removeListing(listing, false)") no
 		button.cancel(ng-click="cancelRemovingListing()") cancel
+td.make-an-offer(ng-if="listing.isAmazonListing")
+	a(href="{{listing.amazonUrl}}") Buy on Amazon
