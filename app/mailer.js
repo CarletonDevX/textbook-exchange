@@ -62,10 +62,16 @@ exports.sendOfferEmail = function (req, res, next) {
 	var book = listing.book;
 	var lister = listing.user;
 	var offerer = req.rUser;
+	var message = req.body.message;
+	if (message) {
+		message = "<br>--<br>" + offerer.name.givenName + " has included the following message:<br>" + message;
+	} else {
+		message = "";
+	}
 
 	options = {
 		subject: "Someone has made an offer on your book " + book.name,
-		html: readEmail("offer.html").format(offerer.name.fullName, book.name, offerer.email),
+		html: readEmail("offer.html").format(offerer.name.fullName, book.name, offerer.email, message),
 		user: lister
 	}
 	sendMail(req, res, next, options);

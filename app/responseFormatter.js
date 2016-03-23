@@ -1,4 +1,32 @@
-// Formats API responses from retrieved objects
+/** HELPERS **/
+
+// Sorry this function is so dumb.
+// It adds an "offered" attribute to each listing with the following rules:
+// No user -> null, user hasn't offered -> false, user has offered -> true
+
+var addOfferedAttributeToListings = function (req) {
+  if (req.rListings) {
+    var listings = [];
+    for (var i = 0; i < req.rListings.length; i++) {
+      var lstng = req.rListings[i];
+      var offered = null;
+
+      // If logged in
+      if (req.user) {
+        var userID = new String(req.user._id).valueOf();
+        offered = false;
+        for (var j = 0; j < lstng.offeredUsers.length; j++) {
+          var offeredID = new String(lstng.offeredUsers[j]).valueOf();
+          if (userID == offeredID) offered = true;
+        }
+      }
+      lstng.offered = offered;
+      listings.push(lstng);
+    }
+    req.rListings = listings;
+  }
+  return req;
+}
 
 exports.successTestEmail = function (req, res) {
     res.status(200).send("Test email sent.");
@@ -30,6 +58,8 @@ exports.successClearSubscriptions = function (req, res) {
 }
 
 exports.formatCurrentUser = function (req, res) {
+    req = addOfferedAttributeToListings(req);
+
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -62,7 +92,8 @@ exports.formatCurrentUser = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook
+                    "book": formattedBook,
+                 "offered": lstng.offered
         }
         listings.push(formattedListing);
     }
@@ -72,6 +103,8 @@ exports.formatCurrentUser = function (req, res) {
 }
 
 exports.formatUser = function (req, res) {
+    req = addOfferedAttributeToListings(req);
+
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -101,7 +134,8 @@ exports.formatUser = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook
+                    "book": formattedBook,
+                 "offered": lstng.offered
         }
         listings.push(formattedListing);
     }
@@ -129,32 +163,35 @@ exports.successRemoveListing = function (req, res) {
 }
 
 exports.formatBookListings = function (req, res) {
-    var listings = [];
-    for (var i = 0; i < req.rListings.length; i++) {
-        var lstng = req.rListings[i];
-        var formattedUser = {
-                "name": lstng.user.name,
-              "avatar": lstng.user.avatar,
-            "gradYear": lstng.user.gradYear
-        };
-        var formattedListing = {
-                  "userID": lstng.userID,
-                    "ISBN": lstng.ISBN, 
-               "listingID": lstng._id, 
-               "condition": lstng.condition, 
-                 "created": lstng.created, 
-               "completed": lstng.completed,
-            "rentingPrice": lstng.rentingPrice, 
-            "sellingPrice": lstng.sellingPrice,
-                    "user": formattedUser
-        }
-        listings.push(formattedListing);
-    }
+  req = addOfferedAttributeToListings(req);
+  var listings = [];
+  for (var i = 0; i < req.rListings.length; i++) {
+      var lstng = req.rListings[i];
+      var formattedUser = {
+              "name": lstng.user.name,
+            "avatar": lstng.user.avatar,
+          "gradYear": lstng.user.gradYear
+      };
+      var formattedListing = {
+                "userID": lstng.userID,
+                  "ISBN": lstng.ISBN, 
+             "listingID": lstng._id, 
+             "condition": lstng.condition, 
+               "created": lstng.created, 
+             "completed": lstng.completed,
+          "rentingPrice": lstng.rentingPrice, 
+          "sellingPrice": lstng.sellingPrice,
+                  "user": formattedUser,
+               "offered": lstng.offered
+      }
+      listings.push(formattedListing);
+  }
 
-    res.json(listings);
+  res.json(listings);
 }
 
 exports.formatUserListings = function (req, res) {
+    req = addOfferedAttributeToListings(req);
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
@@ -172,7 +209,8 @@ exports.formatUserListings = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook
+                    "book": formattedBook,
+                 "offered": lstng.offered
         }
         listings.push(formattedListing);
     }
@@ -181,6 +219,7 @@ exports.formatUserListings = function (req, res) {
 }
 
 exports.formatSingleListing = function (req, res) {
+    req = addOfferedAttributeToListings(req);
     var lstng = req.rListings[0];
     if (!lstng) {
         res.status(404).send('Listing not found by those conditions.');
@@ -194,6 +233,7 @@ exports.formatSingleListing = function (req, res) {
            "completed": lstng.completed,
         "rentingPrice": lstng.rentingPrice, 
         "sellingPrice": lstng.sellingPrice,
+             "offered": lstng.offered
     }
 
     res.json(formattedListing);
@@ -215,6 +255,7 @@ exports.formatOffer = function (req, res) {
 /** BOOKS **/
 
 exports.formatBook = function (req, res) {
+    req = addOfferedAttributeToListings(req);
     var book = { 
                 "ISBN": req.rBook.ISBN, 
           "amazonInfo": req.rBook.amazonInfo,
@@ -229,7 +270,6 @@ exports.formatBook = function (req, res) {
            "publisher": req.rBook.publisher,
          "subscribers": req.rBook.subscribers
     };
-
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
@@ -246,7 +286,8 @@ exports.formatBook = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "user": formattedUser
+                    "user": formattedUser,
+                 "offered": lstng.offered
         }
         listings.push(formattedListing);
     }

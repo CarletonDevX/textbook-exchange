@@ -281,6 +281,7 @@ exports.setup = function (app) {
               inject.UsersIntoListings, // -----------------------
               offers.getOffersForListings,
               offers.makeOffer,
+              listings.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
 
@@ -316,35 +317,6 @@ exports.setup = function (app) {
              responder.formatBooks);
 
     // Catchall 404 for API
-    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404)
+    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);
 
-
-    /************
-        LEGACY
-    *************/
-
-    // // Facebook
-    // app.get('/oauth/facebook', passport.authenticate('facebook', {
-    //     failureRedirect: '/',
-    //     scope:['email', 'user_education_history']
-    // }));
-
-    // app.get('/oauth/facebook/callback', passport.authenticate('facebook', {
-    //     failureRedirect: '/',
-    //     successRedirect: '/',
-    //     failureFlash: true,
-    // }));
-
-    // // Google
-    // app.get('/oauth/google', passport.authenticate('google', {
-    //     failureRedirect: '/',
-    //     scope:['email']
-    // }));
-
-    // app.get('/oauth/google/callback', passport.authenticate('google', {
-    //     failureRedirect: '/',
-    //     successRedirect: '/',
-    //     failureFlash: true,
-    //     scope:['email']
-    // }));
 };
