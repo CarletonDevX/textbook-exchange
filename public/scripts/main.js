@@ -571,10 +571,10 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
       //copy the deets of the user's listing into the panel
       $scope.newListing = {
         condition : $scope.conditionOptions[$scope.currUserListing.condition],
-        sellingPrice : $scope.currUserListing.sellingPrice || Math.min(bookInfo.amazonInfo.sellingPrice, 100)  || 0,
-        rentingPrice : $scope.currUserListing.rentingPrice || Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0,
-        selling   : !!($scope.currUserListing.sellingPrice),
-        renting   : !!($scope.currUserListing.rentingPrice),
+        sellingPrice : ($scope.currUserListing.sellingPrice != null) ? $scope.currUserListing.sellingPrice : ( Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0 ),
+        rentingPrice : ($scope.currUserListing.rentingPrice != null) ? $scope.currUserListing.rentingPrice : ( Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0 ),
+        selling   : ($scope.currUserListing.sellingPrice != null),
+        renting   : ($scope.currUserListing.rentingPrice != null),
         listingID : $scope.currUserListing.listingID
       };
     }
