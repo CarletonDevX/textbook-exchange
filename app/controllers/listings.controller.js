@@ -43,10 +43,10 @@ exports.getUndercutListings = function (req, res, next) {
 
     // Get listings with prices higher than the new listing
     var orClause = []
-    if (listing.rentingPrice) {
+    if (listing.rentingPrice != null) {
         orClause.push({"rentingPrice": {$gt: listing.rentingPrice}});
     }
-    if (listing.sellingPrice) {
+    if (listing.sellingPrice != null) {
         orClause.push({"sellingPrice": {$gt: listing.sellingPrice}});
     }
     Listing.find({completed: false, ISBN: ISBN, $or: orClause}).lean().exec(function(err, listings) {
@@ -160,13 +160,18 @@ exports.removeListings = function (req, res, next) {
         }
         listingIDs.push(listing._id);
     };
-    Listing.remove({_id: {$in: listingIDs}}, function(err) {
-        if (!err) {
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (listingIDs.length > 0) {
+        Listing.remove({_id: {$in: listingIDs}}, function(err) {
+            if (!err) {
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        next();
+    }
+    
 };
 
 exports.makeOffer = function (req, res, next) {

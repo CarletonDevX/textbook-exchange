@@ -205,14 +205,20 @@ exports.getUser = function (req, res, next) {
 
 exports.getSubscribers = function (req, res, next) {
     var book = req.rBook;
-    User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
-        if (!err) {
-            req.rSubscribers = subscribers;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (book.subscribers.length > 0) {
+        User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
+            if (!err) {
+                req.rSubscribers = subscribers;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        req.rSubscribers = [];
+        next();
+    }
+    
 }
 
 exports.getUndercutUsers = function (req, res, next) {
@@ -221,14 +227,20 @@ exports.getUndercutUsers = function (req, res, next) {
     for (var i = 0; i < listings.length; i++) {
         userIDs.push(listings[i].userID);
     };
-    User.find({_id: {$in : userIDs}}, function (err, users) {
-        if (!err) {
-            req.rUndercutUsers = users;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (userIDs.length > 0) {
+        User.find({_id: {$in : userIDs}}, function (err, users) {
+            if (!err) {
+                req.rUndercutUsers = users;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        req.rUndercutUsers = [];
+        next();
+    }
+    
 }
 
 exports.subscribe = function (req, res, next) {
