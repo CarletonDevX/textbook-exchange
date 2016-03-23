@@ -160,13 +160,18 @@ exports.removeListings = function (req, res, next) {
         }
         listingIDs.push(listing._id);
     };
-    Listing.remove({_id: {$in: listingIDs}}, function(err) {
-        if (!err) {
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (listingIDs.length > 0) {
+        Listing.remove({_id: {$in: listingIDs}}, function(err) {
+            if (!err) {
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        next();
+    }
+    
 };
 
 exports.makeOffer = function (req, res, next) {
