@@ -118,14 +118,14 @@ exports.updateListing = function (req, res, next) {
         if (updates.condition != null) listing.condition = updates.condition;
 
         // Add null values for prices if value is < 0
-        if (updates.sellingPrice) {
+        if (updates.sellingPrice != null) {
             if (updates.sellingPrice < 0) {
                 listing.sellingPrice = null;
             } else {
                 listing.sellingPrice = updates.sellingPrice;
             }
         }
-        if (updates.rentingPrice) {
+        if (updates.rentingPrice != null) {
             if (updates.rentingPrice < 0) {
                 listing.rentingPrice = null;
             } else {
