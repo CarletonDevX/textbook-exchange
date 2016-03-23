@@ -173,7 +173,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('otherwise',{
       url : '*path',
       onEnter: function ($state){
-        $state.go('main.detail.error', {message: 'Page not found.'}, {location: false});
+        setTimeout(function () { // Why the timeout? See https://github.com/angular-ui/ui-router/issues/326
+          $state.go('main.detail.error', {message: 'Page not found.'}, {location: false});
+        });
       }
     })
 
