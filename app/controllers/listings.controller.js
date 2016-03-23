@@ -87,7 +87,7 @@ exports.createListing = function (req, res, next) {
     }
 
     var newListing = new Listing(req.body);
-    if (!(newListing.sellingPrice || newListing.rentingPrice)) {
+    if (newListing.sellingPrice == null && newListing.rentingPrice == null) {
         Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" and/or "rentingPrice" attribute(s).');
         return;
     }
@@ -115,7 +115,7 @@ exports.updateListing = function (req, res, next) {
         var updates = req.body;
 
         // Only updates to condition, sellingPrice and rentingPrice are allowed
-        if (updates.condition) listing.condition = updates.condition;
+        if (updates.condition != null) listing.condition = updates.condition;
 
         // Add null values for prices if value is < 0
         if (updates.sellingPrice) {
@@ -133,7 +133,7 @@ exports.updateListing = function (req, res, next) {
             }
         }
 
-        if (!(listing.sellingPrice || listing.rentingPrice)) {
+        if (listing.sellingPrice == null && listing.rentingPrice == null) {
             Error.errorWithStatus(req, res, 400, 'Listing must have a "sellingPrice" or "rentingPrice".');
             return;
         }

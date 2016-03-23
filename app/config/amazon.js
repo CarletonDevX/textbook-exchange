@@ -63,7 +63,7 @@ var bookify = function (item) {
 	description = description.replace(/<\/?[^>]+(>|$)/g, "");
 
 	// Turn price string with hundreths place into integer e.g. 1747 -> 17
-	var price = Math.floor(new Number(priceString) / 100);
+	var price = Math.ceil(new Number(priceString) / 100);
 
 	return {
 	    ISBN: info.ISBN,

@@ -418,12 +418,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     // NEW LISTING DEFAULTS
     listingPaneOpen : false,
     currUserListing : false,
-    // conditionKey : {
-    //   0 : "New",
-    //   1 : "Used, no marks",
-    //   2 : "Some writing",
-    //   3 : "Heavily used"
-    // },
     conditionOptions : [
       {code: 0, name: "new"},
       {code: 1, name: "used, no marks"},
@@ -433,8 +427,8 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     newListing : {
       selling: true,
       renting: true,
-      sellingPrice: bookInfo.amazonInfo.sellingPrice || 0,
-      rentingPrice: bookInfo.amazonInfo.sellingPrice || 0,
+      sellingPrice: Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0,
+      rentingPrice: Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice),100) || 0,
       condition: {code: 1, name: "used, no marks"}
     }
   });
@@ -453,6 +447,16 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.$watch('currentUser', function(){
     $scope.currUserListing = checkCurrUserListing();
   });
+
+  var insertAmazonListing = function() {
+    $scope.book.listings.push({
+
+    })
+  }
+  $scope.$watch('book.listings', function(){
+    console.log('book.listings changed');
+    console.log($scope.book.listings);
+  })
 
   var refreshListings = function() {
     Api.getListings($scope.book.ISBN).then( function(listings) {
@@ -558,8 +562,8 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
       //copy the deets of the user's listing into the panel
       $scope.newListing = {
         condition : $scope.conditionOptions[$scope.currUserListing.condition],
-        sellingPrice : $scope.currUserListing.sellingPrice || $scope.book.amazonInfo.sellingPrice || 0,
-        rentingPrice : $scope.currUserListing.rentingPrice || $scope.book.amazonInfo.sellingPrice || 0,
+        sellingPrice : $scope.currUserListing.sellingPrice || Math.min(bookInfo.amazonInfo.sellingPrice, 100)  || 0,
+        rentingPrice : $scope.currUserListing.rentingPrice || Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0,
         selling   : !!($scope.currUserListing.sellingPrice),
         renting   : !!($scope.currUserListing.rentingPrice),
         listingID : $scope.currUserListing.listingID
