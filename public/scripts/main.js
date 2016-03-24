@@ -470,8 +470,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
   $scope.$watch('book.listings', function(){
     $scope.mergedListings = insertAmazonListing($scope.book.listings);
-    console.log("we're testing the merging of amazon listing");
-    console.log($scope.mergedListings);
   });
 
   var refreshListings = function() {
@@ -530,6 +528,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.makeOfferInit = function(listing) {
     $scope.offer.listing = listing;
+    console.log(listing);
     $scope.offer.message = 
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
       + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "

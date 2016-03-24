@@ -20,7 +20,12 @@ td(ng-if="listing.isAmazonListing")
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
 
 td.make-an-offer(ng-if="!listing.isAmazonListing")
-	button.confirm.email(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)")
+	p(ng-if="!currentUser")
+		a(href, ng-click="openAccount()") log in
+		|  to track this book
+	button.confirm.email(
+		ng-if="currentUser && listing.userID !== currentUser.userID",
+		ng-click="makeOfferInit(listing)")
 		img(src="/images/email.png")
 	//- TODO: something about emailing state
 	//- div.complete(ng-if="currentUser.listing.listingID ") already emailed

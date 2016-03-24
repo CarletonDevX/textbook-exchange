@@ -314,6 +314,8 @@ $listing-row-height: 80px;
               line-height: $footer-el-height;
             }
             button, div{
+              font-style: italic;
+              font-family: 'Droid Serif', Serif;
               width: 100%;
               height: $footer-el-height;
               span.symbol{

@@ -649,6 +649,8 @@ main #detail-wrapper.maximized {
       #book-details .listings table tfoot tr.add-listing td div {
         line-height: 2.5em; }
       #book-details .listings table tfoot tr.add-listing td button, #book-details .listings table tfoot tr.add-listing td div {
+        font-style: italic;
+        font-family: 'Droid Serif', Serif;
         width: 100%;
         height: 2.5em; }
         #book-details .listings table tfoot tr.add-listing td button span.symbol, #book-details .listings table tfoot tr.add-listing td div span.symbol {
