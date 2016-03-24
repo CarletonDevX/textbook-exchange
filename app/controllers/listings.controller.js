@@ -15,7 +15,7 @@ exports.countListings = function (req, res, next) {
 
 exports.getUserListings = function (req, res, next) {
     var userID = req.rUser._id;
-    Listing.find({userID: userID}).lean().exec(function(err, listings) {
+    Listing.find({completed: false, userID: userID}).lean().exec(function(err, listings) {
         if (!err) {
             req.rListings = listings;
             next();
