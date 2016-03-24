@@ -32,4 +32,4 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 		button.no(ng-click="removeListing(listing, false)") no
 		button.cancel(ng-click="cancelRemovingListing()") cancel
 td.make-an-offer(ng-if="listing.isAmazonListing")
-	a(href="{{listing.amazonUrl}}") Buy on Amazon
+	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon

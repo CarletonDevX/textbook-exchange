@@ -438,7 +438,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   var getCurrUserListing = function() {
     if ($scope.currentUser && $scope.currentUser.listings){
       for (i in $scope.currentUser.listings){
-        if ($scope.book.ISBN == $scope.currentUser.listings[i].ISBN){
+        if ($scope.book.ISBN == $scope.currentUser.listings[i].ISBN && $scope.currentUser.listings[i].completed == false){
           return $scope.currentUser.listings[i];
         }
       }
@@ -569,6 +569,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
       //copy the deets of the user's listing into the panel
       $scope.newListing = {
         condition : $scope.conditionOptions[$scope.currUserListing.condition],
+        // if there are prices set, set the form values to those prices, o/w use amazon or fall back on 0.
         sellingPrice : ($scope.currUserListing.sellingPrice != null) ? $scope.currUserListing.sellingPrice : ( Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0 ),
         rentingPrice : ($scope.currUserListing.rentingPrice != null) ? $scope.currUserListing.rentingPrice : ( Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0 ),
         selling   : ($scope.currUserListing.sellingPrice != null),
