@@ -1,3 +1,18 @@
+button:hover, button:hover:focus{
+  box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0,.2);
+}
+
+button:active, button:active:focus{
+  background-color: rgba(0, 0, 0,.08);
+}
+
+button.none:hover, button.none:hover:focus{
+  box-shadow: none;
+}
+
+button.none:active, button.none:active:focus{
+  background-color: none;
+}
 
 button.confirm:hover, button.confirm:hover:focus{
   box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
@@ -18,7 +33,7 @@ button{
   outline: none;
   background:none;
   border:none;
-  transition: box-shadow .1s;
+  transition: box-shadow .1s, background-color .1s;
   font-family: "Droid Serif", Serif;
   font-style: italic;
 }

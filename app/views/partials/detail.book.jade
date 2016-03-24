@@ -42,7 +42,7 @@ div#book-details
 
     div(ng-bind-html="book.description | unsafe")
 
-    button.expand(href="",
+    button.none.expand(
       ng-class="{'expanded':!descMinimized}",
       ng-click="toggleDesc()") {{ descMinimized ? "- more -" : "- less -" }}
 
@@ -82,8 +82,6 @@ div#book-details
               ng-model="newListing.condition",
               ng-options="opt.name for opt in conditionOptions track by opt.code"
             )
-              //- option(ng-repeat="(conditionNumber, conditionName) in conditionKey",
-              //-        value = "{{conditionNumber}}") {{conditionName}}
 
           td
             p
@@ -115,8 +113,8 @@ div#book-details
                 ng-disabled="!newListing.renting"
               )
           td.confirm
-            button(ng-click="submitListing()")
-              span.symbol {{currUserListing ? '✎':'+'}}
+            button.confirm(ng-click="submitListing()")
+              span.symbol {{currUserListing ? '✓':'+'}}
               | {{currUserListing ? 'update!' : 'list!'}}
         tr.add-listing: td(colspan="5")
           div(ng-if="!currentUser")

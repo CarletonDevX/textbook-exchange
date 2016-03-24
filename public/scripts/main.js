@@ -502,9 +502,9 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.toggleDesc = function(){ $scope.descMinimized = !$scope.descMinimized; }
 
-  $scope.beginRemovingListing = function() { $scope.removingListing = true; }
+  $scope.openRemovingListing = function() { $scope.removingListing = true; }
 
-  $scope.cancelRemovingListing = function() { $scope.removingListing = false; }
+  $scope.closeRemovingListing = function() { $scope.removingListing = false; }
 
   $scope.removeListing = function(listing, itSold) {
     if (itSold) {
@@ -512,6 +512,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
         function (res) {
           refreshListings();
           refreshCurrentUser();
+          $scope.closeRemovingListing();
         },
         function (err) { console.log(err) }
       );
@@ -520,6 +521,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
         function (res) {
           refreshListings();
           refreshCurrentUser();
+          $scope.closeRemovingListing();
         },
         function (err) { console.log(err) }
       );

@@ -20,16 +20,22 @@ td(ng-if="listing.isAmazonListing")
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
 
 td.make-an-offer(ng-if="!listing.isAmazonListing")
-	button.confirm(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)")
+	button.confirm.email(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)")
 		img(src="/images/email.png")
 	//- TODO: something about emailing state
 	//- div.complete(ng-if="currentUser.listing.listingID ") already emailed
-	button.edit(ng-if="listing.userID == currentUser.userID" ng-click="openListingPane()") &#9998;
-	button.delete(ng-if="listing.userID == currentUser.userID", ng-click="beginRemovingListing()") del
-	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-class="{'visible': removingListing}")
-		| Did it sell?
+	button.edit(
+		ng-if="listing.userID == currentUser.userID",
+		ng-click="openListingPane()",
+		ng-hide="removingListing") &#9998;
+	button.delete(
+		ng-if="listing.userID == currentUser.userID",
+		ng-click="openRemovingListing()",
+		ng-hide="removingListing") del
+	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
+		p Did it sell?
 		button.confirm(ng-click="removeListing(listing, true)") yes
 		button.no(ng-click="removeListing(listing, false)") no
-		button.cancel(ng-click="cancelRemovingListing()") cancel
+		button.cancel(ng-click="closeRemovingListing()") cancel
 td.make-an-offer(ng-if="listing.isAmazonListing")
 	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon

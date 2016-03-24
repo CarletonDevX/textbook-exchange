@@ -54,6 +54,18 @@ table.info-table {
   table.info-table tfoot td {
     border-top: solid 2px #ddd; }
 
+button:hover, button:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.2); }
+
+button:active, button:active:focus {
+  background-color: rgba(0, 0, 0, 0.08); }
+
+button.none:hover, button.none:hover:focus {
+  box-shadow: none; }
+
+button.none:active, button.none:active:focus {
+  background-color: none; }
+
 button.confirm:hover, button.confirm:hover:focus {
   box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
 
@@ -70,7 +82,7 @@ button {
   outline: none;
   background: none;
   border: none;
-  transition: box-shadow .1s;
+  transition: box-shadow .1s, background-color .1s;
   font-family: "Droid Serif", Serif;
   font-style: italic; }
 
@@ -592,12 +604,29 @@ main #detail-wrapper.maximized {
     #book-details .listings table tbody tr td.username, #book-details .listings table tfoot tr td.username {
       text-align: left;
       padding-left: 5px; }
-    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tbody td.confirm, #book-details .listings table tfoot td.make-an-offer, #book-details .listings table tfoot td.confirm {
+    #book-details .listings table tbody td.make-an-offer button.email,
+    #book-details .listings table tbody td.confirm button.confirm, #book-details .listings table tfoot td.make-an-offer button.email,
+    #book-details .listings table tfoot td.confirm button.confirm {
+      width: 100%;
+      padding: 0;
+      height: 80px; }
+    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tfoot td.make-an-offer {
       padding: 0; }
-      #book-details .listings table tbody td.make-an-offer button, #book-details .listings table tbody td.confirm button, #book-details .listings table tfoot td.make-an-offer button, #book-details .listings table tfoot td.confirm button {
+      #book-details .listings table tbody td.make-an-offer button.edit, #book-details .listings table tbody td.make-an-offer button.delete, #book-details .listings table tfoot td.make-an-offer button.edit, #book-details .listings table tfoot td.make-an-offer button.delete {
+        display: inline-block;
+        width: 50%;
+        height: 80px;
+        padding: 0; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing p, #book-details .listings table tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
-        padding: 0;
-        height: 100%; }
+        margin: 5px; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button, #book-details .listings table tfoot td.make-an-offer div.remove-listing button {
+        height: 28px; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button.cancel, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.cancel {
+        width: 100%; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tbody td.make-an-offer div.remove-listing button.no, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.no {
+        width: 50%;
+        display: inline-block; }
   #book-details .listings table tbody td {
     height: 80px; }
   #book-details .listings table tfoot {
@@ -620,8 +649,6 @@ main #detail-wrapper.maximized {
       #book-details .listings table tfoot tr.add-listing td div {
         line-height: 2.5em; }
       #book-details .listings table tfoot tr.add-listing td button, #book-details .listings table tfoot tr.add-listing td div {
-        font-style: italic;
-        font-family: 'Droid Serif', Serif;
         width: 100%;
         height: 2.5em; }
         #book-details .listings table tfoot tr.add-listing td button span.symbol, #book-details .listings table tfoot tr.add-listing td div span.symbol {
