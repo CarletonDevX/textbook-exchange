@@ -40,7 +40,8 @@ div#book-details
     div.preview
       img(src="{{book.coverImage}}")
 
-    p {{ book.description }}
+    div(ng-bind-html="book.description | unsafe")
+
     button.expand(href="",
       ng-class="{'expanded':!descMinimized}",
       ng-click="toggleDesc()") {{ descMinimized ? "- more -" : "- less -" }}

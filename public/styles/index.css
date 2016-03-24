@@ -441,7 +441,7 @@ main #detail-wrapper.maximized {
   overflow: hidden; }
   #book-details .info p {
     line-height: 157%; }
-  #book-details .info p:first-letter {
+  #book-details .info p:first-of-type:first-letter {
     font-size: 50px;
     display: inline-block;
     float: left;

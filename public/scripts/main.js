@@ -66,6 +66,13 @@ hitsTheBooks.directive('formAutofillFix', function ($timeout) {
   };
 });
 
+hitsTheBooks.filter('unsafe', function($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    };
+});
+
+
 hitsTheBooks.filter('ordinal', function() {
   return function(input) {
     //if input is an integer
