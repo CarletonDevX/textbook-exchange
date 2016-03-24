@@ -53,14 +53,20 @@ exports.getOffersForListings = function (req, res, next) {
     for (var i = 0; i < listings.length; i++) {
         listingIDs.push(listings[i]._id);
     };
-    Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
-        if (!err) {
-            req.rOffers = offers;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (listingIDs.length > 0) {
+        Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
+            if (!err) {
+                req.rOffers = offers;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        req.rOffers = [];
+        next();
+    }
+    
 }
 
 exports.makeOffer = function (req, res, next) {
@@ -101,13 +107,18 @@ exports.removeOffers = function (req, res, next) {
     for (var i = 0; i < offers.length; i++) {
         offerIDs.push(offers[i]._id);
     };
-    Offer.remove({_id: {$in: offerIDs}}, function (err) {
-        if (!err) {
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    })
+    if (offerIDs.length > 0) {
+        Offer.remove({_id: {$in: offerIDs}}, function (err) {
+            if (!err) {
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        next();
+    }
+    
 }
 
 

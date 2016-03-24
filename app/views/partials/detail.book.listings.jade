@@ -1,10 +1,41 @@
-td.image: a(href="user/{{listing.userID}}")
+td.image(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}")
 	img(src="{{listing.user.avatar}}")
-td.username: a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-td {{listing.condition}}
-td
-	p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== undefined").
+td.image(ng-if="listing.isAmazonListing") [A]
+
+
+td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
+td.username(ng-if="listing.isAmazonListing") Amazon
+
+
+td {{conditionOptions[listing.condition].name}}
+
+
+td(ng-if="!listing.isAmazonListing")
+	p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== null").
 		{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
-	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== undefined").
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
-td.make-an-offer: button.confirm(data-listingID="{{listing.ID}}"): img(src="/images/email.png")
+td(ng-if="listing.isAmazonListing")
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
+		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+
+td.make-an-offer(ng-if="!listing.isAmazonListing")
+	button.confirm.email(ng-if="listing.userID !== currentUser.userID", ng-click="makeOfferInit(listing)")
+		img(src="/images/email.png")
+	//- TODO: something about emailing state
+	//- div.complete(ng-if="currentUser.listing.listingID ") already emailed
+	button.edit(
+		ng-if="listing.userID == currentUser.userID",
+		ng-click="openListingPane()",
+		ng-hide="removingListing") &#9998;
+	button.delete(
+		ng-if="listing.userID == currentUser.userID",
+		ng-click="openRemovingListing()",
+		ng-hide="removingListing") del
+	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
+		p Did it sell?
+		button.confirm(ng-click="removeListing(listing, true)") yes
+		button.no(ng-click="removeListing(listing, false)") no
+		button.cancel(ng-click="closeRemovingListing()") cancel
+td.make-an-offer(ng-if="listing.isAmazonListing")
+	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon

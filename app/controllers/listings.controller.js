@@ -15,7 +15,7 @@ exports.countListings = function (req, res, next) {
 
 exports.getUserListings = function (req, res, next) {
     var userID = req.rUser._id;
-    Listing.find({userID: userID}).lean().exec(function(err, listings) {
+    Listing.find({completed: false, userID: userID}).lean().exec(function(err, listings) {
         if (!err) {
             req.rListings = listings;
             next();
@@ -43,10 +43,10 @@ exports.getUndercutListings = function (req, res, next) {
 
     // Get listings with prices higher than the new listing
     var orClause = []
-    if (listing.rentingPrice) {
+    if (listing.rentingPrice != null) {
         orClause.push({"rentingPrice": {$gt: listing.rentingPrice}});
     }
-    if (listing.sellingPrice) {
+    if (listing.sellingPrice != null) {
         orClause.push({"sellingPrice": {$gt: listing.sellingPrice}});
     }
     Listing.find({completed: false, ISBN: ISBN, $or: orClause}).lean().exec(function(err, listings) {
@@ -87,7 +87,7 @@ exports.createListing = function (req, res, next) {
     }
 
     var newListing = new Listing(req.body);
-    if (!(newListing.sellingPrice || newListing.rentingPrice)) {
+    if (newListing.sellingPrice == null && newListing.rentingPrice == null) {
         Error.errorWithStatus(req, res, 400, 'Must include "sellingPrice" and/or "rentingPrice" attribute(s).');
         return;
     }
@@ -115,17 +115,17 @@ exports.updateListing = function (req, res, next) {
         var updates = req.body;
 
         // Only updates to condition, sellingPrice and rentingPrice are allowed
-        if (updates.condition) listing.condition = updates.condition;
+        if (updates.condition != null) listing.condition = updates.condition;
 
         // Add null values for prices if value is < 0
-        if (updates.sellingPrice) {
+        if (updates.sellingPrice != null) {
             if (updates.sellingPrice < 0) {
                 listing.sellingPrice = null;
             } else {
                 listing.sellingPrice = updates.sellingPrice;
             }
         }
-        if (updates.rentingPrice) {
+        if (updates.rentingPrice != null) {
             if (updates.rentingPrice < 0) {
                 listing.rentingPrice = null;
             } else {
@@ -133,7 +133,7 @@ exports.updateListing = function (req, res, next) {
             }
         }
 
-        if (!(listing.sellingPrice || listing.rentingPrice)) {
+        if (listing.sellingPrice == null && listing.rentingPrice == null) {
             Error.errorWithStatus(req, res, 400, 'Listing must have a "sellingPrice" or "rentingPrice".');
             return;
         }
@@ -160,13 +160,18 @@ exports.removeListings = function (req, res, next) {
         }
         listingIDs.push(listing._id);
     };
-    Listing.remove({_id: {$in: listingIDs}}, function(err) {
-        if (!err) {
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (listingIDs.length > 0) {
+        Listing.remove({_id: {$in: listingIDs}}, function(err) {
+            if (!err) {
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        next();
+    }
+    
 };
 
 exports.makeOffer = function (req, res, next) {

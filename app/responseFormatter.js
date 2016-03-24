@@ -168,8 +168,8 @@ exports.formatBookListings = function (req, res) {
   for (var i = 0; i < req.rListings.length; i++) {
       var lstng = req.rListings[i];
       var formattedUser = {
-          "name": lstng.user.name,
-          "avatar": lstng.user.avatar,
+              "name": lstng.user.name,
+            "avatar": lstng.user.avatar,
           "gradYear": lstng.user.gradYear
       };
       var formattedListing = {

@@ -1,0 +1,23 @@
+.modal-wrapper{
+  position: fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: rgba(0,0,0,.4);
+  display: none;
+}
+
+.modal-wrapper.visible{
+  display: block;
+  z-index: 50;
+
+  .modal{
+    background-color: white;
+    box-sizing: border-box;
+    width: 500px;
+    margin: 100px calc(50vw - 250px);
+    padding: 10px;
+  }
+}
