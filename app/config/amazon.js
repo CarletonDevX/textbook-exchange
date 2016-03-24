@@ -64,6 +64,7 @@ var bookify = function (item) {
 
 	// Turn price string with hundreths place into integer e.g. 1747 -> 17
 	var price = Math.ceil(new Number(priceString) / 100);
+	if (price == 0) price = null;
 
 	return {
 	    ISBN: info.ISBN,
