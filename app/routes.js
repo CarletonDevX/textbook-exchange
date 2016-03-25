@@ -113,7 +113,7 @@ exports.setup = function (app) {
 
     // Verify a user with user ID
     app.route('/api/verify/:userID')
-        .post(users.getUser,
+        .post(users.getUserUnverified,
              users.verifyUser,
              responder.formatCurrentUser);
 
@@ -159,7 +159,6 @@ exports.setup = function (app) {
             avatars.uploadAvatar,
             users.updateAvatar,
             responder.formatCurrentUser);
-
 
     /* Reports */
 
@@ -264,7 +263,6 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
-
     // Get previous offer on a listing
     app.route('/api/listings/offer/:listingID')
         .get(authenticate, 
@@ -279,9 +277,8 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.getOffersForListings,
               offers.makeOffer,
-              listings.makeOffer,
+              users.makeOffer,
               mailer.sendOfferEmail,
               responder.formatOffer);
 

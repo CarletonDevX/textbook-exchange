@@ -174,21 +174,6 @@ exports.removeListings = function (req, res, next) {
     
 };
 
-exports.makeOffer = function (req, res, next) {
-    var user = req.rUser;
-    var listing = req.rListings[0];
-    listing.offeredUsers.push(user._id);
-
-    listing.save(function(err, listing) {
-        if (!err) {
-            req.rListings = [listing];
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
-}
-
 exports.completeListing = function (req, res, next) {
     var user = req.rUser;
     var listing = req.rListings[0];

@@ -4,10 +4,8 @@ var User = require('mongoose').model('users'),
     mailer = require('../config/nodemailer'),
     Error = require('../errors');
 
-// API Calls
-
 exports.getAllUsers = function (req, res, next) {
-    User.find({}, function(err, users) {
+    User.find({verified: true}, function(err, users) {
         if (!err) {
             req.rUsers = users;
             next();
@@ -42,7 +40,7 @@ function validatePassword (password) {
 
 exports.createUser = function (req, res, next) {
     var info = req.body;
-    var email = info.email;
+    var email = info.usernameri;
     var password = info.password;
     if (!validateEmail(email)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
@@ -77,13 +75,13 @@ exports.createUser = function (req, res, next) {
 }
 
 exports.verifyUser = function (req, res, next) {
-    var updateUser = req.rUser;
+    var user = req.rUser;
     var verifier = req.body.verifier;
-    if (verifier != updateUser.verifier) {
+    if (verifier != user.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
     } else {
-        updateUser.verified = true;
-        updateUser.save(function (err, user) {
+        user.verified = true;
+        user.save(function (err, user) {
             if (!err) {
 
                 // Attempt to log in user (ignore errors)
@@ -99,9 +97,38 @@ exports.verifyUser = function (req, res, next) {
     }
 }
 
+var getUserHelper = function (req, res, next, verified) {
+    // The actual work of getting users...
+    // Necessary as a separate function because of different verification requirements
+    // Get ID from either params or previous middleware
+    var userID = req.rUserID;
+    if (!userID) userID = req.params.userID;
+
+    User.findOne({_id: userID, verified: verified}, function(err, user) {
+        if (!err) {
+            if (!user) {
+                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+            } else {
+                req.rUser = user;
+                next();
+            }
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
 exports.getCurrentUser = function (req, res, next) {
     req.rUser = req.user;
     next();
+}
+
+exports.getUser = function (req, res, next) {
+    getUserHelper(req, res, next, true);
+}
+
+exports.getUserUnverified = function (req, res, next) {
+    getUserHelper(req, res, next, false);
 }
 
 exports.updateAvatar = function (req, res, next) {
@@ -182,25 +209,6 @@ exports.reportUser = function (req, res, next) {
             }
         });
     }
-}
-
-exports.getUser = function (req, res, next) {
-    // Get ID from either params or previous middleware
-    var userID = req.rUserID;
-    if (!userID) userID = req.params.userID;
-
-    User.findOne({_id: userID}, function(err, user) {
-        if (!err) {
-            if (!user) {
-                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
-            } else {
-                req.rUser = user;
-                next();
-            }
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
 }
 
 exports.getSubscribers = function (req, res, next) {
@@ -289,6 +297,21 @@ exports.clearUserSubscriptions = function (req, res, next) {
     user.subscriptions = [];
     user.save(function(err) {
         if (!err) {
+            next();
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
+}
+
+exports.makeOffer = function (req, res, next) {
+    var user = req.rUser;
+    var listing = req.rListings[0];
+    user.offers.push(listing._id.toString());
+
+    user.save(function(err, user) {
+        if (!err) {
+            req.rUser = user;
             next();
         } else {
             Error.mongoError(req, res, err);
