@@ -58,7 +58,7 @@ div#book-details
       thead
         tr
           th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Cond.
+          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
           th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
           th Contact
       tbody(ng-if="whichListings=='both'")
