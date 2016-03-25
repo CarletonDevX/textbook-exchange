@@ -82,6 +82,7 @@ div#book-details
               ng-model="newListing.condition",
               ng-options="opt.name for opt in conditionOptions track by opt.code"
             )
+            small {{conditionDescriptions[newListing.condition.code]}}
 
           td
             p

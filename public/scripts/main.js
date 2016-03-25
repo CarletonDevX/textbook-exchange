@@ -408,7 +408,6 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 
 
 hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
-
   //View defaults & settings
   angular.extend($scope, {
     book : bookInfo,
@@ -429,17 +428,23 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     listingPaneOpen : false,
     currUserListing : false,
     conditionOptions : [
-      {code: 0, name: "new"},
-      {code: 1, name: "used, no marks"},
-      {code: 2, name: "some writing"},
-      {code: 3, name: "heavily used"}
+      {code: 0, name: "New"},
+      {code: 1, name: "Lightly Used"},
+      {code: 2, name: "Used"},
+      {code: 3, name: "Heavily Used"}
     ],
+    conditionDescriptions : {
+      0 : "Pristine condition, rarely opened if at all",
+      1 : "No writing inside, spine may be creased, cover otherwise undamaged",
+      2 : "Writing or minor cover damage",
+      3 : "Lots of writing, heavy cover and/or page damage"
+    },
     newListing : {
       selling: true,
       renting: true,
       sellingPrice: Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0,
       rentingPrice: Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice),100) || 0,
-      condition: {code: 1, name: "used, no marks"}
+      condition: {code: 1, name: "Used, No Marks"}
     }
   });
 
@@ -541,6 +546,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.makeOffer = function() {
     Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
       .then( function (data) {
+        refreshCurrentUser();
         $scope.offer.active = false;
       }, function (err) {
         console.log(err);

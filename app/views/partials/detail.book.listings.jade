@@ -8,13 +8,22 @@ td.username(ng-if="listing.isAmazonListing") Amazon
 
 
 td {{conditionOptions[listing.condition].name}}
+	small {{conditionDescriptions[listing.condition]}}
 
 
 td(ng-if="!listing.isAmazonListing")
-	p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== null").
-		{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
-	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
-		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+	table.price-table
+		tr
+			td Buy:
+			td {{listing.sellingPrice | currency }}
+		tr
+			td Rent:
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
+			td(ng-if="!listing.rentingPrice") —
+	//- p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== null").
+	//- 	{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
+	//- p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
+	//- 	{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
 td(ng-if="listing.isAmazonListing")
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
@@ -22,13 +31,12 @@ td(ng-if="listing.isAmazonListing")
 td.make-an-offer(ng-if="!listing.isAmazonListing")
 	p(ng-if="!currentUser")
 		a(href, ng-click="openAccount()") log in
-		|  to track this book
+		|  to make an offer
 	button.confirm.email(
-		ng-if="currentUser && listing.userID !== currentUser.userID",
+		ng-if="!currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		img(src="/images/email.png")
-	//- TODO: something about emailing state
-	//- div.complete(ng-if="currentUser.listing.listingID ") already emailed
+	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane()",
