@@ -40,38 +40,45 @@ function validatePassword (password) {
 
 exports.createUser = function (req, res, next) {
     var info = req.body;
-    var email = info.usernameri;
+    var email = info.username;
     var password = info.password;
+
     if (!validateEmail(email)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
-        return;
-    }
-    if (!validatePassword(password)) {
+    } else if (!validatePassword(password)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid password (5+ alphanumeric characters).');
-        return;
-    }
+    } else if (info.givenName == null) {
+        Error.errorWithStatus(req, res, 400, 'Must provide "givenName" attribute.');
+    } else if (info.familyName == null) {
+        Error.errorWithStatus(req, res, 400, 'Must provide "familyName" attribute.');
+    } else {
+        var newUser = new User({"email": email, "created": new Date()});
 
-    var newUser = new User({"email": email, "created": new Date()});
-
-    newUser.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
-    newUser.password = crypto.createHash('md5').update(password).digest('hex');
-
-    newUser.verified = false;
-    newUser.provider = 'local';
-
-    // Optional details
-    if (info.name) newUser.name = info.name;
-    if (info.bio) newUser.bio = info.bio;
-    if (info.gradYear) newUser.gradYear = info.gradYear;
-
-    newUser.save(function(err, user) {
-        if (!err) {
-            req.rUser = user;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
+        newUser.name = {
+            givenName: info.givenName,
+            familyName: info.familyName,
+            fullName: info.givenName + " " + info.familyName
         }
-    });
+
+        newUser.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+        newUser.password = crypto.createHash('md5').update(password).digest('hex');
+
+        newUser.verified = false;
+        newUser.provider = 'local';
+
+        // Optional details
+        if (info.bio) newUser.bio = info.bio;
+        if (info.gradYear) newUser.gradYear = info.gradYear;
+
+        newUser.save(function(err, user) {
+            if (!err) {
+                req.rUser = user;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        }); 
+    }
 }
 
 exports.verifyUser = function (req, res, next) {
@@ -153,7 +160,7 @@ exports.updateUser = function (req, res, next) {
     } else {
         var updates = req.body;
         // Only these updates are allowed
-        if (updates.name) user.name = updates.name;
+        // TODO: name updates
         if (updates.bio) user.bio = updates.bio;
         if (updates.gradYear) user.gradYear = updates.gradYear;
         if (updates.emailSettings) {

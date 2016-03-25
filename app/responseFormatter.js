@@ -1,5 +1,13 @@
 // Format responses from API
 
+// Cut name to first name only if user is not logged in
+var trimName = function(name, req) {
+  if (!req.user) {
+    return {givenName: name.givenName, familyName: "", fullName: name.givenName}
+  }
+  return name;
+}
+
 exports.successTestEmail = function (req, res) {
     res.status(200).send("Test email sent.");
 }
@@ -30,7 +38,6 @@ exports.successClearSubscriptions = function (req, res) {
 }
 
 exports.formatCurrentUser = function (req, res) {
-
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -42,7 +49,7 @@ exports.formatCurrentUser = function (req, res) {
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
-            "name": req.rUser.name,
+            "name": trimName(req.rUser.name, req),
    "subscriptions": req.rUser.subscriptions,
           "offers": req.rUser.offers
     }
@@ -84,7 +91,7 @@ exports.formatUser = function (req, res) {
              "bio": req.rUser.bio, 
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
-            "name": req.rUser.name,
+            "name": trimName(req.rUser.name, req),
           "offers": req.rUser.offers
     }
 
@@ -137,7 +144,7 @@ exports.formatBookListings = function (req, res) {
   for (var i = 0; i < req.rListings.length; i++) {
       var lstng = req.rListings[i];
       var formattedUser = {
-              "name": lstng.user.name,
+              "name": trimName(lstng.user.name, req),
             "avatar": lstng.user.avatar,
           "gradYear": lstng.user.gradYear
       };
@@ -237,7 +244,7 @@ exports.formatBook = function (req, res) {
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
         var formattedUser = {
-            "name": lstng.user.name,
+            "name": trimName(lstng.user.name, req),
             "avatar": lstng.user.avatar,
             "gradYear": lstng.user.gradYear
         };
