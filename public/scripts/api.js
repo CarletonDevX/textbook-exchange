@@ -5,7 +5,7 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 function (res) {
                     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     return res.data;
-                }, 
+                },
                 function (err) {
                     $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                     return err;
