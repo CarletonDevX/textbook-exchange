@@ -1,0 +1,71 @@
+$disabled-color: black;
+$disabled-opacity: .3;
+$disabled-rgba:rgba(0,0,0,.3);
+
+label, .label{
+  font-family: 'Droid Serif';
+  // text-transform: lowercase;
+  font-style: italic;
+}
+
+input, select{
+  border: none;
+  background: none;
+  outline: none;
+}
+
+select{
+  border-bottom: solid 2px black;
+}
+
+input[type="checkbox"]{
+  visibility: hidden;
+  position: relative;
+  margin: 0 10px;
+}
+
+input[type="checkbox"]::before{
+  content:"";
+  border:solid black 2px;
+  visibility: visible;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  position: relative;
+  top: -2px;
+}
+
+input[type="checkbox"]::after{
+  visibility: visible;
+  content:"✓";
+  position: absolute;
+  top: -13px;
+  font-size: 32px;
+  color:rgba(0,0,0,0);
+}
+
+input[type="checkbox"]:checked::after         { color: black; }
+input[type="checkbox"]:hover::before          { box-shadow: inset 0 0 4px 0 gray; }
+input[type="checkbox"]:hover::after           { color: rgba(0,0,0,.1); }
+input[type="checkbox"]:hover:checked::after   { color: rgba(0,0,0,.7); }
+
+input[type="checkbox"]:disabled::before       { border-color: $disabled-color; 
+                                                opacity: $disabled-opacity; }
+input[type="checkbox"]:disabled:hover::before { box-shadow: none; }
+input[type="checkbox"]:disabled::after,
+input[type="checkbox"]:disabled:hover::after  { color: $disabled-color; 
+                                                opacity: $disabled-opacity; }
+
+input[type="text"], input[type="password"], input[type="number"]{
+  text-align: center;
+  vertical-align: top;
+  font-family: 'Droid Serif', Serif;
+  border-bottom: solid 2px black;
+} 
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="number"]:disabled{
+  border-bottom: solid 2px $disabled-rgba;
+} 

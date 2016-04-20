@@ -80,7 +80,16 @@ exports.sendOfferEmail = function (req, res, next) {
 exports.sendSubscribersEmail = function (req, res, next) {
 	var listing = req.rListings[0];
 	var book = req.rBook;
-	var subscribers = req.rSubscribers;
+	var subscribers = [];
+
+	// Remove current user from list of subscribers if necessary
+	for (var i = 0; i < req.rSubscribers.length; i++) {
+		if (req.rSubscribers[i]._id.toString() != req.user._id.toString()) {
+			subscribers.push(req.rSubscribers[i]);
+		}
+	};
+
+	console.log(subscribers);
 
 	options = {
 		subject: "Someone has posted a listing for a book on your watchlist.",
@@ -122,9 +131,10 @@ var sendMailToMultipleRecipients = function (req, res, next, options) {
 
 var sendMail = function (req, res, next, options) {
 	if (config.mailEnabled && options.user.emailSettings[options.setting] != false) {
+
 		options.to = options.user.email;
-	    sender.sendMail(options, function(err) {
-	        if(!err){
+	    sender.sendMail(options, function (err) {
+	        if (!err) {
 				if (options.callback) {
 					options.callback(req, res, next, options);
 				} else {
@@ -135,6 +145,10 @@ var sendMail = function (req, res, next, options) {
 	        }
 	    });
 	} else {
-		next();
+		if (options.callback) {
+			options.callback(req, res, next, options);
+		} else {
+			next();
+		}
 	}
 }

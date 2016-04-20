@@ -59,11 +59,12 @@ var bookify = function (item) {
 	var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
 	var imageURL =  get(item, 'LargeImage.URL') || "";
 
-	// Remove HTML tags (http://stackoverflow.com/a/5002161)
-	description = description.replace(/<\/?[^>]+(>|$)/g, "");
+	// If we want to remove HTML tags (http://stackoverflow.com/a/5002161)
+	// description = description.replace(/<\/?[^>]+(>|$)/g, "");
 
 	// Turn price string with hundreths place into integer e.g. 1747 -> 17
-	var price = Math.floor(new Number(priceString) / 100);
+	var price = Math.ceil(new Number(priceString) / 100);
+	if (price == 0) price = null;
 
 	return {
 	    ISBN: info.ISBN,

@@ -1,5 +1,9 @@
+@charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
-@import url(https://fonts.googleapis.com/css?family=Droid+Sans);
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,400italic,700,700italic);
+::-moz-focus-inner {
+  border: 0; }
+
 html {
   overflow-y: scroll; }
 
@@ -30,8 +34,134 @@ body::before {
   opacity: .5;
   z-index: -1; }
 
+table.info-table {
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border: solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0; }
+  table.info-table td {
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 1px #eee; }
+  table.info-table tr:last-child td {
+    border-bottom: solid 0px; }
+  table.info-table tr td:first-child {
+    text-align: right; }
+  table.info-table tr td:last-child {
+    border-right: solid 0px;
+    text-align: left; }
+  table.info-table tfoot td {
+    border-top: solid 2px #ddd; }
+
+button:hover, button:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.2); }
+
+button:active, button:active:focus {
+  background-color: rgba(0, 0, 0, 0.08); }
+
+button.none:hover, button.none:hover:focus {
+  box-shadow: none; }
+
+button.none:active, button.none:active:focus {
+  background-color: none; }
+
+button.confirm:hover, button.confirm:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
+
+button.confirm:active, button.confirm:active:focus {
+  background-color: rgba(130, 255, 130, 0.08); }
+
+button.cancel:hover, button.cancel:hover:focus {
+  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
+
+button.cancel:active, button.cancel:active:focus {
+  background-color: rgba(255, 130, 130, 0.08); }
+
+button {
+  outline: none;
+  background: none;
+  border: none;
+  transition: box-shadow .1s, background-color .1s;
+  font-family: "Droid Serif", Serif;
+  font-style: italic; }
+
+table button:focus {
+  box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, 0.4); }
+
+label, .label {
+  font-family: 'Droid Serif';
+  font-style: italic; }
+
+input, select {
+  border: none;
+  background: none;
+  outline: none; }
+
+select {
+  border-bottom: solid 2px black; }
+
+input[type="checkbox"] {
+  visibility: hidden;
+  position: relative;
+  margin: 0 10px; }
+
+input[type="checkbox"]::before {
+  content: "";
+  border: solid black 2px;
+  visibility: visible;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+  position: relative;
+  top: -2px; }
+
+input[type="checkbox"]::after {
+  visibility: visible;
+  content: "✓";
+  position: absolute;
+  top: -13px;
+  font-size: 32px;
+  color: transparent; }
+
+input[type="checkbox"]:checked::after {
+  color: black; }
+
+input[type="checkbox"]:hover::before {
+  box-shadow: inset 0 0 4px 0 gray; }
+
+input[type="checkbox"]:hover::after {
+  color: rgba(0, 0, 0, 0.1); }
+
+input[type="checkbox"]:hover:checked::after {
+  color: rgba(0, 0, 0, 0.7); }
+
+input[type="checkbox"]:disabled::before {
+  border-color: black;
+  opacity: 0.3; }
+
+input[type="checkbox"]:disabled:hover::before {
+  box-shadow: none; }
+
+input[type="checkbox"]:disabled::after,
+input[type="checkbox"]:disabled:hover::after {
+  color: black;
+  opacity: 0.3; }
+
+input[type="text"], input[type="password"], input[type="number"] {
+  text-align: center;
+  vertical-align: top;
+  font-family: 'Droid Serif', Serif;
+  border-bottom: solid 2px black; }
+
+input[type="text"]:disabled,
+input[type="password"]:disabled,
+input[type="number"]:disabled {
+  border-bottom: solid 2px rgba(0, 0, 0, 0.3); }
+
 header {
-  transition: height 0.2s;
+  transition: height .2s;
   padding-bottom: 15px;
   overflow: hidden; }
   header #sub-box, header #blurb {
@@ -58,7 +188,7 @@ header {
       left: 0;
       border-bottom: solid rgba(41, 255, 53, 0.25) 3px;
       z-index: -1;
-      transition: border 0.2s, padding 0.2s, left 0.2s; }
+      transition: border .2s, padding .2s, left .2s; }
     header #sub-box a:hover::before {
       border-bottom: solid rgba(41, 255, 53, 0.25) 20px;
       padding: 6px;
@@ -99,7 +229,7 @@ header {
           background-color: black;
           border-radius: 10px;
           position: absolute;
-          transition: width 0.2s, height 0.2s, margin 0.2s, top 0.2s; }
+          transition: width .2s, height .2s, margin .2s, top .2s; }
       header #main-box #wordmark-link #wordmark:hover .app-name::before {
         width: 50%;
         height: 3px;
@@ -129,7 +259,7 @@ header {
     opacity: 1;
     position: relative;
     line-height: 130%;
-    transition: width 0.2s, height 0.2s, padding 0.2s, opacity 0.2s, margin 0.2s; }
+    transition: width .2s, height .2s, padding .2s, opacity .2s, margin .2s; }
     header #blurb a.toAbout {
       color: #888;
       margin-left: 5px; }
@@ -172,10 +302,10 @@ main #search {
   text-align: center;
   width: 500px;
   margin: 0 auto;
-  transition: width 0.3s; }
+  transition: width .3s; }
   main #search #search-form {
     margin: 30px;
-    transition: margin 0.2s; }
+    transition: margin .2s; }
     main #search #search-form #search-labels {
       display: inline-block;
       position: relative;
@@ -183,7 +313,8 @@ main #search {
       main #search #search-form #search-labels label {
         font-size: 18px;
         display: inline-block;
-        transition: opacity 0.2s, width 0.2s; }
+        font-style: normal;
+        transition: opacity .2s, width .2s; }
       main #search #search-form #search-labels label.pre-search {
         opacity: 1;
         width: 250px;
@@ -194,22 +325,18 @@ main #search {
         position: absolute;
         right: 0; }
     main #search #search-form #search-box {
-      border: none;
       text-align: center;
       vertical-align: top;
-      outline: none;
       font-size: 18px;
-      font-family: 'Droid Serif', Serif;
-      border-bottom: solid 2px black;
       width: 70px;
       min-width: 70px;
       max-width: 300px;
       margin: 0 20px;
       text-overflow: ellipsis;
-      transition: width 0.2s; }
+      transition: width .2s; }
   main #search #search-results {
     overflow: hidden;
-    transition: height 0.2s; }
+    transition: height .2s; }
   main #search #search-results.minimized {
     height: 0; }
   main #search #search-results ul {
@@ -219,7 +346,7 @@ main #search {
       box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
       width: 490px;
       margin: 0 auto 30px auto;
-      transition: box-shadow 0.1s; }
+      transition: box-shadow .1s; }
       main #search #search-results ul li div.preview {
         padding: 20px; }
         main #search #search-results ul li div.preview img {
@@ -245,26 +372,6 @@ main #search {
     main #search #search-results ul li:hover {
       box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
 
-main table.info-table {
-  font-family: 'Droid Sans', sans-serif;
-  font-size: 12px;
-  border: solid 2px #ddd;
-  border-radius: 10px;
-  border-spacing: 0; }
-  main table.info-table td {
-    padding: 5px;
-    border-bottom: solid 2px #ddd;
-    border-right: solid 2px #eee; }
-  main table.info-table tr:last-child td {
-    border-bottom: solid 0px; }
-  main table.info-table tr td:first-child {
-    text-align: right; }
-  main table.info-table tr td:last-child {
-    border-right: solid 0px;
-    text-align: left; }
-  main table.info-table tfoot td {
-    border-top: solid 2px #ddd; }
-
 main #search.home-view {
   width: 500px; }
 
@@ -282,10 +389,11 @@ main #search.behind-detail #search-form {
 main #detail-wrapper {
   width: 500px;
   margin: -10px auto 40px auto;
+  padding-bottom: 20px;
   position: relative;
   z-index: 20;
   overflow: hidden;
-  transition: opacity 0.2s; }
+  transition: opacity .2s; }
   main #detail-wrapper .detail-nav {
     font-size: 24pt;
     position: fixed;
@@ -293,7 +401,7 @@ main #detail-wrapper {
     width: 64px;
     color: rgba(0, 0, 0, 0.5);
     font-size: 64px;
-    transition: color 0.2s; }
+    transition: color .2s; }
   main #detail-wrapper .detail-nav:hover {
     text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3); }
   main #detail-wrapper #detail {
@@ -329,26 +437,82 @@ main #detail-wrapper.maximized {
 
 #book-details h3 {
   font-weight: 400;
-  margin-top: 10px; }
+  margin-top: 10px;
+  border-bottom: solid black 2px;
+  padding-bottom: 10px; }
 
-#book-details .info-wrapper {
-  display: flex; }
-  #book-details .info-wrapper .preview {
-    padding-right: 20px; }
-    #book-details .info-wrapper .preview img {
-      width: 200px; }
-  #book-details .info-wrapper .info {
-    flex-grow: 1; }
-    #book-details .info-wrapper .info .info-table tfoot td {
+#book-details .preview {
+  float: right;
+  padding: 0 0 20px 20px; }
+  #book-details .preview img {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
+    width: 200px; }
+
+#book-details .info {
+  position: relative;
+  overflow: hidden; }
+  #book-details .info p {
+    line-height: 157%; }
+  #book-details .info p:first-of-type:first-letter {
+    font-size: 50px;
+    display: inline-block;
+    float: left;
+    line-height: 100%;
+    margin-top: 0px;
+    margin-right: 10px; }
+  #book-details .info .expand {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 14px;
+    color: gray;
+    background: linear-gradient(to top, white 0%, white 66%, rgba(255, 255, 255, 0) 100%); }
+  #book-details .info .expand:hover {
+    color: black; }
+  #book-details .info .expand.expanded {
+    background: none; }
+  #book-details .info .info-table {
+    margin-bottom: 20px;
+    width: 310px;
+    float: left; }
+    #book-details .info .info-table tfoot td {
       padding: 0;
       border-top: solid 2px #ddd; }
-      #book-details .info-wrapper .info .info-table tfoot td button {
-        border: none;
-        background: none;
+      #book-details .info .info-table tfoot td div {
+        line-height: 30px;
+        text-align: center; }
+      #book-details .info .info-table tfoot td button, #book-details .info .info-table tfoot td div {
         padding: 5px;
+        height: 30px;
         width: 100%;
         border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px; }
+        border-bottom-right-radius: 8px;
+        font-style: italic;
+        font-family: 'Droid Serif', Serif; }
+      #book-details .info .info-table tfoot td button span.symbol {
+        font-size: 24px;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 0;
+        position: relative;
+        transition: color .2s;
+        width: 1.5em; }
+      #book-details .info .info-table tfoot td button.cancel span.symbol::before {
+        font-size: 24px;
+        content: '×';
+        color: transparent;
+        width: 0;
+        display: inline-block;
+        vertical-align: middle;
+        transition: color .2s;
+        line-height: 0; }
+      #book-details .info .info-table tfoot td button.cancel:hover span.symbol {
+        color: transparent; }
+      #book-details .info .info-table tfoot td button.cancel:hover span::before {
+        color: black; }
 
 #book-details h5 {
   font-weight: 400;
@@ -356,12 +520,6 @@ main #detail-wrapper.maximized {
   margin-bottom: 10px;
   text-align: center;
   font-variant: small-caps; }
-
-#book-details .listings .confirm:hover {
-  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
-
-#book-details .listings .cancel:hover {
-  box-shadow: inset 0px 0px 25px 0px rgba(255, 130, 130, 0.4); }
 
 #book-details .listings .tabs {
   display: flex; }
@@ -374,7 +532,7 @@ main #detail-wrapper.maximized {
     border: none;
     outline: none;
     font-variant: small-caps;
-    transition: color 0.2s, font-size 0.2s;
+    transition: color .2s, font-size .2s;
     color: gray;
     height: 75px;
     font-size: 18px; }
@@ -389,22 +547,40 @@ main #detail-wrapper.maximized {
 #book-details .listings table {
   width: 100%;
   border-spacing: 0;
-  border: solid 1px #666;
-  border-top: 3px solid black; }
+  border: solid 1px #ccc;
+  border-top: 2px solid black;
+  overflow: hidden; }
   #book-details .listings table thead tr {
     height: 4em; }
     #book-details .listings table thead tr th {
       font-weight: 400;
       font-style: italic;
       height: 40px;
-      border-bottom: 1px solid #666;
-      border-right: 1px solid #eee; }
+      border-bottom: 2px solid #ccc;
+      border-right: 1px solid #eee;
+      position: relative; }
     #book-details .listings table thead tr th.sortable {
+      padding: 0 20px;
       cursor: pointer; }
     #book-details .listings table thead tr th.sortable:hover {
       text-decoration: underline; }
-    #book-details .listings table thead tr th.active {
-      text-decoration: underline; }
+    #book-details .listings table thead tr th.active::before {
+      content: '';
+      background-color: rgba(252, 255, 100, 0.07);
+      width: 100%;
+      height: 2000px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: -1; }
+    #book-details .listings table thead tr th.active::after {
+      content: '▴';
+      position: absolute;
+      width: 1.5em;
+      color: gray;
+      font-style: normal; }
+    #book-details .listings table thead tr th.active.reversed::after {
+      content: '▾'; }
     #book-details .listings table thead tr th:last-child {
       border-right: none; }
   #book-details .listings table tbody, #book-details .listings table tfoot {
@@ -412,7 +588,7 @@ main #detail-wrapper.maximized {
     font-size: 14px; }
     #book-details .listings table tbody tr td, #book-details .listings table tfoot tr td {
       text-align: center;
-      border-bottom: solid 1px #666;
+      border-bottom: solid 2px #ccc;
       border-right: solid 1px #eee; }
       #book-details .listings table tbody tr td img, #book-details .listings table tfoot tr td img {
         width: 40px;
@@ -428,43 +604,59 @@ main #detail-wrapper.maximized {
     #book-details .listings table tbody tr td.username, #book-details .listings table tfoot tr td.username {
       text-align: left;
       padding-left: 5px; }
-    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tbody td.confirm, #book-details .listings table tfoot td.make-an-offer, #book-details .listings table tfoot td.confirm {
+    #book-details .listings table tbody td.make-an-offer button.email,
+    #book-details .listings table tbody td.confirm button.confirm, #book-details .listings table tfoot td.make-an-offer button.email,
+    #book-details .listings table tfoot td.confirm button.confirm {
+      width: 100%;
+      padding: 0;
+      height: 80px; }
+    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tfoot td.make-an-offer {
       padding: 0; }
-      #book-details .listings table tbody td.make-an-offer button, #book-details .listings table tbody td.confirm button, #book-details .listings table tfoot td.make-an-offer button, #book-details .listings table tfoot td.confirm button {
+      #book-details .listings table tbody td.make-an-offer button.edit, #book-details .listings table tbody td.make-an-offer button.delete, #book-details .listings table tfoot td.make-an-offer button.edit, #book-details .listings table tfoot td.make-an-offer button.delete {
+        display: inline-block;
+        width: 50%;
+        height: 80px;
+        padding: 0; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing p, #book-details .listings table tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
-        border: none;
-        padding: 0;
-        background: none;
-        height: 100%; }
+        margin: 5px; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button, #book-details .listings table tfoot td.make-an-offer div.remove-listing button {
+        height: 28px; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button.cancel, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.cancel {
+        width: 100%; }
+      #book-details .listings table tbody td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tbody td.make-an-offer div.remove-listing button.no, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.no {
+        width: 50%;
+        display: inline-block; }
   #book-details .listings table tbody td {
     height: 80px; }
-  #book-details .listings table tfoot tr.make-listing {
-    background-color: #FCFFEE; }
-    #book-details .listings table tfoot tr.make-listing p {
-      text-align: center; }
-    #book-details .listings table tfoot tr.make-listing span.label {
-      width: 4.5em;
-      display: inline-block; }
-    #book-details .listings table tfoot tr.make-listing input.price {
-      width: 4em; }
-  #book-details .listings table tfoot tr.make-listing.inactive {
-    display: none; }
-  #book-details .listings table tfoot tr.add-listing td {
-    text-align: center;
-    border-bottom: none;
-    padding: 0; }
-    #book-details .listings table tfoot tr.add-listing td button {
-      font-style: italic;
-      font-family: 'Droid Serif', Serif;
-      width: 100%;
-      background-color: white;
-      border: none;
-      height: 2.5em;
-      transition: box-shadow 0.1s; }
-      #book-details .listings table tfoot tr.add-listing td button span.symbol {
-        font-size: 24px;
-        display: inline-block;
-        vertical-align: middle; }
+  #book-details .listings table tfoot {
+    background-color: white; }
+    #book-details .listings table tfoot tr.make-listing {
+      background-color: #FCFFEE; }
+      #book-details .listings table tfoot tr.make-listing p {
+        text-align: center; }
+      #book-details .listings table tfoot tr.make-listing span.label {
+        width: 4.5em;
+        display: inline-block; }
+      #book-details .listings table tfoot tr.make-listing input.price {
+        width: 4em; }
+    #book-details .listings table tfoot tr.make-listing.inactive {
+      display: none; }
+    #book-details .listings table tfoot tr.add-listing td {
+      text-align: center;
+      border-bottom: none;
+      padding: 0; }
+      #book-details .listings table tfoot tr.add-listing td div {
+        line-height: 2.5em; }
+      #book-details .listings table tfoot tr.add-listing td button, #book-details .listings table tfoot tr.add-listing td div {
+        font-style: italic;
+        font-family: 'Droid Serif', Serif;
+        width: 100%;
+        height: 2.5em; }
+        #book-details .listings table tfoot tr.add-listing td button span.symbol, #book-details .listings table tfoot tr.add-listing td div span.symbol {
+          font-size: 24px;
+          display: inline-block;
+          vertical-align: middle; }
 
 .modal-wrapper {
   position: fixed;

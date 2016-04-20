@@ -5,7 +5,7 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 function (res) {
                     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     return res.data;
-                }, 
+                },
                 function (err) {
                     $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                     return err;
@@ -45,6 +45,54 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res.data;
                 }
             );
+        },
+        removeFromWatchlist: function (isbn) {
+            return $http.post('/api/subscriptions/remove/'+isbn).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
+        getListings: function(isbn) {
+            return $http.get('/api/listings/book/'+isbn)
+                .then( function (res) {
+                    console.log(res);
+                    return res.data;
+                })
+        },
+        addListing: function (isbn, data) {
+            console.log('data', data);
+            return $http.post('/api/listings/add/'+isbn, data)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        updateListing: function (listingID, data) {
+            return $http.put('/api/listings/'+listingID, data)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        removeListing: function (listingID, data) {
+            return $http.delete('/api/listings/'+listingID)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        completeListing: function (listingID, data) {
+            return $http.post('/api/listings/complete/'+listingID)
+                .then( function (res) {
+                    return res.data;
+                });
+        },
+        makeOffer: function(listingID, msg) {
+            var data = {
+                message: msg
+            }
+            return $http.post('/api/listings/offer/'+listingID, data)
+                .then( function (res) {
+                    return res.data;
+                });
         },
         getBook: function (isbn) {
             return $http.get('/api/book/'+isbn).then(

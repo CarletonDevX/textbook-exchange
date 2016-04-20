@@ -53,9 +53,9 @@ mongoose.model('reports', reportSchema, 'reports');
 
 var UserSchema = new Schema({
     name: {
-        givenName: String,
-        familyName: String,
-        fullName: String
+        givenName: { type: String, required: true },
+        familyName: { type: String, required: true },
+        fullName: { type: String, required: true }
     },
     email: { type: String, unique: true, required: true },
     emailSettings: {
@@ -74,6 +74,7 @@ var UserSchema = new Schema({
     avatar: { type: String, default: "https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png" },
     gradYear: Number,
     reports: [reportSchema],
+    offers: [],
     created: { type: Date, required: true }
 });
 
@@ -100,7 +101,6 @@ var ListingSchema = new Schema({
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
     created: { type: Date, required: true },
-    offeredUsers: [], // IDs of users who have made an offer on this listing
     completed: Boolean
 });
 

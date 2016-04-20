@@ -1,0 +1,28 @@
+table.info-table{
+  font-family: 'Droid Sans', sans-serif;
+  font-size: 12px;
+  border:solid 2px #ddd;
+  border-radius: 10px;
+  border-spacing: 0;
+  td{
+    padding: 5px;
+    border-bottom: solid 2px #ddd;
+    border-right: solid 1px #eee;
+  }
+  tr:last-child td{
+    border-bottom: solid 0px;
+  }
+
+  tr td:first-child{
+    text-align: right;
+  }
+
+  tr td:last-child{
+    border-right: solid 0px;
+    text-align: left;
+  }
+
+  tfoot td{
+    border-top: solid 2px #ddd;
+  }
+}

@@ -86,14 +86,20 @@ exports.unsubscribe = function (req, res, next) {
 
 exports.getSubscriptionBooks = function (req, res, next) {
     var subscriptions = req.rUser.subscriptions;
-    Book.find({ISBN: {$in: subscriptions}}, function(err, books) {
-        if (!err) {
-            req.rBooks = books;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+    if (subscriptions.length > 0) {
+        Book.find({ISBN: {$in: subscriptions}}, function(err, books) {
+            if (!err) {
+                req.rBooks = books;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    } else {
+        req.rBooks = [];
+        next();
+    }
+    
 }
 
 exports.updateAmazonInfo = function (req, res, next) {

@@ -1,92 +1,141 @@
 div#book-details
-  h2#book-title {{book.name}}
+
+  h2#book-title {{ book.name }}
   h3#book-author {{ book.author.join(', ') }}
-  div.info-wrapper
+
+  div.info(ng-style="{ 'height' : (descMinimized ? descMinHeight : 'auto') }")
+    table.info-table
+      tbody
+        tr
+          td Edition:
+          td(ng-if="book.edition") {{ book.edition }}
+            sup {{ book.edition | ordinal }}
+          td(ng-if="!book.edition") N/A
+        tr
+          td Publisher:
+          td {{book.publisher}}
+        tr
+          td Published:
+          td {{ book.publishDate | date:"yyyy" }}
+        tr
+          td ISBN:
+          td {{ book.ISBN }}
+        tr
+          td Pages:
+          td {{ book.pageCount }}
+      tfoot
+        tr: td(colspan="2")
+          //- span Watching
+          //- button(ng-click="removeFromWatchlist()") Remove
+          div(ng-if="!currentUser")
+            span
+              a(href, ng-click="openAccount()") log in
+              |  to track this book
+          button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
+            span.symbol +
+            |  add to watchlist
+          button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
+            span.symbol ✓
+            span watching
     div.preview
       img(src="{{book.coverImage}}")
-    div.info
-      table.info-table
-        tbody
-          tr
-            td Edition:
-            td(ng-if="book.edition") {{ book.edition }}
-              sup {{ book.edition | ordinal }}
-            td(ng-if="!book.edition") N/A
-          tr
-            td Publisher:
-            td {{book.publisher}}
-          tr
-            td Published:
-            td {{ book.publishDate | date:"yyyy" }}
-          tr
-            td ISBN:
-            td {{ book.ISBN }}
-          tr
-            td Pages:
-            td {{ book.pageCount }}
-        tfoot
-          tr: td(colspan="2")
-            //- span Watching
-            //- button(ng-click="removeFromWatchlist()") Remove
-            button(ng-click="addToWatchlist()") + Add To Watchlist
 
-  //- p {{book.description}}
+    div(ng-bind-html="book.description | unsafe")
+
+    button.none.expand(
+      ng-class="{'expanded':!descMinimized}",
+      ng-click="toggleDesc()") {{ descMinimized ? "- more -" : "- less -" }}
+
   div.listings
     div.tabs
-      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") All Listings
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") 
+        | All Listings
       button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
         | Selling
-        span.interject  and
-        |  Giving
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-        span.interject  and
-        |  Lending
     table
       thead
         tr
-          th.sortable(colspan="2", ng-click="listingOrder='lastName'", ng-class="{'active':listingOrder=='lastName'}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.sortable(ng-click="listingOrder='condition'", ng-class="{'active':listingOrder=='condition'}") Condition
-          th.sortable(ng-click="listingOrder='price'", ng-class="{'active':listingOrder=='price'}") Price
-          th Buy/Get
+          th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
+          th Contact
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
-        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
-        tr(ng-repeat="listing in book.listings | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
 
       tbody(ng-if="whichListings=='selling'")
-        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
-        tr(ng-repeat="listing in book.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
 
       tbody(ng-if="whichListings=='renting'")
         //- TODO: change hrefs to ui-srefs
-        //- tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort")
-        tr(ng-repeat="listing in book.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+        tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
       tfoot
-        tr.make-listing(ng-class="{'inactive':!newListing.active}")
-          td(colspan="2") Add a listing:
+        tr.make-listing(ng-class="{'inactive':(!listingPaneOpen || !currentUser)}")
+          td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
           td
-            select(ng-model="newListing.condition")
-              option Used
-              option New
+            select(
+              ng-model="newListing.condition",
+              ng-options="opt.name for opt in conditionOptions track by opt.code"
+            )
+            small {{conditionDescriptions[newListing.condition.code]}}
+
           td
             p
-              input(type="checkbox" ng-model="newListing.selling", ng-disabled="newListing.selling && !newListing.renting")
+              input(
+                type="checkbox",
+                id="sellbox",
+                ng-model="newListing.selling",
+                ng-disabled="newListing.selling && !newListing.renting"
+                )
               span.label Sell for 
-              input.price(type="number", ng-model="newListing.sellingPrice", placeholder="$12", ng-disabled="!newListing.selling")
+              input.price(
+                type="text",
+                ng-model="newListing.sellingPrice",
+                placeholder="$12",
+                ng-disabled="!newListing.selling"
+              )
             p
-              input(type="checkbox" ng-model="newListing.renting", ng-disabled="!newListing.selling && newListing.renting")
+              input(
+                type="checkbox",
+                id="rentbox",
+                ng-model="newListing.renting",
+                ng-disabled="!newListing.selling && newListing.renting"
+                )
               span.label Rent for 
-              input.price(type="number", ng-model="newListing.rentingPrice", placeholder="$12", ng-disabled="!newListing.renting")
+              input.price(
+                type="text",
+                ng-model="newListing.rentingPrice",
+                placeholder="$12",
+                ng-disabled="!newListing.renting"
+              )
           td.confirm
-            button +
+            button.confirm(ng-click="submitListing()")
+              span.symbol {{currUserListing ? '✓':'+'}}
+              | {{currUserListing ? 'update!' : 'list!'}}
         tr.add-listing: td(colspan="5")
-          button.cancel(ng-if="newListing.active", ng-click="newListing.active = false")
+          div(ng-if="!currentUser")
+            a(href, ng-click="openAccount()") log in
+            |  to add a listing
+          button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
             span.symbol ×
             |  cancel
-          button.confirm(ng-if="!newListing.active", ng-click="newListing.active = true")
+          button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
             span.symbol +
             |  add a listing
+          button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
+            span.symbol &#9998;
+            |  edit my listing
+
+  div.modal-wrapper(
+    ng-class="{'visible':offer.active}",
+    ng-htb-self-click="offer.active = false"
+    )
+    div.modal
+      h3 Make an offer
+      textarea(ng-model="offer.message")
+      button(ng-click="makeOffer()") Send email
