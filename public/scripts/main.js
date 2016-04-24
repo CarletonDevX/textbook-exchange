@@ -21,7 +21,7 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
     };
 });
 
-// Like ng-click but not activated when click event 
+// Like ng-click but not activated when click event
 // is bubbled up the the el with the directive
 hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($parse, $rootScope) {
   return {
@@ -68,7 +68,13 @@ hitsTheBooks.directive('formAutofillFix', function ($timeout) {
 
 hitsTheBooks.filter('unsafe', function($sce) {
     return function(val) {
-        return $sce.trustAsHtml(val);
+        if (val.match(/<(\w+)>.*<\/\1>/) != null) {
+          // HTML format
+          return $sce.trustAsHtml(val);
+        } else {
+          // Not HTML
+          return $sce.trustAsHtml("<p>" + val + "</p>");
+        }
     };
 });
 
@@ -80,7 +86,7 @@ hitsTheBooks.filter('ordinal', function() {
       input = input || '';
       var lastDig = input % 10;
       var suffixMap = {0: 'th', 1:'st', 2:'nd', 3:'rd'};
-      return suffixMap[lastDig] || suffixMap[0]; 
+      return suffixMap[lastDig] || suffixMap[0];
     } else return '';
   };
 });
@@ -306,7 +312,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   }
 
   //keep search box kleen
-  $scope.$on('$stateChangeStart', 
+  $scope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
     //if we're heading home, erase the search box
     if (toState.name=="main"){
@@ -322,7 +328,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   $rootScope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
     var $sr = $('#search-results');
-    
+
     if (fromState.name=="main.search" && toState.name !== "main.search") {
       $sr.transist({'add':['minimized']},['height'],200);
     }
@@ -358,7 +364,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
       $state.go('main.search',{query:$scope.searchInput})
     }
   }
-  
+
   $scope.resetInitSearch = function(){ initSearch = false }
 
   //when typing, perform a throttled search
@@ -390,7 +396,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   setTimeout(function(){
     $scope.updateSearchBox();
   }, 0);
-  
+
 });
 
 hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
@@ -534,7 +540,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.makeOfferInit = function(listing) {
     $scope.offer.listing = listing;
     console.log(listing);
-    $scope.offer.message = 
+    $scope.offer.message =
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
       + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
       + "Please let me know when we could meet.\n\n"
@@ -660,7 +666,7 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     Api.getCurrentUser().then(function (res) {
       $rootScope.currentUser = res;
       console.log("current user is", res);
-    }, 
+    },
     function (err) {
       $rootScope.currentUser = null;
     });
@@ -670,16 +676,16 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $scope.setCurrentUser();
 
   //Auth listeners
-  $scope.$on(AUTH_EVENTS.loginSuccess, 
+  $scope.$on(AUTH_EVENTS.loginSuccess,
   function(event, args){
     console.log("Logged in.");
     $scope.setCurrentUser();
   });
-  $scope.$on(AUTH_EVENTS.loginFailed, 
+  $scope.$on(AUTH_EVENTS.loginFailed,
   function(event, args){
     console.log("Login failed.");
   });
-  $scope.$on(AUTH_EVENTS.logoutSuccess, 
+  $scope.$on(AUTH_EVENTS.logoutSuccess,
   function(event, args){
     console.log("Logged out.");
     $scope.setCurrentUser();
