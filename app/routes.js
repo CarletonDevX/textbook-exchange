@@ -32,11 +32,14 @@ exports.setupMain = function (app) {
                     numOffers: req.rSchoolStats.numOffers,
                     numUsers: req.rSchoolStats.numUsers
                 });
-             }); 
+             });
 }
 
 exports.setup = function (app) {
-
+    app.post('/contact', function(req, res) {
+      console.log(req.body.message);
+      res.redirect('/');
+    });
     app.route('/partials/:partial')
         .get(function (req, res) {
             res.render('partials/'+req.params.partial+'.jade',{});
@@ -63,13 +66,13 @@ exports.setup = function (app) {
         responder.successTestEmail);
 
     // Send mass update email with email body
-    app.post('/email', 
+    app.post('/email',
         users.getAllUsers,
         mailer.sendUpdateEmail,
         responder.successUpdateEmail);
 
     /****
-     API 
+     API
     ****/
 
     /* Auth */
@@ -119,14 +122,14 @@ exports.setup = function (app) {
 
     // Get current user
     app.route('/api/user')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatCurrentUser)
 
     // Update current user
-        .put(authenticate, 
+        .put(authenticate,
              users.getCurrentUser,
              users.updateUser,
              listings.getUserListings,
@@ -207,14 +210,14 @@ exports.setup = function (app) {
 
     // Get listings for current user
     app.route('/api/listings')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUserListings);
 
     // Add listing with book ID
-    // TODO: might it be slow if we 
+    // TODO: might it be slow if we
     // send out all the emails before
     // we respond to the user?
     app.route('/api/listings/add/:ISBN')
@@ -265,7 +268,7 @@ exports.setup = function (app) {
 
     // Get previous offer on a listing
     app.route('/api/listings/offer/:listingID')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getListing,
              offers.getUserOfferForListing,
