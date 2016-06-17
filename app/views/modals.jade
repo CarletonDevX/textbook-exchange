@@ -18,7 +18,7 @@ div#contact-wrapper.modal-wrapper(
   ng-htb-self-click="modalStates.contact = false")
     div#contact.modal
       h2 Contact Us
-      form#contact-form(action='/contact' method='POST')
+      form#contact-form(action='/api/reportError' method='POST')
         label Message
         textarea(rows="4" cols="50" style='display:block' name='message')
         button(type='submit') Submit

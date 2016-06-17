@@ -36,10 +36,6 @@ exports.setupMain = function (app) {
 }
 
 exports.setup = function (app) {
-    app.post('/contact', function(req, res) {
-      console.log(req.body.message);
-      res.redirect('/');
-    });
     app.route('/partials/:partial')
         .get(function (req, res) {
             res.render('partials/'+req.params.partial+'.jade',{});
@@ -316,6 +312,12 @@ exports.setup = function (app) {
         .get(books.search,
              responder.formatBooks);
 
+    //report Error (dummy router to test frontend)
+    app.route('/api/reportError')
+        .post(function(req, res) {
+          console.log(req.body.message);
+          res.redirect('/');
+        });
     // Catchall 404 for API
     app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);
 
