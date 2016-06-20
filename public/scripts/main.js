@@ -695,6 +695,11 @@ hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $h
   $scope.showSuccess = false;
   $scope.successMessage = '';
   $scope.submit = function() {
+    if (!navigator.onLine) {
+      $scope.showError = true;
+      $scope.errorMessage = "You are offline.";
+      return;
+    }
     var response = Api.reportError($scope.formData).then(function(res) {
       $scope.showError = false;
       $scope.formData = {};
