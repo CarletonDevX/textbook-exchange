@@ -287,3 +287,10 @@ exports.formatBooks = function (req, res) {
     }
     res.json(books);
 }
+
+/* ERRORS */
+
+// This is a great function name
+exports.successError = function (req, res) {
+    res.status(200).send("Error report submitted.");
+}

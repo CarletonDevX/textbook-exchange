@@ -23,7 +23,7 @@ exports.sendTestEmail = function (req, res, next) {
 	options = {
 		subject: "Hits The Books Test",
 		html: readEmail("test.html").format("HELLO"),
-		user: { email: "pickartd@carleton.edu", emailSettings: {}}
+		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
 	}
 	sendMail(req, res, next, options);
 }
@@ -112,6 +112,20 @@ exports.sendUndercutEmail = function (req, res, next) {
 		setting: "undercut" 
 	}
 	sendMailToMultipleRecipients(req, res, next, options);
+}
+
+exports.sendReportEmail = function (req, res, next) {
+	var error = req.body;
+	if (!error.message) {
+		Error.errorWithStatus(req, res, 400, "Please include a 'message' attribute.");
+		return;
+	}
+	options = {
+		subject: "HTB Error Report",
+		html: readEmail("report.html").format(error.message),
+		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
+	}
+	sendMail(req, res, next, options);
 }
 
 /* SENDING HELPERS */

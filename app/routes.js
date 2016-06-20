@@ -312,12 +312,13 @@ exports.setup = function (app) {
         .get(books.search,
              responder.formatBooks);
 
-    //report Error (dummy router to test frontend)
-    app.route('/api/reportError')
-        .post(function(req, res) {
-          console.log(req.body.message);
-          res.redirect('/');
-        });
+    /* Errors */
+
+    // Report error
+    app.route('/api/errors')
+        .post(mailer.sendReportEmail,
+              responder.successError);
+
     // Catchall 404 for API
     app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);
 
