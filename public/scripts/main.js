@@ -687,3 +687,19 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   });
 
 });
+
+hitsTheBooks.controller('errorReportController', function($scope, $http) {
+  $scope.submit = function() {
+    $http({
+      method  : 'POST',
+      url     : '/api/errors',
+      data    : $.param($scope.formData),  // pass in data as strings
+      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+    })
+    .then(function(response) {
+      console.log(response.status + " " + response.data);
+    }, function(response) {
+      console.log(response.status + " " + response.data);
+    });
+  }
+});

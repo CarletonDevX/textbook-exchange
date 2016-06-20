@@ -15,10 +15,10 @@ div#account-wrapper.modal-wrapper(
   
 div#contact-wrapper.modal-wrapper(
   ng-class="{'visible' : modalStates.contact}",
-  ng-htb-self-click="modalStates.contact = false")
+  ng-htb-self-click="modalStates.contact = false" ng-controller='errorReportController')
     div#contact.modal
       h2 Contact Us
-      form#contact-form(action='/api/errors' method='POST')
+      form#contact-form(ng-submit='submit()')
         label Message
-        textarea(rows="4" cols="50" style='display:block' name='message')
+        textarea(rows="4" cols="50" style='display:block' ng-model='formData.message' name='message')
         button(type='submit') Submit
