@@ -689,6 +689,11 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 });
 
 hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http) {
+  $scope.showError = false;
+  $scope.errorMessage = '';
+  $scope.formData = {};
+  $scope.showSuccess = false;
+  $scope.successMessage = '';
   $scope.submit = function() {
     $http({
       method  : 'POST',
@@ -698,12 +703,15 @@ hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $h
     })
     .then(function(response) {
       // status 200 (message not empty)
-      $rootScope.modalStates.contact = false;
+      $scope.showError = false;
+      //$rootScope.modalStates.contact = false;
       $scope.formData = {};
-      alert(response.data);
+      $scope.successMessage = response.data;
+      $scope.showSuccess = true;
     }, function(response) {
       // status 400 (bad request, empty message)
-      alert(response.data.errors[0]);
+      $scope.showError = true;
+      $scope.errorMessage = response.data.errors[0];
     });
   }
 });
