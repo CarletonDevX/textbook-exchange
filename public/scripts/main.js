@@ -688,30 +688,21 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 
 });
 
-hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http) {
+hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http, Api) {
   $scope.showError = false;
   $scope.errorMessage = '';
   $scope.formData = {};
   $scope.showSuccess = false;
   $scope.successMessage = '';
   $scope.submit = function() {
-    $http({
-      method  : 'POST',
-      url     : '/api/errors',
-      data    : $.param($scope.formData),  // pass in data as strings
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
-    })
-    .then(function(response) {
-      // status 200 (message not empty)
+    var response = Api.reportError($scope.formData).then(function(res) {
       $scope.showError = false;
-      //$rootScope.modalStates.contact = false;
       $scope.formData = {};
-      $scope.successMessage = response.data;
+      $scope.successMessage = res;
       $scope.showSuccess = true;
-    }, function(response) {
-      // status 400 (bad request, empty message)
+    }, function(err) {
       $scope.showError = true;
-      $scope.errorMessage = response.data.errors[0];
+      $scope.errorMessage = err.data.errors[0];
     });
   }
 });
