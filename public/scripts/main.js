@@ -688,7 +688,7 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 
 });
 
-hitsTheBooks.controller('errorReportController', function($scope, $http) {
+hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http) {
   $scope.submit = function() {
     $http({
       method  : 'POST',
@@ -697,9 +697,13 @@ hitsTheBooks.controller('errorReportController', function($scope, $http) {
       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
     })
     .then(function(response) {
-      console.log(response.status + " " + response.data);
+      // status 200 (message not empty)
+      $rootScope.modalStates.contact = false;
+      $scope.formData = {};
+      alert(response.data);
     }, function(response) {
-      console.log(response.status + " " + response.data);
+      // status 400 (bad request, empty message)
+      alert(response.data.errors[0]);
     });
   }
 });
