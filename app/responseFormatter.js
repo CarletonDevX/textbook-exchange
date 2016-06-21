@@ -1,31 +1,11 @@
-/** HELPERS **/
+// Format responses from API
 
-// Sorry this function is so dumb.
-// It adds an "offered" attribute to each listing with the following rules:
-// No user -> null, user hasn't offered -> false, user has offered -> true
-
-var addOfferedAttributeToListings = function (req) {
-  if (req.rListings) {
-    var listings = [];
-    for (var i = 0; i < req.rListings.length; i++) {
-      var lstng = req.rListings[i];
-      var offered = null;
-
-      // If logged in
-      if (req.user) {
-        var userID = new String(req.user._id).valueOf();
-        offered = false;
-        for (var j = 0; j < lstng.offeredUsers.length; j++) {
-          var offeredID = new String(lstng.offeredUsers[j]).valueOf();
-          if (userID == offeredID) offered = true;
-        }
-      }
-      lstng.offered = offered;
-      listings.push(lstng);
-    }
-    req.rListings = listings;
+// Cut name to first name only if user is not logged in
+var trimName = function(name, req) {
+  if (!req.user) {
+    return {givenName: name.givenName, familyName: "", fullName: name.givenName}
   }
-  return req;
+  return name;
 }
 
 exports.successTestEmail = function (req, res) {
@@ -58,8 +38,6 @@ exports.successClearSubscriptions = function (req, res) {
 }
 
 exports.formatCurrentUser = function (req, res) {
-    req = addOfferedAttributeToListings(req);
-
     // Case with no listings
     if (!req.rListings) req.rListings = [];
 
@@ -71,8 +49,9 @@ exports.formatCurrentUser = function (req, res) {
              "bio": req.rUser.bio, 
          "created": req.rUser.created, 
         "gradYear": req.rUser.gradYear, 
-            "name": req.rUser.name,
-   "subscriptions": req.rUser.subscriptions
+            "name": trimName(req.rUser.name, req),
+   "subscriptions": req.rUser.subscriptions,
+          "offers": req.rUser.offers
     }
 
     var listings = [];
@@ -92,8 +71,7 @@ exports.formatCurrentUser = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook,
-                 "offered": lstng.offered
+                    "book": formattedBook
         }
         listings.push(formattedListing);
     }
@@ -103,7 +81,6 @@ exports.formatCurrentUser = function (req, res) {
 }
 
 exports.formatUser = function (req, res) {
-    req = addOfferedAttributeToListings(req);
 
     // Case with no listings
     if (!req.rListings) req.rListings = [];
@@ -114,7 +91,8 @@ exports.formatUser = function (req, res) {
              "bio": req.rUser.bio, 
          "created": req.rUser.created,  
         "gradYear": req.rUser.gradYear, 
-            "name": req.rUser.name,
+            "name": trimName(req.rUser.name, req),
+          "offers": req.rUser.offers
     }
 
     var listings = [];
@@ -134,8 +112,7 @@ exports.formatUser = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook,
-                 "offered": lstng.offered
+                    "book": formattedBook
         }
         listings.push(formattedListing);
     }
@@ -163,13 +140,12 @@ exports.successRemoveListing = function (req, res) {
 }
 
 exports.formatBookListings = function (req, res) {
-  req = addOfferedAttributeToListings(req);
   var listings = [];
   for (var i = 0; i < req.rListings.length; i++) {
       var lstng = req.rListings[i];
       var formattedUser = {
-          "name": lstng.user.name,
-          "avatar": lstng.user.avatar,
+              "name": trimName(lstng.user.name, req),
+            "avatar": lstng.user.avatar,
           "gradYear": lstng.user.gradYear
       };
       var formattedListing = {
@@ -181,8 +157,7 @@ exports.formatBookListings = function (req, res) {
              "completed": lstng.completed,
           "rentingPrice": lstng.rentingPrice, 
           "sellingPrice": lstng.sellingPrice,
-                  "user": formattedUser,
-               "offered": lstng.offered
+                  "user": formattedUser
       }
       listings.push(formattedListing);
   }
@@ -191,7 +166,6 @@ exports.formatBookListings = function (req, res) {
 }
 
 exports.formatUserListings = function (req, res) {
-    req = addOfferedAttributeToListings(req);
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
@@ -209,8 +183,7 @@ exports.formatUserListings = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "book": formattedBook,
-                 "offered": lstng.offered
+                    "book": formattedBook
         }
         listings.push(formattedListing);
     }
@@ -219,7 +192,6 @@ exports.formatUserListings = function (req, res) {
 }
 
 exports.formatSingleListing = function (req, res) {
-    req = addOfferedAttributeToListings(req);
     var lstng = req.rListings[0];
     if (!lstng) {
         res.status(404).send('Listing not found by those conditions.');
@@ -232,8 +204,7 @@ exports.formatSingleListing = function (req, res) {
              "created": lstng.created, 
            "completed": lstng.completed,
         "rentingPrice": lstng.rentingPrice, 
-        "sellingPrice": lstng.sellingPrice,
-             "offered": lstng.offered
+        "sellingPrice": lstng.sellingPrice
     }
 
     res.json(formattedListing);
@@ -255,7 +226,6 @@ exports.formatOffer = function (req, res) {
 /** BOOKS **/
 
 exports.formatBook = function (req, res) {
-    req = addOfferedAttributeToListings(req);
     var book = { 
                 "ISBN": req.rBook.ISBN, 
           "amazonInfo": req.rBook.amazonInfo,
@@ -274,7 +244,7 @@ exports.formatBook = function (req, res) {
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
         var formattedUser = {
-            "name": lstng.user.name,
+            "name": trimName(lstng.user.name, req),
             "avatar": lstng.user.avatar,
             "gradYear": lstng.user.gradYear
         };
@@ -286,8 +256,7 @@ exports.formatBook = function (req, res) {
                "completed": lstng.completed,
             "rentingPrice": lstng.rentingPrice, 
             "sellingPrice": lstng.sellingPrice,
-                    "user": formattedUser,
-                 "offered": lstng.offered
+                    "user": formattedUser
         }
         listings.push(formattedListing);
     }
@@ -317,4 +286,11 @@ exports.formatBooks = function (req, res) {
         books.push(formattedBook);
     }
     res.json(books);
+}
+
+/* ERRORS */
+
+// This is a great function name
+exports.successError = function (req, res) {
+    res.status(200).send("Error report submitted.");
 }
