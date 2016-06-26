@@ -4,7 +4,6 @@ var users = require('./controllers/users.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
     mailer = require('./mailer'),
-    data = require('./data'),
     Error = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
@@ -45,16 +44,6 @@ exports.setup = function (app) {
     app.route('/sink')
         .get(function (req, res) {res.status(200).send()})
         .post(function (req, res) {res.status(200).send()});
-
-    // db stuff for testing
-    app.post('/clear', function (req, res) {
-        data.clear();
-        res.status(200).send('Database cleared.');
-    });
-    app.post('/populate', function (req, res) {
-        data.populate();
-        res.status(200).send('Database populated.');
-    });
 
     // Send test email
     app.post('/emailTest',
