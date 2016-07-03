@@ -4,7 +4,6 @@ var users = require('./controllers/users.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
     mailer = require('./mailer'),
-    data = require('./data'),
     Error = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
@@ -32,11 +31,10 @@ exports.setupMain = function (app) {
                     numOffers: req.rSchoolStats.numOffers,
                     numUsers: req.rSchoolStats.numUsers
                 });
-             }); 
+             });
 }
 
 exports.setup = function (app) {
-
     app.route('/partials/:partial')
         .get(function (req, res) {
             res.render('partials/'+req.params.partial+'.jade',{});
@@ -47,29 +45,19 @@ exports.setup = function (app) {
         .get(function (req, res) {res.status(200).send()})
         .post(function (req, res) {res.status(200).send()});
 
-    // db stuff for testing
-    app.post('/clear', function (req, res) {
-        data.clear();
-        res.status(200).send('Database cleared.');
-    });
-    app.post('/populate', function (req, res) {
-        data.populate();
-        res.status(200).send('Database populated.');
-    });
-
     // Send test email
     app.post('/emailTest',
         mailer.sendTestEmail,
         responder.successTestEmail);
 
     // Send mass update email with email body
-    app.post('/email', 
+    app.post('/email',
         users.getAllUsers,
         mailer.sendUpdateEmail,
         responder.successUpdateEmail);
 
     /****
-     API 
+     API
     ****/
 
     /* Auth */
@@ -119,14 +107,14 @@ exports.setup = function (app) {
 
     // Get current user
     app.route('/api/user')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatCurrentUser)
 
     // Update current user
-        .put(authenticate, 
+        .put(authenticate,
              users.getCurrentUser,
              users.updateUser,
              listings.getUserListings,
@@ -207,14 +195,14 @@ exports.setup = function (app) {
 
     // Get listings for current user
     app.route('/api/listings')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getUserListings,
              inject.BooksIntoListings,
              responder.formatUserListings);
 
     // Add listing with book ID
-    // TODO: might it be slow if we 
+    // TODO: might it be slow if we
     // send out all the emails before
     // we respond to the user?
     app.route('/api/listings/add/:ISBN')
@@ -265,7 +253,7 @@ exports.setup = function (app) {
 
     // Get previous offer on a listing
     app.route('/api/listings/offer/:listingID')
-        .get(authenticate, 
+        .get(authenticate,
              users.getCurrentUser,
              listings.getListing,
              offers.getUserOfferForListing,
@@ -312,6 +300,13 @@ exports.setup = function (app) {
     app.route('/api/search')
         .get(books.search,
              responder.formatBooks);
+
+    /* Errors */
+
+    // Report error
+    app.route('/api/errors')
+        .post(mailer.sendReportEmail,
+              responder.successError);
 
     // Catchall 404 for API
     app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);

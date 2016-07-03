@@ -107,6 +107,17 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res.data;
                 }
             );
+        },
+        reportError: function(message) {
+            return $http({
+              method  : 'POST',
+              url     : '/api/errors',
+              data    : $.param(message),
+              headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function(response) {
+              return response.data;
+            });
         }
     }
 }]);

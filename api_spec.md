@@ -109,3 +109,7 @@ Communist calls have been implemented already.
 ##Search
 	- Search for a book (with queries):
 	`GET hitsthebooks.com/api/search/`
+
+##Errors
+	- Report an error (with error details):
+	`POST hitsthebooks.com/api/errors`

@@ -198,9 +198,10 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
 
 hitsTheBooks.controller('headerController', function($scope, $rootScope, $state, $previousState, $document) {
 
-  $scope.modalStates = {
+  $rootScope.modalStates = {
     'blurb':true,
-    'about':false
+    'about':false,
+    'contact':false
   }
 
   $rootScope.openAccount = function(){
@@ -691,4 +692,28 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     $scope.setCurrentUser();
   });
 
+});
+
+hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http, Api) {
+  $scope.showError = false;
+  $scope.errorMessage = '';
+  $scope.formData = {};
+  $scope.showSuccess = false;
+  $scope.successMessage = '';
+  $scope.submit = function() {
+    if (!navigator.onLine) {
+      $scope.showError = true;
+      $scope.errorMessage = "You are offline.";
+      return;
+    }
+    var response = Api.reportError($scope.formData).then(function(res) {
+      $scope.showError = false;
+      $scope.formData = {};
+      $scope.successMessage = res;
+      $scope.showSuccess = true;
+    }, function(err) {
+      $scope.showError = true;
+      $scope.errorMessage = err.data.errors[0];
+    });
+  }
 });

@@ -12,3 +12,15 @@ div#account-wrapper.modal-wrapper(
   ui-view="account",
   ng-class="{'visible' : includes('account')}",
   ng-htb-self-click="closeAccount()")
+  
+div#contact-wrapper.modal-wrapper(
+  ng-class="{'visible' : modalStates.contact}",
+  ng-htb-self-click="modalStates.contact = false;showSuccess=false;" ng-controller='errorReportController')
+    div#contact.modal
+      h2 Contact Us
+        form#contact-form(ng-submit='submit()' ng-if="!showSuccess")
+          label(style='font-size:12px') Message
+          textarea(rows="4" cols="50" style='display:block' ng-model='formData.message' name='message')
+          button(type='submit') Submit
+          p(ng-if='showError' style='color:red; font-size:10px' ng-bind='errorMessage')
+        p(ng-if='showSuccess') {{successMessage}}

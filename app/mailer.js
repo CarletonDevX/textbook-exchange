@@ -13,7 +13,7 @@ var readEmail = function (file) {
 if (!String.prototype.format) {
   String.prototype.format = function() {
   	var args = arguments;
-    return this.replace(/{(\d+)}/g, function(match, number) { 
+    return this.replace(/{(\d+)}/g, function(match, number) {
     	return typeof args[number] != 'undefined' ? args[number] : match;
     });
   };
@@ -23,7 +23,7 @@ exports.sendTestEmail = function (req, res, next) {
 	options = {
 		subject: "Hits The Books Test",
 		html: readEmail("test.html").format("HELLO"),
-		user: { email: "pickartd@carleton.edu", emailSettings: {}}
+		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
 	}
 	sendMail(req, res, next, options);
 }
@@ -48,7 +48,7 @@ exports.sendUpdateEmail = function (req, res, next) {
 
 exports.sendRegistrationEmail = function (req, res, next) {
 	var user = req.rUser;
-	
+
 	options = {
 		subject: "Complete your Hits The Books registration",
 		html: readEmail("registration.html").format(user.verifier),
@@ -95,7 +95,7 @@ exports.sendSubscribersEmail = function (req, res, next) {
 		subject: "Someone has posted a listing for a book on your watchlist.",
 		html: readEmail("watchlist.html").format(book.name, listing._id),
 		users: subscribers,
-		setting: "watchlist" 
+		setting: "watchlist"
 	}
 	sendMailToMultipleRecipients(req, res, next, options);
 }
@@ -109,9 +109,23 @@ exports.sendUndercutEmail = function (req, res, next) {
 		subject: "Someone has undercut your price for " + book.name,
 		html: readEmail("undercut.html").format(book.name, listing._id),
 		users: users,
-		setting: "undercut" 
+		setting: "undercut"
 	}
 	sendMailToMultipleRecipients(req, res, next, options);
+}
+
+exports.sendReportEmail = function (req, res, next) {
+	var error = req.body;
+	if (!error.message) {
+		Error.errorWithStatus(req, res, 400, "Please include a 'message' attribute.");
+		return;
+	}
+	options = {
+		subject: "HTB Error Report",
+		html: readEmail("report.html").format(error.message),
+		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
+	}
+	sendMail(req, res, next, options);
 }
 
 /* SENDING HELPERS */
