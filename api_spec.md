@@ -32,10 +32,12 @@ Communist calls have been implemented already.
 
 `POST hitsthebooks.com/api/register`
 
-| key       | type    | required |
-| --------- | ------- | -------- |
-| username  | string  | yes      |
-| password  | string  | yes      |
+| key        | type    | required |
+| ---------- | ------- | -------- |
+| username   | string  | yes      |
+| password   | string  | yes      |
+| givenName  | string  | yes      |
+| familyName | string  | yes      |
 
 #### ☭ Verify a user with user ID:
 `POST hitsthebooks.com/api/verify/userID`
