@@ -34,7 +34,7 @@ Communist calls have been implemented already.
 
 | key       | type    | required |
 | --------- | ------- | -------- |
-| email     | string  | yes      |
+| username  | string  | yes      |
 | password  | string  | yes      |
 
 #### ☭ Verify a user with user ID:
