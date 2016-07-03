@@ -647,6 +647,8 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
   $scope.user = userInfo;
+  setTimout(function(){console.log(userInfo)}, 2000);
+  $scope.test = function(){console.log(test)};
 });
 
 // Top-level shit

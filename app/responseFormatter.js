@@ -57,11 +57,15 @@ exports.formatCurrentUser = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
-        var formattedBook = {
-                  "name": lstng.book.name,
-            "coverImage": lstng.book.coverImage,
-               "edition": lstng.book.edition,
-        };
+        try{
+          var formattedBook = {
+                    "name": lstng.book.name,
+              "coverImage": lstng.book.coverImage,
+                 "edition": lstng.book.edition,
+          };
+        } catch(err) {
+          console.error('User '+user.userID+' has a broken listing')
+        }
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,
@@ -98,11 +102,15 @@ exports.formatUser = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
-        var formattedBook = {
-                  "name": lstng.book.name,
-            "coverImage": lstng.book.coverImage,
-               "edition": lstng.book.edition,
-        };
+        try{
+          var formattedBook = {
+                    "name": lstng.book.name,
+              "coverImage": lstng.book.coverImage,
+                 "edition": lstng.book.edition,
+          };
+        } catch(err) {
+          console.error('User '+user.userID+' has a broken listing')
+        }
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,

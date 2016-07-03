@@ -44,7 +44,7 @@ exports.createUser = function (req, res, next) {
     var password = info.password;
 
     if (!validateEmail(email)) {
-        Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
+        Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address. Email '+email+' is not valid.');
     } else if (!validatePassword(password)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid password (5+ alphanumeric characters).');
     } else if (info.givenName == null) {
