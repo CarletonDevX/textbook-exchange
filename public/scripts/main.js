@@ -68,7 +68,13 @@ hitsTheBooks.directive('formAutofillFix', function ($timeout) {
 
 hitsTheBooks.filter('unsafe', function($sce) {
     return function(val) {
-        return $sce.trustAsHtml(val);
+        if (val.match(/<(\w+)>.*<\/\1>/) != null) {
+          // HTML format
+          return $sce.trustAsHtml(val);
+        } else {
+          // Not HTML
+          return $sce.trustAsHtml("<p>" + val + "</p>");
+        }
     };
 });
 

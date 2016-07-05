@@ -75,7 +75,7 @@ div#book-details
         tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
       tfoot
-        tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
+        tr.make-listing(ng-class="{'inactive':(!listingPaneOpen || !currentUser)}")
           td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
           td
             select(

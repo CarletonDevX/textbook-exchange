@@ -56,11 +56,11 @@ app.locals.doctype = 'html';
 /* REQUESTS */
 
 var logAll = function (req, res, next) {
-	console.log(req.method, req.url);
+	console.log(req.method, req.url, res.statusCode);
 	next();
 };
 
-if ('process.env.NODE_ENV' == 'development') app.use(logAll);
+if (process.env.NODE_ENV == 'development') app.use(logAll);
 
 // Sessions
 app.use(session({

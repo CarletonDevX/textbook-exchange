@@ -30,10 +30,12 @@ P.S. Make sure you have a persistent session enabled in whatever you're using to
 
 `POST hitsthebooks.com/api/register`
 
-| key       | type    | required |
-| --------- | ------- | -------- |
-| email     | string  | yes      |
-| password  | string  | yes      |
+| key        | type    | required |
+| ---------- | ------- | -------- |
+| username   | string  | yes      |
+| password   | string  | yes      |
+| givenName  | string  | yes      |
+| familyName | string  | yes      |
 
 #### Verify a user with user ID:
 
