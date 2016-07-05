@@ -23,7 +23,7 @@ exports.sendTestEmail = function (req, res, next) {
 	options = {
 		subject: "Hits The Books Test",
 		html: readEmail("test.html").format("HELLO"),
-		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
+		user: { email: config.reportEmail, emailSettings: {}}
 	}
 	sendMail(req, res, next, options);
 }
@@ -89,8 +89,6 @@ exports.sendSubscribersEmail = function (req, res, next) {
 		}
 	};
 
-	console.log(subscribers);
-
 	options = {
 		subject: "Someone has posted a listing for a book on your watchlist.",
 		html: readEmail("watchlist.html").format(book.name, listing._id),
@@ -123,7 +121,7 @@ exports.sendReportEmail = function (req, res, next) {
 	options = {
 		subject: "HTB Error Report",
 		html: readEmail("report.html").format(error.message),
-		user: { email: "davidstoreypickart@gmail.com", emailSettings: {}}
+		user: { email: config.reportEmail, emailSettings: {}}
 	}
 	sendMail(req, res, next, options);
 }
