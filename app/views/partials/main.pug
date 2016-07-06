@@ -12,13 +12,13 @@ div#search(ng-class="\
   div#search-form
     span#search-labels
       label(class="pre-search" for="search") I want to find or list a book:
-      label(class="post-search" for="search") Results for:
+      label(class="post-search" for="search") #{placeHolders[randi]}
     input#search-box(type="text",
                      ng-model="searchInput",
                      ng-focus="resetInitSearch()",
                      ng-change="updateSearchBox();search()",
                      ng-htb-keypress="{13:'classicSearch()'}",
-                     placeholder="#{placeHolders[randi]}")
+                     placeholder=placeHolders[randi])
     //- a(ui-sref="main.search({query: searchInput})") Search
 
   div#search-results(ui-view="search")

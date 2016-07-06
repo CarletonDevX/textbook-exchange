@@ -179,9 +179,9 @@ emailSettings: {
 `POST hitsthebooks.com/api/book/id`
 
 ##Search
-#### Search for a book (with queries):
+#### Search for a book:
 
-`GET hitsthebooks.com/api/search/`
+`GET hitsthebooks.com/api/search?query=query`
 
 ##Errors
 #### Report an error:

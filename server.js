@@ -48,8 +48,8 @@ app.use('/'
 
 
 app.set('views', './app/views');
-app.set('view engine', 'jade');
-//force terse attributes on jade templates (e.g. ui-view not ui-view="ui-view")
+app.set('view engine', 'pug');
+//force terse attributes on pug templates (e.g. ui-view not ui-view="ui-view")
 app.locals.doctype = 'html';
 
 
