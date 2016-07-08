@@ -103,7 +103,9 @@ exports.setup = function (app) {
     app.route('/api/verify')
         .get(users.getUserUnverified,
              users.verifyUser,
-             responder.formatCurrentUser);
+             function(req, res, next) {
+                res.redirect('/');
+             });
 
     // Get current user
     app.route('/api/user')

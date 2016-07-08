@@ -116,7 +116,7 @@ var getUserHelper = function (req, res, next, verified) {
     if (!userID) userID = req.params.userID;
     if (!userID) userID = req.query.userID;
 
-    User.findOne({_id: userID, verified: verified}, function(err, user) {
+    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
         if (!err) {
             if (!user) {
                 Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
@@ -140,6 +140,7 @@ exports.getUser = function (req, res, next) {
 }
 
 exports.getUserUnverified = function (req, res, next) {
+    // Gets both unverified and verified
     getUserHelper(req, res, next, false);
 }
 
