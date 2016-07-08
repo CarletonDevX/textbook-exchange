@@ -118,6 +118,14 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
             .then(function(response) {
               return response.data;
             });
+        },
+        register: function(registerData) {
+            return $http({
+             method  : 'POST',
+             url     : '/api/errors',
+             data    : $.param(message),
+             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
         }
     }
 }]);
