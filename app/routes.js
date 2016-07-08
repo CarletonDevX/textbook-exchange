@@ -100,10 +100,12 @@ exports.setup = function (app) {
               responder.formatCurrentUser);
     app.route('/api/resendRegistration').post();
     // Verify a user with user ID
-    app.route('/api/verify/:userID')
-        .post(users.getUserUnverified,
+    app.route('/api/verify')
+        .get(users.getUserUnverified,
              users.verifyUser,
-             responder.formatCurrentUser);
+             function(req, res, next) {
+                res.redirect('/');
+             });
 
     // Get current user
     app.route('/api/user')

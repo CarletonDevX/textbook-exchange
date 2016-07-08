@@ -37,13 +37,9 @@ P.S. Make sure you have a persistent session enabled in whatever you're using to
 | givenName  | string  | yes      |
 | familyName | string  | yes      |
 
-#### Verify a user with user ID:
+#### Verify a user with user ID (logs in if successful):
 
-`POST hitsthebooks.com/api/verify/userID`
-
-| key       | type    | required |
-| --------- | ------- | -------- |
-| verifier  | string  | yes      |
+`GET hitsthebooks.com/api/verify?userID=userID&verifier=verifier`
 
 #### Get current user [Requires auth]: 
 
