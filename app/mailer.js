@@ -51,7 +51,7 @@ exports.sendRegistrationEmail = function (req, res, next) {
 
 	options = {
 		subject: "Complete your Hits The Books registration",
-		html: readEmail("registration.html").format(user.verifier),
+		html: readEmail("registration.html").format(user.name.givenName, config.url, user._id, user.verifier),
 		user: user
 	}
 	sendMail(req, res, next, options);

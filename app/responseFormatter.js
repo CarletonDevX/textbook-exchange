@@ -49,7 +49,7 @@ exports.formatCurrentUser = function (req, res) {
              "bio": req.rUser.bio,
          "created": req.rUser.created,
         "gradYear": req.rUser.gradYear,
-            "name": trimName(req.rUser.name, req),
+            "name": req.rUser.name,
    "subscriptions": req.rUser.subscriptions,
           "offers": req.rUser.offers
     }

@@ -43,16 +43,18 @@ exports.createUser = function (req, res, next) {
     var email = info.username;
     var password = info.password;
 
-    if (!validateEmail(email)) {
+    if (email == null || !validateEmail(email)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
-    } else if (!validatePassword(password)) {
+    } else if (password == null || !validatePassword(password)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid password (5+ alphanumeric characters).');
     } else if (info.givenName == null) {
         Error.errorWithStatus(req, res, 400, 'Must provide "givenName" attribute.');
     } else if (info.familyName == null) {
         Error.errorWithStatus(req, res, 400, 'Must provide "familyName" attribute.');
     } else {
-        var newUser = new User({"email": email, "created": new Date()});
+        var newUser = new User({ 
+            email: email
+        });
 
         newUser.name = {
             givenName: info.givenName,
@@ -83,20 +85,20 @@ exports.createUser = function (req, res, next) {
 
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
-    var verifier = req.body.verifier;
-    if (verifier != user.verifier) {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
+    var verifier = req.query.verifier;
+    if (verifier == null) {
+        Error.errorWithStatus(req, res, 401, 'Must include verifier string.');
+    } else if (verifier != user.verifier) {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
     } else {
         user.verified = true;
         user.save(function (err, user) {
             if (!err) {
-
                 // Attempt to log in user (ignore errors)
                 req.rUser = user;
                 req.login(user, function () {
                     next();
                 });
-
             } else {
                 Error.mongoError(req, res, err);
             }
@@ -110,8 +112,9 @@ var getUserHelper = function (req, res, next, verified) {
     // Get ID from either params or previous middleware
     var userID = req.rUserID;
     if (!userID) userID = req.params.userID;
+    if (!userID) userID = req.query.userID;
 
-    User.findOne({_id: userID, verified: verified}, function(err, user) {
+    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
         if (!err) {
             if (!user) {
                 Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
@@ -135,6 +138,7 @@ exports.getUser = function (req, res, next) {
 }
 
 exports.getUserUnverified = function (req, res, next) {
+    // Gets both unverified and verified
     getUserHelper(req, res, next, false);
 }
 
@@ -203,8 +207,7 @@ exports.reportUser = function (req, res, next) {
         var report = new Report({
             "userID": user._id,
             "reporterID": req.user._id,
-            "description": description,
-            "created": new Date()
+            "description": description
         });
         user.reports.push(report);
         user.save(function(err, user) {

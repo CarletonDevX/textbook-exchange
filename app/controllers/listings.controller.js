@@ -99,7 +99,6 @@ exports.createListing = function (req, res, next) {
 
     newListing.userID = req.user._id;
     newListing.ISBN = req.rBook.ISBN;
-    newListing.created = new Date();
     newListing.completed = false;
 
     newListing.save(function(err, listing) {
