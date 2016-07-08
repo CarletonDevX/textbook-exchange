@@ -94,13 +94,11 @@ exports.verifyUser = function (req, res, next) {
         user.verified = true;
         user.save(function (err, user) {
             if (!err) {
-
                 // Attempt to log in user (ignore errors)
                 req.rUser = user;
                 req.login(user, function () {
                     next();
                 });
-
             } else {
                 Error.mongoError(req, res, err);
             }
