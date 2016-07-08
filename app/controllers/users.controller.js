@@ -43,16 +43,18 @@ exports.createUser = function (req, res, next) {
     var email = info.username;
     var password = info.password;
 
-    if (!validateEmail(email)) {
+    if (email == null || !validateEmail(email)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
-    } else if (!validatePassword(password)) {
+    } else if (password == null || !validatePassword(password)) {
         Error.errorWithStatus(req, res, 400, 'Must provide a valid password (5+ alphanumeric characters).');
     } else if (info.givenName == null) {
         Error.errorWithStatus(req, res, 400, 'Must provide "givenName" attribute.');
     } else if (info.familyName == null) {
         Error.errorWithStatus(req, res, 400, 'Must provide "familyName" attribute.');
     } else {
-        var newUser = new User({"email": email, "created": new Date()});
+        var newUser = new User({ 
+            email: email
+        });
 
         newUser.name = {
             givenName: info.givenName,
@@ -203,8 +205,7 @@ exports.reportUser = function (req, res, next) {
         var report = new Report({
             "userID": user._id,
             "reporterID": req.user._id,
-            "description": description,
-            "created": new Date()
+            "description": description
         });
         user.reports.push(report);
         user.save(function(err, user) {
