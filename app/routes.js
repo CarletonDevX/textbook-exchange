@@ -100,8 +100,8 @@ exports.setup = function (app) {
               responder.formatCurrentUser);
 
     // Verify a user with user ID
-    app.route('/api/verify/:userID')
-        .post(users.getUserUnverified,
+    app.route('/api/verify')
+        .get(users.getUserUnverified,
              users.verifyUser,
              responder.formatCurrentUser);
 

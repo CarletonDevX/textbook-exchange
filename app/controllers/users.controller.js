@@ -85,9 +85,11 @@ exports.createUser = function (req, res, next) {
 
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
-    var verifier = req.body.verifier;
-    if (verifier != user.verifier) {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.')
+    var verifier = req.query.verifier;
+    if (verifier == null) {
+        Error.errorWithStatus(req, res, 401, 'Must include verifier string.');
+    } else if (verifier != user.verifier) {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
     } else {
         user.verified = true;
         user.save(function (err, user) {
@@ -112,6 +114,7 @@ var getUserHelper = function (req, res, next, verified) {
     // Get ID from either params or previous middleware
     var userID = req.rUserID;
     if (!userID) userID = req.params.userID;
+    if (!userID) userID = req.query.userID;
 
     User.findOne({_id: userID, verified: verified}, function(err, user) {
         if (!err) {
