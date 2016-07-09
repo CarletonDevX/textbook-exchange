@@ -45,7 +45,7 @@ var reportSchema = new Schema({
     userID: { type: String, required: true },
     reporterID: { type: String, required: true },
     description: { type: String, required: true },
-    created: { type: Date, required: true }
+    created: { type: Date, default: new Date() }
 });
 
 // Add schema to db
@@ -75,7 +75,7 @@ var UserSchema = new Schema({
     gradYear: Number,
     reports: [reportSchema],
     offers: [],
-    created: { type: Date, required: true }
+    created: { type: Date, default: new Date() }
 });
 
 // Compare input password to user password
@@ -100,7 +100,7 @@ var ListingSchema = new Schema({
     condition: { type: Number, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
-    created: { type: Date, required: true },
+    created: { type: Date, default: new Date() },
     completed: Boolean
 });
 

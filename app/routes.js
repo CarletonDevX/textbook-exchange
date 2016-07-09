@@ -26,7 +26,7 @@ exports.setupMain = function (app) {
              listings.countListings,
              offers.countOffers,
              function (req, res) {
-                res.render('index.jade', {
+                res.render('index.pug', {
                     numListings: req.rSchoolStats.numListings,
                     numOffers: req.rSchoolStats.numOffers,
                     numUsers: req.rSchoolStats.numUsers
@@ -37,7 +37,7 @@ exports.setupMain = function (app) {
 exports.setup = function (app) {
     app.route('/partials/:partial')
         .get(function (req, res) {
-            res.render('partials/'+req.params.partial+'.jade',{});
+            res.render('partials/'+req.params.partial+'.pug',{});
         });
 
     // Workaround for browser autofill
@@ -100,10 +100,12 @@ exports.setup = function (app) {
               responder.formatCurrentUser);
 
     // Verify a user with user ID
-    app.route('/api/verify/:userID')
-        .post(users.getUserUnverified,
+    app.route('/api/verify')
+        .get(users.getUserUnverified,
              users.verifyUser,
-             responder.formatCurrentUser);
+             function(req, res, next) {
+                res.redirect('/');
+             });
 
     // Get current user
     app.route('/api/user')
