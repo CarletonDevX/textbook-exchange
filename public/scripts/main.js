@@ -266,8 +266,10 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
 
-  $scope.register = function (loginData) {
-    // Nothing here yet :(
+  $scope.register = function (registerData) {
+      Api.register(registerData).then(function(res) {
+         $scope.closeAccount(); 
+      });
   };
 });
 
