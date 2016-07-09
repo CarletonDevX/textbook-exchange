@@ -48,19 +48,19 @@ app.use('/'
 
 
 app.set('views', './app/views');
-app.set('view engine', 'jade');
-//force terse attributes on jade templates (e.g. ui-view not ui-view="ui-view")
+app.set('view engine', 'pug');
+//force terse attributes on pug templates (e.g. ui-view not ui-view="ui-view")
 app.locals.doctype = 'html';
 
 
 /* REQUESTS */
 
 var logAll = function (req, res, next) {
-	console.log(req.method, req.url);
+	console.log(req.method, req.url, res.statusCode);
 	next();
 };
 
-if ('process.env.NODE_ENV' == 'development') app.use(logAll);
+if (process.env.NODE_ENV == 'development') app.use(logAll);
 
 // Sessions
 app.use(session({

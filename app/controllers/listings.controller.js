@@ -92,9 +92,13 @@ exports.createListing = function (req, res, next) {
         return;
     }
 
+    if (newListing.condition == null) {
+        Error.errorWithStatus(req, res, 400, 'Must include "condition" attribute.');
+        return;
+    }
+
     newListing.userID = req.user._id;
     newListing.ISBN = req.rBook.ISBN;
-    newListing.created = new Date();
     newListing.completed = false;
 
     newListing.save(function(err, listing) {

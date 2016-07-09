@@ -42,14 +42,14 @@ exports.formatCurrentUser = function (req, res) {
     if (!req.rListings) req.rListings = [];
 
     var user = {
-          "userID": req.rUser._id, 
+          "userID": req.rUser._id,
            "email": req.rUser.email,
    "emailSettings": req.rUser.emailSettings,
           "avatar": req.rUser.avatar,
-             "bio": req.rUser.bio, 
-         "created": req.rUser.created, 
-        "gradYear": req.rUser.gradYear, 
-            "name": trimName(req.rUser.name, req),
+             "bio": req.rUser.bio,
+         "created": req.rUser.created,
+        "gradYear": req.rUser.gradYear,
+            "name": req.rUser.name,
    "subscriptions": req.rUser.subscriptions,
           "offers": req.rUser.offers
     }
@@ -57,26 +57,29 @@ exports.formatCurrentUser = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
-        try{
-          var formattedBook = {
+
+        var formattedBook;
+        if (lstng.book != undefined) {
+          formattedBook = {
                     "name": lstng.book.name,
               "coverImage": lstng.book.coverImage,
                  "edition": lstng.book.edition,
           };
-        } catch(err) {
-          console.error('User '+user.userID+' has a broken listing')
+
+        } else {
+          formattedBook = {};
         }
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,
-               "listingID": lstng._id, 
-               "condition": lstng.condition, 
-                 "created": lstng.created, 
+               "listingID": lstng._id,
+               "condition": lstng.condition,
+                 "created": lstng.created,
                "completed": lstng.completed,
-            "rentingPrice": lstng.rentingPrice, 
+            "rentingPrice": lstng.rentingPrice,
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
-        }
+        };
         listings.push(formattedListing);
     }
 
@@ -90,11 +93,11 @@ exports.formatUser = function (req, res) {
     if (!req.rListings) req.rListings = [];
 
     var user = {
-          "userID": req.rUser._id, 
+          "userID": req.rUser._id,
           "avatar": req.rUser.avatar,
-             "bio": req.rUser.bio, 
-         "created": req.rUser.created,  
-        "gradYear": req.rUser.gradYear, 
+             "bio": req.rUser.bio,
+         "created": req.rUser.created,
+        "gradYear": req.rUser.gradYear,
             "name": trimName(req.rUser.name, req),
           "offers": req.rUser.offers
     }
@@ -114,11 +117,11 @@ exports.formatUser = function (req, res) {
         var formattedListing = {
                   "userID": lstng.userID,
                     "ISBN": lstng.ISBN,
-               "listingID": lstng._id, 
-               "condition": lstng.condition, 
-                 "created": lstng.created, 
+               "listingID": lstng._id,
+               "condition": lstng.condition,
+                 "created": lstng.created,
                "completed": lstng.completed,
-            "rentingPrice": lstng.rentingPrice, 
+            "rentingPrice": lstng.rentingPrice,
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
         }
@@ -158,12 +161,12 @@ exports.formatBookListings = function (req, res) {
       };
       var formattedListing = {
                 "userID": lstng.userID,
-                  "ISBN": lstng.ISBN, 
-             "listingID": lstng._id, 
-             "condition": lstng.condition, 
-               "created": lstng.created, 
+                  "ISBN": lstng.ISBN,
+             "listingID": lstng._id,
+             "condition": lstng.condition,
+               "created": lstng.created,
              "completed": lstng.completed,
-          "rentingPrice": lstng.rentingPrice, 
+          "rentingPrice": lstng.rentingPrice,
           "sellingPrice": lstng.sellingPrice,
                   "user": formattedUser
       }
@@ -184,12 +187,12 @@ exports.formatUserListings = function (req, res) {
         };
         var formattedListing = {
                   "userID": lstng.userID,
-                    "ISBN": lstng.ISBN, 
-               "listingID": lstng._id, 
-               "condition": lstng.condition, 
-                 "created": lstng.created, 
+                    "ISBN": lstng.ISBN,
+               "listingID": lstng._id,
+               "condition": lstng.condition,
+                 "created": lstng.created,
                "completed": lstng.completed,
-            "rentingPrice": lstng.rentingPrice, 
+            "rentingPrice": lstng.rentingPrice,
             "sellingPrice": lstng.sellingPrice,
                     "book": formattedBook
         }
@@ -206,12 +209,12 @@ exports.formatSingleListing = function (req, res) {
     }
     var formattedListing = {
               "userID": lstng.userID,
-                "ISBN": lstng.ISBN, 
-           "listingID": lstng._id, 
-           "condition": lstng.condition, 
-             "created": lstng.created, 
+                "ISBN": lstng.ISBN,
+           "listingID": lstng._id,
+           "condition": lstng.condition,
+             "created": lstng.created,
            "completed": lstng.completed,
-        "rentingPrice": lstng.rentingPrice, 
+        "rentingPrice": lstng.rentingPrice,
         "sellingPrice": lstng.sellingPrice
     }
 
@@ -234,17 +237,17 @@ exports.formatOffer = function (req, res) {
 /** BOOKS **/
 
 exports.formatBook = function (req, res) {
-    var book = { 
-                "ISBN": req.rBook.ISBN, 
+    var book = {
+                "ISBN": req.rBook.ISBN,
           "amazonInfo": req.rBook.amazonInfo,
-              "author": req.rBook.author, 
-          "coverImage": req.rBook.coverImage, 
-         "description": req.rBook.description, 
-             "edition": req.rBook.edition, 
-        "lastSearched": req.rBook.lastSearched, 
-                "name": req.rBook.name, 
-           "pageCount": req.rBook.pageCount, 
-         "publishDate": req.rBook.publishDate, 
+              "author": req.rBook.author,
+          "coverImage": req.rBook.coverImage,
+         "description": req.rBook.description,
+             "edition": req.rBook.edition,
+        "lastSearched": req.rBook.lastSearched,
+                "name": req.rBook.name,
+           "pageCount": req.rBook.pageCount,
+         "publishDate": req.rBook.publishDate,
            "publisher": req.rBook.publisher,
          "subscribers": req.rBook.subscribers
     };
@@ -258,11 +261,11 @@ exports.formatBook = function (req, res) {
         };
         var formattedListing = {
                   "userID": lstng.userID,
-               "listingID": lstng._id, 
-               "condition": lstng.condition, 
-                 "created": lstng.created, 
+               "listingID": lstng._id,
+               "condition": lstng.condition,
+                 "created": lstng.created,
                "completed": lstng.completed,
-            "rentingPrice": lstng.rentingPrice, 
+            "rentingPrice": lstng.rentingPrice,
             "sellingPrice": lstng.sellingPrice,
                     "user": formattedUser
         }
@@ -278,16 +281,16 @@ exports.formatBooks = function (req, res) {
     for (var i = 0; i < req.rBooks.length; i++) {
         var book = req.rBooks[i];
         var formattedBook = {
-                        "ISBN": book.ISBN, 
+                        "ISBN": book.ISBN,
                   "amazonInfo": book.amazonInfo,
-                      "author": book.author, 
-                  "coverImage": book.coverImage, 
-                 "description": book.description, 
-                     "edition": book.edition, 
-                "lastSearched": book.lastSearched, 
-                        "name": book.name, 
-                   "pageCount": book.pageCount, 
-                 "publishDate": book.publishDate, 
+                      "author": book.author,
+                  "coverImage": book.coverImage,
+                 "description": book.description,
+                     "edition": book.edition,
+                "lastSearched": book.lastSearched,
+                        "name": book.name,
+                   "pageCount": book.pageCount,
+                 "publishDate": book.publishDate,
                    "publisher": book.publisher,
                  "subscribers": book.subscribers
             };
