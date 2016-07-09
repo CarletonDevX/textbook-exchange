@@ -1,17 +1,13 @@
-td.image(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}")
-	img(src="{{listing.user.avatar}}")
-td.image(ng-if="listing.isAmazonListing") [A]
+td.image: a(href="book/{{listing.userID}}")
+	//- TODO: ^^MAKE THIS A REAL LINK
+	img(src="{{listing.book.coverImage}}")
 
-
-td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}
-td.username(ng-if="listing.isAmazonListing") Amazon
-
+td.name: a(href="book/{{listing.userID}}") {{listing.book.name}}
 
 td {{conditionOptions[listing.condition].name}}
 	small {{conditionDescriptions[listing.condition]}}
 
-
-td(ng-if="!listing.isAmazonListing")
+td
 	table.price-table
 		tr
 			td Buy:
@@ -20,13 +16,6 @@ td(ng-if="!listing.isAmazonListing")
 			td Rent:
 			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
 			td(ng-if="!listing.rentingPrice") —
-	//- p(ng-if="whichListings !== 'selling' && listing.rentingPrice !== null").
-	//- 	{{listing.rentingPrice | currency }}/term {{whichListings=='renting'?undefined:'to rent'}}
-	//- p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
-	//- 	{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
-td(ng-if="listing.isAmazonListing")
-	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
-		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
 
 td.make-an-offer(ng-if="!listing.isAmazonListing")
 	p(ng-if="!currentUser")
@@ -50,5 +39,3 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 		button.confirm(ng-click="removeListing(listing, true)") yes
 		button.no(ng-click="removeListing(listing, false)") no
 		button.cancel(ng-click="closeRemovingListing()") cancel
-td.make-an-offer(ng-if="listing.isAmazonListing")
-	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon

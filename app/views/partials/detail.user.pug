@@ -1,7 +1,6 @@
 h2 {{user.name.fullName}}
 img(src="{{user.avatar}}")
 h4 {{user.bio}}
-button(ng-click"test()") TEST
 //- div.listing#selling
 //-     table
 //-       thead
@@ -61,7 +60,7 @@ div.listings
         //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.user.listings'")
-      tfoot
+      tfoot(ng-if="user.userID == currentUser.userID")
         tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
           td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
           td

@@ -5,7 +5,10 @@ var nodemon = require('nodemon');
 
 nodemon({
   script: 'server.js',
-  ext: '*'
+  ext: '*',	
+  watch: [
+  	'public/scripts/main.js'
+  ]
 });
 
 // this is so we don't have to press ctrl-c twice to shut down
@@ -14,5 +17,6 @@ process.on('SIGINT', function () {
 });
 
 nodemon.on('restart', function (files) {
+  var files = files || [];
   console.log('Change detected, restarting:', files.join(', '));
 });

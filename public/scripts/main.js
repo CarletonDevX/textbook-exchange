@@ -300,6 +300,20 @@ hitsTheBooks.controller('accountEditController', function($scope, $state) {
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $document) {
   var streamSearchDelay = 200; //ms
   var initSearch = false;
+  angular.extend($scope, {
+      conditionOptions : [
+      {code: 0, name: "New"},
+      {code: 1, name: "Lightly Used"},
+      {code: 2, name: "Used"},
+      {code: 3, name: "Heavily Used"}
+    ],
+    conditionDescriptions : {
+      0 : "Pristine condition, rarely opened if at all",
+      1 : "No writing inside, spine may be creased, cover otherwise undamaged",
+      2 : "Writing or minor cover damage",
+      3 : "Lots of writing, heavy cover and/or page damage"
+    },
+  });
 
   //inject the query if we init on the search page
   if ($state.is('main.search')) {
@@ -434,18 +448,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     // NEW LISTING DEFAULTS
     listingPaneOpen : false,
     currUserListing : false,
-    conditionOptions : [
-      {code: 0, name: "New"},
-      {code: 1, name: "Lightly Used"},
-      {code: 2, name: "Used"},
-      {code: 3, name: "Heavily Used"}
-    ],
-    conditionDescriptions : {
-      0 : "Pristine condition, rarely opened if at all",
-      1 : "No writing inside, spine may be creased, cover otherwise undamaged",
-      2 : "Writing or minor cover damage",
-      3 : "Lots of writing, heavy cover and/or page damage"
-    },
     newListing : {
       selling: true,
       renting: true,
@@ -653,8 +655,19 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
   $scope.user = userInfo;
-  setTimout(function(){console.log(userInfo)}, 2000);
-  $scope.test = function(){console.log(test)};
+  angular.extend($scope, {
+    listingOrder : "price",
+    whichListings : "both",
+    reverseSort : true,
+    descMinimized : false,
+    descMinHeight : null,
+    offer : {
+        active: false,
+        listing: null,
+        message: null
+    },
+    removingListing : false
+  });
 });
 
 // Top-level shit

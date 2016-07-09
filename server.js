@@ -32,6 +32,7 @@ var assetsManagerMiddleware = assetManager({
         'route': /\/static\/scripts\/client\.js/,
         'path': "./public/scripts/",
         'dataType': 'javascript',
+        'stale': false, // ignore cache
         'debug': true, // don't minify for now
         'files': [
             "utils.js",

@@ -27,8 +27,7 @@ body::before {
   position: fixed;
   top: 0;
   left: 0;
-  background-image: url(http://www.radionorthland.org/wp-content/uploads/2012/01/Library-Books.jpg);
-  background-size: cover;
+  background-image: url(/images/wov.png);
   width: 100%;
   height: 100%;
   opacity: .5;
@@ -521,9 +520,9 @@ main #detail-wrapper.maximized {
   text-align: center;
   font-variant: small-caps; }
 
-#book-details .listings .tabs {
+.listings .tabs {
   display: flex; }
-  #book-details .listings .tabs button {
+  .listings .tabs button {
     flex-grow: 1;
     background: none;
     font-family: 'Droid Serif', Serif;
@@ -536,35 +535,35 @@ main #detail-wrapper.maximized {
     color: gray;
     height: 75px;
     font-size: 18px; }
-  #book-details .listings .tabs button.active {
+  .listings .tabs button.active {
     border-bottom: solid black 2px;
     font-style: inherit;
     font-size: 22px;
     color: black; }
-  #book-details .listings .tabs button:hover {
+  .listings .tabs button:hover {
     color: black; }
 
-#book-details .listings table {
+.listings table {
   width: 100%;
   border-spacing: 0;
   border: solid 1px #ccc;
   border-top: 2px solid black;
   overflow: hidden; }
-  #book-details .listings table thead tr {
+  .listings table thead tr {
     height: 4em; }
-    #book-details .listings table thead tr th {
+    .listings table thead tr th {
       font-weight: 400;
       font-style: italic;
       height: 40px;
       border-bottom: 2px solid #ccc;
       border-right: 1px solid #eee;
       position: relative; }
-    #book-details .listings table thead tr th.sortable {
+    .listings table thead tr th.sortable {
       padding: 0 20px;
       cursor: pointer; }
-    #book-details .listings table thead tr th.sortable:hover {
+    .listings table thead tr th.sortable:hover {
       text-decoration: underline; }
-    #book-details .listings table thead tr th.active::before {
+    .listings table thead tr th.active::before {
       content: '';
       background-color: rgba(252, 255, 100, 0.07);
       width: 100%;
@@ -573,87 +572,87 @@ main #detail-wrapper.maximized {
       left: 0;
       top: 0;
       z-index: -1; }
-    #book-details .listings table thead tr th.active::after {
+    .listings table thead tr th.active::after {
       content: '▴';
       position: absolute;
       width: 1.5em;
       color: gray;
       font-style: normal; }
-    #book-details .listings table thead tr th.active.reversed::after {
+    .listings table thead tr th.active.reversed::after {
       content: '▾'; }
-    #book-details .listings table thead tr th:last-child {
+    .listings table thead tr th:last-child {
       border-right: none; }
-  #book-details .listings table tbody, #book-details .listings table tfoot {
+  .listings table tbody, .listings table tfoot {
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px; }
-    #book-details .listings table tbody tr td, #book-details .listings table tfoot tr td {
+    .listings table tbody tr td, .listings table tfoot tr td {
       text-align: center;
       border-bottom: solid 2px #ccc;
       border-right: solid 1px #eee; }
-      #book-details .listings table tbody tr td img, #book-details .listings table tfoot tr td img {
+      .listings table tbody tr td img, .listings table tfoot tr td img {
         width: 40px;
         height: 40px;
         vertical-align: middle;
         margin: 5px; }
-    #book-details .listings table tbody tr td:last-child, #book-details .listings table tfoot tr td:last-child {
+    .listings table tbody tr td:last-child, .listings table tfoot tr td:last-child {
       border-right: none; }
-    #book-details .listings table tbody tr td.image, #book-details .listings table tfoot tr td.image {
+    .listings table tbody tr td.image, .listings table tfoot tr td.image {
       text-align: right;
       border-right: none;
       padding-right: 5px; }
-    #book-details .listings table tbody tr td.username, #book-details .listings table tfoot tr td.username {
+    .listings table tbody tr td.username, .listings table tfoot tr td.username {
       text-align: left;
       padding-left: 5px; }
-    #book-details .listings table tbody td.make-an-offer button.email,
-    #book-details .listings table tbody td.confirm button.confirm, #book-details .listings table tfoot td.make-an-offer button.email,
-    #book-details .listings table tfoot td.confirm button.confirm {
+    .listings table tbody td.make-an-offer button.email,
+    .listings table tbody td.confirm button.confirm, .listings table tfoot td.make-an-offer button.email,
+    .listings table tfoot td.confirm button.confirm {
       width: 100%;
       padding: 0;
       height: 80px; }
-    #book-details .listings table tbody td.make-an-offer, #book-details .listings table tfoot td.make-an-offer {
+    .listings table tbody td.make-an-offer, .listings table tfoot td.make-an-offer {
       padding: 0; }
-      #book-details .listings table tbody td.make-an-offer button.edit, #book-details .listings table tbody td.make-an-offer button.delete, #book-details .listings table tfoot td.make-an-offer button.edit, #book-details .listings table tfoot td.make-an-offer button.delete {
+      .listings table tbody td.make-an-offer button.edit, .listings table tbody td.make-an-offer button.delete, .listings table tfoot td.make-an-offer button.edit, .listings table tfoot td.make-an-offer button.delete {
         display: inline-block;
         width: 50%;
         height: 80px;
         padding: 0; }
-      #book-details .listings table tbody td.make-an-offer div.remove-listing p, #book-details .listings table tfoot td.make-an-offer div.remove-listing p {
+      .listings table tbody td.make-an-offer div.remove-listing p, .listings table tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
-      #book-details .listings table tbody td.make-an-offer div.remove-listing button, #book-details .listings table tfoot td.make-an-offer div.remove-listing button {
+      .listings table tbody td.make-an-offer div.remove-listing button, .listings table tfoot td.make-an-offer div.remove-listing button {
         height: 28px; }
-      #book-details .listings table tbody td.make-an-offer div.remove-listing button.cancel, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.cancel {
+      .listings table tbody td.make-an-offer div.remove-listing button.cancel, .listings table tfoot td.make-an-offer div.remove-listing button.cancel {
         width: 100%; }
-      #book-details .listings table tbody td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tbody td.make-an-offer div.remove-listing button.no, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.confirm, #book-details .listings table tfoot td.make-an-offer div.remove-listing button.no {
+      .listings table tbody td.make-an-offer div.remove-listing button.confirm, .listings table tbody td.make-an-offer div.remove-listing button.no, .listings table tfoot td.make-an-offer div.remove-listing button.confirm, .listings table tfoot td.make-an-offer div.remove-listing button.no {
         width: 50%;
         display: inline-block; }
-  #book-details .listings table tbody td {
+  .listings table tbody td {
     height: 80px; }
-  #book-details .listings table tfoot {
+  .listings table tfoot {
     background-color: white; }
-    #book-details .listings table tfoot tr.make-listing {
+    .listings table tfoot tr.make-listing {
       background-color: #FCFFEE; }
-      #book-details .listings table tfoot tr.make-listing p {
+      .listings table tfoot tr.make-listing p {
         text-align: center; }
-      #book-details .listings table tfoot tr.make-listing span.label {
+      .listings table tfoot tr.make-listing span.label {
         width: 4.5em;
         display: inline-block; }
-      #book-details .listings table tfoot tr.make-listing input.price {
+      .listings table tfoot tr.make-listing input.price {
         width: 4em; }
-    #book-details .listings table tfoot tr.make-listing.inactive {
+    .listings table tfoot tr.make-listing.inactive {
       display: none; }
-    #book-details .listings table tfoot tr.add-listing td {
+    .listings table tfoot tr.add-listing td {
       text-align: center;
       border-bottom: none;
       padding: 0; }
-      #book-details .listings table tfoot tr.add-listing td div {
+      .listings table tfoot tr.add-listing td div {
         line-height: 2.5em; }
-      #book-details .listings table tfoot tr.add-listing td button, #book-details .listings table tfoot tr.add-listing td div {
+      .listings table tfoot tr.add-listing td button, .listings table tfoot tr.add-listing td div {
         font-style: italic;
         font-family: 'Droid Serif', Serif;
         width: 100%;
         height: 2.5em; }
-        #book-details .listings table tfoot tr.add-listing td button span.symbol, #book-details .listings table tfoot tr.add-listing td div span.symbol {
+        .listings table tfoot tr.add-listing td button span.symbol, .listings table tfoot tr.add-listing td div span.symbol {
           font-size: 24px;
           display: inline-block;
           vertical-align: middle; }
