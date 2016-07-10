@@ -270,10 +270,15 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
       Api.register(registerData).then(function(res) {
           console.log("outter callback");
           console.log(res);
-          $scope.alertMessage = res.data.errors[0];
-          if (res.status == 200) {
-              $scope.closeAccount();
-              $scope.alertMessage = "";
+          if (res.status == 400) {
+              if (res.data.errors.length == 2 && res.data.errors[1].startsWith("E11000 duplicate key error")) {
+                  $scope.alertMessage = "This email is already used";
+              } else {
+                  $scope.alertMessage = res.data.errors[0];
+              }
+          } else {
+              $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+              $scope.alertMessage = "Registration Successful! Please check your email to proceed.";
           }
       });
   };
