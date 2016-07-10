@@ -88,6 +88,33 @@ button {
 table button:focus {
   box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, 0.4); }
 
+.tooltip {
+  position: relative; }
+
+.tooltip:hover::after,
+.tooltip.tooltip-active::after {
+  background: #333;
+  background: rgba(0, 0, 0, 0.8);
+  bottom: 26px;
+  color: #fff;
+  content: attr(title);
+  left: 20%;
+  padding: 5px 15px;
+  position: absolute;
+  z-index: 98;
+  width: 220px; }
+
+.tooltip:hover::before,
+.tooltip.tooltip-active::before {
+  border: solid;
+  border-color: #333 transparent;
+  border-width: 6px 6px 0 6px;
+  bottom: 20px;
+  content: "";
+  left: 50%;
+  position: absolute;
+  z-index: 99; }
+
 label, .label {
   font-family: 'Droid Serif';
   font-style: italic; }
@@ -367,7 +394,11 @@ main #search {
       main #search #search-results ul li h5 {
         font-family: 'Droid Sans', serif;
         font-weight: 400;
-        margin-top: 0; }
+        margin-top: 0;
+        padding-bottom: 6px;
+        border-bottom: 2px solid black; }
+      main #search #search-results ul li table {
+        width: 100%; }
     main #search #search-results ul li:hover {
       box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
 
@@ -520,9 +551,9 @@ main #detail-wrapper.maximized {
   text-align: center;
   font-variant: small-caps; }
 
-.listings .tabs {
+div.listings .tabs {
   display: flex; }
-  .listings .tabs button {
+  div.listings .tabs button {
     flex-grow: 1;
     background: none;
     font-family: 'Droid Serif', Serif;
@@ -535,35 +566,35 @@ main #detail-wrapper.maximized {
     color: gray;
     height: 75px;
     font-size: 18px; }
-  .listings .tabs button.active {
+  div.listings .tabs button.active {
     border-bottom: solid black 2px;
     font-style: inherit;
     font-size: 22px;
     color: black; }
-  .listings .tabs button:hover {
+  div.listings .tabs button:hover {
     color: black; }
 
-.listings table {
+div.listings table.listings {
   width: 100%;
   border-spacing: 0;
   border: solid 1px #ccc;
   border-top: 2px solid black;
   overflow: hidden; }
-  .listings table thead tr {
+  div.listings table.listings thead tr {
     height: 4em; }
-    .listings table thead tr th {
+    div.listings table.listings thead tr th {
       font-weight: 400;
       font-style: italic;
       height: 40px;
       border-bottom: 2px solid #ccc;
       border-right: 1px solid #eee;
       position: relative; }
-    .listings table thead tr th.sortable {
+    div.listings table.listings thead tr th.sortable {
       padding: 0 20px;
       cursor: pointer; }
-    .listings table thead tr th.sortable:hover {
+    div.listings table.listings thead tr th.sortable:hover {
       text-decoration: underline; }
-    .listings table thead tr th.active::before {
+    div.listings table.listings thead tr th.active::before {
       content: '';
       background-color: rgba(252, 255, 100, 0.07);
       width: 100%;
@@ -572,87 +603,99 @@ main #detail-wrapper.maximized {
       left: 0;
       top: 0;
       z-index: -1; }
-    .listings table thead tr th.active::after {
+    div.listings table.listings thead tr th.active::after {
       content: '▴';
       position: absolute;
       width: 1.5em;
       color: gray;
       font-style: normal; }
-    .listings table thead tr th.active.reversed::after {
+    div.listings table.listings thead tr th.active.reversed::after {
       content: '▾'; }
-    .listings table thead tr th:last-child {
+    div.listings table.listings thead tr th:last-child {
       border-right: none; }
-  .listings table tbody, .listings table tfoot {
+  div.listings table.listings tbody, div.listings table.listings tfoot {
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px; }
-    .listings table tbody tr td, .listings table tfoot tr td {
+    div.listings table.listings tbody tr td, div.listings table.listings tfoot tr td {
       text-align: center;
       border-bottom: solid 2px #ccc;
       border-right: solid 1px #eee; }
-      .listings table tbody tr td img, .listings table tfoot tr td img {
+      div.listings table.listings tbody tr td img, div.listings table.listings tfoot tr td img {
         width: 40px;
         height: 40px;
         vertical-align: middle;
         margin: 5px; }
-    .listings table tbody tr td:last-child, .listings table tfoot tr td:last-child {
+    div.listings table.listings tbody tr td:last-child, div.listings table.listings tfoot tr td:last-child {
       border-right: none; }
-    .listings table tbody tr td.image, .listings table tfoot tr td.image {
+    div.listings table.listings tbody tr td.image, div.listings table.listings tfoot tr td.image {
       text-align: right;
       border-right: none;
       padding-right: 5px; }
-    .listings table tbody tr td.username, .listings table tfoot tr td.username {
+    div.listings table.listings tbody tr td.username, div.listings table.listings tfoot tr td.username {
       text-align: left;
       padding-left: 5px; }
-    .listings table tbody td.make-an-offer button.email,
-    .listings table tbody td.confirm button.confirm, .listings table tfoot td.make-an-offer button.email,
-    .listings table tfoot td.confirm button.confirm {
+    div.listings table.listings tbody td.quality a.tooltip, div.listings table.listings tfoot td.quality a.tooltip {
+      border-bottom: black 1px dashed; }
+    div.listings table.listings tbody td.make-an-offer button.email,
+    div.listings table.listings tbody td.confirm button.confirm, div.listings table.listings tfoot td.make-an-offer button.email,
+    div.listings table.listings tfoot td.confirm button.confirm {
       width: 100%;
       padding: 0;
       height: 80px; }
-    .listings table tbody td.make-an-offer, .listings table tfoot td.make-an-offer {
+    div.listings table.listings tbody td.make-an-offer, div.listings table.listings tfoot td.make-an-offer {
       padding: 0; }
-      .listings table tbody td.make-an-offer button.edit, .listings table tbody td.make-an-offer button.delete, .listings table tfoot td.make-an-offer button.edit, .listings table tfoot td.make-an-offer button.delete {
+      div.listings table.listings tbody td.make-an-offer button.edit, div.listings table.listings tbody td.make-an-offer button.delete, div.listings table.listings tfoot td.make-an-offer button.edit, div.listings table.listings tfoot td.make-an-offer button.delete {
         display: inline-block;
         width: 50%;
         height: 80px;
         padding: 0; }
-      .listings table tbody td.make-an-offer div.remove-listing p, .listings table tfoot td.make-an-offer div.remove-listing p {
+      div.listings table.listings tbody td.make-an-offer div.remove-listing p, div.listings table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
-      .listings table tbody td.make-an-offer div.remove-listing button, .listings table tfoot td.make-an-offer div.remove-listing button {
+      div.listings table.listings tbody td.make-an-offer div.remove-listing button, div.listings table.listings tfoot td.make-an-offer div.remove-listing button {
         height: 28px; }
-      .listings table tbody td.make-an-offer div.remove-listing button.cancel, .listings table tfoot td.make-an-offer div.remove-listing button.cancel {
+      div.listings table.listings tbody td.make-an-offer div.remove-listing button.cancel, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.cancel {
         width: 100%; }
-      .listings table tbody td.make-an-offer div.remove-listing button.confirm, .listings table tbody td.make-an-offer div.remove-listing button.no, .listings table tfoot td.make-an-offer div.remove-listing button.confirm, .listings table tfoot td.make-an-offer div.remove-listing button.no {
+      div.listings table.listings tbody td.make-an-offer div.remove-listing button.confirm, div.listings table.listings tbody td.make-an-offer div.remove-listing button.no, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.confirm, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.no {
         width: 50%;
         display: inline-block; }
-  .listings table tbody td {
-    height: 80px; }
-  .listings table tfoot {
+  div.listings table.listings tbody td {
+    height: 80px;
+    padding: 0; }
+  div.listings table.listings tbody table.price-table {
+    height: 79px;
+    border-collapse: collapse; }
+    div.listings table.listings tbody table.price-table td {
+      height: auto;
+      border-bottom: none; }
+  div.listings table.listings tfoot {
     background-color: white; }
-    .listings table tfoot tr.make-listing {
+    div.listings table.listings tfoot tr.make-listing {
       background-color: #FCFFEE; }
-      .listings table tfoot tr.make-listing p {
+      div.listings table.listings tfoot tr.make-listing p {
         text-align: center; }
-      .listings table tfoot tr.make-listing span.label {
+      div.listings table.listings tfoot tr.make-listing span.label {
         width: 4.5em;
         display: inline-block; }
-      .listings table tfoot tr.make-listing input.price {
+      div.listings table.listings tfoot tr.make-listing input.price {
         width: 4em; }
-    .listings table tfoot tr.make-listing.inactive {
+      div.listings table.listings tfoot tr.make-listing td.condition small.description {
+        display: block;
+        margin-top: 10px; }
+    div.listings table.listings tfoot tr.make-listing.inactive {
       display: none; }
-    .listings table tfoot tr.add-listing td {
+    div.listings table.listings tfoot tr.add-listing td {
       text-align: center;
       border-bottom: none;
       padding: 0; }
-      .listings table tfoot tr.add-listing td div {
+      div.listings table.listings tfoot tr.add-listing td div {
         line-height: 2.5em; }
-      .listings table tfoot tr.add-listing td button, .listings table tfoot tr.add-listing td div {
+      div.listings table.listings tfoot tr.add-listing td button, div.listings table.listings tfoot tr.add-listing td div {
         font-style: italic;
         font-family: 'Droid Serif', Serif;
         width: 100%;
         height: 2.5em; }
-        .listings table tfoot tr.add-listing td button span.symbol, .listings table tfoot tr.add-listing td div span.symbol {
+        div.listings table.listings tfoot tr.add-listing td button span.symbol, div.listings table.listings tfoot tr.add-listing td div span.symbol {
           font-size: 24px;
           display: inline-block;
           vertical-align: middle; }

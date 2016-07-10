@@ -1,36 +1,6 @@
 h2 {{user.name.fullName}}
 img(src="{{user.avatar}}")
 h4 {{user.bio}}
-//- div.listing#selling
-//-     table
-//-       thead
-//-         tr
-//-           th Book
-//-           th Condition
-//-           th Price
-//-       tbody
-//-         //- todo: filter on whether it's for sale or rent
-//-         tr(ng-repeat="listing in user.listings")
-//-           td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-//-           td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
-//-           td {{listing.condition}}
-//-           td {{listing.sellingPrice}}
-//-           td: button: img(src="/images/email.png")
-//-   div.listing#renting
-//-     table
-//-       thead
-//-         tr
-//-           th Book
-//-           th Condition
-//-           th Price
-//-       tbody
-//-         //-todo: filter on whether it's for sale or rent
-//-         tr(ng-repeat="listing in user.listings")
-//-           td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-//-           td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
-//-           td {{listing.condition}}
-//-           td {{listing.rentingPrice}}
-//-           td: button: img(src="/images/email.png")
 
 div.listings
     div.tabs
@@ -40,7 +10,7 @@ div.listings
         | Selling
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-    table
+    table.listings
       thead
         tr
           th.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title

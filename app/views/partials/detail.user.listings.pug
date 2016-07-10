@@ -4,8 +4,8 @@ td.image: a(href="book/{{listing.userID}}")
 
 td.name: a(href="book/{{listing.userID}}") {{listing.book.name}}
 
-td {{conditionOptions[listing.condition].name}}
-	small {{conditionDescriptions[listing.condition]}}
+td.quality
+	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
 	table.price-table

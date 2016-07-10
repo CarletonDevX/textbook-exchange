@@ -54,7 +54,7 @@ div#book-details
         | Selling
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-    table
+    table.listings
       thead
         tr
           th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
@@ -77,12 +77,12 @@ div#book-details
       tfoot
         tr.make-listing(ng-class="{'inactive':(!listingPaneOpen || !currentUser)}")
           td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
-          td
+          td.condition
             select(
               ng-model="newListing.condition",
               ng-options="opt.name for opt in conditionOptions track by opt.code"
             )
-            small {{conditionDescriptions[newListing.condition.code]}}
+            small.description {{conditionDescriptions[newListing.condition.code]}}
 
           td
             p

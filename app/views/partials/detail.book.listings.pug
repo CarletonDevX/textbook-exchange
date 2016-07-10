@@ -7,9 +7,8 @@ td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}")
 td.username(ng-if="listing.isAmazonListing") Amazon
 
 
-td {{conditionOptions[listing.condition].name}}
-	small {{conditionDescriptions[listing.condition]}}
-
+td.quality
+	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td(ng-if="!listing.isAmazonListing")
 	table.price-table

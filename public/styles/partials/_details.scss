@@ -130,7 +130,7 @@ $listing-row-height: 80px;
   }
 }
 
-.listings{
+div.listings{
   .tabs{
     display: flex;
     button{
@@ -142,6 +142,7 @@ $listing-row-height: 80px;
       padding: 10px;
       border: none;
       outline: none;
+
       // font-style: italic;
       // font-variant: inherit;
       font-variant: small-caps;
@@ -161,7 +162,7 @@ $listing-row-height: 80px;
       color: black;
     }
   }
-  table{
+  table.listings{
     width:100%;
     $dark-border-color: #ccc;
     $light-border-color: #eee;
@@ -243,6 +244,10 @@ $listing-row-height: 80px;
         }
       }
 
+      td.quality a.tooltip{
+        border-bottom: black 1px dashed;
+      }
+
       td.make-an-offer button.email,
       td.confirm button.confirm{
         width: 100%;
@@ -281,10 +286,16 @@ $listing-row-height: 80px;
     tbody{
       td{
         height: $listing-row-height;
+        padding:0;
       }
-      // span.label{
-      //   font-size: 14pt;
-      // }
+      table.price-table{
+        height:79px;
+        border-collapse: collapse;
+        td{
+          height: auto;
+          border-bottom: none;
+        }
+      }
     }
     tfoot{
       background-color: white;
@@ -299,6 +310,11 @@ $listing-row-height: 80px;
         }
         input.price{
           width:4em;
+        }
+
+        td.condition small.description {
+          display: block;
+          margin-top: 10px;
         }
       }
       tr.make-listing.inactive{
