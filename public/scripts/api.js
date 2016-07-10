@@ -122,9 +122,12 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
         register: function (registerData) {
             return $http.post('/api/register/', registerData).then(
                 function (res) {
+                    console.log('no err');
                     return res.data;
                 },
                 function (err) {
+                    console.log('err');
+                    console.log(err);
                     return err;
                 }
             );

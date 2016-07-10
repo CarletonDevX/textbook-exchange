@@ -268,7 +268,13 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.register = function (registerData) {
       Api.register(registerData).then(function(res) {
-         $scope.closeAccount(); 
+          console.log("outter callback");
+          console.log(res);
+          $scope.alertMessage = res.data.errors[0];
+          if (res.status == 200) {
+              $scope.closeAccount();
+              $scope.alertMessage = "";
+          }
       });
   };
 });
