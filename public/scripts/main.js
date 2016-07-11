@@ -259,7 +259,20 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-      $scope.closeAccount();
+        console.log(res);
+        if (res.status == 401) {
+            $scope.signinAlert = "Account does not exist.";
+            return;
+        }
+        if (res.status == 400) {
+            $scope.signinAlert = "Account not verified.<a href='#'>Resend Verification Link?</a>";
+            return;
+        }
+        if (res.data == "Wrong Password") {
+            $scope.signinAlert = "Wrong Password.<a href='#'>Forgot Password?</a>";
+            return;
+        }
+        $scope.closeAccount();
     });
   };
 
@@ -271,14 +284,16 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
           console.log("outter callback");
           console.log(res);
           if (res.status == 400) {
+              console.log("Status 400");
+              console.log(res);
               if (res.data.errors.length == 2 && res.data.errors[1].startsWith("E11000 duplicate key error")) {
-                  $scope.alertMessage = "This email is already used";
+                  $scope.registerAlert = "Sorry, there's already an account associated with that email address";
               } else {
-                  $scope.alertMessage = res.data.errors[0];
+                  $scope.registerAlert = res.data.errors[0];
               }
           } else {
               $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-              $scope.alertMessage = "Registration Successful! Please check your email to proceed.";
+              $scope.registerAlert = "Registration Successful! Please check your email to proceed.";
           }
       });
   };
