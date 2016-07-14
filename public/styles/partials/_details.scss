@@ -34,6 +34,11 @@ $listing-row-height: 80px;
 
     p{
       line-height: 157%;
+      margin: 0
+    }
+
+    p:not(:first-of-type)   {
+      text-indent: 2em;
     }
 
     p:first-of-type:first-letter{
@@ -43,6 +48,10 @@ $listing-row-height: 80px;
       line-height: 100%;
       margin-top: 0px;
       margin-right: 10px;
+    }
+
+    p:last-of-type{
+      padding-bottom: 20px;
     }
 
     .expand{
@@ -344,5 +353,20 @@ div.listings{
         }
       }
     }
+  }
+}
+
+table.watchlist{
+  width: 50%;
+
+  td.cover-image img{
+    width: 40px;
+  }
+
+  tbody{
+    display: block;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
 }

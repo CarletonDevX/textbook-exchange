@@ -110,6 +110,7 @@ exports.formatUser = function (req, res) {
                     "name": lstng.book.name,
               "coverImage": lstng.book.coverImage,
                  "edition": lstng.book.edition,
+                    "ISBN": lstng.book.ISBN
           };
         } catch(err) {
           console.error('User '+user.userID+' has a broken listing')
@@ -183,7 +184,9 @@ exports.formatUserListings = function (req, res) {
         var formattedBook = {
                   "name": lstng.book.name,
             "coverImage": lstng.book.coverImage,
-               "edition": lstng.book.edition
+               "edition": lstng.book.edition,
+                  "ISBN": lstng.book.ISBN
+
         };
         var formattedListing = {
                   "userID": lstng.userID,

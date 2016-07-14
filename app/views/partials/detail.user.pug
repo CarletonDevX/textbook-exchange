@@ -1,6 +1,40 @@
-h2 {{user.name.fullName}}
-img(src="{{user.avatar}}")
-h4 {{user.bio}}
+div.bio
+  div#user-image
+    img(src="{{user.avatar}}")
+  h2 {{user.name.fullName}}
+  p Books on offer: {{user.listings.length}}
+  p grad year: {{user.gradYear}}
+  h3 Bio
+  p {{user.bio}}
+
+table.watchlist.info-table(ng-if="user.userID == currentUser.userID")
+  thead
+    tr
+      td(colspan="3") Watchlist
+  tbody
+    tr(ng-repeat="book in watchlist")
+      td.cover-image    
+        img(src="{{book.coverImage}}")
+      td {{book.name}}
+      td
+        button x
+  tfoot
+    tr
+      td(colspan="3") Unwatch all
+
+table.email-settings(ng-if="user.userID == currentUser.userID")
+  tr
+    td Email me if someone else undercuts my listing
+    td
+      input(type="checkbox")
+  tr
+    td Email me if there's activity on a book I'm watching
+    td
+      input(type="checkbox")
+  tr
+    td Email me about updates to Hits the Books
+    td
+      input(type="checkbox")
 
 div.listings
     div.tabs

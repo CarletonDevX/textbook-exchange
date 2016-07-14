@@ -1,6 +1,7 @@
 td.image(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}")
 	img(src="{{listing.user.avatar}}")
-td.image(ng-if="listing.isAmazonListing") [A]
+td.image(ng-if="listing.isAmazonListing"): a(href="{{listing.amazonUrl}}", target="_blank")
+	img(src="images/amazon.jpg")
 
 
 td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.fullName}}

@@ -1,8 +1,8 @@
-td.image: a(href="book/{{listing.userID}}")
+td.image: a(href="book/{{listing.book.ISBN}}")
 	//- TODO: ^^MAKE THIS A REAL LINK
 	img(src="{{listing.book.coverImage}}")
 
-td.name: a(href="book/{{listing.userID}}") {{listing.book.name}}
+td.name: a(href="book/{{listing.book.ISBN}}") {{listing.book.name}}
 
 td.quality
 	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}

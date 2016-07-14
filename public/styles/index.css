@@ -482,7 +482,10 @@ main #detail-wrapper.maximized {
   position: relative;
   overflow: hidden; }
   #book-details .info p {
-    line-height: 157%; }
+    line-height: 157%;
+    margin: 0; }
+  #book-details .info p:not(:first-of-type) {
+    text-indent: 2em; }
   #book-details .info p:first-of-type:first-letter {
     font-size: 50px;
     display: inline-block;
@@ -490,6 +493,8 @@ main #detail-wrapper.maximized {
     line-height: 100%;
     margin-top: 0px;
     margin-right: 10px; }
+  #book-details .info p:last-of-type {
+    padding-bottom: 20px; }
   #book-details .info .expand {
     position: absolute;
     bottom: 0;
@@ -699,6 +704,16 @@ div.listings table.listings {
           font-size: 24px;
           display: inline-block;
           vertical-align: middle; }
+
+table.watchlist {
+  width: 50%; }
+  table.watchlist td.cover-image img {
+    width: 40px; }
+  table.watchlist tbody {
+    display: block;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: scroll; }
 
 .modal-wrapper {
   position: fixed;
