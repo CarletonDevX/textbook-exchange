@@ -256,7 +256,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Login
   $scope.loginData = { username: '', password: '' };
-
+  $scope.signinAlert = "";
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
         console.log(res);
@@ -281,11 +281,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.register = function (registerData) {
       Api.register(registerData).then(function(res) {
-          console.log("outter callback");
-          console.log(res);
           if (res.status == 400) {
-              console.log("Status 400");
-              console.log(res);
               if (res.data.errors.length == 2 && res.data.errors[1].startsWith("E11000 duplicate key error")) {
                   $scope.registerAlert = "Sorry, there's already an account associated with that email address";
               } else {
