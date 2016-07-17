@@ -169,12 +169,19 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         userInfo: function(Api, $stateParams) {
           return Api.getUser($stateParams.userID);
         },
-        watchlist: function(Api, $stateParams, $rootScope) {
-          if ($stateParams.userID == $rootScope.currentUser.userID) {
-            return Api.getWatchlist();
-          } else return [];
-        }
-      },
+        //rootscope works mostly, unless you're landing on your own userpage
+        watchlist: function(Api, $stateParams) {
+          /* do this instead */
+          return Api.getWatchlist()
+            .then(function(result) {
+              if (result.status && result.status == 401) {
+                result = [];
+              }
+              console.log("result", result);
+              return result
+            });
+        } 
+      },  
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
@@ -658,12 +665,21 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, userInfo, watchlist, $stateParams) {
+hitsTheBooks.controller('userPageController', function($scope, userInfo, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
-  console.log("user: ", userInfo);
   $scope.watchlist = watchlist;
-  console.log("hi")
-  console.log("watchlist: ", watchlist);
+
+  // Current bug I'm fighting is that everything works great except
+  // if you look at your own page and try to log in
+  // it's not updating the view when we re-fetch the watchlist info
+  $scope.$on(AUTH_EVENTS.loginSuccess,
+    function() {
+      Api.getWatchlist().then( function(result) {
+        console.log("RESULT: ", result)
+        $scope.watchlist = watchlist;
+      }); 
+    }
+  );
   angular.extend($scope, {
     listingOrder : "price",
     whichListings : "both",

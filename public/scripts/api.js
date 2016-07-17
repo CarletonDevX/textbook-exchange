@@ -36,7 +36,7 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
             return $http.get('/api/subscriptions').then(
                 function (res) {
                     return res.data;
-                }
+                }, function(err) { return err }
             );
         },
         addToWatchlist: function (isbn) {

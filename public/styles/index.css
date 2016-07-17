@@ -640,6 +640,8 @@ div.listings table.listings {
     div.listings table.listings tbody tr td.username, div.listings table.listings tfoot tr td.username {
       text-align: left;
       padding-left: 5px; }
+    div.listings table.listings tbody tbody:last-child td, div.listings table.listings tfoot tbody:last-child td {
+      border-bottom: 1px #ccc; }
     div.listings table.listings tbody td.quality a.tooltip, div.listings table.listings tfoot td.quality a.tooltip {
       border-bottom: black 1px dashed; }
     div.listings table.listings tbody td.make-an-offer button.email,
@@ -714,7 +716,7 @@ table.watchlist {
     display: block;
     max-height: 250px;
     overflow-x: hidden;
-    overflow-y: scroll; }
+    overflow-y: auto; }
 
 .modal-wrapper {
   position: fixed;

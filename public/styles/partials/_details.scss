@@ -253,6 +253,10 @@ div.listings{
         }
       }
 
+      tbody:last-child td {
+        border-bottom: 1px $dark-border-color;
+      }
+
       td.quality a.tooltip{
         border-bottom: black 1px dashed;
       }
@@ -367,6 +371,6 @@ table.watchlist{
     display: block;
     max-height: 250px;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 }
