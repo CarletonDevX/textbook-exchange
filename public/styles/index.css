@@ -147,8 +147,9 @@ input[type="checkbox"]::after {
   visibility: visible;
   content: "✓";
   position: absolute;
-  top: -13px;
-  font-size: 32px;
+  top: -17px;
+  font-size: 28px;
+  left: 4px;
   color: transparent; }
 
 input[type="checkbox"]:checked::after {

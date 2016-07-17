@@ -170,6 +170,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
           return Api.getUser($stateParams.userID);
         },
         watchlist: function(Api, $stateParams) {
+          console.log("hi")
           if ($stateParams.userID == $rootScope.currentUser.userID) {
             return Api.getWatchlist();
           } else return {};
