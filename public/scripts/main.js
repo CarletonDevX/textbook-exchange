@@ -169,11 +169,10 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         userInfo: function(Api, $stateParams) {
           return Api.getUser($stateParams.userID);
         },
-        watchlist: function(Api, $stateParams) {
-          console.log("hi")
+        watchlist: function(Api, $stateParams, $rootScope) {
           if ($stateParams.userID == $rootScope.currentUser.userID) {
             return Api.getWatchlist();
-          } else return {};
+          } else return [];
         }
       },
       templateUrl : '/partials/detail.user',
@@ -661,7 +660,10 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
 hitsTheBooks.controller('userPageController', function($scope, userInfo, watchlist, $stateParams) {
   $scope.user = userInfo;
+  console.log("user: ", userInfo);
   $scope.watchlist = watchlist;
+  console.log("hi")
+  console.log("watchlist: ", watchlist);
   angular.extend($scope, {
     listingOrder : "price",
     whichListings : "both",
