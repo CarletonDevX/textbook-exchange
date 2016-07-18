@@ -1,40 +1,52 @@
-div.bio
+div.user-about
   div#user-image
     img(src="{{user.avatar}}")
-  h2 {{user.name.fullName}}
-  p Books on offer: {{user.listings.length}}
-  p grad year: {{user.gradYear}}
-  h3 Bio
-  p {{user.bio}}
+  div.about
+    h2 {{user.name.fullName}}
+    p.stats
+      span Books on offer: {{user.listings.length}}
+      span(ng-if="user.gradYear")  | Class year: {{user.gradYear}}
+    h3(ng-if="user.bio") Bio
+    p(ng-if="user.bio") {{user.bio}}
 
-table.watchlist.info-table(ng-if="user.userID == currentUser.userID")
-  thead
-    tr
-      td(colspan="3") Watchlist
-  tbody
-    tr(ng-repeat="book in watchlist")
-      td.cover-image    
-        img(src="{{book.coverImage}}")
-      td {{book.name}}
-      td
-        button x
-  tfoot
-    tr
-      td(colspan="3") Unwatch all
+div.private(ng-if="user.userID == currentUser.userID")
+  table.watchlist.info-table
+    thead
+      tr
+        td(colspan="3") Watchlist
+    tbody
+      tr(ng-repeat="book in watchlist")
+        td.cover-image
+          a(href="book/{{book.ISBN}}")
+            img(src="{{book.coverImage}}")
+        td
+          a(href="book/{{book.ISBN}}") {{book.name}}
+        td
+          button x
+    tfoot
+      tr
+        td(colspan="3") Unwatch all
 
-table.email-settings(ng-if="user.userID == currentUser.userID")
-  tr
-    td Email me if someone else undercuts my listing
-    td
-      input(type="checkbox")
-  tr
-    td Email me if there's activity on a book I'm watching
-    td
-      input(type="checkbox")
-  tr
-    td Email me about updates to Hits the Books
-    td
-      input(type="checkbox")
+  table.email-settings
+    thead
+      tr
+        td(colspan=2) Email me when...
+    tbody
+      tr
+        td
+          label(for="undercut-box") Someone undercuts one of my listings
+        td
+          input(id="undercut-box", type="checkbox")
+      tr
+        td
+          label(for= "watchlist-box") There's activity on a book on my watchlist
+        td
+          input(id="watchlist-box", type="checkbox")
+      tr
+        td
+          label(for="htbupdate-box") Hits the Books recieves a major update
+        td
+          input(id="htbupdate-box", type="checkbox")
 
 div.listings
     div.tabs

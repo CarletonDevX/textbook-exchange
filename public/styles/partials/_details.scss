@@ -1,4 +1,7 @@
 $listing-row-height: 80px;
+$dark-border-color: #ccc;
+$light-border-color: #eee;
+
 
 #book-details{
   h2, h3{
@@ -173,8 +176,6 @@ div.listings{
   }
   table.listings{
     width:100%;
-    $dark-border-color: #ccc;
-    $light-border-color: #eee;
     border-spacing: 0;
     border: solid 1px $dark-border-color;
     border-top: 2px solid black;
@@ -360,8 +361,37 @@ div.listings{
   }
 }
 
+
+// user view stuff
+
+div.user-about{
+  div#user-image img{
+    box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
+    display: block;
+    padding: 10px;
+    width: 100px;
+  }
+  h2, h3, p.stats{
+    font-family: 'Droid Sans', serif; 
+  }
+  p.stats{
+    font-size: 14px;
+  }
+  h2{
+    margin-top: 0;
+  }
+  div.about{
+    flex-grow: 1;
+    padding-left: 20px;
+  }
+  overflow: visible;
+  display: flex;
+  margin-bottom: 20px;
+}
+
 table.watchlist{
-  width: 50%;
+  width: calc(50% - 10px);
+  float:left;
 
   td.cover-image img{
     width: 40px;
@@ -373,4 +403,20 @@ table.watchlist{
     overflow-x: hidden;
     overflow-y: auto;
   }
+  thead td{
+    border-bottom: solid 2px $dark-border-color;
+  }
+}
+
+table.email-settings{
+  width: calc(50% - 10px);
+  float:right;
+}
+
+.private{
+  overflow:auto;
+  border-bottom: solid 1px $light-border-color;
+  border-top: solid 1px $light-border-color;
+  padding: 20px 0;
+  margin: 20px 0;
 }

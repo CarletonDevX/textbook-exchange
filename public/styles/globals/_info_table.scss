@@ -9,7 +9,7 @@ table.info-table{
     border-bottom: solid 2px #ddd;
     border-right: solid 1px #eee;
   }
-  tr:last-child td{
+  tbody tr:last-child td{
     border-bottom: solid 0px;
   }
 

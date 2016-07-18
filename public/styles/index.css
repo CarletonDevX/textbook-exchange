@@ -708,8 +708,28 @@ div.listings table.listings {
           display: inline-block;
           vertical-align: middle; }
 
+div.user-about {
+  overflow: visible;
+  display: flex;
+  margin-bottom: 20px; }
+  div.user-about div#user-image img {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
+    display: block;
+    padding: 10px;
+    width: 100px; }
+  div.user-about h2, div.user-about h3, div.user-about p.stats {
+    font-family: 'Droid Sans', serif; }
+  div.user-about p.stats {
+    font-size: 14px; }
+  div.user-about h2 {
+    margin-top: 0; }
+  div.user-about div.about {
+    flex-grow: 1;
+    padding-left: 20px; }
+
 table.watchlist {
-  width: 50%; }
+  width: calc(50% - 10px);
+  float: left; }
   table.watchlist td.cover-image img {
     width: 40px; }
   table.watchlist tbody {
@@ -717,6 +737,19 @@ table.watchlist {
     max-height: 250px;
     overflow-x: hidden;
     overflow-y: auto; }
+  table.watchlist thead td {
+    border-bottom: solid 2px #ccc !important; }
+
+table.email-settings {
+  width: calc(50% - 10px);
+  float: right; }
+
+.private {
+  overflow: auto;
+  border-bottom: solid 1px #eee;
+  border-top: solid 1px #eee;
+  padding: 20px 0;
+  margin: 20px 0; }
 
 .modal-wrapper {
   position: fixed;
