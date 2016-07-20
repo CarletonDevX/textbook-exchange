@@ -64,7 +64,22 @@ exports.setup = function (app) {
 
     // Login
     app.route('/api/login')
-        .post(passport.authenticate('local'),
+        .post(
+            function(req, res, next) {
+                passport.authenticate('local', function(err, user, exists) {
+                    if (err) {
+                        Error.errorWithStatus(req, res, 500, err.message);
+                    } else if (user) {
+                        req.login(user, function () {
+                            next();
+                        });
+                    } else if (exists) {
+                        Error.errorWithStatus(req, res, 400, 'User is not verified');
+                    } else {
+                        Error.errorWithStatus(req, res, 401, 'Incorrect email or password');
+                    }
+                })(req, res, next);
+            },
             users.getCurrentUser,
             listings.getUserListings,
             inject.BooksIntoListings,
