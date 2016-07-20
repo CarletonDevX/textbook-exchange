@@ -12,10 +12,10 @@ module.exports = function() {
         // The "done" callback is specified in routes.js
 
         User.findOne({email: username}, function(err, user) {
-                if (err) return done(err);
-                if (!user || !user.authenticate(password)) return done(null, false, false);
-                if (!user.verified) return done(null, user, true);
-                return done(null, user);
+            if (err) return done(err);
+            if (!user || !user.authenticate(password)) return done(null, false, false);
+            if (!user.verified) return done(null, user, true);
+            return done(null, user);
         });
     }));
 };

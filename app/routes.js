@@ -114,11 +114,6 @@ exports.setup = function (app) {
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
 
-    app.route('/api/resendVerification/:userID')
-        .post(users.getUserUnverified,
-            mailer.sendRegistrationEmail,
-            responder.successRegistrationEmail);
-
     // Verify a user with user ID
     app.route('/api/verify')
         .get(users.getUserUnverified,
@@ -126,6 +121,21 @@ exports.setup = function (app) {
              function(req, res, next) {
                 res.redirect('/');
              });
+
+    // Resend verification email
+    app.route('/api/resendVerification/:userID')
+        .post(users.getUserUnverified,
+            mailer.sendRegistrationEmail,
+            responder.successVerificationEmail);
+
+    // Request password reset
+    app.route('/api/requestPasswordReset')
+        .post(users.getUserWithEmail,
+              mailer.sendPasswordEmail,
+              responder.successPasswordEmail);
+
+    // Reset password
+
 
     // Get current user
     app.route('/api/user')

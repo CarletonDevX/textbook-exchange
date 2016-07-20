@@ -29,7 +29,6 @@ exports.countUsers = function (req, res, next) {
 
 function validateEmail (email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu$/i;
-    // ((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$
     return re.test(email);
 }
 
@@ -140,6 +139,27 @@ exports.getUser = function (req, res, next) {
 exports.getUserUnverified = function (req, res, next) {
     // Gets both unverified and verified
     getUserHelper(req, res, next, false);
+}
+
+exports.getUserWithEmail = function (req, res, next) {
+    var username = req.body.username;
+    if (!username) {
+        Error.errorWithStatus(req, res, 400, 'Must include "username" attribute');
+        return;
+    }
+
+    User.findOne({email: username}, function(err, user) {
+        if (!err) {
+            if (!user) {
+                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+            } else {
+                req.rUser = user;
+                next();
+            }
+        } else {
+            Error.mongoError(req, res, err);
+        }
+    });
 }
 
 exports.updateAvatar = function (req, res, next) {

@@ -57,6 +57,17 @@ exports.sendRegistrationEmail = function (req, res, next) {
 	sendMail(req, res, next, options);
 }
 
+exports.sendPasswordEmail = function (req, res, next) {
+	var user = req.rUser;
+	console.log(user);
+	options = {
+		subject: "Confirm password reset",
+		html: readEmail("password.html").format(config.url, user._id, user.verifier),
+		user: user
+	}
+	sendMail(req, res, next, options);
+}
+
 exports.sendOfferEmail = function (req, res, next) {
 	var listing = req.rListings[0];
 	var book = listing.book;
