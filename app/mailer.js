@@ -57,12 +57,24 @@ exports.sendRegistrationEmail = function (req, res, next) {
 	sendMail(req, res, next, options);
 }
 
-exports.sendPasswordEmail = function (req, res, next) {
+exports.sendRequestPasswordEmail = function (req, res, next) {
 	var user = req.rUser;
-	console.log(user);
+
 	options = {
 		subject: "Confirm password reset",
-		html: readEmail("password.html").format(config.url, user._id, user.verifier),
+		html: readEmail("requestPassword.html").format(config.url, user._id, user.verifier),
+		user: user
+	}
+	sendMail(req, res, next, options);
+}
+
+exports.sendNewPasswordEmail = function (req, res, next) {
+	var user = req.rUser;
+	var password = req.rPassword;
+
+	options = {
+		subject: "Your password has been reset",
+		html: readEmail("newPassword.html").format(password),
 		user: user
 	}
 	sendMail(req, res, next, options);

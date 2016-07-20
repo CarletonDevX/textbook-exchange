@@ -53,6 +53,10 @@ P.S. Make sure you have a persistent session enabled in whatever you're using to
 | ---------- | ------- | -------- |
 | username   | string  | yes      |
 
+#### Reset password
+
+`GET hitsthebooks.com/api/resetPassword?userID=userID&verifier=verifier`
+
 #### Get current user [Requires auth]: 
 
 `GET hitsthebooks.com/api/user`

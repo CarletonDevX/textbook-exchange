@@ -33,7 +33,7 @@ exports.successVerificationEmail = function (req, res) {
     res.status(200).send("Verification email sent.");
 }
 
-exports.successPasswordEmail = function (req, res) {
+exports.successRequestPasswordReset = function (req, res) {
     res.status(200).send("Password reset request submitted.");
 }
 

@@ -86,7 +86,7 @@ exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.query.verifier;
     if (verifier == null) {
-        Error.errorWithStatus(req, res, 401, 'Must include verifier string.');
+        Error.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
     } else if (verifier != user.verifier) {
         Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
     } else {
@@ -105,26 +105,52 @@ exports.verifyUser = function (req, res, next) {
     }
 }
 
+exports.resetPassword = function (req, res, next) {
+    var user = req.rUser;
+    var verifier = req.query.verifier;
+    if (verifier == null) {
+        Error.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
+    } else if (verifier != user.verifier) {
+        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
+    } else {
+        // Generate new password (and verifier so call isn't made twice)
+        var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+        user.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+        user.password = crypto.createHash('md5').update(password).digest('hex');
+        user.save(function (err, user) {
+            if (!err) {
+                req.rPassword = password;
+                next();
+            } else {
+                Error.mongoError(req, res, err);
+            }
+        });
+    }
+}
+
 var getUserHelper = function (req, res, next, verified) {
     // The actual work of getting users...
     // Necessary as a separate function because of different verification requirements
     // Get ID from either params or previous middleware
     var userID = req.rUserID;
-    if (!userID) userID = req.params.userID;
-    if (!userID) userID = req.query.userID;
-
-    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
-        if (!err) {
-            if (!user) {
-                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+    if (userID == null) userID = req.params.userID;
+    if (userID == null) userID = req.query.userID;
+    if (userID == null) {
+        Error.errorWithStatus(req, res, 400, 'No userID provided.');
+    } else {
+        User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
+            if (!err) {
+                if (!user) {
+                    Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+                } else {
+                    req.rUser = user;
+                    next();
+                }
             } else {
-                req.rUser = user;
-                next();
+                Error.mongoError(req, res, err);
             }
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+        });
+    }
 }
 
 exports.getCurrentUser = function (req, res, next) {
@@ -143,23 +169,22 @@ exports.getUserUnverified = function (req, res, next) {
 
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
-    if (!username) {
+    if (username == null) {
         Error.errorWithStatus(req, res, 400, 'Must include "username" attribute');
-        return;
-    }
-
-    User.findOne({email: username}, function(err, user) {
-        if (!err) {
-            if (!user) {
-                Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+    } else {
+        User.findOne({email: username}, function(err, user) {
+            if (!err) {
+                if (!user) {
+                    Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+                } else {
+                    req.rUser = user;
+                    next();
+                }
             } else {
-                req.rUser = user;
-                next();
+                Error.mongoError(req, res, err);
             }
-        } else {
-            Error.mongoError(req, res, err);
-        }
-    });
+        });
+    }
 }
 
 exports.updateAvatar = function (req, res, next) {

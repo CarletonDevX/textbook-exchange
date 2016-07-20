@@ -131,11 +131,17 @@ exports.setup = function (app) {
     // Request password reset
     app.route('/api/requestPasswordReset')
         .post(users.getUserWithEmail,
-              mailer.sendPasswordEmail,
-              responder.successPasswordEmail);
+              mailer.sendRequestPasswordEmail,
+              responder.successRequestPasswordReset);
 
     // Reset password
-
+    app.route('/api/resetPassword')
+        .get(users.getUser,
+            users.resetPassword,
+            mailer.sendNewPasswordEmail,
+            function(req, res, next) {
+                res.redirect('/');
+            });
 
     // Get current user
     app.route('/api/user')
