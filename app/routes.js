@@ -66,15 +66,15 @@ exports.setup = function (app) {
     app.route('/api/login')
         .post(
             function(req, res, next) {
-                passport.authenticate('local', function(err, user, exists) {
+                passport.authenticate('local', function(err, user, unverified) {
                     if (err) {
                         Error.errorWithStatus(req, res, 500, err.message);
+                    } else if (unverified) {
+                        res.status(400).json({errors: ['User is not verified'], userID: user._id});
                     } else if (user) {
                         req.login(user, function () {
                             next();
-                        });
-                    } else if (exists) {
-                        Error.errorWithStatus(req, res, 400, 'User is not verified');
+                        });  
                     } else {
                         Error.errorWithStatus(req, res, 401, 'Incorrect email or password');
                     }
@@ -113,6 +113,11 @@ exports.setup = function (app) {
         .post(users.createUser,
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
+
+    app.route('/api/resendVerification/:userID')
+        .post(users.getUserUnverified,
+            mailer.sendRegistrationEmail,
+            responder.successRegistrationEmail);
 
     // Verify a user with user ID
     app.route('/api/verify')
