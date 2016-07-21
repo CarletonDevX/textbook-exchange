@@ -16,6 +16,8 @@ input, select{
 
 select{
   border-bottom: solid 2px black;
+  font-size: 14px;
+  font-family: 'Droid Sans', Sans;
 }
 
 input[type="checkbox"]{
@@ -26,23 +28,23 @@ input[type="checkbox"]{
 
 input[type="checkbox"]::before{
   content:"";
-  border:solid black 2px;
+  border:solid black 1px;
   visibility: visible;
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 2px;
   position: relative;
-  top: -2px;
+  // top: -2px;
 }
 
 input[type="checkbox"]::after{
   visibility: visible;
-  content:"✓";
+  content: "✓";
   position: absolute;
-  top: -17px;
-  font-size: 28px;
-  left: 4px;
+  top: -12px;
+  font-size: 22px;
+  left: 3px;
   color:rgba(0,0,0,0);
 }
 
@@ -63,10 +65,12 @@ input[type="text"], input[type="password"], input[type="number"]{
   vertical-align: top;
   font-family: 'Droid Serif', Serif;
   border-bottom: solid 2px black;
+  font-size: 14px;
 } 
 
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 input[type="number"]:disabled{
   border-bottom: solid 2px $disabled-rgba;
+  color: lightgray;
 } 

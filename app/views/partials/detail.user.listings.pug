@@ -11,7 +11,8 @@ td
 	table.price-table
 		tr
 			td Buy:
-			td {{listing.sellingPrice | currency }}
+			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
+			td(ng-if="!listing.sellingPrice") —
 		tr
 			td Rent:
 			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
@@ -24,7 +25,7 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 	button.confirm.email(
 		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
-		img(src="/images/email.png")
+		span.symbol ✉
 	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
@@ -33,7 +34,8 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 	button.delete(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openRemovingListing()",
-		ng-hide="removingListing") del
+		ng-hide="removingListing")
+		i.fa.fa-trash-o(aria-hidden="true")
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
 		p Did it sell?
 		button.confirm(ng-click="removeListing(listing, true)") yes

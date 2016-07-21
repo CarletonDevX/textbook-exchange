@@ -43,7 +43,7 @@ table.info-table {
     padding: 5px;
     border-bottom: solid 2px #ddd;
     border-right: solid 1px #eee; }
-  table.info-table tr:last-child td {
+  table.info-table tbody tr:last-child td {
     border-bottom: solid 0px; }
   table.info-table tr td:first-child {
     text-align: right; }
@@ -51,7 +51,8 @@ table.info-table {
     border-right: solid 0px;
     text-align: left; }
   table.info-table tfoot td {
-    border-top: solid 2px #ddd; }
+    border-top: solid 2px #ddd;
+    border-bottom: none; }
 
 button:hover, button:hover:focus {
   box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.2); }
@@ -125,7 +126,9 @@ input, select {
   outline: none; }
 
 select {
-  border-bottom: solid 2px black; }
+  border-bottom: solid 2px black;
+  font-size: 14px;
+  font-family: 'Droid Sans', Sans; }
 
 input[type="checkbox"] {
   visibility: hidden;
@@ -134,22 +137,21 @@ input[type="checkbox"] {
 
 input[type="checkbox"]::before {
   content: "";
-  border: solid black 2px;
+  border: solid black 1px;
   visibility: visible;
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 2px;
-  position: relative;
-  top: -2px; }
+  position: relative; }
 
 input[type="checkbox"]::after {
   visibility: visible;
   content: "✓";
   position: absolute;
-  top: -17px;
-  font-size: 28px;
-  left: 4px;
+  top: -12px;
+  font-size: 22px;
+  left: 3px;
   color: transparent; }
 
 input[type="checkbox"]:checked::after {
@@ -180,12 +182,14 @@ input[type="text"], input[type="password"], input[type="number"] {
   text-align: center;
   vertical-align: top;
   font-family: 'Droid Serif', Serif;
-  border-bottom: solid 2px black; }
+  border-bottom: solid 2px black;
+  font-size: 14px; }
 
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 input[type="number"]:disabled {
-  border-bottom: solid 2px rgba(0, 0, 0, 0.3); }
+  border-bottom: solid 2px rgba(0, 0, 0, 0.3);
+  color: lightgray; }
 
 header {
   transition: height .2s;
@@ -477,7 +481,10 @@ main #detail-wrapper.maximized {
   padding: 0 0 20px 20px; }
   #book-details .preview img {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
-    width: 200px; }
+    width: 200px;
+    position: relative;
+    left: -2px;
+    top: 1px; }
 
 #book-details .info {
   position: relative;
@@ -529,7 +536,7 @@ main #detail-wrapper.maximized {
         font-style: italic;
         font-family: 'Droid Serif', Serif; }
       #book-details .info .info-table tfoot td button span.symbol {
-        font-size: 24px;
+        font-size: 16px;
         display: inline-block;
         vertical-align: middle;
         line-height: 0;
@@ -537,7 +544,7 @@ main #detail-wrapper.maximized {
         transition: color .2s;
         width: 1.5em; }
       #book-details .info .info-table tfoot td button.cancel span.symbol::before {
-        font-size: 24px;
+        font-size: 20px;
         content: '×';
         color: transparent;
         width: 0;
@@ -582,11 +589,13 @@ div.listings .tabs {
 
 div.listings table.listings {
   width: 100%;
+  table-layout: fixed;
   border-spacing: 0;
   border: solid 1px #ccc;
   border-top: 2px solid black;
   overflow: hidden; }
   div.listings table.listings thead tr {
+    background-color: #fffcf5;
     height: 4em; }
     div.listings table.listings thead tr th {
       font-weight: 400;
@@ -595,6 +604,12 @@ div.listings table.listings {
       border-bottom: 2px solid #ccc;
       border-right: 1px solid #eee;
       position: relative; }
+    div.listings table.listings thead tr th.seller {
+      width: 6em; }
+    div.listings table.listings thead tr th.price {
+      width: 7.5em; }
+    div.listings table.listings thead tr th.contact {
+      width: 80px; }
     div.listings table.listings thead tr th.sortable {
       padding: 0 20px;
       cursor: pointer; }
@@ -639,7 +654,14 @@ div.listings table.listings {
       padding-right: 5px; }
     div.listings table.listings tbody tr td.username, div.listings table.listings tfoot tr td.username {
       text-align: left;
-      padding-left: 5px; }
+      padding-left: 5px;
+      word-break: break-all;
+      /* Non standard for webkit */
+      word-break: break-word;
+      -webkit-hyphens: auto;
+      -moz-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto; }
     div.listings table.listings tbody tbody:last-child td, div.listings table.listings tfoot tbody:last-child td {
       border-bottom: 1px #ccc; }
     div.listings table.listings tbody td.quality a.tooltip, div.listings table.listings tfoot td.quality a.tooltip {
@@ -650,13 +672,21 @@ div.listings table.listings {
       width: 100%;
       padding: 0;
       height: 80px; }
+      div.listings table.listings tbody td.make-an-offer button.email .symbol,
+      div.listings table.listings tbody td.confirm button.confirm .symbol, div.listings table.listings tfoot td.make-an-offer button.email .symbol,
+      div.listings table.listings tfoot td.confirm button.confirm .symbol {
+        font-size: 16px; }
     div.listings table.listings tbody td.make-an-offer, div.listings table.listings tfoot td.make-an-offer {
       padding: 0; }
+      div.listings table.listings tbody td.make-an-offer button.email span.symbol, div.listings table.listings tfoot td.make-an-offer button.email span.symbol {
+        font-style: normal;
+        font-size: 36px; }
       div.listings table.listings tbody td.make-an-offer button.edit, div.listings table.listings tbody td.make-an-offer button.delete, div.listings table.listings tfoot td.make-an-offer button.edit, div.listings table.listings tfoot td.make-an-offer button.delete {
         display: inline-block;
         width: 50%;
         height: 80px;
-        padding: 0; }
+        padding: 0;
+        font-size: 16px; }
       div.listings table.listings tbody td.make-an-offer div.remove-listing p, div.listings table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
@@ -671,15 +701,21 @@ div.listings table.listings {
     height: 80px;
     padding: 0; }
   div.listings table.listings tbody table.price-table {
+    width: 100%;
     height: 79px;
     border-collapse: collapse; }
+    div.listings table.listings tbody table.price-table td:first-child {
+      font-family: 'Droid Serif', Serif;
+      font-style: italic; }
     div.listings table.listings tbody table.price-table td {
       height: auto;
       border-bottom: none; }
+    div.listings table.listings tbody table.price-table tr:first-child {
+      border-bottom: 1px solid #eee; }
   div.listings table.listings tfoot {
     background-color: white; }
     div.listings table.listings tfoot tr.make-listing {
-      background-color: #FCFFEE; }
+      background-color: #fffcf5; }
       div.listings table.listings tfoot tr.make-listing p {
         text-align: center; }
       div.listings table.listings tfoot tr.make-listing span.label {
@@ -689,7 +725,9 @@ div.listings table.listings {
         width: 4em; }
       div.listings table.listings tfoot tr.make-listing td.condition small.description {
         display: block;
-        margin-top: 10px; }
+        margin-top: 10px;
+        font-family: 'Droid Serif', Serif;
+        font-style: italic; }
     div.listings table.listings tfoot tr.make-listing.inactive {
       display: none; }
     div.listings table.listings tfoot tr.add-listing td {
@@ -704,7 +742,7 @@ div.listings table.listings {
         width: 100%;
         height: 2.5em; }
         div.listings table.listings tfoot tr.add-listing td button span.symbol, div.listings table.listings tfoot tr.add-listing td div span.symbol {
-          font-size: 24px;
+          font-size: 16px;
           display: inline-block;
           vertical-align: middle; }
 
@@ -738,7 +776,7 @@ table.watchlist {
     overflow-x: hidden;
     overflow-y: auto; }
   table.watchlist thead td {
-    border-bottom: solid 2px #ccc !important; }
+    border-bottom: solid 2px #ccc; }
 
 table.email-settings {
   width: calc(50% - 10px);
@@ -770,3 +808,10 @@ table.email-settings {
     width: 500px;
     margin: 100px calc(50vw - 250px);
     padding: 10px; }
+  .modal-wrapper.visible .modal.offer textarea {
+    width: 100%;
+    height: 150px;
+    resize: vertical; }
+  .modal-wrapper.visible .modal.offer button {
+    padding: 20px;
+    margin-top: 10px; }

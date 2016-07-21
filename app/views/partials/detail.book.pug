@@ -57,10 +57,10 @@ div#book-details
     table.listings
       thead
         tr
-          th.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
-          th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th Contact
+          th.seller.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+          th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
+          th.contact Contact
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
@@ -116,7 +116,7 @@ div#book-details
           td.confirm
             button.confirm(ng-click="submitListing()")
               span.symbol {{currUserListing ? '✓':'+'}}
-              | {{currUserListing ? 'update!' : 'list!'}}
+              | {{currUserListing ? ' update!' : ' list!'}}
         tr.add-listing: td(colspan="5")
           div(ng-if="!currentUser")
             a(href, ng-click="openAccount()") log in
@@ -135,7 +135,9 @@ div#book-details
     ng-class="{'visible':offer.active}",
     ng-htb-self-click="offer.active = false"
     )
-    div.modal
+    div.modal.offer
       h3 Make an offer
       textarea(ng-model="offer.message")
       button(ng-click="makeOffer()") Send email
+      | |
+      button.cancel(ng-click="offer.active = false") Cancel
