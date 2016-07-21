@@ -2,7 +2,7 @@ td.image: a(href="book/{{listing.book.ISBN}}")
 	//- TODO: ^^MAKE THIS A REAL LINK
 	img(src="{{listing.book.coverImage}}")
 
-td.name: a(href="book/{{listing.book.ISBN}}") {{listing.book.name}}
+td.name: a(href="book/{{listing.book.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
 td.quality
 	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
@@ -12,11 +12,13 @@ td
 		tr
 			td Buy:
 			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
-			td(ng-if="!listing.sellingPrice") —
+			td(ng-if="listing.sellingPrice == 0") Free!
+			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
 			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
-			td(ng-if="!listing.rentingPrice") —
+			td(ng-if="listing.rentingPrice == 0") Free!
+			td(ng-if="listing.rentingPrice == null") —
 
 td.make-an-offer(ng-if="!listing.isAmazonListing")
 	p(ng-if="!currentUser")

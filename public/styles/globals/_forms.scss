@@ -26,6 +26,12 @@ input[type="checkbox"]{
   margin: 0 10px;
 }
 
+@-moz-document url-prefix() {
+  input[type="checkbox"]{
+    visibility: visible;
+  }
+}
+
 input[type="checkbox"]::before{
   content:"";
   border:solid black 1px;

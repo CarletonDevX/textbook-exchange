@@ -135,6 +135,10 @@ input[type="checkbox"] {
   position: relative;
   margin: 0 10px; }
 
+@-moz-document url-prefix() {
+  input[type="checkbox"] {
+    visibility: visible; } }
+
 input[type="checkbox"]::before {
   content: "";
   border: solid black 1px;
@@ -643,7 +647,6 @@ div.listings table.listings {
       border-right: solid 1px #eee; }
       div.listings table.listings tbody tr td img, div.listings table.listings tfoot tr td img {
         width: 40px;
-        height: 40px;
         vertical-align: middle;
         margin: 5px; }
     div.listings table.listings tbody tr td:last-child, div.listings table.listings tfoot tr td:last-child {
@@ -703,10 +706,12 @@ div.listings table.listings {
   div.listings table.listings tbody table.price-table {
     width: 100%;
     height: 79px;
-    border-collapse: collapse; }
+    border-collapse: collapse;
+    table-layout: fixed; }
     div.listings table.listings tbody table.price-table td:first-child {
       font-family: 'Droid Serif', Serif;
-      font-style: italic; }
+      font-style: italic;
+      width: 3.5em; }
     div.listings table.listings tbody table.price-table td {
       height: auto;
       border-bottom: none; }
@@ -722,7 +727,7 @@ div.listings table.listings {
         width: 4.5em;
         display: inline-block; }
       div.listings table.listings tfoot tr.make-listing input.price {
-        width: 4em; }
+        width: 2em; }
       div.listings table.listings tfoot tr.make-listing td.condition small.description {
         display: block;
         margin-top: 10px;

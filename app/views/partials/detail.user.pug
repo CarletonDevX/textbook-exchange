@@ -59,10 +59,10 @@ div.listings
     table.listings
       thead
         tr
-          th.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title
-          th.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
-          th.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th Contact
+          th.seller.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title
+          th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
+          th.contact Contact
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
