@@ -693,6 +693,27 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     removingListingID : null
   });
 
+  var refreshWatchlist = function() {
+    Api.getWatchlist().then(
+      function (res) { $scope.watchlist = res },
+      function (err) { console.log(err); }
+    );
+  }
+
+  $scope.unsubscribe = function(ISBN) {
+    Api.removeFromWatchlist(ISBN).then(
+      function (res) { refreshWatchlist(); },
+      function (err) { console.log(err); }
+    );
+  }
+
+  $scope.clearWatchlist = function() {
+    Api.clearWatchlist().then(
+      function (res) { refreshWatchlist(); },
+      function (err) { console.log(err); }
+    );
+  }
+
   $scope.openRemovingListing = function(listing) {
     $scope.removingListingID = listing.listingID;
   }

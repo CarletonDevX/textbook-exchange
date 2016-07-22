@@ -89,50 +89,6 @@ $row-highlight-color: #fffcf5;
       margin-bottom: 20px;
       width:310px;
       float: left;
-
-      tfoot td {
-        padding: 0;
-        border-top: solid 2px #ddd;
-        $footer-el-height: 30px;
-        div {
-          line-height: $footer-el-height;
-          text-align: center;
-        }
-        button, div {
-          padding: 5px;
-          height: $footer-el-height;
-          width:100%;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-          font-style: italic;
-          font-family: 'Droid Serif', Serif;
-        }
-        button span.symbol{
-          font-size: 16px;
-          display:inline-block;
-          vertical-align: middle;
-          line-height: 0;
-          position: relative;
-          transition: color .2s;
-          width:1.5em;
-        }
-        button.cancel span.symbol::before{
-          font-size: 20px;
-          content:'×';
-          color: rgba(0,0,0,0);
-          width: 0;
-          display:inline-block;
-          vertical-align: middle;
-          transition: color .2s;
-          line-height: 0;
-        }
-        button.cancel:hover span.symbol{
-          color: rgba(0,0,0,0);
-        }
-        button.cancel:hover span::before{
-          color: black;
-        }
-      }
     }
   }
 
@@ -239,6 +195,9 @@ div.listings{
           border-right: none;
         }
       }
+    }
+    tbody:last-child tr:last-child td{
+      border-bottom: none;
     }
     tbody,tfoot{
       font-family: 'Droid Sans', sans-serif;
@@ -434,8 +393,30 @@ table.watchlist{
   width: calc(50% - 10px);
   float:left;
 
+  thead{
+    font-family: 'Droid Serif', Serif;
+    font-size: 20px;
+    td{
+      text-align: center;
+      border-bottom: solid 2px #ddd;
+      padding: 10px;
+    }
+  }
+
   td.cover-image img{
     width: 40px;
+    max-height: 65px;
+  }
+
+  tbody td button.cancel{
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    height: 70px;
+  }
+
+  tbody td:last-child{
+    padding: 0;
   }
 
   tbody{
@@ -444,9 +425,7 @@ table.watchlist{
     overflow-x: hidden;
     overflow-y: auto;
   }
-  thead td{
-    border-bottom: solid 2px $dark-border-color;
-  }
+
 }
 
 table.email-settings{

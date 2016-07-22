@@ -41,18 +41,52 @@ table.info-table {
   border-spacing: 0; }
   table.info-table td {
     padding: 5px;
-    border-bottom: solid 2px #ddd;
+    border-bottom: solid 2px #ddd; }
+  table.info-table tbody td {
     border-right: solid 1px #eee; }
   table.info-table tbody tr:last-child td {
     border-bottom: solid 0px; }
-  table.info-table tr td:first-child {
+  table.info-table tbody tr td:first-child {
     text-align: right; }
-  table.info-table tr td:last-child {
+  table.info-table tbody tr td:last-child {
     border-right: solid 0px;
     text-align: left; }
   table.info-table tfoot td {
-    border-top: solid 2px #ddd;
-    border-bottom: none; }
+    border-bottom: none;
+    padding: 0;
+    border-top: solid 2px #ddd; }
+    table.info-table tfoot td div {
+      line-height: 30px;
+      text-align: center; }
+    table.info-table tfoot td button, table.info-table tfoot td div {
+      padding: 5px;
+      height: 30px;
+      width: 100%;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      font-style: italic;
+      font-family: 'Droid Serif', Serif; }
+    table.info-table tfoot td button span.symbol {
+      font-size: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 0;
+      position: relative;
+      transition: color .2s;
+      width: 1.5em; }
+    table.info-table tfoot td button.cancel span.symbol::before {
+      font-size: 20px;
+      content: '×';
+      color: transparent;
+      width: 0;
+      display: inline-block;
+      vertical-align: middle;
+      transition: color .2s;
+      line-height: 0; }
+    table.info-table tfoot td button.cancel:hover span.symbol {
+      color: transparent; }
+    table.info-table tfoot td button.cancel:hover span::before {
+      color: black; }
 
 button:hover, button:hover:focus {
   box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.2); }
@@ -525,41 +559,6 @@ main #detail-wrapper.maximized {
     margin-bottom: 20px;
     width: 310px;
     float: left; }
-    #book-details .info .info-table tfoot td {
-      padding: 0;
-      border-top: solid 2px #ddd; }
-      #book-details .info .info-table tfoot td div {
-        line-height: 30px;
-        text-align: center; }
-      #book-details .info .info-table tfoot td button, #book-details .info .info-table tfoot td div {
-        padding: 5px;
-        height: 30px;
-        width: 100%;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        font-style: italic;
-        font-family: 'Droid Serif', Serif; }
-      #book-details .info .info-table tfoot td button span.symbol {
-        font-size: 16px;
-        display: inline-block;
-        vertical-align: middle;
-        line-height: 0;
-        position: relative;
-        transition: color .2s;
-        width: 1.5em; }
-      #book-details .info .info-table tfoot td button.cancel span.symbol::before {
-        font-size: 20px;
-        content: '×';
-        color: transparent;
-        width: 0;
-        display: inline-block;
-        vertical-align: middle;
-        transition: color .2s;
-        line-height: 0; }
-      #book-details .info .info-table tfoot td button.cancel:hover span.symbol {
-        color: transparent; }
-      #book-details .info .info-table tfoot td button.cancel:hover span::before {
-        color: black; }
 
 #book-details h5 {
   font-weight: 400;
@@ -638,6 +637,8 @@ div.listings table.listings {
       content: '▾'; }
     div.listings table.listings thead tr th:last-child {
       border-right: none; }
+  div.listings table.listings tbody:last-child tr:last-child td {
+    border-bottom: none; }
   div.listings table.listings tbody, div.listings table.listings tfoot {
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px; }
@@ -773,15 +774,28 @@ div.user-about {
 table.watchlist {
   width: calc(50% - 10px);
   float: left; }
+  table.watchlist thead {
+    font-family: 'Droid Serif', Serif;
+    font-size: 20px; }
+    table.watchlist thead td {
+      text-align: center;
+      border-bottom: solid 2px #ddd;
+      padding: 10px; }
   table.watchlist td.cover-image img {
-    width: 40px; }
+    width: 40px;
+    max-height: 65px; }
+  table.watchlist tbody td button.cancel {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    height: 70px; }
+  table.watchlist tbody td:last-child {
+    padding: 0; }
   table.watchlist tbody {
     display: block;
     max-height: 250px;
     overflow-x: hidden;
     overflow-y: auto; }
-  table.watchlist thead td {
-    border-bottom: solid 2px #ccc; }
 
 table.email-settings {
   width: calc(50% - 10px);

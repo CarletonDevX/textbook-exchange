@@ -53,6 +53,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        clearWatchlist: function() {
+            return $http.post('api/subscriptions/clear').then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
         getListings: function(isbn) {
             return $http.get('/api/listings/book/'+isbn)
                 .then( function (res) {

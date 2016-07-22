@@ -15,6 +15,8 @@ div.private(ng-if="user.userID == currentUser.userID")
       tr
         td(colspan="3") Watchlist
     tbody
+      tr(ng-if="!watchlist.length")
+        td(colspan=3) Search for a book and click "watchlist" to make it show up here!
       tr(ng-repeat="book in watchlist")
         td.cover-image
           a(href="book/{{book.ISBN}}")
@@ -22,10 +24,14 @@ div.private(ng-if="user.userID == currentUser.userID")
         td
           a(href="book/{{book.ISBN}}") {{book.name}}
         td
-          button x
+          button.cancel(ng-click="unsubscribe(book.ISBN)")
+            i.fa.fa-trash-o(aria-hidden="true")
     tfoot
       tr
-        td(colspan="3") Unwatch all
+        td(colspan="3")
+          button.cancel(ng-click="clearWatchlist()")
+            i.fa.fa-trash-o(aria-hidden="true")
+            |  Unwatch all
 
   table.email-settings
     thead

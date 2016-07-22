@@ -7,23 +7,68 @@ table.info-table{
   td{
     padding: 5px;
     border-bottom: solid 2px #ddd;
-    border-right: solid 1px #eee;
   }
+
+  tbody td{
+    border-right: solid 1px #eee;
+  } 
+
   tbody tr:last-child td{
     border-bottom: solid 0px;
   }
 
-  tr td:first-child{
+  tbody tr td:first-child{
     text-align: right;
   }
 
-  tr td:last-child{
+  tbody tr td:last-child{
     border-right: solid 0px;
     text-align: left;
   }
 
-  tfoot td{
-    border-top: solid 2px #ddd;
+  tfoot td {
     border-bottom: none;
+    padding: 0;
+    border-top: solid 2px #ddd;
+    $footer-el-height: 30px;
+    div {
+      line-height: $footer-el-height;
+      text-align: center;
+    }
+    button, div {
+      padding: 5px;
+      height: $footer-el-height;
+      width:100%;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      font-style: italic;
+      font-family: 'Droid Serif', Serif;
+    }
+    button span.symbol{
+      font-size: 16px;
+      display:inline-block;
+      vertical-align: middle;
+      line-height: 0;
+      position: relative;
+      transition: color .2s;
+      width:1.5em;
+    }
+    button.cancel span.symbol::before{
+      font-size: 20px;
+      content:'×';
+      color: rgba(0,0,0,0);
+      width: 0;
+      display:inline-block;
+      vertical-align: middle;
+      transition: color .2s;
+      line-height: 0;
+    }
+    button.cancel:hover span.symbol{
+      color: rgba(0,0,0,0);
+    }
+    button.cancel:hover span::before{
+      color: black;
+    }
   }
+
 }
