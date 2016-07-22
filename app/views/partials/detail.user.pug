@@ -42,17 +42,32 @@ div.private(ng-if="user.userID == currentUser.userID")
         td
           label(for="undercut-box") Someone undercuts one of my listings
         td
-          input(id="undercut-box", type="checkbox")
+          input(
+            id="undercut-box",
+            type="checkbox",
+            ng-model="emailSettings.undercut",
+            ng-disabled="disabledComponents.undercutbox"
+            ng-change="handleEmailSettingChange('undercutbox')" )
       tr
         td
           label(for= "watchlist-box") There's activity on a book on my watchlist
         td
-          input(id="watchlist-box", type="checkbox")
+          input(
+            id="watchlist-box",
+            type="checkbox",
+            ng-model="emailSettings.watchlist",
+            ng-disabled="disabledComponents.watchlistbox"
+            ng-change="handleEmailSettingChange('watchlistbox')" )
       tr
         td
           label(for="htbupdate-box") Hits the Books recieves a major update
         td
-          input(id="htbupdate-box", type="checkbox")
+          input(
+            id="htbupdate-box",
+            type="checkbox",
+            ng-model="emailSettings.updates",
+            ng-disabled="disabledComponents.htbupdatebox"
+            ng-change="handleEmailSettingChange('htbupdatebox')" )
 
 div.listings
     div.tabs

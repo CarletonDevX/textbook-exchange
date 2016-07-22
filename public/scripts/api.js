@@ -31,6 +31,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res.data;
                 }
             );
+        },  
+        updateCurrentUser: function (data){
+            return $http.put('/api/user', data).then(
+                function(res) {
+                    return res.data;
+                }
+            );
         },
         getWatchlist: function () {
             return $http.get('/api/subscriptions').then(

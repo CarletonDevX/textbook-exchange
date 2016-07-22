@@ -241,7 +241,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
   if ($scope.currentUser) {
-    $state.go('account.details')
+    $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
   } else {
     $state.go('account.access')
   }
@@ -666,7 +666,11 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
 hitsTheBooks.controller('userPageController', function($scope, $rootScope, userInfo, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
-  $scope.watchlist = watchlist;
+  $scope.watchlist = watchlist; 
+  $scope.emailSettings = {};
+  if ($rootScope.currentUser){
+    angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+  }
 
   // Current bug I'm fighting is that everything works great except
   // if you look at your own page and try to log in
@@ -675,7 +679,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     function() {
       Api.getWatchlist().then( function(result) {
         console.log("RESULT: ", result)
-        $scope.watchlist = watchlist;
+        $scope.watchlist = result;
       }); 
     }
   );
@@ -690,8 +694,28 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
         listing: null,
         message: null
     },
-    removingListingID : null
+    removingListingID : null,
+    disabledComponents : {
+      watchlistbox : false,
+      undercutbox : false,
+      htbupdatebox : false
+    }
   });
+
+  $scope.handleEmailSettingChange = function (componentName) {
+    $scope.disabledComponents[componentName] = true;
+    data = {emailSettings: JSON.stringify($scope.emailSettings)};
+    Api.updateCurrentUser(data).then(
+      function(res) {
+        $scope.disabledComponents[componentName] = false;
+        $rootScope.currentUser = res;
+        angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+      }, function (err) {
+        $scope.disabledComponents[componentName] = false;
+        angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+        console.log(err)
+      });
+  }
 
   var refreshWatchlist = function() {
     Api.getWatchlist().then(
