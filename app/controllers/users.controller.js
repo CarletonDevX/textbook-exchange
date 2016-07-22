@@ -2,30 +2,23 @@ var User = require('mongoose').model('users'),
     Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
-    handlers = require('../errors'),
-    HTBError = handlers.HTBError,
-    MongoError = handlers.MError;
+    HTBError = require('../errors').HTBError,
+    MongoError = require('../errors').MongoError;
 
 exports.getAllUsers = function (req, res, next) {
     User.find({verified: true}, function(err, users) {
-        if (!err) {
-            req.rUsers = users;
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUsers = users;
+        return next();
     });
 }
 
 exports.countUsers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     User.count({verified: true}, function (err, count) {
-        if (!err) {
-            req.rSchoolStats.numUsers = count;
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rSchoolStats.numUsers = count;
+        return next();
     });
 }
 
@@ -50,19 +43,16 @@ function validateRegistrationInfo (info, callback) {
     } else if (info.familyName == null) {
         err = new HTBError(400, 'Must provide "familyName" attribute.');
     }
-    callback(err);
+    return callback(err);
 }
 
 exports.registerUser = function (req, res, next) {
-
     // Make sure all the info is there
     validateRegistrationInfo(req.body, function (err) {
         if (err) return next(err);
-        
         // Before creating a new user, check to make sure they haven't already registered
         User.findOne({email: req.body.username}, function (err, user) {
             if (err) return next(new MongoError(err));
-
             if (!user) {
                 createUser(req, res, next);
             } else if (!user.verified) {
@@ -92,7 +82,6 @@ var createUser = function (req, res, next) {
         password: crypto.createHash('md5').update(info.password).digest('hex'),
         verified: false,
         provider: 'local',
-
         // These may be null
         bio: info.bio,
         gradYEar: info.gradYear
@@ -101,210 +90,161 @@ var createUser = function (req, res, next) {
     newUser.save(function(err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
-        next();
+        return next();
     }); 
 }
 
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
-    var verifier = req.query.verifier;
-    if (verifier == null) {
-        handlers.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
-    } else if (verifier != user.verifier) {
-        handlers.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
-    } else {
-        user.verified = true;
-        user.save(function (err, user) {
-            if (!err) {
-                // Attempt to log in user (ignore errors)
-                req.rUser = user;
-                req.login(user, function () {
-                    next();
-                });
-            } else {
-                handlers.mongoError(req, res, err);
-            }
+    var verifier = req.query.verifier || req.body.verifier;
+
+    if (!verifier) return next(new HTBError(400, 'Must include "verifier" attribute.'));
+    if (verifier != user.verifier) return next(new HTBError(401, 'Incorrect verifier string.'));
+
+    user.verified = true;
+    user.save(function (err, user) {
+        if (err) return next(new MongoError(err));
+        // Attempt to log in user
+        req.rUser = user;
+        req.login(user, function (err) {
+            if (err) return next(new HTBError(500, 'Login failed.'));
+            return next();
         });
-    }
+    });
 }
 
 exports.resetPassword = function (req, res, next) {
     var user = req.rUser;
-    var verifier = req.query.verifier;
-    if (verifier == null) {
-        handlers.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
-    } else if (verifier != user.verifier) {
-        handlers.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
-    } else {
-        // Generate new password (and verifier so call isn't made twice)
-        var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
-        user.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
-        user.password = crypto.createHash('md5').update(password).digest('hex');
-        user.save(function (err, user) {
-            if (!err) {
-                req.rPassword = password;
-                next();
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    }
+    var verifier = req.query.verifier || req.body.verifier;
+
+    if (!verifier) return next(new HTBError(400, 'Must include "verifier" attribute.'));
+    if (verifier != user.verifier) return next(new HTBError(401, 'Incorrect verifier string.'));
+
+    // Generate new password (and verifier so call isn't made twice)
+    var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+    user.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
+    user.password = crypto.createHash('md5').update(password).digest('hex');
+
+    user.save(function (err, user) {
+        if (err) return next(new MongoError(err));
+        req.rPassword = password;
+        return next();
+    });
 }
 
-var getUserHelper = function (req, res, next, verified) {
-    // The actual work of getting users...
-    // Necessary as a separate function because of different verification requirements
-
-    // Get ID from either params or previous middleware
-    var userID = req.rUserID || req.params.userID || req.query.userID;
-
-    if (userID == null) {
-        handlers.errorWithStatus(req, res, 400, 'No userID provided.');
-    } else {
-        User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
-            if (!err) {
-                if (!user) {
-                    handlers.errorWithStatus(req, res, 404, 'User not found by those conditions.');
-                } else {
-                    req.rUser = user;
-                    next();
-                }
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    }
+var getUserWithVerificationStatus = function (userID, verified, callback) {
+    // A helper for getUser and getUserUnverified
+    if (!userID) return callback(new HTBError(400, 'No userID provided.'));
+    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
+        if (err) return callback(new MongoError(err));
+        if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
+        callback(null, user);
+    });
 }
 
 exports.getCurrentUser = function (req, res, next) {
+    // Can we all just apprectiate how dope this function is
     req.rUser = req.user;
-    next();
+    return next();
 }
 
 exports.getUser = function (req, res, next) {
-    getUserHelper(req, res, next, true);
+    var userID = req.rUserID || req.params.userID || req.query.userID;
+    getUserWithVerificationStatus(userID, true, function (err, user) {
+        if (err) return next(err);
+        req.rUser = user;
+        return next();
+    });
 }
 
 exports.getUserUnverified = function (req, res, next) {
-    // Gets both unverified and verified
-    getUserHelper(req, res, next, false);
+    // NOTE: Gets both unverified and verified users
+    var userID = req.rUserID || req.params.userID || req.query.userID;
+    getUserWithVerificationStatus(userID, false, function (err, user) {
+        if (err) return next(err);
+        req.rUser = user;
+        return next();
+    });
 }
 
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
-    if (username == null) {
-        handlers.errorWithStatus(req, res, 400, 'Must include "username" attribute');
-    } else {
-        User.findOne({email: username}, function(err, user) {
-            if (!err) {
-                if (!user) {
-                    handlers.errorWithStatus(req, res, 404, 'User not found by those conditions.');
-                } else {
-                    req.rUser = user;
-                    next();
-                }
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    }
+    if (!username) return callback(new HTBError(400, 'Must include "username" attribute'));
+    User.findOne({email: username}, function(err, user) {
+        if (err) return next(new MongoError(err));
+        if (!user) return next(new HTBError(404, 'User not found by those conditions.'));
+        req.rUser = user;
+        return next();
+    });
 }
 
 exports.updateAvatar = function (req, res, next) {
     var user = req.rUser;
     var avatar = req.rAvatar;
     user.avatar = avatar;
-
     user.save(function(err, user) {
-        if (!err) {
-            req.rUser = user;
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
     });
 }
 
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
-    if (req.user._id != user._id) {
-        handlers.errorWithStatus(req, res, 401, 'Unauthorized to update user.');
-    } else {
-        var updates = req.body;
-        // Only these updates are allowed
-        // TODO: name updates
-        if (updates.bio) user.bio = updates.bio;
-        if (updates.gradYear) user.gradYear = updates.gradYear;
-        if (updates.emailSettings) {
-            try {
-                 user.emailSettings = JSON.parse(updates.emailSettings);
-            } catch (err) {
-                handlers.errorWithStatus(req, res, 400, "Couldn't parse emailSettings object: "+err.message);
-                return;
-            }
+    var updates = req.body;
+    if (updates.bio) user.bio = updates.bio;
+    if (updates.gradYear) user.gradYear = updates.gradYear;
+    if (updates.emailSettings) {
+        try {
+             user.emailSettings = JSON.parse(updates.emailSettings);
+        } catch (err) {
+            return next(new HTBError(400, "Couldn't parse emailSettings object: "+err.message));
         }
-
-        user.save(function(err, user) {
-            if (!err) {
-                req.rUser = user;
-                next();
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
     }
+    user.save(function(err, user) {
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
+    });
 };
 
 exports.removeUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {
-        if (!err) {
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        return next();
     });
 }
 
 exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
-    if (!description) {
-        handlers.errorWithStatus(req, res, 400, 'Must include "description" attribute.');
-    } else {
-        var report = new Report({
-            "userID": user._id,
-            "reporterID": req.user._id,
-            "description": description
-        });
-        user.reports.push(report);
-        user.save(function(err, user) {
-            if (!err) {
-                req.rUser = user;
-                next();
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    }
+    if (!description) return callback(new HTBError(400, 'Must include "description" attribute'));
+
+    user.reports.push(new Report({
+        "userID": user._id,
+        "reporterID": req.user._id,
+        "description": description
+    }));
+
+    user.save(function(err, user) {
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
+    });
 }
 
 exports.getSubscribers = function (req, res, next) {
     var book = req.rBook;
-    if (book.subscribers.length > 0) {
-        User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
-            if (!err) {
-                req.rSubscribers = subscribers;
-                next();
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    } else {
+    if (book.subscribers.length == 0) {
         req.rSubscribers = [];
-        next();
+        return next();
     }
-    
+    User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
+        if (err) return next(new MongoError(err));
+        req.rSubscribers = subscribers;
+        return next();
+    });   
 }
 
 exports.getUndercutUsers = function (req, res, next) {
@@ -313,39 +253,28 @@ exports.getUndercutUsers = function (req, res, next) {
     for (var i = 0; i < listings.length; i++) {
         userIDs.push(listings[i].userID);
     };
-    if (userIDs.length > 0) {
-        User.find({_id: {$in : userIDs}}, function (err, users) {
-            if (!err) {
-                req.rUndercutUsers = users;
-                next();
-            } else {
-                handlers.mongoError(req, res, err);
-            }
-        });
-    } else {
+    if (userIDs.length == 0) {
         req.rUndercutUsers = [];
-        next();
+        return next();
     }
-    
+    User.find({_id: {$in : userIDs}}, function (err, users) {
+        if (err) return next(new MongoError(err));
+        req.rUndercutUsers = users;
+        return next();
+    });
 }
 
 exports.subscribe = function (req, res, next) {
     var book = req.rBook;
     var user = req.rUser;
     for (var i = 0; i < user.subscriptions.length; i++) {
-        if (book.ISBN == user.subscriptions[i]) {
-            handlers.errorWithStatus(req, res, 400, 'User is already subscribed to book.');
-            return;
-        }
+        if (book.ISBN == user.subscriptions[i]) return next(new HTBError('User is already subscribed to book.'));
     }
-
     user.subscriptions.push(book.ISBN);
     user.save(function(err) {
-        if (!err) {
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
     });
 }
 
@@ -354,19 +283,14 @@ exports.unsubscribe = function (req, res, next) {
     var user = req.rUser;
     var newSubs = [];
     for (var i = 0; i < user.subscriptions.length; i++) {
-        var sub = user.subscriptions[i];
-        if (sub != book.ISBN) {
-            newSubs.push(sub);
-        }
+        if (user.subscriptions[i] != book.ISBN) newSubs.push(user.subscriptions[i]);
     }
 
     user.subscriptions = newSubs;
     user.save(function(err) {
-        if (!err) {
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
     });
 }
 
@@ -374,11 +298,9 @@ exports.clearUserSubscriptions = function (req, res, next) {
     var user = req.rUser;
     user.subscriptions = [];
     user.save(function(err) {
-        if (!err) {
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
     });
 }
 
@@ -386,13 +308,10 @@ exports.makeOffer = function (req, res, next) {
     var user = req.rUser;
     var listing = req.rListings[0];
     user.offers.push(listing._id.toString());
-
-    user.save(function(err, user) {
-        if (!err) {
-            req.rUser = user;
-            next();
-        } else {
-            handlers.mongoError(req, res, err);
-        }
+    user.save(function(err) {
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        return next();
     });
 }
+

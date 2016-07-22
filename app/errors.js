@@ -9,13 +9,13 @@ var sendHTBErrors = function (err, req, res, next) {
 
 var endOfWorld = function (err, req, res, next) {
   console.log(err.stack);
-  res.status(500).send({ errors: ['Sorry, something went wrong. Please try again.'] });
+  res.status(500).send('Sorry, something went wrong. Please try again.');
 };
 
 var send404 = function (req, res, next) {
   res.status(404);
   if (req.accepts('json')) {
-    return res.send({ errors: ['Not found'] });
+    return res.send('Not found');
   }
   res.type('txt').send('Not found');
 };
@@ -30,7 +30,7 @@ var api404 = function (req, res, next) {
 
 var mongoError = function (req, res, err) {
   res.status(400);
-  var messages = ["Mongo Error", "Dear developer, this method is deprecated, use next(err) instead."];
+  var messages = ["Mongo Error", "Dear developer, this method is deprecated, use next(HTBError) instead."];
   for (var name in err.errors) {
       messages.push(err.errors[name].message);
   }
@@ -42,7 +42,7 @@ var mongoError = function (req, res, err) {
 
 var statusError = function (req, res, status, message) {
   res.status(status);
-  var messages = ["Dear developer, this method is deprecated, use next(err) instead."];
+  var messages = ["Dear developer, this method is deprecated, use next(HTBError) instead."];
   if (message) {
     messages.push(message);
   }
@@ -54,7 +54,7 @@ var HTBError = function (status, message) {
   this.message = message;
 }
 
-var MError = function (err) {
+var MongoError = function (err) {
   return new HTBError(500, "Mongo error: " + err.message);
 }
 
@@ -66,5 +66,5 @@ module.exports = {
   mongoError: mongoError,
   errorWithStatus: statusError,
   HTBError: HTBError,
-  MError: MError
+  MongoError: MongoError
 }
