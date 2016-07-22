@@ -65,6 +65,7 @@ exports.setup = function (app) {
     // Login
     app.route('/api/login')
         .post(
+            // TODO: Can we put this somewhere else? -dp
             function(req, res, next) {
                 passport.authenticate('local', function(err, user, unverified) {
                     if (err) {
@@ -89,15 +90,16 @@ exports.setup = function (app) {
     // Logout
     app.route('/api/logout')
         .post(function (req, res) {
-            req.logout();
-            res.status(200).send("Logged out.");
-        });
+              req.logout();
+              res.status(200).send("Logged out.");
+            });
 
     // Authentification test
     app.route('/api/authTest')
-        .get(authenticate, function (req, res) {
-            res.status(200).send("Yay");
-        });
+        .get(authenticate, 
+            function (req, res) {
+                res.status(200).send("Yay");
+            });
 
     /* Schools */
     app.route('/api/schoolStats')
@@ -110,7 +112,7 @@ exports.setup = function (app) {
 
     // Register/create a user
     app.route('/api/register')
-        .post(users.createUser,
+        .post(users.registerUser,
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
 
