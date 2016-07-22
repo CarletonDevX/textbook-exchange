@@ -70,7 +70,6 @@ exports.registerUser = function (req, res, next) {
 
 var createUser = function (req, res, next) {
     var info = req.body;
-
     var newUser = new User({ 
         email: info.username,
         name: {
@@ -138,7 +137,7 @@ var getUserWithVerificationStatus = function (userID, verified, callback) {
     User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
         if (err) return callback(new MongoError(err));
         if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
-        callback(null, user);
+        return callback(null, user);
     });
 }
 
@@ -285,7 +284,6 @@ exports.unsubscribe = function (req, res, next) {
     for (var i = 0; i < user.subscriptions.length; i++) {
         if (user.subscriptions[i] != book.ISBN) newSubs.push(user.subscriptions[i]);
     }
-
     user.subscriptions = newSubs;
     user.save(function(err) {
         if (err) return next(new MongoError(err));

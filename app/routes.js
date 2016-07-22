@@ -4,7 +4,7 @@ var users = require('./controllers/users.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
     mailer = require('./mailer'),
-    Error = require('./errors'),
+    handlers = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
     inject = require('./injectors'),
@@ -349,6 +349,6 @@ exports.setup = function (app) {
               responder.successError);
 
     // Catchall 404 for API
-    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);
+    app.route('/api/*').get(handlers.api404).post(handlers.api404).put(handlers.api404).delete(handlers.api404);
 
 };
