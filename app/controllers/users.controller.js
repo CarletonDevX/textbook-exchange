@@ -59,14 +59,13 @@ exports.registerUser = function (req, res, next) {
 
     // Make sure all the info is there
     if (validateRegistrationInfo(req.body)) {
-
+        
         // Before creating a new user, check to make sure they haven't already registered
         User.findOne({email: req.body.username}, function (err, user) {
             if (!err) {
                 if (!user) {
                     createUser(req, res, next);
                 } else if (!user.verified) {
-                    console.log(user);
                     // If unverified, overwrite
                     user.remove(function (err) {
                         if (!err) {
