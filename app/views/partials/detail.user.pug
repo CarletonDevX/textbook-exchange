@@ -62,7 +62,7 @@ div.listings
           th.seller.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title
           th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
           th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th.contact Contact
+          th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Contact'}}
       tbody(ng-if="whichListings=='both'")
         //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
@@ -78,13 +78,13 @@ div.listings
            ng-include="'partials/detail.user.listings'")
       tfoot(ng-if="user.userID == currentUser.userID")
         tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
-          td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
-          td
+          td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":
+          td.condition
             select(
               ng-model="newListing.condition",
               ng-options="opt.name for opt in conditionOptions track by opt.code"
             )
-            small {{conditionDescriptions[newListing.condition.code]}}
+            small.description {{conditionDescriptions[newListing.condition.code]}}
 
           td
             p
@@ -117,8 +117,8 @@ div.listings
               )
           td.confirm
             button.confirm(ng-click="submitListing()")
-              span.symbol {{currUserListing ? '✓':'+'}}
-              | {{currUserListing ? 'update!' : 'list!'}}
+              span.symbol ✓
+              | update!
         tr.add-listing: td(colspan="5")
           div(ng-if="!currentUser")
             a(href, ng-click="openAccount()") log in
@@ -126,9 +126,19 @@ div.listings
           button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
             span.symbol ×
             |  cancel
-          button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
-            span.symbol +
-            |  add a listing
+          div(ng-if="!listingPaneOpen && currentUser")
+            |  Search for a book to add a listing
           button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
             span.symbol &#9998;
             |  edit my listing
+
+div.modal-wrapper(
+  ng-class="{'visible':offer.active}",
+  ng-htb-self-click="offer.active = false"
+  )
+  div.modal.offer
+    h3 Make an offer
+    textarea(ng-model="offer.message")
+    button(ng-click="makeOffer()") Send email
+    | |
+    button.cancel(ng-click="offer.active = false") Cancel

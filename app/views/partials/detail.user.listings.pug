@@ -20,7 +20,7 @@ td
 			td(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 
-td.make-an-offer(ng-if="!listing.isAmazonListing")
+td.make-an-offer
 	p(ng-if="!currentUser")
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
@@ -31,14 +31,14 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
-		ng-click="openListingPane()",
-		ng-hide="removingListing") &#9998;
+		ng-click="openListingPane(listing)",
+		ng-hide="removingListingID == listing.listingID") &#9998;
 	button.delete(
 		ng-if="listing.userID == currentUser.userID",
-		ng-click="openRemovingListing()",
-		ng-hide="removingListing")
+		ng-click="openRemovingListing(listing)",
+		ng-hide="removingListingID == listing.listingID")
 		i.fa.fa-trash-o(aria-hidden="true")
-	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
+	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListingID == listing.listingID")
 		p Did it sell?
 		button.confirm(ng-click="removeListing(listing, true)") yes
 		button.no(ng-click="removeListing(listing, false)") no

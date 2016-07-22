@@ -554,10 +554,9 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.makeOfferInit = function(listing) {
     $scope.offer.listing = listing;
-    console.log(listing);
     $scope.offer.message =
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
-      + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
+      + "I am interested in [buying/renting] your copy of \""+$scope.book.name+"\". "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
@@ -665,7 +664,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, userInfo, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $rootScope, userInfo, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
   $scope.watchlist = watchlist;
 
@@ -691,8 +690,134 @@ hitsTheBooks.controller('userPageController', function($scope, userInfo, Api, wa
         listing: null,
         message: null
     },
-    removingListing : false
+    removingListingID : null
   });
+
+  $scope.openRemovingListing = function(listing) {
+    $scope.removingListingID = listing.listingID;
+  }
+
+  $scope.closeRemovingListing = function() {
+    $scope.removingListingID = null;
+  }
+
+  var refreshListings = function() {
+    Api.getUser($stateParams.userID).then( function(user) {
+      $scope.user = user;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
+  $scope.removeListing = function(listing, itSold) {
+    if (itSold) {
+      Api.completeListing(listing.listingID).then(
+        function (res) {
+          refreshListings();
+          refreshCurrentUser();
+          $scope.closeRemovingListing();
+        },
+        function (err) { console.log(err) }
+      );
+    } else { //it didn't sell but the user wants to remove it anyway
+      Api.removeListing(listing.listingID).then(
+        function (res) {
+          refreshListings();
+          refreshCurrentUser();
+          $scope.closeRemovingListing();
+        },
+        function (err) { console.log(err) }
+      );
+    }
+  }
+
+  $scope.makeOfferInit = function(listing) {
+    $scope.offer.listing = listing;
+    $scope.offer.message =
+      "Hi "+$scope.user.name.fullName+",\n\n"
+      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+"\". "
+      + "Please let me know when we could meet.\n\n"
+      + "Thanks"
+      + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
+    $scope.offer.active = true;
+  }
+
+  var refreshCurrentUser = function() {
+    $scope.setCurrentUser();
+  }
+
+  $scope.makeOffer = function() {
+    Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
+      .then( function (data) {
+        refreshCurrentUser();
+        $scope.offer.active = false;
+      }, function (err) {
+        console.log(err);
+      })
+  }
+
+  $scope.handleReorder = function(category) {
+    if ($scope.listingOrder == category) $scope.reverseSort = !$scope.reverseSort;
+    else {
+      $scope.listingOrder = category;
+      $scope.reverseSort = {'lastName':true,
+                            'condition':false,
+                            'price':true}[category];
+    }
+  }
+
+  $scope.openListingPane = function(listing) {
+    // initializes the listing pane with correct settings
+    // cast prices to checkmarks -- should this be done elsewhere?
+    //copy the deets of the user's listing into the panel
+    console.log("listing: ", listing)
+    $scope.newListing = {
+      bookName : listing.book.name,
+      condition : $scope.conditionOptions[listing.condition],
+      // if there are prices set, set the form values to those prices, o/w use amazon or fall back on 0.
+      sellingPrice : (listing.sellingPrice != null) ? listing.sellingPrice : ( Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0 ),
+      rentingPrice : (listing.rentingPrice != null) ? listing.rentingPrice : ( Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0 ),
+      selling   : (listing.sellingPrice != null),
+      renting   : (listing.rentingPrice != null),
+      listingID : listing.listingID
+    };
+    $scope.listingPaneOpen = true;
+  }
+
+  $scope.closeListingPane = function() {
+    $scope.listingPaneOpen = false;
+  }
+
+  $scope.submitListing = function () {
+    //build the data object
+    var data = {
+      condition: $scope.newListing.condition.code
+    }
+    // using -1 tells the server to wipe the selling/renting
+    // price. Null tells the server not to record it in the
+    // first place. might be more consistent to just use neg-
+    // ative numbers.
+    if ($scope.newListing.selling) {
+      data['sellingPrice'] = $scope.newListing.sellingPrice;
+    } else {
+      data['sellingPrice'] = -1;
+    }
+
+    if($scope.newListing.renting) {
+      data['rentingPrice'] = $scope.newListing.rentingPrice;
+    } else {
+      data['rentingPrice'] = -1;
+    } 
+
+    Api.updateListing($scope.newListing.listingID, data).then( function (res) {
+      refreshListings();
+      refreshCurrentUser();
+      $scope.closeListingPane();
+    }, function (err) {
+      console.log(err);
+    });
+}
+
 });
 
 // Top-level shit
