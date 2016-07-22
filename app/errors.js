@@ -1,49 +1,36 @@
-// Taken from Matt Cotter, who maybe took it from someone else
-
-var logErrors = function (err, req, res, next) {
-  console.error(err.stack);
+var sendHTBErrors = function (err, req, res, next) {
+  if (err.status && err.message) {
+    // This means it's a nice HTBError
+    res.status(err.status);
+    return res.send(err.message);
+  }
   next(err);
 };
 
-var ajaxErrorHandler = function (err, req, res, next) {
-  if (req.xhr) {
-    res.status(500).send({ errors: ['Something went wrong.'] });
-  } else {
-    next(err);
-  }
-};
-
 var endOfWorld = function (err, req, res, next) {
+  console.log(err.stack);
   res.status(500).send({ errors: ['Sorry, something went wrong. Please try again.'] });
 };
 
 var send404 = function (req, res, next) {
   res.status(404);
-
-  // respond with json
   if (req.accepts('json')) {
     return res.send({ errors: ['Not found'] });
   }
-
-  // default to plain-text
   res.type('txt').send('Not found');
 };
 
 var api404 = function (req, res, next) {
   res.status(404);
-
-  // respond with json
   if (req.accepts('json')) {
     return res.send({ errors: ['API call does not exist'] });
   }
-
-  // default to plain-text
   res.type('txt').send('API call does not exist');
 };
 
 var mongoError = function (req, res, err) {
   res.status(400);
-  var messages = ["Mongo Error"];
+  var messages = ["Mongo Error", "Dear developer, this method is deprecated, use next(err) instead."];
   for (var name in err.errors) {
       messages.push(err.errors[name].message);
   }
@@ -55,19 +42,29 @@ var mongoError = function (req, res, err) {
 
 var statusError = function (req, res, status, message) {
   res.status(status);
-  var messages = [];
+  var messages = ["Dear developer, this method is deprecated, use next(err) instead."];
   if (message) {
     messages.push(message);
   }
   res.json({errors: messages});
 }
 
+var HTBError = function (status, message) {
+  this.status = status;
+  this.message = message;
+}
+
+var MError = function (err) {
+  return new HTBError(500, "Mongo error: " + err.message);
+}
+
 module.exports = {
-  logger: logErrors,
-  ajax: ajaxErrorHandler,
+  sendHTBErrors: sendHTBErrors,
   endOfWorld: endOfWorld,
   send404: send404,
   api404: api404,
   mongoError: mongoError,
-  errorWithStatus: statusError
+  errorWithStatus: statusError,
+  HTBError: HTBError,
+  MError: MError
 }

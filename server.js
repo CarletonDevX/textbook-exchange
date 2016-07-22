@@ -77,16 +77,14 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Error handling
-app.use(errorHandlers.logger);
-app.use(errorHandlers.ajax);
-app.use(errorHandlers.endOfWorld);
-
 // Our routes
 routes.setup(app);
 routes.setupMain(app);
 
+// Error handling
 app.use(errorHandlers.send404);
+app.use(errorHandlers.sendHTBErrors);
+app.use(errorHandlers.endOfWorld);
 
 // Start!
 app.listen(config.port);

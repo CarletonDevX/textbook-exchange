@@ -2,7 +2,9 @@ var User = require('mongoose').model('users'),
     Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
     mailer = require('../config/nodemailer'),
-    Error = require('../errors');
+    handlers = require('../errors'),
+    HTBError = handlers.HTBError,
+    MongoError = handlers.MError;
 
 exports.getAllUsers = function (req, res, next) {
     User.find({verified: true}, function(err, users) {
@@ -10,7 +12,7 @@ exports.getAllUsers = function (req, res, next) {
             req.rUsers = users;
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -22,7 +24,7 @@ exports.countUsers = function (req, res, next) {
             req.rSchoolStats.numUsers = count;
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -37,51 +39,43 @@ function validatePassword (password) {
     return re.test(password);
 }
 
-function validateRegistrationInfo (info) {
-    var email = info.username;
-    var password = info.password;
-
-    if (email == null || !validateEmail(email)) {
-        Error.errorWithStatus(req, res, 400, 'Must provide a valid Carleton email address.');
-    } else if (password == null || !validatePassword(password)) {
-        Error.errorWithStatus(req, res, 400, 'Must provide a valid password (5+ alphanumeric characters).');
+function validateRegistrationInfo (info, callback) {
+    var err;
+    if (info.username == null || !validateEmail(info.username)) {
+        err = new HTBError(400, 'Must provide a valid Carleton email address.');
+    } else if (info.password == null || !validatePassword(info.password)) {
+        err = new HTBError(400, 'Must provide a valid password (5+ alphanumeric characters).');
     } else if (info.givenName == null) {
-        Error.errorWithStatus(req, res, 400, 'Must provide "givenName" attribute.');
+        err = new HTBError(400, 'Must provide "givenName" attribute.');
     } else if (info.familyName == null) {
-        Error.errorWithStatus(req, res, 400, 'Must provide "familyName" attribute.');
-    } else {
-        return true;
+        err = new HTBError(400, 'Must provide "familyName" attribute.');
     }
-    return false;
+    callback(err);
 }
 
 exports.registerUser = function (req, res, next) {
 
     // Make sure all the info is there
-    if (validateRegistrationInfo(req.body)) {
+    validateRegistrationInfo(req.body, function (err) {
+        if (err) return next(err);
         
         // Before creating a new user, check to make sure they haven't already registered
         User.findOne({email: req.body.username}, function (err, user) {
-            if (!err) {
-                if (!user) {
+            if (err) return next(new MongoError(err));
+
+            if (!user) {
+                createUser(req, res, next);
+            } else if (!user.verified) {
+                // If unverified, overwrite
+                user.remove(function (err) {
+                    if (err) return next(new MongoError(err));
                     createUser(req, res, next);
-                } else if (!user.verified) {
-                    // If unverified, overwrite
-                    user.remove(function (err) {
-                        if (!err) {
-                            createUser(req, res, next);
-                        } else {
-                            Error.mongoError(req, res, err);
-                        }
-                    });
-                } else {
-                    Error.errorWithStatus(req, res, 400, 'A user with this email already exists.');
-                }
+                });
             } else {
-                Error.mongoError(req, res, err);
+                next(new HTBError(400, 'A user with this email already exists.'));
             }
         });
-    }
+    });
 }
 
 var createUser = function (req, res, next) {
@@ -105,12 +99,9 @@ var createUser = function (req, res, next) {
     });
 
     newUser.save(function(err, user) {
-        if (!err) {
-            req.rUser = user;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rUser = user;
+        next();
     }); 
 }
 
@@ -118,9 +109,9 @@ exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.query.verifier;
     if (verifier == null) {
-        Error.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
+        handlers.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
     } else if (verifier != user.verifier) {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
+        handlers.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
     } else {
         user.verified = true;
         user.save(function (err, user) {
@@ -131,7 +122,7 @@ exports.verifyUser = function (req, res, next) {
                     next();
                 });
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -141,9 +132,9 @@ exports.resetPassword = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.query.verifier;
     if (verifier == null) {
-        Error.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
+        handlers.errorWithStatus(req, res, 400, 'Must include "verifier" attribute.');
     } else if (verifier != user.verifier) {
-        Error.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
+        handlers.errorWithStatus(req, res, 401, 'Incorrect verifier string.');
     } else {
         // Generate new password (and verifier so call isn't made twice)
         var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
@@ -154,7 +145,7 @@ exports.resetPassword = function (req, res, next) {
                 req.rPassword = password;
                 next();
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -168,18 +159,18 @@ var getUserHelper = function (req, res, next, verified) {
     var userID = req.rUserID || req.params.userID || req.query.userID;
 
     if (userID == null) {
-        Error.errorWithStatus(req, res, 400, 'No userID provided.');
+        handlers.errorWithStatus(req, res, 400, 'No userID provided.');
     } else {
         User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
             if (!err) {
                 if (!user) {
-                    Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+                    handlers.errorWithStatus(req, res, 404, 'User not found by those conditions.');
                 } else {
                     req.rUser = user;
                     next();
                 }
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -202,18 +193,18 @@ exports.getUserUnverified = function (req, res, next) {
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
     if (username == null) {
-        Error.errorWithStatus(req, res, 400, 'Must include "username" attribute');
+        handlers.errorWithStatus(req, res, 400, 'Must include "username" attribute');
     } else {
         User.findOne({email: username}, function(err, user) {
             if (!err) {
                 if (!user) {
-                    Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
+                    handlers.errorWithStatus(req, res, 404, 'User not found by those conditions.');
                 } else {
                     req.rUser = user;
                     next();
                 }
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -229,7 +220,7 @@ exports.updateAvatar = function (req, res, next) {
             req.rUser = user;
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -237,7 +228,7 @@ exports.updateAvatar = function (req, res, next) {
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
     if (req.user._id != user._id) {
-        Error.errorWithStatus(req, res, 401, 'Unauthorized to update user.');
+        handlers.errorWithStatus(req, res, 401, 'Unauthorized to update user.');
     } else {
         var updates = req.body;
         // Only these updates are allowed
@@ -248,7 +239,7 @@ exports.updateUser = function (req, res, next) {
             try {
                  user.emailSettings = JSON.parse(updates.emailSettings);
             } catch (err) {
-                Error.errorWithStatus(req, res, 400, "Couldn't parse emailSettings object: "+err.message);
+                handlers.errorWithStatus(req, res, 400, "Couldn't parse emailSettings object: "+err.message);
                 return;
             }
         }
@@ -258,7 +249,7 @@ exports.updateUser = function (req, res, next) {
                 req.rUser = user;
                 next();
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -270,7 +261,7 @@ exports.removeUser = function (req, res, next) {
         if (!err) {
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -279,7 +270,7 @@ exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
     if (!description) {
-        Error.errorWithStatus(req, res, 400, 'Must include "description" attribute.');
+        handlers.errorWithStatus(req, res, 400, 'Must include "description" attribute.');
     } else {
         var report = new Report({
             "userID": user._id,
@@ -292,7 +283,7 @@ exports.reportUser = function (req, res, next) {
                 req.rUser = user;
                 next();
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     }
@@ -306,7 +297,7 @@ exports.getSubscribers = function (req, res, next) {
                 req.rSubscribers = subscribers;
                 next();
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     } else {
@@ -328,7 +319,7 @@ exports.getUndercutUsers = function (req, res, next) {
                 req.rUndercutUsers = users;
                 next();
             } else {
-                Error.mongoError(req, res, err);
+                handlers.mongoError(req, res, err);
             }
         });
     } else {
@@ -343,7 +334,7 @@ exports.subscribe = function (req, res, next) {
     var user = req.rUser;
     for (var i = 0; i < user.subscriptions.length; i++) {
         if (book.ISBN == user.subscriptions[i]) {
-            Error.errorWithStatus(req, res, 400, 'User is already subscribed to book.');
+            handlers.errorWithStatus(req, res, 400, 'User is already subscribed to book.');
             return;
         }
     }
@@ -353,7 +344,7 @@ exports.subscribe = function (req, res, next) {
         if (!err) {
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -374,7 +365,7 @@ exports.unsubscribe = function (req, res, next) {
         if (!err) {
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -386,7 +377,7 @@ exports.clearUserSubscriptions = function (req, res, next) {
         if (!err) {
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
@@ -401,7 +392,7 @@ exports.makeOffer = function (req, res, next) {
             req.rUser = user;
             next();
         } else {
-            Error.mongoError(req, res, err);
+            handlers.mongoError(req, res, err);
         }
     });
 }
