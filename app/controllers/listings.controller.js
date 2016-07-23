@@ -1,7 +1,6 @@
 var Listing = require('mongoose').model('listings'),
     HTBError = require('../errors').HTBError,
-    MongoError = require('../errors').MongoError,
-    AmazonError = require('../errors').AmazonError;
+    MongoError = require('../errors').MongoError;
 
 exports.countListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
