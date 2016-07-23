@@ -1,6 +1,4 @@
-Looks like passport is gonna make auth a lot easier than we thought- after authenticating, it'll store the user in the req.user object until the session expires. Not sure if the facebook/google oauth stuff is still gonna be possible with the api though.
-
-P.S. Make sure you have a persistent session enabled in whatever you're using to make requests.
+Note: Make sure you have a persistent session enabled in whatever you're using to make requests.
 
 ##Authentication
 #### Authentification test [Requires auth]:

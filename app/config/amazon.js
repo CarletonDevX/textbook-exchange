@@ -2,13 +2,11 @@ var config = require('./config')();
 var AWS = require('aws-lib').createProdAdvClient(config.amazon.clientID, config.amazon.clientSecret, config.amazon.tag);
 
 exports.searchWithKeywords = function (keywords, callback) {
-
     var options = {
         SearchIndex: "Books", 
         Keywords: keywords,  
         ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"
     }
-
     AWS.call("ItemSearch", options, function(err, result) {
         if (err) return callback(err);
         var items = result.Items.Item || [];
@@ -26,13 +24,11 @@ exports.searchWithKeywords = function (keywords, callback) {
 }
 
 exports.bookWithISBN = function (ISBN, callback) {
-
     var options = {
         SearchIndex: "Books",
         Keywords: ISBN,
         ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"
     }
-
     AWS.call("ItemSearch", options, function(err, result) {
         if (err) return callback(err);
         var items = result.Items.Item || [];
