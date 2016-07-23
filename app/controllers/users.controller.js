@@ -204,7 +204,7 @@ exports.getUserWithEmail = function (req, res, next) {
     if (username == null) {
         Error.errorWithStatus(req, res, 400, 'Must include "username" attribute');
     } else {
-        User.findOne({email: username}, function(err, user) {
+        User.findOne({email: username, verified: true}, function(err, user) {
             if (!err) {
                 if (!user) {
                     Error.errorWithStatus(req, res, 404, 'User not found by those conditions.');
