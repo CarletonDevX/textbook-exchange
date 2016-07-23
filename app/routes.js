@@ -5,6 +5,7 @@ var users = require('./controllers/users.controller'),
     avatars = require('./controllers/avatars.controller'),
     mail = require('./controllers/mail.controller'),
     handlers = require('./errors'),
+    HTBError = handlers.HTBError,
     passport = require('passport'),
     responder = require('./responseFormatter'),
     inject = require('./injectors'),
@@ -67,18 +68,14 @@ exports.setup = function (app) {
         .post(
             // TODO: Can we put this somewhere else? -dp
             function(req, res, next) {
-                passport.authenticate('local', function(err, user, unverified) {
-                    if (err) {
-                        Error.errorWithStatus(req, res, 500, err.message);
-                    } else if (unverified) {
-                        res.status(400).json({errors: ['User is not verified'], userID: user._id});
-                    } else if (user) {
-                        req.login(user, function () {
-                            next();
-                        });  
-                    } else {
-                        Error.errorWithStatus(req, res, 401, 'Incorrect email or password');
-                    }
+                passport.authenticate('local', function(err, user) {
+                    if (err) return next(new HTBError(500, err.message));
+                    if (!user) return next(new HTBError(401, 'Incorrect email or password'));
+                    if (!user.verified) next(new HTBError(400, 'User is not verified'));
+                    req.login(user, function (err) {
+                        if (err) return next(new HTBError(500, 'Login failed.'));
+                        next();
+                    });  
                 })(req, res, next);
             },
             users.getCurrentUser,
@@ -125,8 +122,8 @@ exports.setup = function (app) {
              });
 
     // Resend verification email
-    app.route('/api/resendVerification/:userID')
-        .post(users.getUserUnverified,
+    app.route('/api/resendVerification/')
+        .post(users.getUserWithEmail,
             mail.sendRegistrationEmail,
             responder.successVerificationEmail);
 

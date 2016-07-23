@@ -39,9 +39,13 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 
 `GET hitsthebooks.com/api/verify?userID=userID&verifier=verifier`
 
-#### Resend verification link for user with user ID
+#### Resend verification link for user
 
-`POST hitsthebooks.com/api/resendVerification/:id`
+`POST hitsthebooks.com/api/resendVerification/`
+
+| key        | type    | required |
+| ---------- | ------- | -------- |
+| username   | string  | yes      |
 
 #### Request password reset
 

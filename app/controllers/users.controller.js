@@ -168,7 +168,7 @@ exports.getUserUnverified = function (req, res, next) {
 
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
-    if (!username) return callback(new HTBError(400, 'Must include "username" attribute'));
+    if (!username) return next(new HTBError(400, 'Must include "username" attribute'));
     User.findOne({email: username}, function(err, user) {
         if (err) return next(new MongoError(err));
         if (!user) return next(new HTBError(404, 'User not found by those conditions.'));
@@ -218,7 +218,7 @@ exports.removeUser = function (req, res, next) {
 exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
-    if (!description) return callback(new HTBError(400, 'Must include "description" attribute'));
+    if (!description) return next(new HTBError(400, 'Must include "description" attribute'));
 
     user.reports.push(new Report({
         "userID": user._id,
