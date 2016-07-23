@@ -281,11 +281,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   $scope.register = function (registerData) {
       Api.register(registerData).then(function(res) {
           if (res.status == 400) {
-              if (res.data.errors.length == 2 && res.data.errors[1].startsWith("E11000 duplicate key error")) {
-                  $scope.registerAlert = "Sorry, there's already an account associated with that email address";
-              } else {
-                  $scope.registerAlert = res.data.errors[0];
-              }
+              $scope.registerAlert = "Sorry, there's already an account associated with that email address.";
           } else {
               $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
               $scope.registerAlert = "Registration Successful! Please check your email to proceed.";
@@ -295,7 +291,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 });
 
 hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {
-
   $scope.watchlist = watchlist;
 
   // Click background of modal to exit.
@@ -312,8 +307,6 @@ hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, 
       $scope.closeAccount();
     });
   }
-
-
 });
 
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
