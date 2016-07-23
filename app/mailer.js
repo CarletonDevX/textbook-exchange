@@ -57,6 +57,29 @@ exports.sendRegistrationEmail = function (req, res, next) {
 	sendMail(req, res, next, options);
 }
 
+exports.sendRequestPasswordEmail = function (req, res, next) {
+	var user = req.rUser;
+
+	options = {
+		subject: "Confirm password reset",
+		html: readEmail("requestPassword.html").format(config.url, user._id, user.verifier),
+		user: user
+	}
+	sendMail(req, res, next, options);
+}
+
+exports.sendNewPasswordEmail = function (req, res, next) {
+	var user = req.rUser;
+	var password = req.rPassword;
+
+	options = {
+		subject: "Your password has been reset",
+		html: readEmail("newPassword.html").format(password),
+		user: user
+	}
+	sendMail(req, res, next, options);
+}
+
 exports.sendOfferEmail = function (req, res, next) {
 	var listing = req.rListings[0];
 	var book = listing.book;

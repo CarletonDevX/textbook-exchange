@@ -64,7 +64,23 @@ exports.setup = function (app) {
 
     // Login
     app.route('/api/login')
-        .post(passport.authenticate('local'),
+        .post(
+            // TODO: Can we put this somewhere else? -dp
+            function(req, res, next) {
+                passport.authenticate('local', function(err, user, unverified) {
+                    if (err) {
+                        Error.errorWithStatus(req, res, 500, err.message);
+                    } else if (unverified) {
+                        res.status(400).json({errors: ['User is not verified'], userID: user._id});
+                    } else if (user) {
+                        req.login(user, function () {
+                            next();
+                        });  
+                    } else {
+                        Error.errorWithStatus(req, res, 401, 'Incorrect email or password');
+                    }
+                })(req, res, next);
+            },
             users.getCurrentUser,
             listings.getUserListings,
             inject.BooksIntoListings,
@@ -74,15 +90,16 @@ exports.setup = function (app) {
     // Logout
     app.route('/api/logout')
         .post(function (req, res) {
-            req.logout();
-            res.status(200).send("Logged out.");
-        });
+              req.logout();
+              res.status(200).send("Logged out.");
+            });
 
     // Authentification test
     app.route('/api/authTest')
-        .get(authenticate, function (req, res) {
-            res.status(200).send("Yay");
-        });
+        .get(authenticate, 
+            function (req, res) {
+                res.status(200).send("Yay");
+            });
 
     /* Schools */
     app.route('/api/schoolStats')
@@ -95,7 +112,7 @@ exports.setup = function (app) {
 
     // Register/create a user
     app.route('/api/register')
-        .post(users.createUser,
+        .post(users.registerUser,
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
 
@@ -106,6 +123,27 @@ exports.setup = function (app) {
              function(req, res, next) {
                 res.redirect('/');
              });
+
+    // Resend verification email
+    app.route('/api/resendVerification/:userID')
+        .post(users.getUserUnverified,
+            mailer.sendRegistrationEmail,
+            responder.successVerificationEmail);
+
+    // Request password reset
+    app.route('/api/requestPasswordReset')
+        .post(users.getUserWithEmail,
+              mailer.sendRequestPasswordEmail,
+              responder.successRequestPasswordReset);
+
+    // Reset password
+    app.route('/api/resetPassword')
+        .get(users.getUser,
+            users.resetPassword,
+            mailer.sendNewPasswordEmail,
+            function(req, res, next) {
+                res.redirect('/');
+            });
 
     // Get current user
     app.route('/api/user')
