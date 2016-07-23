@@ -37,6 +37,33 @@
     "url": "git://github.com/CarletonDevX/textbook-exchange.git"
   },
   "devDependencies": {},
+  "eslintConfig": {
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "ignore-path": ".gitignore",
+    "rules": {
+        "indent": ["error", 4],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-console": "warn",
+        "func-style": ["warn", "expression"],
+        "space-before-function-paren": ["error", "always"],
+        "brace-style": "error",
+        "camelcase": "error",
+        "new-cap": "error",
+        "no-lonely-if": "error",
+        "sort-vars": ["error", { "ignoreCase": true }],
+        "no-redeclare": "warn",
+        "spaced-comment": ["error", "always"],
+        "keyword-spacing": ["error", {"before": true, "after": true}],
+        "comma-dangle": ["error", "always-multiline"],
+        "comma-spacing": ["error", {"before": false, "after": true}],
+        "array-bracket-spacing": ["error", "never"]
+    }
+  },
   "scripts": {
     "start": "NODE_ENV=development node init.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/**.js"
