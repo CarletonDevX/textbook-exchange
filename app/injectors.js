@@ -1,12 +1,11 @@
 var Book = require('mongoose').model('books');
 var User = require('mongoose').model('users');
-var Error = require('./errors.js');
+var MongoError = require('./errors.js').MongoError;
 var utils = require('./utilities');
 
 
 exports.UsersIntoListings = function(req, res, next) {
-
-    //config for injector
+    // config for injector
     var configParams = {
         collection: User,
         ID: 'userID',
@@ -14,21 +13,16 @@ exports.UsersIntoListings = function(req, res, next) {
         newKey: 'user',
         propsNeeded: ['name', 'gradYear', 'avatar', 'email']
     };
-
-    //inject req'd user data into each listing
+    // inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
-        if (!err) {
-            req.rListings = augListings;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rListings = augListings;
+        next();
     });
 }
 
 exports.BooksIntoListings = function(req, res, next) {
-
-    //config for injector
+    // config for injector
     var configParams = {
         collection: Book,
         ID: 'ISBN',
@@ -36,14 +30,10 @@ exports.BooksIntoListings = function(req, res, next) {
         newKey: 'book',
         propsNeeded: ['coverImage','name','edition']
     };
-
-    //inject req'd user data into each listing
+    // inject req'd user data into each listing
     utils.inject(req.rListings, configParams, function(err, augListings){
-        if (!err) {
-            req.rListings = augListings;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rListings = augListings;
+        next();
     });
 }

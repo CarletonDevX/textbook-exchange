@@ -21,7 +21,7 @@ var send = function (options, callback) {
     options.to = options.user.email;
     sender.sendMail(options, function (err) {
         if (err) {
-            console.log(err); // We probably want to know what's up with these ones
+            console.log(err.stack); // We probably want to know what's up with these ones
             return callback(new HTBError(500, 'A required email did not send.'));
         }
         delete options.user;

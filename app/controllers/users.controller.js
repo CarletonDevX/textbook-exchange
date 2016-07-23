@@ -218,7 +218,7 @@ exports.removeUser = function (req, res, next) {
 exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
-    if (!description) return next(new HTBError(400, 'Must include "description" attribute'));
+    if (!description) return next(new HTBError(400, 'Must include "description" attribute.'));
 
     user.reports.push(new Report({
         "userID": user._id,
