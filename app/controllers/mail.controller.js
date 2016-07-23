@@ -1,9 +1,9 @@
 // For sending mail.
-var mailer = require('./config/nodemailer'),
+var mailer = require('../config/nodemailer'),
     User = require('mongoose').model('users'),
-    HTBError = require('./errors').HTBError,
+    HTBError = require('../errors').HTBError,
     fs = require('fs'),
-    config = require('./config/config')();
+    config = require('../config/config')();
 
 exports.sendTestEmail = function (req, res, next) {
     options = {
@@ -134,7 +134,7 @@ exports.sendReportEmail = function (req, res, next) {
 /* HELPERS */
 
 var readEmail = function (file) {
-    return String(fs.readFileSync(__dirname + "/emails/" + file, "utf8"));
+    return String(fs.readFileSync(__dirname + "/../emails/" + file, "utf8"));
 }
 
 // Basic string formatting function for templates (http://stackoverflow.com/a/4673436)

@@ -3,7 +3,7 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
-    mailer = require('./mailer'),
+    mail = require('./controllers/mail.controller'),
     handlers = require('./errors'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
@@ -47,13 +47,13 @@ exports.setup = function (app) {
 
     // Send test email
     app.post('/emailTest',
-        mailer.sendTestEmail,
+        mail.sendTestEmail,
         responder.successTestEmail);
 
     // Send mass update email with email body
     app.post('/email',
         users.getAllUsers,
-        mailer.sendUpdateEmail,
+        mail.sendUpdateEmail,
         responder.successUpdateEmail);
 
     /****
@@ -113,7 +113,7 @@ exports.setup = function (app) {
     // Register/create a user
     app.route('/api/register')
         .post(users.registerUser,
-              mailer.sendRegistrationEmail,
+              mail.sendRegistrationEmail,
               responder.formatCurrentUser);
 
     // Verify a user with user ID
@@ -127,20 +127,20 @@ exports.setup = function (app) {
     // Resend verification email
     app.route('/api/resendVerification/:userID')
         .post(users.getUserUnverified,
-            mailer.sendRegistrationEmail,
+            mail.sendRegistrationEmail,
             responder.successVerificationEmail);
 
     // Request password reset
     app.route('/api/requestPasswordReset')
         .post(users.getUserWithEmail,
-              mailer.sendRequestPasswordEmail,
+              mail.sendRequestPasswordEmail,
               responder.successRequestPasswordReset);
 
     // Reset password
     app.route('/api/resetPassword')
         .get(users.getUser,
             users.resetPassword,
-            mailer.sendNewPasswordEmail,
+            mail.sendNewPasswordEmail,
             function(req, res, next) {
                 res.redirect('/');
             });
@@ -252,10 +252,10 @@ exports.setup = function (app) {
              books.getBook,
              listings.createListing,
              users.getSubscribers,
-             mailer.sendSubscribersEmail,
+             mail.sendSubscribersEmail,
              listings.getUndercutListings,
              users.getUndercutUsers,
-             mailer.sendUndercutEmail,
+             mail.sendUndercutEmail,
              responder.formatSingleListing);
 
     // Get listings for user with user ID
@@ -307,7 +307,7 @@ exports.setup = function (app) {
               inject.UsersIntoListings, // -----------------------
               offers.makeOffer,
               users.makeOffer,
-              mailer.sendOfferEmail,
+              mail.sendOfferEmail,
               responder.formatOffer);
 
     // Complete a listing with listing ID
@@ -345,7 +345,7 @@ exports.setup = function (app) {
 
     // Report error
     app.route('/api/errors')
-        .post(mailer.sendReportEmail,
+        .post(mail.sendReportEmail,
               responder.successError);
 
     // Catchall 404 for API
