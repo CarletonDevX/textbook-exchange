@@ -115,7 +115,7 @@ exports.setup = function (app) {
 
     // Verify a user with user ID
     app.route('/api/verify')
-        .get(users.getUserUnverified,
+        .get(users.getUnverifiedUser,
              users.verifyUser,
              function(req, res, next) {
                 res.redirect('/');
@@ -123,7 +123,7 @@ exports.setup = function (app) {
 
     // Resend verification email
     app.route('/api/resendVerification/')
-        .post(users.getUserWithEmail,
+        .post(users.getUnverifiedUserWithEmail,
             mail.sendRegistrationEmail,
             responder.successVerificationEmail);
 

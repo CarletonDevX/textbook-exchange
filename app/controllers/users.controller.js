@@ -85,7 +85,6 @@ var createUser = function (req, res, next) {
         bio: info.bio,
         gradYEar: info.gradYear
     });
-
     newUser.save(function(err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
@@ -96,10 +95,8 @@ var createUser = function (req, res, next) {
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.query.verifier || req.body.verifier;
-
     if (!verifier) return next(new HTBError(400, 'Must include "verifier" attribute.'));
     if (verifier != user.verifier) return next(new HTBError(401, 'Incorrect verifier string.'));
-
     user.verified = true;
     user.save(function (err, user) {
         if (err) return next(new MongoError(err));
@@ -115,15 +112,12 @@ exports.verifyUser = function (req, res, next) {
 exports.resetPassword = function (req, res, next) {
     var user = req.rUser;
     var verifier = req.query.verifier || req.body.verifier;
-
     if (!verifier) return next(new HTBError(400, 'Must include "verifier" attribute.'));
     if (verifier != user.verifier) return next(new HTBError(401, 'Incorrect verifier string.'));
-
     // Generate new password (and verifier so call isn't made twice)
     var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
     user.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
     user.password = crypto.createHash('md5').update(password).digest('hex');
-
     user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rPassword = password;
@@ -131,10 +125,20 @@ exports.resetPassword = function (req, res, next) {
     });
 }
 
-var getUserWithVerificationStatus = function (userID, verified, callback) {
-    // A helper for getUser and getUserUnverified
+var getUserWithID = function (userID, verified, callback) {
+    // A helper for getUser and getUnverifiedUser
     if (!userID) return callback(new HTBError(400, 'No userID provided.'));
     User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
+        if (err) return callback(new MongoError(err));
+        if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
+        return callback(null, user);
+    });
+}
+
+var getUserWithUsername = function (username, verified, callkback) {
+    // A helper for getUserWithEmail and getUserWithEmailUnverified
+    if (!username) return callback(new HTBError(400, 'Must include "username" attribute.'));
+    User.findOne({email: username, verified: {$in: [verified, true]}}, function(err, user) {
         if (err) return callback(new MongoError(err));
         if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
         return callback(null, user);
@@ -149,17 +153,17 @@ exports.getCurrentUser = function (req, res, next) {
 
 exports.getUser = function (req, res, next) {
     var userID = req.rUserID || req.params.userID || req.query.userID;
-    getUserWithVerificationStatus(userID, true, function (err, user) {
+    getUserWithID(userID, true, function (err, user) {
         if (err) return next(err);
         req.rUser = user;
         return next();
     });
 }
 
-exports.getUserUnverified = function (req, res, next) {
+exports.getUnverifiedUser = function (req, res, next) {
     // NOTE: Gets both unverified and verified users
     var userID = req.rUserID || req.params.userID || req.query.userID;
-    getUserWithVerificationStatus(userID, false, function (err, user) {
+    getUserWithID(userID, false, function (err, user) {
         if (err) return next(err);
         req.rUser = user;
         return next();
@@ -168,10 +172,18 @@ exports.getUserUnverified = function (req, res, next) {
 
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
-    if (!username) return next(new HTBError(400, 'Must include "username" attribute'));
-    User.findOne({email: username}, function(err, user) {
-        if (err) return next(new MongoError(err));
-        if (!user) return next(new HTBError(404, 'User not found by those conditions.'));
+    getUserWithUsername(username, true, function (err, user) {
+        if (err) return next(err);
+        req.rUser = user;
+        return next();
+    });
+}
+
+exports.getUnverifiedUserWithEmail = function (req, res, next) {
+    // NOTE: Gets both unverified and verified users
+    var username = req.body.username;
+    getUserWithUsername(username, false, function (err, user) {
+        if (err) return next(err);
         req.rUser = user;
         return next();
     });
@@ -219,13 +231,11 @@ exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
     if (!description) return next(new HTBError(400, 'Must include "description" attribute.'));
-
     user.reports.push(new Report({
         "userID": user._id,
         "reporterID": req.user._id,
         "description": description
     }));
-
     user.save(function(err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
