@@ -75,7 +75,7 @@ exports.setup = function (app) {
                     } else if (user) {
                         req.login(user, function () {
                             next();
-                        });  
+                        });
                     } else {
                         Error.errorWithStatus(req, res, 401, 'Incorrect email or password');
                     }
@@ -96,7 +96,7 @@ exports.setup = function (app) {
 
     // Authentification test
     app.route('/api/authTest')
-        .get(authenticate, 
+        .get(authenticate,
             function (req, res) {
                 res.status(200).send("Yay");
             });

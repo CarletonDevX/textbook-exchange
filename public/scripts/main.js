@@ -259,20 +259,19 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   $scope.signinAlert = "";
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-        console.log(res);
-        if (res.status == 401) {
-            $scope.signinAlert = "Account does not exist.";
-            return;
-        }
-        if (res.status == 400) {
-            $scope.signinAlert = "Account not verified.<a href='#'>Resend Verification Link?</a>";
-            return;
-        }
-        if (res.data == "Wrong Password") {
-            $scope.signinAlert = "Wrong Password.<a href='#'>Forgot Password?</a>";
-            return;
-        }
-        $scope.closeAccount();
+      if (res.status == 401) {
+          $scope.signinAlert = "Incorrect Email or Password.<a href='#'>Forgot Password?</a>";
+          return;
+      }
+      if (res.status == 400) {
+          $scope.signinAlert = "Account not verified.<a href='#'>Resend Verification Link?</a>";
+          return;
+      }
+      if (res.status == 500) {
+          $scope.signinAlert = "Server Error";
+          return;
+      }
+      $scope.closeAccount();
     });
   };
 
