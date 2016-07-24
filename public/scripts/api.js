@@ -135,7 +135,6 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res;
                 },
                 function (err) {
-                    console.log(err);
                     return err;
                 }
             );
@@ -146,7 +145,6 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res;
                 },
                 function (err) {
-                    console.log(err);
                     return err;
                 }
             );

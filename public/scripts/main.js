@@ -327,7 +327,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   $scope.resendVerification = function() {
     Api.resendVerificationEmail($scope.unverifiedUserId).then(function(res) {
-      console.log(res);
       switch (res.status) {
         case 200:
           $scope.signinAlert = 4;
