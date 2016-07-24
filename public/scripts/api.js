@@ -129,8 +129,8 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
-        resendVerificationEmail: function(userID) {
-            return $http.post('/api/resendVerification/' + userID).then(
+        resendVerificationEmail: function(username) {
+            return $http.post('/api/resendVerification/', {'username': username}).then(
                 function (res) {
                     return res;
                 },
