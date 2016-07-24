@@ -70,7 +70,7 @@ exports.registerUser = function (req, res, next) {
 
 var createUser = function (req, res, next) {
     var info = req.body;
-    var newUser = new User({ 
+    var newUser = new User({
         email: info.username,
         name: {
             givenName: info.givenName,
@@ -89,7 +89,7 @@ var createUser = function (req, res, next) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
-    }); 
+    });
 }
 
 exports.verifyUser = function (req, res, next) {

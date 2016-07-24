@@ -93,7 +93,7 @@ exports.setup = function (app) {
 
     // Authentification test
     app.route('/api/authTest')
-        .get(authenticate, 
+        .get(authenticate,
             function (req, res) {
                 res.status(200).send("Yay");
             });
