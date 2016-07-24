@@ -14,9 +14,9 @@ h2 Login or Register
 			| Account not verified.
 			<a href='#' ng-click='resendVerification()'>Resend Verification Link?</a>
 		p(ng-if='signinAlert == 3')
-			| Server Error.
+			| Internal Server Error.
 			<a href='#' ng-click='modalStates.contact = true'>Report Error</a>
-
+		p(ng-if='signinAlert == 4' ng-bind='resendResetAlert')
 	h3 Register
 	form(class='form-register' name="registerForm" ng-submit="register(registerData)")
 		input(ng-model="registerData.username" type='text' placeholder='Email' autofill="email" required autofocus)

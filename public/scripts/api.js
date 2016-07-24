@@ -130,12 +130,12 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
             );
         },
         resendVerificationEmail: function(userID) {
-            return $http.post('/api/resendVerification/' + userId).then(
+            return $http.post('/api/resendVerification/' + userID).then(
                 function (res) {
-                    console.log(res);
-                    return res.data;
+                    return res;
                 },
                 function (err) {
+                    console.log(err);
                     return err;
                 }
             );
@@ -143,10 +143,10 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
         requestPasswordReset: function(username) {
             return $http.post('/api/requestPasswordReset/', {'username': username}).then(
                 function (res) {
-                    console.log(res);
-                    return res.data;
+                    return res;
                 },
                 function (err) {
+                    console.log(err);
                     return err;
                 }
             );
