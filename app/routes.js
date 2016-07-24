@@ -115,7 +115,7 @@ exports.setup = function (app) {
         .post(users.registerUser,
               mailer.sendRegistrationEmail,
               responder.formatCurrentUser);
-    app.route('/api/resendRegistration').post();
+
     // Verify a user with user ID
     app.route('/api/verify')
         .get(users.getUserUnverified,

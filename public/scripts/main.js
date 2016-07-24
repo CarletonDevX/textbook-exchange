@@ -253,26 +253,39 @@ hitsTheBooks.constant('AUTH_EVENTS', {
 });
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+  $scope.SignInAlert = {
+    NONE : 0,
+    INCORRECT_INFO : 1,
+    UNVERIFIED : 2,
+    SERVER_ERROR : 3,
+    RESEND_RESET_ALERT : 4
+  };
+  $scope.RegisterAlert = {
+    NONE : 0,
+    INVALID_INFO : 1,
+    SERVER_ERROR : 2,
+    SUCCESS : 3
+  };
 
   // Login
   $scope.loginData = { username: '', password: '' };
-  $scope.signinAlert = 0;
+  $scope.signinAlert = $scope.SignInAlert.NONE;
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
       switch (res.status) {
         case 401:
-          $scope.signinAlert = 1;
+          $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
           break;
         case 400:
           $scope.unverifiedUserId = res.data.userID;
-          $scope.signinAlert = 2;
+          $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
           break;
         case 500:
-          $scope.signinAlert = 3;
+          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
           break;
         case 200:
           $scope.closeAccount();
-          $scope.signinAlert = 0;
+          $scope.signinAlert = $scope.SignInAlert.NONE;
           break;
       }
     });
@@ -280,23 +293,22 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-  $scope.registerAlert = 0;
+  $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
   $scope.register = function (registerData) {
     Api.register(registerData).then(function(res) {
-      console.log(res);
       switch (res.status) {
         case 400:
-          $scope.registerAlert = 1;
+          $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
           $scope.registrationError = res.data.errors[0];
           break;
         case 500:
         case 0:
-          $scope.registerAlert = 2;
+          $scope.registerAlert = $scope.RegisterAlert.SERVER_ERROR;
           break;
         default:
           $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-          $scope.registerAlert = 3;
+          $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
           break;
       }
     });
