@@ -129,5 +129,27 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        resendVerificationEmail: function(userID) {
+            return $http.post('/api/resendVerification/' + userId).then(
+                function (res) {
+                    console.log(res);
+                    return res.data;
+                },
+                function (err) {
+                    return err;
+                }
+            );
+        },
+        requestPasswordReset: function(username) {
+            return $http.post('/api/requestPasswordReset/', {'username': username}).then(
+                function (res) {
+                    console.log(res);
+                    return res.data;
+                },
+                function (err) {
+                    return err;
+                }
+            );
+        }
     }
 }]);

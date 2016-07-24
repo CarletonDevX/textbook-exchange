@@ -264,6 +264,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
           $scope.signinAlert = 1;
           break;
         case 400:
+          $scope.unverifiedUserId = res.data.userID;
           $scope.signinAlert = 2;
           break;
         case 500:
@@ -290,6 +291,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
           $scope.registrationError = res.data.errors[0];
           break;
         case 500:
+        case 0:
           $scope.registerAlert = 2;
           break;
         default:
@@ -301,13 +303,12 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   };
 
   $scope.requestPasswordReset = function() {
-    console.log('pwreset');
+    Api.requestPasswordReset($scope.loginData.username);
   }
 
   $scope.resendVerification = function() {
-    console.log('resend');
+    Api.resendVerificationEmail($scope.unverifiedUserId);
   }
-
 });
 
 hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {
