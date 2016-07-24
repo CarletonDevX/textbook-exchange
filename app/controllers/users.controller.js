@@ -37,7 +37,7 @@ function validatePassword (password) {
     return re.test(password);
 }
 
-function validateRegistrationInfo (info) {
+function validateRegistrationInfo (req, res, info) {
     var email = info.username;
     var password = info.password;
 
@@ -56,10 +56,8 @@ function validateRegistrationInfo (info) {
 }
 
 exports.registerUser = function (req, res, next) {
-
     // Make sure all the info is there
-    if (validateRegistrationInfo(req.body)) {
-        
+    if (validateRegistrationInfo(req, res, req.body)) {
         // Before creating a new user, check to make sure they haven't already registered
         User.findOne({email: req.body.username}, function (err, user) {
             if (!err) {
@@ -87,7 +85,7 @@ exports.registerUser = function (req, res, next) {
 var createUser = function (req, res, next) {
     var info = req.body;
 
-    var newUser = new User({ 
+    var newUser = new User({
         email: info.username,
         name: {
             givenName: info.givenName,
@@ -111,7 +109,7 @@ var createUser = function (req, res, next) {
         } else {
             Error.mongoError(req, res, err);
         }
-    }); 
+    });
 }
 
 exports.verifyUser = function (req, res, next) {
@@ -313,7 +311,7 @@ exports.getSubscribers = function (req, res, next) {
         req.rSubscribers = [];
         next();
     }
-    
+
 }
 
 exports.getUndercutUsers = function (req, res, next) {
@@ -335,7 +333,7 @@ exports.getUndercutUsers = function (req, res, next) {
         req.rUndercutUsers = [];
         next();
     }
-    
+
 }
 
 exports.subscribe = function (req, res, next) {
