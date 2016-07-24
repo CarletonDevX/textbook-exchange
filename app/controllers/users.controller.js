@@ -135,7 +135,7 @@ var getUserWithID = function (userID, verified, callback) {
     });
 }
 
-var getUserWithUsername = function (username, verified, callkback) {
+var getUserWithUsername = function (username, verified, callback) {
     // A helper for getUserWithEmail and getUserWithEmailUnverified
     if (!username) return callback(new HTBError(400, 'Must include "username" attribute.'));
     User.findOne({email: username, verified: {$in: [verified, true]}}, function(err, user) {
@@ -253,7 +253,7 @@ exports.getSubscribers = function (req, res, next) {
         if (err) return next(new MongoError(err));
         req.rSubscribers = subscribers;
         return next();
-    });   
+    });
 }
 
 exports.getUndercutUsers = function (req, res, next) {
@@ -322,4 +322,3 @@ exports.makeOffer = function (req, res, next) {
         return next();
     });
 }
-
