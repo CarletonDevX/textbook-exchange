@@ -256,38 +256,58 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Login
   $scope.loginData = { username: '', password: '' };
-  $scope.signinAlert = "";
+  $scope.signinAlert = 0;
   $scope.login = function (loginData) {
     Api.login(loginData).then(function (res) {
-      if (res.status == 401) {
-          $scope.signinAlert = "Incorrect Email or Password.<a href='#'>Forgot Password?</a>";
-          return;
+      switch (res.status) {
+        case 401:
+          $scope.signinAlert = 1;
+          break;
+        case 400:
+          $scope.signinAlert = 2;
+          break;
+        case 500:
+          $scope.signinAlert = 3;
+          break;
+        case 200:
+          $scope.closeAccount();
+          $scope.signinAlert = 0;
+          break;
       }
-      if (res.status == 400) {
-          $scope.signinAlert = "Account not verified.<a href='#'>Resend Verification Link?</a>";
-          return;
-      }
-      if (res.status == 500) {
-          $scope.signinAlert = "Server Error";
-          return;
-      }
-      $scope.closeAccount();
     });
   };
 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-
+  $scope.registerAlert = 0;
+  $scope.registrationError = "";
   $scope.register = function (registerData) {
-      Api.register(registerData).then(function(res) {
-          if (res.status == 400) {
-              $scope.registerAlert = "Sorry, there's already an account associated with that email address.";
-          } else {
-              $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-              $scope.registerAlert = "Registration Successful! Please check your email to proceed.";
-          }
-      });
+    Api.register(registerData).then(function(res) {
+      console.log(res);
+      switch (res.status) {
+        case 400:
+          $scope.registerAlert = 1;
+          $scope.registrationError = res.data.errors[0];
+          break;
+        case 500:
+          $scope.registerAlert = 2;
+          break;
+        default:
+          $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+          $scope.registerAlert = 3;
+          break;
+      }
+    });
   };
+
+  $scope.requestPasswordReset = function() {
+    console.log('pwreset');
+  }
+
+  $scope.resendVerification = function() {
+    console.log('resend');
+  }
+
 });
 
 hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {

@@ -7,8 +7,15 @@ h2 Login or Register
 		input(ng-model="loginData.username" type='text' placeholder='Email' required autofocus)
 		input(ng-model='loginData.password' type='password' placeholder='Password' required)
 		button(type='submit') Sign In
-		p(ng-bind-html='signinAlert | unsafe')
-
+		p(ng-if='signinAlert == 1')
+			| Incorrect Email or Password.
+			<a href='#' ng-click='requestPasswordReset()'>Forgot Password?</a>
+		p(ng-if='signinAlert == 2')
+			| Account not verified.
+			<a href='#' ng-click='resendVerification()'>Resend Verification Link?</a>
+		p(ng-if='signinAlert == 3')
+			| Server Error.
+			<a href='#' ng-click='modalStates.contact = true'>Report Error</a>
 
 	h3 Register
 	form(class='form-register' name="registerForm" ng-submit="register(registerData)")
@@ -17,8 +24,12 @@ h2 Login or Register
 		input(ng-model="registerData.familyName" type='text' placeholder='Last Name' autofill="family-name" required)
 		input(ng-model="registerData.password" type='password' placeholder='Password' required)
 		button(type='submit') Register
-		p(ng-bind='registerAlert')
-
+		p(ng-if='registerAlert == 1' ng-bind='registrationError')
+		p(ng-if='registerAlert == 2')
+			| Internal Server Error.
+			<a href='#' ng-click='modalStates.contact = true'>Report Error</a>
+		p(ng-if='registerAlert == 3')
+			| Registration Successful! Please check your email to proceed.
 	//- p
 	//- | You can also sign in with Google or Facebook.
 	//- | Just make sure to use an account with a verified @carleton.edu address.
