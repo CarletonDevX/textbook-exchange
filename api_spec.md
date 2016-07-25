@@ -72,6 +72,12 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 | bio           | string  | no       |
 | gradYear      | number  | no       |
 | emailSettings | object  | no       |
+| familyName    | string  | no       |
+| givenName     | string  | no       |
+| password      | string  | no       |
+| oldPassword   | string  | * 			 |
+
+\* oldPassword is required if password is included
 
 emailSettings: {
 	     watchlist: boolean,

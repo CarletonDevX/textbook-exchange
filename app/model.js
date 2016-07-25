@@ -80,11 +80,7 @@ var UserSchema = new Schema({
 
 // Compare input password to user password
 UserSchema.methods.authenticate = function(password) {
-
-    var md5 = crypto.createHash('md5');
-    md5 = md5.update(password).digest('hex');
-
-    return this.password === md5;
+    return this.password === crypto.createHash('md5').update(password).digest('hex');
 };
 
 // Add schema to db
