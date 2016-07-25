@@ -1,49 +1,37 @@
 var Offer = require('mongoose').model('offers'),
-    Error = require('../errors');
+    HTBError = require('../errors').HTBError,
+    MongoError = require('../errors').MongoError;
 
 exports.countOffers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     Offer.count({"completed": true}, function (err, count) {
-        if (!err) {
-            req.rSchoolStats.numOffers = count;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rSchoolStats.numOffers = count;
+        return next();
     });
 }
 
 exports.getOffer = function (req, res, next) {
     var offerID = req.params.offerID;
     Offer.findOne({_id: offerID}, function(err, offer) {
-        if (!err) {
-            if (!offer) {
-                Error.errorWithStatus(req, res, 404, 'Offer not found by those conditions.');
-            } else {
-                req.rOffer = offer;
-                // If you want to get the listing later
-                req.rListingID = offer.listingID;
-                next();
-            }
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        if (!offer) return next(new HTBError(404, 'Offer not found by those conditions.'));
+        req.rOffer = offer;
+        // If you want to get the listing later
+        req.rListingID = offer.listingID;
+        next();
     });
 }
 
 exports.getUserOfferForListing = function (req, res, next) {
     var listing = req.rListings[0];
-    Offer.findOne({listingID: listing._id}, function (err, offer) {
-        if (!err) {
-            if (!offer) {
-                Error.errorWithStatus(req, res, 404, "You haven't made an offer on this listing.");
-            } else {
-                req.rOffer = offer;
-                next();
-            }
-        } else {
-            Error.mongoError(req, res, err);
-        }
+    var user = req.rUser;
+    // TODO: test this 
+    Offer.findOne({listingID: listing._id, buyerID: user._id}, function (err, offer) {
+        if (err) return next(new MongoError(err));
+        if (!offer) return next(new HTBError(404, 'User hasn\'t made an offer on this listing.'));
+        req.rOffer = offer;
+        next();
     });
 }
 
@@ -52,35 +40,26 @@ exports.getOffersForListings = function (req, res, next) {
     var listingIDs = [];
     for (var i = 0; i < listings.length; i++) {
         listingIDs.push(listings[i]._id);
-    };
-    if (listingIDs.length > 0) {
-        Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
-            if (!err) {
-                req.rOffers = offers;
-                next();
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
-    } else {
-        req.rOffers = [];
-        next();
     }
+    if (listingIDs.length == 0) {
+        req.rOffers = [];
+        return next();
+    }
+    Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
+        if (err) return next(new MongoError(err));
+        req.rOffers = offers;
+        return next();
+    });
 }
 
 exports.makeOffer = function (req, res, next) {
     var listing = req.rListings[0];
     var user = req.rUser;
     for (var i = 0; i < user.offers.length; i++) {
-        if (user.offers[i] == listing._id) {
-            Error.errorWithStatus(req, res, 400, "User has already made an offer on this listing.");
-            return;
-        }
-    };
-    if (user._id == listing.userID) {
-        Error.errorWithStatus(req, res, 400, "You can't make an offer on your own listing.");
-        return;
+        if (user.offers[i] == listing._id) return next(new HTBError(400, 'User has already made an offer on this listing.'));
     }
+    if (user._id == listing.userID) return next(new HTBError(400, 'You can\'t make an offer on your own listing.'));
+
     var newOffer = new Offer({
         listingID: listing._id,
         buyerID: user._id,
@@ -90,12 +69,9 @@ exports.makeOffer = function (req, res, next) {
         completed: false
     });
     newOffer.save(function(err, offer) {
-        if (!err) {
-            req.rOffer = offer;
-            next();
-        } else {
-            Error.mongoError(req, res, err);
-        }
+        if (err) return next(new MongoError(err));
+        req.rOffer = offer;
+        return next();
     });
 } 
 
@@ -104,17 +80,12 @@ exports.removeOffers = function (req, res, next) {
     var offerIDs = [];
     for (var i = 0; i < offers.length; i++) {
         offerIDs.push(offers[i]._id);
-    };
-    if (offerIDs.length > 0) {
-        Offer.remove({_id: {$in: offerIDs}}, function (err) {
-            if (!err) {
-                next();
-            } else {
-                Error.mongoError(req, res, err);
-            }
-        });
-    } else {
-        next();
     }
+    if (offerIDs.length == 0) return next();
+    // TODO: should we be checking for ownership here?
+    Offer.remove({_id: {$in: offerIDs}}, function (err) {
+        if (err) return next(new MongoError(err));
+        return next();
+    });
 }
 

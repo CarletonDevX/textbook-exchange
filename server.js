@@ -4,11 +4,8 @@ var config = require('./app/config/config')();
 // Set up db
 var mongoose = require('mongoose');
 var db = mongoose.connect(config.db);
-
 require('./app/model');
-// var User = mongoose.model('users');
 
-// Set up app
 var express = require('express'),
     bodyParser = require('body-parser'),
 	sass = require('node-sass-middleware'),
@@ -46,12 +43,10 @@ app.use('/'
     , express.static(__dirname + '/public', { maxAge: 172800000 }) // 2 days
 );
 
-
 app.set('views', './app/views');
 app.set('view engine', 'pug');
 //force terse attributes on pug templates (e.g. ui-view not ui-view="ui-view")
 app.locals.doctype = 'html';
-
 
 /* REQUESTS */
 
@@ -77,16 +72,14 @@ app.use(passport.session());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Error handling
-app.use(errorHandlers.logger);
-app.use(errorHandlers.ajax);
-app.use(errorHandlers.endOfWorld);
-
 // Our routes
 routes.setup(app);
 routes.setupMain(app);
 
+// Error handling
 app.use(errorHandlers.send404);
+app.use(errorHandlers.sendHTBErrors);
+app.use(errorHandlers.endOfWorld);
 
 // Start!
 app.listen(config.port);

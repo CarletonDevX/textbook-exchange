@@ -277,7 +277,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
           $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
           break;
         case 400:
-          $scope.unverifiedUserId = res.data.userID;
           $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
           break;
         case 500:
@@ -318,19 +317,19 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
     Api.requestPasswordReset($scope.loginData.username).then(function(res) {
       switch (res.status) {
         case 200:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = res.data;
           break;
         case 400:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = res.data.errors[0];
           break;
         case 404:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = "User not found";
           break;
         case 500:
-          $scope.signinAlert = 3;
+          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
           break;
       }
     });
@@ -338,22 +337,22 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   }
 
   $scope.resendVerification = function() {
-    Api.resendVerificationEmail($scope.unverifiedUserId).then(function(res) {
+    Api.resendVerificationEmail($scope.loginData.username).then(function(res) {
       switch (res.status) {
         case 200:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = res.data;
           break;
         case 400:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = res.data.errors[0];
           break;
         case 404:
-          $scope.signinAlert = 4;
+          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
           $scope.resendResetAlert = "User not found.";
           break;
         case 500:
-          $scope.signinAlert = 3;
+          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
           break;
       }
     });
