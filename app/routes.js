@@ -3,8 +3,9 @@ var users = require('./controllers/users.controller'),
     listings = require('./controllers/listings.controller'),
     offers = require('./controllers/offers.controller'),
     avatars = require('./controllers/avatars.controller'),
-    mailer = require('./mailer'),
-    Error = require('./errors'),
+    mail = require('./controllers/mail.controller'),
+    handlers = require('./errors'),
+    HTBError = handlers.HTBError,
     passport = require('passport'),
     responder = require('./responseFormatter'),
     inject = require('./injectors'),
@@ -47,13 +48,13 @@ exports.setup = function (app) {
 
     // Send test email
     app.post('/emailTest',
-        mailer.sendTestEmail,
+        mail.sendTestEmail,
         responder.successTestEmail);
 
     // Send mass update email with email body
     app.post('/email',
         users.getAllUsers,
-        mailer.sendUpdateEmail,
+        mail.sendUpdateEmail,
         responder.successUpdateEmail);
 
     /****
@@ -64,7 +65,19 @@ exports.setup = function (app) {
 
     // Login
     app.route('/api/login')
-        .post(passport.authenticate('local'),
+        .post(
+            // TODO: Can we put this somewhere else? -dp
+            function(req, res, next) {
+                passport.authenticate('local', function(err, user) {
+                    if (err) return next(new HTBError(500, err.message));
+                    if (!user) return next(new HTBError(401, 'Incorrect email or password'));
+                    if (!user.verified) next(new HTBError(400, 'User is not verified'));
+                    req.login(user, function (err) {
+                        if (err) return next(new HTBError(500, 'Login failed.'));
+                        next();
+                    });  
+                })(req, res, next);
+            },
             users.getCurrentUser,
             listings.getUserListings,
             inject.BooksIntoListings,
@@ -74,15 +87,16 @@ exports.setup = function (app) {
     // Logout
     app.route('/api/logout')
         .post(function (req, res) {
-            req.logout();
-            res.status(200).send("Logged out.");
-        });
+              req.logout();
+              res.status(200).send("Logged out.");
+            });
 
     // Authentification test
     app.route('/api/authTest')
-        .get(authenticate, function (req, res) {
-            res.status(200).send("Yay");
-        });
+        .get(authenticate,
+            function (req, res) {
+                res.status(200).send("Yay");
+            });
 
     /* Schools */
     app.route('/api/schoolStats')
@@ -95,17 +109,38 @@ exports.setup = function (app) {
 
     // Register/create a user
     app.route('/api/register')
-        .post(users.createUser,
-              mailer.sendRegistrationEmail,
+        .post(users.registerUser,
+              mail.sendRegistrationEmail,
               responder.formatCurrentUser);
 
     // Verify a user with user ID
     app.route('/api/verify')
-        .get(users.getUserUnverified,
+        .get(users.getUnverifiedUser,
              users.verifyUser,
              function(req, res, next) {
                 res.redirect('/');
              });
+
+    // Resend verification email
+    app.route('/api/resendVerification/')
+        .post(users.getUnverifiedUserWithEmail,
+            mail.sendRegistrationEmail,
+            responder.successVerificationEmail);
+
+    // Request password reset
+    app.route('/api/requestPasswordReset')
+        .post(users.getUserWithEmail,
+              mail.sendRequestPasswordEmail,
+              responder.successRequestPasswordReset);
+
+    // Reset password
+    app.route('/api/resetPassword')
+        .get(users.getUser,
+            users.resetPassword,
+            mail.sendNewPasswordEmail,
+            function(req, res, next) {
+                res.redirect('/');
+            });
 
     // Get current user
     app.route('/api/user')
@@ -214,10 +249,10 @@ exports.setup = function (app) {
              books.getBook,
              listings.createListing,
              users.getSubscribers,
-             mailer.sendSubscribersEmail,
+             mail.sendSubscribersEmail,
              listings.getUndercutListings,
              users.getUndercutUsers,
-             mailer.sendUndercutEmail,
+             mail.sendUndercutEmail,
              responder.formatSingleListing);
 
     // Get listings for user with user ID
@@ -269,7 +304,7 @@ exports.setup = function (app) {
               inject.UsersIntoListings, // -----------------------
               offers.makeOffer,
               users.makeOffer,
-              mailer.sendOfferEmail,
+              mail.sendOfferEmail,
               responder.formatOffer);
 
     // Complete a listing with listing ID
@@ -307,10 +342,10 @@ exports.setup = function (app) {
 
     // Report error
     app.route('/api/errors')
-        .post(mailer.sendReportEmail,
+        .post(mail.sendReportEmail,
               responder.successError);
 
     // Catchall 404 for API
-    app.route('/api/*').get(Error.api404).post(Error.api404).put(Error.api404).delete(Error.api404);
+    app.route('/api/*').get(handlers.api404).post(handlers.api404).put(handlers.api404).delete(handlers.api404);
 
 };

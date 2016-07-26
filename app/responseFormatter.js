@@ -29,6 +29,14 @@ exports.formatSchoolStats = function (req, res) {
 
 /** USERS **/
 
+exports.successVerificationEmail = function (req, res) {
+    res.status(200).send("Verification email sent.");
+}
+
+exports.successRequestPasswordReset = function (req, res) {
+    res.status(200).send("Password reset request submitted.");
+}
+
 exports.successRemoveUser = function (req, res) {
     res.status(200).send("User deleted.");
 }
