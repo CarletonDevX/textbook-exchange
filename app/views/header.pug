@@ -6,7 +6,6 @@ header(ng-controller="headerController")
         span.college-name Carleton
         span.app-name
           | Hits
-          //- the extra space before 'the' is important!
           span.interject  the 
           | Books
     ul#college-info
@@ -19,11 +18,7 @@ header(ng-controller="headerController")
     a(href="" class="toAbout", ng-click="modalStates.about = true") Learn more...
     a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
-    //- div#account-access-buttons
     a(ng-click="modalStates.about = true") About
-    a(ng-click="openAccount()") {{currentUser?'Dashboard':'Sign in or Register'}}
-    //- removed ui-sref="account" 
-    //- div#account-details-buttons
-    //-   a(ui-sref="account.details") Dashboard
+    a(ng-click="openAccount()") {{currentUser? currentUser.name.givenName :'Sign in or Register'}}
 
   include modals

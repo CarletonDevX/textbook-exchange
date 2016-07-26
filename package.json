@@ -22,6 +22,7 @@
     "mocha": "^2.3.0",
     "mongoose": "^4.0.5",
     "multer": "^1.0.6",
+    "ng-file-upload": "^12.0.4",
     "node-sass-middleware": "^0.9.0",
     "nodemailer": "0.7.1",
     "passport": "^0.2.2",
@@ -38,29 +39,70 @@
   "devDependencies": {},
   "eslintConfig": {
     "env": {
-        "browser": true,
-        "node": true
+      "browser": true,
+      "node": true
     },
     "extends": "eslint:recommended",
     "ignore-path": ".gitignore",
     "rules": {
-        "indent": ["error", 4],
-        "quotes": ["error", "single"],
-        "semi": ["error", "always"],
-        "no-console": "warn",
-        "func-style": ["warn", "expression"],
-        "space-before-function-paren": ["error", "always"],
-        "brace-style": "error",
-        "camelcase": "error",
-        "new-cap": "error",
-        "no-lonely-if": "error",
-        "sort-vars": ["error", { "ignoreCase": true }],
-        "no-redeclare": "warn",
-        "spaced-comment": ["error", "always"],
-        "keyword-spacing": ["error", {"before": true, "after": true}],
-        "comma-dangle": ["error", "always-multiline"],
-        "comma-spacing": ["error", {"before": false, "after": true}],
-        "array-bracket-spacing": ["error", "never"]
+      "indent": [
+        "error",
+        4
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "no-console": "warn",
+      "func-style": [
+        "warn",
+        "expression"
+      ],
+      "space-before-function-paren": [
+        "error",
+        "always"
+      ],
+      "brace-style": "error",
+      "camelcase": "error",
+      "new-cap": "error",
+      "no-lonely-if": "error",
+      "sort-vars": [
+        "error",
+        {
+          "ignoreCase": true
+        }
+      ],
+      "no-redeclare": "warn",
+      "spaced-comment": [
+        "error",
+        "always"
+      ],
+      "keyword-spacing": [
+        "error",
+        {
+          "before": true,
+          "after": true
+        }
+      ],
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ],
+      "comma-spacing": [
+        "error",
+        {
+          "before": false,
+          "after": true
+        }
+      ],
+      "array-bracket-spacing": [
+        "error",
+        "never"
+      ]
     }
   },
   "scripts": {

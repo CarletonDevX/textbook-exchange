@@ -1,6 +1,8 @@
 div.user-about
   div#user-image
     img(src="{{user.avatar}}")
+    button(ng-if="user.userID == currentUser.userID", ng-click="openAvatarModal()")
+      span Change my picture
   div.about
     h2 {{user.name.fullName}}
     p.stats
@@ -163,3 +165,10 @@ div.modal-wrapper(
     button(ng-click="makeOffer()") Send email
     | |
     button.cancel(ng-click="offer.active = false") Cancel
+
+div.modal-wrapper(
+  ng-class="{'visible':avatar.active}",
+  ng-htb-self-click="avatar.active = false"
+  )
+  div.modal.avatar
+    h3 Change your avatar

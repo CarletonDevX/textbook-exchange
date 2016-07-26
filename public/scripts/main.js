@@ -177,7 +177,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
               if (result.status && result.status == 401) {
                 result = [];
               }
-              console.log("result", result);
               return result
             });
         } 
@@ -217,7 +216,9 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   }
 
   $rootScope.openAccount = function(){
-    $state.go('account')
+    if ($scope.currentUser){
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else $state.go('account');
     $previousState.memo('accountEntryPoint');
   }
 
@@ -763,9 +764,8 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
   $scope.$on(AUTH_EVENTS.loginSuccess,
     function() {
       Api.getWatchlist().then( function(result) {
-        console.log("RESULT: ", result)
         $scope.watchlist = result;
-      }); 
+      });
     }
   );
   angular.extend($scope, {
@@ -961,7 +961,6 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
       $rootScope.currentUser = res;
-      console.log("current user is", res);
     },
     function (err) {
       $rootScope.currentUser = null;
