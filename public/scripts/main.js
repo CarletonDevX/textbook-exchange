@@ -905,8 +905,8 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
       bookName : listing.book.name,
       condition : $scope.conditionOptions[listing.condition],
       // if there are prices set, set the form values to those prices, o/w use amazon or fall back on 0.
-      sellingPrice : (listing.sellingPrice != null) ? listing.sellingPrice : ( Math.min(bookInfo.amazonInfo.sellingPrice, 100) || 0 ),
-      rentingPrice : (listing.rentingPrice != null) ? listing.rentingPrice : ( Math.min(Math.round(0.5*bookInfo.amazonInfo.sellingPrice), 100)  || 0 ),
+      sellingPrice : (listing.sellingPrice != null) ? listing.sellingPrice : 0,
+      rentingPrice : (listing.rentingPrice != null) ? listing.rentingPrice : 0,
       selling   : (listing.sellingPrice != null),
       renting   : (listing.rentingPrice != null),
       listingID : listing.listingID
