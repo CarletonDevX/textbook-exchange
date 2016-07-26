@@ -294,7 +294,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
         case 500:
           $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
           break;
-        case 200:
+        default:
           $scope.closeAccount();
           $scope.signinAlert = $scope.SignInAlert.NONE;
           break;
@@ -311,7 +311,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
       switch (res.status) {
         case 400:
           $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
-          $scope.registrationError = res.data.errors[0];
+          $scope.registrationError = res.data;
           break;
         case 500:
         case 0:

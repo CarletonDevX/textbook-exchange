@@ -5,6 +5,10 @@ var User = require('mongoose').model('users'),
     HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError;
 
+var hash = function (string) {
+    return crypto.createHash('md5').update(string).digest('hex');
+}
+
 exports.getAllUsers = function (req, res, next) {
     User.find({verified: true}, function(err, users) {
         if (err) return next(new MongoError(err));
@@ -77,8 +81,8 @@ var createUser = function (req, res, next) {
             familyName: info.familyName,
             fullName: info.givenName + " " + info.familyName
         },
-        verifier: crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex'),
-        password: crypto.createHash('md5').update(info.password).digest('hex'),
+        verifier: hash((Math.random()*100).toString()),
+        password: hash(info.password),
         verified: false,
         provider: 'local',
         // These may be null
@@ -115,9 +119,9 @@ exports.resetPassword = function (req, res, next) {
     if (!verifier) return next(new HTBError(400, 'Must include "verifier" attribute.'));
     if (verifier != user.verifier) return next(new HTBError(401, 'Incorrect verifier string.'));
     // Generate new password (and verifier so call isn't made twice)
-    var password = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
-    user.verifier = crypto.createHash('md5').update((Math.random()*100).toString()).digest('hex');
-    user.password = crypto.createHash('md5').update(password).digest('hex');
+    var password = hash((Math.random()*100).toString());
+    user.verifier = hash((Math.random()*100).toString());
+    user.password = hash(password);
     user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rPassword = password;
@@ -147,6 +151,7 @@ var getUserWithUsername = function (username, verified, callback) {
 
 exports.getCurrentUser = function (req, res, next) {
     // Can we all just apprectiate how dope this function is
+    console.log(req.user);
     req.rUser = req.user;
     return next();
 }
@@ -209,9 +214,17 @@ exports.updateUser = function (req, res, next) {
         try {
              user.emailSettings = JSON.parse(updates.emailSettings);
         } catch (err) {
-            return next(new HTBError(400, "Couldn't parse emailSettings object: "+err.message));
+            return next(new HTBError(400, 'Couldn\'t parse emailSettings object: '+err.message));
         }
     }
+    if (updates.givenName) user.name.givenName = updates.givenName;
+    if (updates.familyName) user.name.familyName = updates.familyName;
+    user.name.fullName = user.name.givenName + " " + user.name.familyName
+    if (updates.password) {
+        if (!updates.oldPassword) return next(new HTBError(400, 'Must include "oldPassword" attribute.'));
+        if (!user.authenticate(updates.oldPassword)) return next(new HTBError(401, 'Invalid password.'));
+        user.password = hash(updates.password);
+    } 
     user.save(function(err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
