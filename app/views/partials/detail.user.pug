@@ -172,3 +172,18 @@ div.modal-wrapper(
   )
   div.modal.avatar
     h3 Change your avatar
+    form(name="avatarUpload")
+      button(ngf-select, ng-model="picFile", accept="image/*") select picture
+      div.cropArea(ngf-drop ng-model="picFile", ngf-pattern="image/*")
+        img-crop(
+          image="picFile | ngfDataUrl",
+          result-image="avatar.croppedImage",
+          ng-init="avatar.croppedImage=''",
+          area-type="square",
+          init-max-area
+        )
+      div
+        img(ng-src="{{avatar.croppedImage}}")
+      button(ng-click="upload(avatar.croppedImage, picFile.name)") Submit
+      span.progress(ng-show="progress <= 0")
+        div(style="width:{{progress}}%", ng-bind="progress + '%'")

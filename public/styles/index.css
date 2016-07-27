@@ -495,6 +495,7 @@ main #detail-wrapper.minimized {
 main #detail-wrapper.maximized {
   width: 750px;
   max-width: 100vw;
+  overflow: visible;
   opacity: 1;
   height: auto; }
   main #detail-wrapper.maximized #detail {
@@ -752,15 +753,24 @@ div.listings table.listings {
           display: inline-block;
           vertical-align: middle; }
 
-div.user-about {
-  overflow: visible;
-  display: flex;
-  margin-bottom: 20px; }
-  div.user-about div#user-image img {
+div#user-image {
+  position: relative; }
+  div#user-image img {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
     display: block;
     padding: 10px;
     width: 100px; }
+  div#user-image button {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; }
+
+div.user-about {
+  overflow: visible;
+  display: flex;
+  margin-bottom: 20px; }
   div.user-about h2, div.user-about h3, div.user-about p.stats {
     font-family: 'Droid Sans', serif; }
   div.user-about p.stats {
@@ -807,6 +817,26 @@ table.email-settings {
   border-top: solid 1px #eee;
   padding: 20px 0;
   margin: 20px 0; }
+
+div.modal.avatar .cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width: 480px;
+  height: 480px;
+  position: relative; }
+
+div.modal.avatar form .progress {
+  line-height: 15px; }
+
+div.modal.avatar .progress {
+  display: inline-block;
+  width: 100px;
+  border: 3px groove #CCC; }
+
+div.modal.avatar .progress div {
+  font-size: smaller;
+  background: orange;
+  width: 0; }
 
 .modal-wrapper {
   position: fixed;

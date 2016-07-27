@@ -1,4 +1,4 @@
-var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras']);
+var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop']);
 
 hitsTheBooks.run(function($rootScope, $state){
   $rootScope.is = function(name){ return $state.is(name) };
@@ -750,7 +750,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $rootScope, userInfo, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
   $scope.watchlist = watchlist; 
   $scope.emailSettings = {};
@@ -758,9 +758,6 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
   }
 
-  // Current bug I'm fighting is that everything works great except
-  // if you look at your own page and try to log in
-  // it's not updating the view when we re-fetch the watchlist info
   $scope.$on(AUTH_EVENTS.loginSuccess,
     function() {
       Api.getWatchlist().then( function(result) {
@@ -775,17 +772,41 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     descMinimized : false,
     descMinHeight : null,
     offer : {
-        active: false,
-        listing: null,
-        message: null
+      active: false,
+      listing: null,
+      message: null
+    },
+    avatar : {
+      active: false,
+      croppedImage: ''
     },
     removingListingID : null,
     disabledComponents : {
       watchlistbox : false,
       undercutbox : false,
       htbupdatebox : false
-    }
+    },
   });
+
+  $scope.openAvatarModal = function() { $scope.avatar.active = true; }
+
+  $scope.upload = function(dataUrl, name) {
+    Upload.upload({
+        url: '/api/avatar',
+        data: {
+            file: Upload.dataUrltoBlob(dataUrl, name)
+        },
+    }).then(function (response) {
+        $timeout(function () {
+            $scope.result = response.data;
+        });
+    }, function (response) {
+        if (response.status > 0) $scope.errorMsg = response.status 
+            + ': ' + response.data;
+    }, function (evt) {
+        $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+    });
+  }
 
   $scope.handleEmailSettingChange = function (componentName) {
     $scope.disabledComponents[componentName] = true;

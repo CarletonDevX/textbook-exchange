@@ -5,7 +5,8 @@
   "main": "index.js",
   "authors": [
     "David Pickart",
-    "Joe Slote"
+    "Joe Slote",
+    "Duo Tao"
   ],
   "engines": {
     "node": "0.12.0"
@@ -23,7 +24,6 @@
     "mocha": "^2.3.0",
     "mongoose": "^4.0.5",
     "multer": "^1.0.6",
-    "ng-file-upload": "^12.0.4",
     "node-sass-middleware": "^0.9.0",
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",

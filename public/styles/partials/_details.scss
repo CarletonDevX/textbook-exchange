@@ -450,3 +450,26 @@ table.email-settings{
   padding: 20px 0;
   margin: 20px 0;
 }
+
+div.modal.avatar{
+  .cropArea {
+      background: #E4E4E4;
+      overflow: hidden;
+      width:480px;
+      height:480px;
+      position: relative;
+  }
+  form .progress {
+      line-height: 15px;
+  }
+  .progress {
+      display: inline-block;
+      width: 100px;
+      border: 3px groove #CCC;
+  }
+  .progress div {
+      font-size: smaller;
+      background: orange;
+      width: 0;
+  }
+}
