@@ -1,7 +1,6 @@
 var User = require('mongoose').model('users'),
     Report = require('mongoose').model('reports'),
     crypto = require('crypto'),
-    mailer = require('../config/nodemailer'),
     HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError;
 

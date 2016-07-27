@@ -13,7 +13,6 @@ var express = require('express'),
     assetManager = require('connect-assetmanager'),
 	passport = require('./app/config/passport'),
     session = require('express-session'),
-    mailer = require('./app/config/nodemailer'),
 	routes = require('./app/routes');
 
 var app = express();
