@@ -1,5 +1,5 @@
 // For sending mail.
-var mailer = require('../config/nodemailer'),
+var mailer = require('../config/mailgun'),
     User = require('mongoose').model('users'),
     HTBError = require('../errors').HTBError,
     fs = require('fs'),
