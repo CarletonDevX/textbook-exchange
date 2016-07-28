@@ -4,7 +4,7 @@ var Listing = require('mongoose').model('listings'),
 
 exports.countListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
-    Listing.count({completed: false}, function (err, count) {
+    Listing.count({completed: true}, function (err, count) {
         if (err) return next(new MongoError(err));
         req.rSchoolStats.numListings = count;
         return next();
