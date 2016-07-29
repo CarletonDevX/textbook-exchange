@@ -750,7 +750,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
   $scope.watchlist = watchlist; 
   $scope.emailSettings = {};
@@ -793,19 +793,21 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
 
   $scope.upload = function(dataUrl, name) {
     Upload.upload({
-        url: '/api/avatar',
-        data: {
-            file: Upload.dataUrltoBlob(dataUrl, name)
-        }
+      url: '/api/avatar',
+      data: {
+        file: Upload.dataUrltoBlob(dataUrl, name)
+      }
     }).then(function (response) {
-        $timeout(function () {
-            $scope.result = response.data;
-        });
+      $timeout(function () {
+        // $scope.result = response.data;
+        $scope.avatar.active = false;
+        refreshUser();
+      });
     }, function (response) {
-        if (response.status > 0) $scope.errorMsg = response.status 
-            + ': ' + response.data;
+      if (response.status > 0) $scope.errorMsg = response.status 
+        + ': ' + response.data;
     }, function (evt) {
-        $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+      $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
     });
   }
 
@@ -853,7 +855,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     $scope.removingListingID = null;
   }
 
-  var refreshListings = function() {
+  var refreshUser = function() {
     Api.getUser($stateParams.userID).then( function(user) {
       $scope.user = user;
     }, function(err) {
@@ -865,7 +867,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     if (itSold) {
       Api.completeListing(listing.listingID).then(
         function (res) {
-          refreshListings();
+          refreshUser();
           refreshCurrentUser();
           $scope.closeRemovingListing();
         },
@@ -874,7 +876,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     } else { //it didn't sell but the user wants to remove it anyway
       Api.removeListing(listing.listingID).then(
         function (res) {
-          refreshListings();
+          refreshUser();
           refreshCurrentUser();
           $scope.closeRemovingListing();
         },
@@ -962,7 +964,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     } 
 
     Api.updateListing($scope.newListing.listingID, data).then( function (res) {
-      refreshListings();
+      refreshUser();
       refreshCurrentUser();
       $scope.closeListingPane();
     }, function (err) {

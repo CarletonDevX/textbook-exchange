@@ -185,5 +185,5 @@ div.modal-wrapper(
       div
         img(ng-src="{{avatar.croppedImage}}")
       button(ng-click="upload(avatar.croppedImage, avatar.picFile.name)") Submit
-      span.progress(ng-show="progress <= 0")
-        div(style="width:{{progress}}%", ng-bind="progress + '%'")
+      span.progress(ng-show="progress > 0")
+        div(style="width:{{progress}}%") {{progress < 100 ? progress + '%' : 'Saving...'}}
