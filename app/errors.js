@@ -8,7 +8,8 @@ exports.sendHTBErrors = function (err, req, res, next) {
     next(err);
 };
 
-exports.endOfWorld = function (err, req, res) {
+/* eslint no-unused-vars: "off" */
+exports.endOfWorld = function (err, req, res, next) {
     console.log(err.stack);
     res.status(500).send('Sorry, something went wrong. Please try again.');
 };
