@@ -157,7 +157,7 @@ div.listings
 
 div.modal-wrapper(
   ng-class="{'visible':offer.active}",
-  ng-htb-self-click="offer.active = false"
+  ng-htb-self-mousedown="offer.active = false"
   )
   div.modal.offer
     h3 Make an offer
@@ -168,7 +168,7 @@ div.modal-wrapper(
 
 div.modal-wrapper(
   ng-class="{'visible':avatar.active}",
-  ng-htb-self-click="avatar.active = false"
+  ng-htb-self-mousedown="closeAvatarModal()"
   )
   div.modal.avatar
     h3 Change your avatar
@@ -179,11 +179,10 @@ div.modal-wrapper(
           image="avatar.picFile | ngfDataUrl",
           result-image="avatar.croppedImage",
           ng-init="avatar.croppedImage=''",
-          area-type="square",
-          init-max-area
+          area-type="square"
         )
-      div
-        img(ng-src="{{avatar.croppedImage}}")
+      //- div
+      //-   img(ng-src="{{avatar.croppedImage}}")
       button(ng-click="upload(avatar.croppedImage, avatar.picFile.name)") Submit
-      span.progress(ng-show="progress > 0")
-        div(style="width:{{progress}}%") {{progress < 100 ? progress + '%' : 'Saving...'}}
+      span.progress(ng-show="avatar.progress > 0")
+        div(style="width:{{avatar.progress}}%") {{avatar.progress < 100 ? avatar.progress + '%' : 'Saving...'}}

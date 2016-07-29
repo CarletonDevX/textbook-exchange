@@ -1,6 +1,6 @@
 div#about-wrapper.modal-wrapper(
   ng-class="{'visible' : modalStates.about}",
-  ng-htb-self-click="modalStates.about = false")
+  ng-htb-self-mousedown="modalStates.about = false")
   div#about.modal
     h2 About
     p
@@ -11,11 +11,11 @@ div#about-wrapper.modal-wrapper(
 div#account-wrapper.modal-wrapper(
   ui-view="account",
   ng-class="{'visible' : includes('account')}",
-  ng-htb-self-click="closeAccount()")
+  ng-htb-self-mousedown="closeAccount()")
   
 div#contact-wrapper.modal-wrapper(
   ng-class="{'visible' : modalStates.contact}",
-  ng-htb-self-click="modalStates.contact = false;showSuccess=false;" ng-controller='errorReportController')
+  ng-htb-self-mousedown="modalStates.contact = false;showSuccess=false;" ng-controller='errorReportController')
     div#contact.modal
       h2 Contact Us
         form#contact-form(ng-submit='submit()' ng-if="!showSuccess")

@@ -21,15 +21,15 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
     };
 });
 
-// Like ng-click but not activated when click event
+// Like ng-mousedown but not activated when click event
 // is bubbled up the the el with the directive
-hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($parse, $rootScope) {
+hitsTheBooks.directive('ngHtbSelfMousedown', [ '$parse', '$rootScope', function($parse, $rootScope) {
   return {
     restrict: 'A',
     compile: function($element, attrs){
-      var fn = $parse(attrs['ngHtbSelfClick'], null, true);
+      var fn = $parse(attrs['ngHtbSelfMousedown'], null, true);
       return function ngHtbEventHandler(scope, element) {
-        element.on('click', function(event) {
+        element.on('mousedown', function(event) {
           var callback = function() {
             fn(scope, {$event:event});
           };
@@ -760,9 +760,8 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
 
   $scope.$on(AUTH_EVENTS.loginSuccess,
     function() {
-      Api.getWatchlist().then( function(result) {
-        $scope.watchlist = result;
-      });
+      refreshUser();
+      refreshWatchlist();
     }
   );
   angular.extend($scope, {
@@ -790,6 +789,14 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
   });
 
   $scope.openAvatarModal = function() { $scope.avatar.active = true; }
+  $scope.closeAvatarModal = function() {
+    $scope.avatar = {
+      active: false,
+      picFile: null,
+      croppedImage: '',
+      progress: null
+    };
+  }
 
   $scope.upload = function(dataUrl, name) {
     Upload.upload({
@@ -800,14 +807,14 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
     }).then(function (response) {
       $timeout(function () {
         // $scope.result = response.data;
-        $scope.avatar.active = false;
         refreshUser();
+        $scope.closeAvatarModal();
       });
     }, function (response) {
       if (response.status > 0) $scope.errorMsg = response.status 
         + ': ' + response.data;
     }, function (evt) {
-      $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+      $scope.avatar.progress = parseInt(100.0 * evt.loaded / evt.total);
     });
   }
 
