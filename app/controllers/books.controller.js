@@ -1,14 +1,12 @@
-var Book = require('mongoose').model('books'),
-    Listing = require('mongoose').model('listings'),
-    User = require('mongoose').model('users'),
-    Amazon = require('../config/amazon.js'),
+var Amazon = require('../config/amazon.js'),
+    AmazonError = require('../errors').AmazonError,
+    Book = require('mongoose').model('books'),
     HTBError = require('../errors').HTBError,
-    MongoError = require('../errors').MongoError,
-    AmazonError = require('../errors').AmazonError;
+    MongoError = require('../errors').MongoError;
 
 exports.getBook = function (req, res, next) {
     req.rISBN = req.rISBN || req.params.ISBN;
-    Book.findOne({ISBN: req.rISBN}, function(err, book) {
+    Book.findOne({ISBN: req.rISBN}, function (err, book) {
         if (err) return next(new MongoError(err));
         if (book) {
             req.rBook = book;
@@ -33,12 +31,12 @@ exports.subscribe = function (req, res, next) {
         if (user._id.toString() == book.subscribers[i]) return next(new HTBError(400, 'User is already subscribed to book.'));
     }
     book.subscribers.push(user._id);
-    book.save(function(err, book) {
+    book.save(function (err, book) {
         if (err) return next(new MongoError(err));
         req.rBook = book;
         return next();
     });
-}
+};
 
 exports.unsubscribe = function (req, res, next) {
     var book = req.rBook;
@@ -48,12 +46,12 @@ exports.unsubscribe = function (req, res, next) {
         if (book.subscribers[i] != user._id.toString()) newSubs.push(book.subscribers[i]);
     }
     book.subscribers = newSubs;
-    book.save(function(err, book) {
+    book.save(function (err, book) {
         if (err) return next(new MongoError(err));
         req.rBook = book;
         return next();
     });
-}
+};
 
 exports.getSubscriptionBooks = function (req, res, next) {
     var subscriptions = req.rUser.subscriptions;
@@ -61,12 +59,12 @@ exports.getSubscriptionBooks = function (req, res, next) {
         req.rBooks = [];
         return next();
     }
-    Book.find({ISBN: {$in: subscriptions}}, function(err, books) {
+    Book.find({ISBN: {$in: subscriptions}}, function (err, books) {
         if (err) return next(new MongoError(err));
         req.rBooks = books;
         return next();
     });
-}
+};
 
 exports.updateAmazonInfo = function (req, res, next) {
     var book = req.rBook;
@@ -75,13 +73,13 @@ exports.updateAmazonInfo = function (req, res, next) {
         if (!result) return next(new HTBError(404, 'Amazon info not found for ISBN: ' + book.ISBN));
         // TODO: Should we update more than just the pricing info?
         book.amazonInfo = result.amazonInfo;
-        book.save(function(err, book) {
+        book.save(function (err, book) {
             if (err) return next(new MongoError(err));
             req.rBook = book;
             return next();
         });
     });
-}
+};
 
 exports.search = function (req, res, next) {
     var query = req.query.query || '';

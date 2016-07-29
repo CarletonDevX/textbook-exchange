@@ -1,18 +1,18 @@
-var passport = require('passport'),
-	mongoose = require('mongoose'),
-	User = mongoose.model('users');
+var mongoose = require('mongoose'),
+    passport = require('passport'),
+    User = mongoose.model('users');
 
 // Save user ID in session
-passport.serializeUser(function(user, done) {
+passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
 // Make sure session is valid
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function (id, done) {
     User.findOne(
         {_id: id},
         // '-password',
-        function(err, user) {
+        function (err, user) {
             done(err, user);
         }
     );

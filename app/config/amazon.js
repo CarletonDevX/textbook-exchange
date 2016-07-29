@@ -3,11 +3,11 @@ var AWS = require('aws-lib').createProdAdvClient(config.amazon.clientID, config.
 
 exports.searchWithKeywords = function (keywords, callback) {
     var options = {
-        SearchIndex: "Books", 
+        SearchIndex: 'Books', 
         Keywords: keywords,  
-        ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"
-    }
-    AWS.call("ItemSearch", options, function(err, result) {
+        ResponseGroup: 'EditorialReview,Images,ItemAttributes,Offers,OfferSummary',
+    };
+    AWS.call('ItemSearch', options, function (err, result) {
         if (err) return callback(err);
         var items = result.Items.Item || [];
         var books = [];
@@ -16,20 +16,18 @@ exports.searchWithKeywords = function (keywords, callback) {
             for (var i = 0; i < items.length; i++) {
                 if (items[i].ItemAttributes.ISBN) books.push(formatBook(items[i])); // Weeds out ebooks
             }
-        } else {
-            if (items) books.push(formatBook(items));
-        }
+        } else if (items) books.push(formatBook(items));
         callback(null, books);
     });
-}
+};
 
 exports.bookWithISBN = function (ISBN, callback) {
     var options = {
-        SearchIndex: "Books",
+        SearchIndex: 'Books',
         Keywords: ISBN,
-        ResponseGroup: "EditorialReview,Images,ItemAttributes,Offers,OfferSummary"
-    }
-    AWS.call("ItemSearch", options, function(err, result) {
+        ResponseGroup: 'EditorialReview,Images,ItemAttributes,Offers,OfferSummary',
+    };
+    AWS.call('ItemSearch', options, function (err, result) {
         if (err) return callback(err);
         var items = result.Items.Item || [];
         var book = null;
@@ -43,7 +41,7 @@ exports.bookWithISBN = function (ISBN, callback) {
         }
         callback(null, book);
     });
-}
+};
 
 var formatBook = function (item) {
     var info = item.ItemAttributes;
@@ -51,7 +49,7 @@ var formatBook = function (item) {
     var author = formatAuthor(info.Author);
     var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
     var description = get(item, 'EditorialReviews.EditorialReview.Content') || 'No description available.';
-    var imageURL =  get(item, 'LargeImage.URL') || "";
+    var imageURL =  get(item, 'LargeImage.URL') || '';
 
     // Turn price string with hundreth's place into integer e.g. 1747 -> 17
     var price = Math.ceil(new Number(priceString) / 100);
@@ -74,23 +72,23 @@ var formatBook = function (item) {
             lastUpdated: new Date(),
             numNew: OfferSummary.TotalNew,
             numUsed: OfferSummary.TotalUsed,
-            sellingPrice: price
+            sellingPrice: price,
         },
-        lastSearched: new Date()
-    }
-}
+        lastSearched: new Date(),
+    };
+};
 
 // Author can either be an array or a string. We want it to always be an array.
 var formatAuthor = function (author) {
-    if (!author) author = [""];
+    if (!author) author = [''];
     if (author.constructor === String) author = [author];
     return author;
-}
+};
 
 // Get nested property if it exists
 // http://stackoverflow.com/a/23809123
-var get = function(obj, key) {
-    return key.split(".").reduce(function(o, x) {
-        return (typeof o == "undefined" || o === null) ? null : o[x];
+var get = function (obj, key) {
+    return key.split('.').reduce(function (o, x) {
+        return (typeof o == 'undefined' || o === null) ? null : o[x];
     }, obj);
-}
+};

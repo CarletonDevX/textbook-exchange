@@ -9,7 +9,8 @@ require('./app/model');
 var express = require('express'),
     bodyParser = require('body-parser'),
 	sass = require('node-sass-middleware'),
-	errorHandlers = require('./app/errors'),
+	handlers = require('./app/errors'),
+    HTBError = handlers.HTBError,
     assetManager = require('connect-assetmanager'),
 	passport = require('./app/config/passport'),
     session = require('express-session'),
@@ -57,6 +58,14 @@ var logAll = function (req, res, next) {
 
 if (process.env.NODE_ENV == 'development') app.use(logAll);
 
+// Limit to subdomain
+app.set('subdomain offset', config.subdomain_offset);
+app.use(function (req, res, next) {
+    var subs = req.subdomains;
+    if (subs.length != 1 || subs[0] != 'carleton') return res.render('catchall.pug');
+    next();
+});
+
 // Sessions
 app.use(session({
     saveUninitialized: true,
@@ -77,9 +86,9 @@ routes.setup(app);
 routes.setupMain(app);
 
 // Error handling
-app.use(errorHandlers.send404);
-app.use(errorHandlers.sendHTBErrors);
-app.use(errorHandlers.endOfWorld);
+app.use(handlers.send404);
+app.use(handlers.sendHTBErrors);
+app.use(handlers.endOfWorld);
 
 // Start!
 app.listen(config.port);
