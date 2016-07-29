@@ -778,6 +778,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
     },
     avatar : {
       active: false,
+      picFile: null,
       croppedImage: ''
     },
     removingListingID : null,
@@ -795,7 +796,7 @@ hitsTheBooks.controller('userPageController', function($scope, $rootScope, userI
         url: '/api/avatar',
         data: {
             file: Upload.dataUrltoBlob(dataUrl, name)
-        },
+        }
     }).then(function (response) {
         $timeout(function () {
             $scope.result = response.data;
