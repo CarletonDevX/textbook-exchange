@@ -21,7 +21,7 @@ var BookSchema = new Schema({
         lastUpdated: { type: Date, required: true },
         numNew: { type: Number, required: true },
         numUsed: { type: Number, required: true },
-        sellingPrice: { type: Number, required: true },
+        sellingPrice: { type: Number },
     },
     lastSearched: Date,
 });

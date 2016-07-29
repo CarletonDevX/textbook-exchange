@@ -979,7 +979,7 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 
   // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-    $state.go('main.detail.error', {message:error.data.errors[0]}, {location: false});
+    $state.go('main.detail.error', {message:error.data}, {location: false});
   });
 
   $scope.setCurrentUser = function () {
