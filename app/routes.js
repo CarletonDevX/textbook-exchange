@@ -1,23 +1,22 @@
-var users = require('./controllers/users.controller'),
+var avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
-    listings = require('./controllers/listings.controller'),
-    offers = require('./controllers/offers.controller'),
-    avatars = require('./controllers/avatars.controller'),
-    mail = require('./controllers/mail.controller'),
     handlers = require('./errors'),
     HTBError = handlers.HTBError,
+    inject = require('./injectors'),
+    listings = require('./controllers/listings.controller'),
+    mail = require('./controllers/mail.controller'),
+    offers = require('./controllers/offers.controller'),
     passport = require('passport'),
     responder = require('./responseFormatter'),
-    inject = require('./injectors'),
-    tools = require('./utilities');
+    users = require('./controllers/users.controller');
 
 var authenticate = function (req, res, next) {
     if (!req.user) {
-        res.status(401).send("Unauthorized");
+        res.status(401).send('Unauthorized');
     } else {
         next();
     }
-}
+};
 
 exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
@@ -27,24 +26,28 @@ exports.setupMain = function (app) {
              listings.countListings,
              offers.countOffers,
              function (req, res) {
-                res.render('index.pug', {
-                    numListings: req.rSchoolStats.numListings,
-                    numOffers: req.rSchoolStats.numOffers,
-                    numUsers: req.rSchoolStats.numUsers
-                });
+                 res.render('index.pug', {
+                     numListings: req.rSchoolStats.numListings,
+                     numOffers: req.rSchoolStats.numOffers,
+                     numUsers: req.rSchoolStats.numUsers,
+                 });
              });
-}
+};
 
 exports.setup = function (app) {
     app.route('/partials/:partial')
         .get(function (req, res) {
-            res.render('partials/'+req.params.partial+'.pug',{});
+            res.render('partials/'+req.params.partial+'.pug', {});
         });
 
     // Workaround for browser autofill
     app.route('/sink')
-        .get(function (req, res) {res.status(200).send()})
-        .post(function (req, res) {res.status(200).send()});
+        .get(function (req, res) {
+            res.status(200).send();
+        })
+        .post(function (req, res) {
+            res.status(200).send();
+        });
 
     // Send test email
     app.post('/emailTest',
@@ -57,7 +60,7 @@ exports.setup = function (app) {
         mail.sendUpdateEmail,
         responder.successUpdateEmail);
 
-    /****
+    /** **
      API
     ****/
 
@@ -67,8 +70,8 @@ exports.setup = function (app) {
     app.route('/api/login')
         .post(
             // TODO: Can we put this somewhere else? -dp
-            function(req, res, next) {
-                passport.authenticate('local', function(err, user) {
+            function (req, res, next) {
+                passport.authenticate('local', function (err, user) {
                     if (err) return next(new HTBError(500, err.message));
                     if (!user) return next(new HTBError(401, 'Incorrect email or password'));
                     if (!user.verified) next(new HTBError(400, 'User is not verified'));
@@ -87,15 +90,15 @@ exports.setup = function (app) {
     // Logout
     app.route('/api/logout')
         .post(function (req, res) {
-              req.logout();
-              res.status(200).send("Logged out.");
-            });
+            req.logout();
+            res.status(200).send('Logged out.');
+        });
 
     // Authentification test
     app.route('/api/authTest')
         .get(authenticate,
             function (req, res) {
-                res.status(200).send("Yay");
+                res.status(200).send('Yay');
             });
 
     /* Schools */
@@ -117,8 +120,8 @@ exports.setup = function (app) {
     app.route('/api/verify')
         .get(users.getUnverifiedUser,
              users.verifyUser,
-             function(req, res, next) {
-                res.redirect('/');
+             function (req, res) {
+                 res.redirect('/');
              });
 
     // Resend verification email
@@ -138,7 +141,7 @@ exports.setup = function (app) {
         .get(users.getUser,
             users.resetPassword,
             mail.sendNewPasswordEmail,
-            function(req, res, next) {
+            function (req, res) {
                 res.redirect('/');
             });
 

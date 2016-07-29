@@ -1,6 +1,6 @@
-var mailgun = require('mailgun-js'),
-    config = require('./config')(),
-    HTBError = require('../errors').HTBError;
+var config = require('./config')(),
+    HTBError = require('../errors').HTBError,
+    mailgun = require('mailgun-js');
 
 var sender = mailgun(config.mailgun).messages();
 
@@ -16,14 +16,13 @@ var send = function (options, callback) {
     options.from = config.mailgun.from;
     sender.send(options, function (err) {
         if (err) {
-            console.log(err.stack); // We probably want to know what's up with these ones
-            return callback(new HTBError(500, 'A required email did not send.'));
+            return callback(new HTBError(500, 'A required email did not send.', err.stack));
         }
         delete options.user;
         return send(options, callback);
     });
-}
+};
 
 module.exports = {
-    send: send
-}
+    send: send,
+};

@@ -1,19 +1,19 @@
-var Offer = require('mongoose').model('offers'),
-    HTBError = require('../errors').HTBError,
-    MongoError = require('../errors').MongoError;
+var HTBError = require('../errors').HTBError,
+    MongoError = require('../errors').MongoError,
+    Offer = require('mongoose').model('offers');
 
 exports.countOffers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
-    Offer.count({"completed": true}, function (err, count) {
+    Offer.count({'completed': true}, function (err, count) {
         if (err) return next(new MongoError(err));
         req.rSchoolStats.numOffers = count;
         return next();
     });
-}
+};
 
 exports.getOffer = function (req, res, next) {
     var offerID = req.params.offerID;
-    Offer.findOne({_id: offerID}, function(err, offer) {
+    Offer.findOne({_id: offerID}, function (err, offer) {
         if (err) return next(new MongoError(err));
         if (!offer) return next(new HTBError(404, 'Offer not found by those conditions.'));
         req.rOffer = offer;
@@ -21,7 +21,7 @@ exports.getOffer = function (req, res, next) {
         req.rListingID = offer.listingID;
         next();
     });
-}
+};
 
 exports.getUserOfferForListing = function (req, res, next) {
     var listing = req.rListings[0];
@@ -33,7 +33,7 @@ exports.getUserOfferForListing = function (req, res, next) {
         req.rOffer = offer;
         next();
     });
-}
+};
 
 exports.getOffersForListings = function (req, res, next) {
     var listings = req.rListings;
@@ -50,7 +50,7 @@ exports.getOffersForListings = function (req, res, next) {
         req.rOffers = offers;
         return next();
     });
-}
+};
 
 exports.makeOffer = function (req, res, next) {
     var listing = req.rListings[0];
@@ -66,14 +66,14 @@ exports.makeOffer = function (req, res, next) {
         sellerID: listing.userID,
         ISBN: listing.ISBN,
         date: new Date(),
-        completed: false
+        completed: false,
     });
-    newOffer.save(function(err, offer) {
+    newOffer.save(function (err, offer) {
         if (err) return next(new MongoError(err));
         req.rOffer = offer;
         return next();
     });
-} 
+}; 
 
 exports.removeOffers = function (req, res, next) {
     var offers = req.rOffers;
@@ -87,5 +87,5 @@ exports.removeOffers = function (req, res, next) {
         if (err) return next(new MongoError(err));
         return next();
     });
-}
+};
 

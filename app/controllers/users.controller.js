@@ -1,20 +1,20 @@
-var User = require('mongoose').model('users'),
-    Report = require('mongoose').model('reports'),
-    crypto = require('crypto'),
+var crypto = require('crypto'),
     HTBError = require('../errors').HTBError,
-    MongoError = require('../errors').MongoError;
+    MongoError = require('../errors').MongoError,
+    Report = require('mongoose').model('reports'),
+    User = require('mongoose').model('users');
 
 var hash = function (string) {
     return crypto.createHash('md5').update(string).digest('hex');
-}
+};
 
 exports.getAllUsers = function (req, res, next) {
-    User.find({verified: true}, function(err, users) {
+    User.find({verified: true}, function (err, users) {
         if (err) return next(new MongoError(err));
         req.rUsers = users;
         return next();
     });
-}
+};
 
 exports.countUsers = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
@@ -23,19 +23,19 @@ exports.countUsers = function (req, res, next) {
         req.rSchoolStats.numUsers = count;
         return next();
     });
-}
+};
 
-function validateEmail (email) {
+var validateEmail = function (email) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu$/i;
     return re.test(email);
-}
+};
 
-function validatePassword (password) {
+var validatePassword = function (password) {
     var re = /^[A-Za-z0-9 ]{5,}$/i;
     return re.test(password);
-}
+};
 
-function validateRegistrationInfo (info, callback) {
+var validateRegistrationInfo = function (info, callback) {
     var err;
     if (info.username == null || !validateEmail(info.username)) {
         err = new HTBError(400, 'Must provide a valid Carleton email address.');
@@ -47,7 +47,7 @@ function validateRegistrationInfo (info, callback) {
         err = new HTBError(400, 'Must provide "familyName" attribute.');
     }
     return callback(err);
-}
+};
 
 exports.registerUser = function (req, res, next) {
     // Make sure all the info is there
@@ -69,7 +69,7 @@ exports.registerUser = function (req, res, next) {
             }
         });
     });
-}
+};
 
 var createUser = function (req, res, next) {
     var info = req.body;
@@ -78,7 +78,7 @@ var createUser = function (req, res, next) {
         name: {
             givenName: info.givenName,
             familyName: info.familyName,
-            fullName: info.givenName + " " + info.familyName
+            fullName: info.givenName + ' ' + info.familyName,
         },
         verifier: hash((Math.random()*100).toString()),
         password: hash(info.password),
@@ -86,14 +86,14 @@ var createUser = function (req, res, next) {
         provider: 'local',
         // These may be null
         bio: info.bio,
-        gradYEar: info.gradYear
+        gradYEar: info.gradYear,
     });
-    newUser.save(function(err, user) {
+    newUser.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.verifyUser = function (req, res, next) {
     var user = req.rUser;
@@ -110,7 +110,7 @@ exports.verifyUser = function (req, res, next) {
             return next();
         });
     });
-}
+};
 
 exports.resetPassword = function (req, res, next) {
     var user = req.rUser;
@@ -123,37 +123,37 @@ exports.resetPassword = function (req, res, next) {
     user.password = hash(password);
     user.save(function (err, user) {
         if (err) return next(new MongoError(err));
+        req.rUser = user;
         req.rPassword = password;
         return next();
     });
-}
+};
 
 var getUserWithID = function (userID, verified, callback) {
     // A helper for getUser and getUnverifiedUser
     if (!userID) return callback(new HTBError(400, 'No userID provided.'));
-    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function(err, user) {
+    User.findOne({_id: userID, verified: {$in: [verified, true]}}, function (err, user) {
         if (err) return callback(new MongoError(err));
         if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
         return callback(null, user);
     });
-}
+};
 
 var getUserWithUsername = function (username, verified, callback) {
     // A helper for getUserWithEmail and getUserWithEmailUnverified
     if (!username) return callback(new HTBError(400, 'Must include "username" attribute.'));
-    User.findOne({email: username, verified: {$in: [verified, true]}}, function(err, user) {
+    User.findOne({email: username, verified: {$in: [verified, true]}}, function (err, user) {
         if (err) return callback(new MongoError(err));
         if (!user) return callback(new HTBError(404, 'User not found by those conditions.'));
         return callback(null, user);
     });
-}
+};
 
 exports.getCurrentUser = function (req, res, next) {
     // Can we all just apprectiate how dope this function is
-    console.log(req.user);
     req.rUser = req.user;
     return next();
-}
+};
 
 exports.getUser = function (req, res, next) {
     var userID = req.rUserID || req.params.userID || req.query.userID;
@@ -162,7 +162,7 @@ exports.getUser = function (req, res, next) {
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.getUnverifiedUser = function (req, res, next) {
     // NOTE: Gets both unverified and verified users
@@ -172,7 +172,7 @@ exports.getUnverifiedUser = function (req, res, next) {
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.getUserWithEmail = function (req, res, next) {
     var username = req.body.username;
@@ -181,7 +181,7 @@ exports.getUserWithEmail = function (req, res, next) {
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.getUnverifiedUserWithEmail = function (req, res, next) {
     // NOTE: Gets both unverified and verified users
@@ -191,18 +191,18 @@ exports.getUnverifiedUserWithEmail = function (req, res, next) {
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.updateAvatar = function (req, res, next) {
     var user = req.rUser;
     var avatar = req.rAvatar;
     user.avatar = avatar;
-    user.save(function(err, user) {
+    user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
@@ -211,20 +211,20 @@ exports.updateUser = function (req, res, next) {
     if (updates.gradYear) user.gradYear = updates.gradYear;
     if (updates.emailSettings) {
         try {
-             user.emailSettings = JSON.parse(updates.emailSettings);
+            user.emailSettings = JSON.parse(updates.emailSettings);
         } catch (err) {
             return next(new HTBError(400, 'Couldn\'t parse emailSettings object: '+err.message));
         }
     }
     if (updates.givenName) user.name.givenName = updates.givenName;
     if (updates.familyName) user.name.familyName = updates.familyName;
-    user.name.fullName = user.name.givenName + " " + user.name.familyName
+    user.name.fullName = user.name.givenName + ' ' + user.name.familyName;
     if (updates.password) {
         if (!updates.oldPassword) return next(new HTBError(400, 'Must include "oldPassword" attribute.'));
         if (!user.authenticate(updates.oldPassword)) return next(new HTBError(401, 'Invalid password.'));
         user.password = hash(updates.password);
     } 
-    user.save(function(err, user) {
+    user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
@@ -237,23 +237,23 @@ exports.removeUser = function (req, res, next) {
         if (err) return next(new MongoError(err));
         return next();
     });
-}
+};
 
 exports.reportUser = function (req, res, next) {
     var user = req.rUser;
     var description = req.body.description;
     if (!description) return next(new HTBError(400, 'Must include "description" attribute.'));
     user.reports.push(new Report({
-        "userID": user._id,
-        "reporterID": req.user._id,
-        "description": description
+        'userID': user._id,
+        'reporterID': req.user._id,
+        'description': description,
     }));
-    user.save(function(err, user) {
+    user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.getSubscribers = function (req, res, next) {
     var book = req.rBook;
@@ -266,14 +266,14 @@ exports.getSubscribers = function (req, res, next) {
         req.rSubscribers = subscribers;
         return next();
     });
-}
+};
 
 exports.getUndercutUsers = function (req, res, next) {
     var listings = req.rUndercutListings;
     var userIDs = [];
     for (var i = 0; i < listings.length; i++) {
         userIDs.push(listings[i].userID);
-    };
+    }
     if (userIDs.length == 0) {
         req.rUndercutUsers = [];
         return next();
@@ -283,7 +283,7 @@ exports.getUndercutUsers = function (req, res, next) {
         req.rUndercutUsers = users;
         return next();
     });
-}
+};
 
 exports.subscribe = function (req, res, next) {
     var book = req.rBook;
@@ -292,12 +292,12 @@ exports.subscribe = function (req, res, next) {
         if (book.ISBN == user.subscriptions[i]) return next(new HTBError('User is already subscribed to book.'));
     }
     user.subscriptions.push(book.ISBN);
-    user.save(function(err) {
+    user.save(function (err) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.unsubscribe = function (req, res, next) {
     var book = req.rBook;
@@ -307,30 +307,30 @@ exports.unsubscribe = function (req, res, next) {
         if (user.subscriptions[i] != book.ISBN) newSubs.push(user.subscriptions[i]);
     }
     user.subscriptions = newSubs;
-    user.save(function(err) {
+    user.save(function (err) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.clearUserSubscriptions = function (req, res, next) {
     var user = req.rUser;
     user.subscriptions = [];
-    user.save(function(err) {
+    user.save(function (err) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};
 
 exports.makeOffer = function (req, res, next) {
     var user = req.rUser;
     var listing = req.rListings[0];
     user.offers.push(listing._id.toString());
-    user.save(function(err) {
+    user.save(function (err) {
         if (err) return next(new MongoError(err));
         req.rUser = user;
         return next();
     });
-}
+};

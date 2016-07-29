@@ -1,10 +1,8 @@
-var mongoose = require('mongoose'),
-    crypto = require('crypto'),
+var crypto = require('crypto'),
+    mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-/**** 
-Books 
-****/
+/* Books */
 
 var BookSchema = new Schema({
     ISBN: { type: String, unique: true, index: true },
@@ -23,29 +21,27 @@ var BookSchema = new Schema({
         lastUpdated: { type: Date, required: true },
         numNew: { type: Number, required: true },
         numUsed: { type: Number, required: true },
-        sellingPrice: { type: Number, required: true }
+        sellingPrice: { type: Number, required: true },
     },
-    lastSearched: Date
+    lastSearched: Date,
 });
 
 BookSchema.index({ 
     name: 'text', 
-    description: 'text'
+    description: 'text',
 });
 
 // Add schema to db
 mongoose.model('books', BookSchema, 'books');
 
-/**** 
-Users 
-****/
+/* Users */
 
 // Reports
 var reportSchema = new Schema({
     userID: { type: String, required: true },
     reporterID: { type: String, required: true },
     description: { type: String, required: true },
-    created: { type: Date, default: new Date() }
+    created: { type: Date, default: new Date() },
 });
 
 // Add schema to db
@@ -55,13 +51,13 @@ var UserSchema = new Schema({
     name: {
         givenName: { type: String, required: true },
         familyName: { type: String, required: true },
-        fullName: { type: String, required: true }
+        fullName: { type: String, required: true },
     },
     email: { type: String, unique: true, required: true },
     emailSettings: {
         watchlist: { type: Boolean, default: true, required: true },
         undercut: { type: Boolean, default: false, required: true },
-        updates: { type: Boolean, default: true, required: true }
+        updates: { type: Boolean, default: true, required: true },
     },
     verifier: String,
     verified: { type: Boolean, default: true },
@@ -71,24 +67,22 @@ var UserSchema = new Schema({
     providerData: {},
     subscriptions: [],
     bio: String,
-    avatar: { type: String, default: "https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png" },
+    avatar: { type: String, default: 'https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png' },
     gradYear: Number,
     reports: [reportSchema],
     offers: [],
-    created: { type: Date, default: new Date() }
+    created: { type: Date, default: new Date() },
 });
 
 // Compare input password to user password
-UserSchema.methods.authenticate = function(password) {
+UserSchema.methods.authenticate = function (password) {
     return this.password === crypto.createHash('md5').update(password).digest('hex');
 };
 
 // Add schema to db
 mongoose.model('users', UserSchema, 'users');
 
-/*******
-Listings 
-*******/
+/* Listings */
 
 var ListingSchema = new Schema({
     userID: { type: String, required: true },
@@ -97,56 +91,52 @@ var ListingSchema = new Schema({
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
     created: { type: Date, default: new Date() },
-    completed: Boolean
+    completed: Boolean,
 });
 
 var validatePrice = function (value) {
     // Integer?
-    if(value % 1 === 0) {
+    if (value % 1 === 0) {
         if (0 <= value && value <= 100) {
             return true;
         }
     }
     return false;
-}
+};
 
 var validateCondition = function (value) {
     // Integer?
-    if(value % 1 === 0) {
+    if (value % 1 === 0) {
         if (0 <= value && value <= 3) {
             return true;
         }
     }
     return false;
-}
+};
 
-ListingSchema.path('sellingPrice').validate(validatePrice, "'sellingPrice' must be an integer between 0-100");
-ListingSchema.path('rentingPrice').validate(validatePrice, "'rentingPrice' must be an integer between 0-100");
+ListingSchema.path('sellingPrice').validate(validatePrice, '\'sellingPrice\' must be an integer between 0-100');
+ListingSchema.path('rentingPrice').validate(validatePrice, '\'rentingPrice\' must be an integer between 0-100');
 
-ListingSchema.path('condition').validate(validateCondition, "'condition' must be be an integer between 0-3");
+ListingSchema.path('condition').validate(validateCondition, '\'condition\' must be be an integer between 0-3');
 
 // Add schema to db
 mongoose.model('listings', ListingSchema, 'listings');
 
-/***********
-Transactions 
-***********/
+/* Transactions */
 
 var OfferSchema = new Schema({
     listingID: String,
     buyerID: String,
     sellerID: String,
     ISBN: String,
-    date: Date
+    date: Date,
 });
 
 // Add schema to db
 mongoose.model('offers', OfferSchema, 'offers');
 
 
-/***********
-School Info 
-***********/
+/* School Info */
 
 var SchoolInfoSchema = new Schema({
     // Name, logo?

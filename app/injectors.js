@@ -4,36 +4,36 @@ var MongoError = require('./errors.js').MongoError;
 var utils = require('./utilities');
 
 
-exports.UsersIntoListings = function(req, res, next) {
+exports.UsersIntoListings = function (req, res, next) {
     // config for injector
     var configParams = {
         collection: User,
         ID: 'userID',
         localID: '_id',
         newKey: 'user',
-        propsNeeded: ['name', 'gradYear', 'avatar', 'email']
+        propsNeeded: ['name', 'gradYear', 'avatar', 'email'],
     };
     // inject req'd user data into each listing
-    utils.inject(req.rListings, configParams, function(err, augListings){
+    utils.inject(req.rListings, configParams, function (err, augListings){
         if (err) return next(new MongoError(err));
         req.rListings = augListings;
         next();
     });
-}
+};
 
-exports.BooksIntoListings = function(req, res, next) {
+exports.BooksIntoListings = function (req, res, next) {
     // config for injector
     var configParams = {
         collection: Book,
         ID: 'ISBN',
         localID: 'ISBN',
         newKey: 'book',
-        propsNeeded: ['coverImage','name','edition']
+        propsNeeded: ['coverImage', 'name', 'edition'],
     };
     // inject req'd user data into each listing
-    utils.inject(req.rListings, configParams, function(err, augListings){
+    utils.inject(req.rListings, configParams, function (err, augListings){
         if (err) return next(new MongoError(err));
         req.rListings = augListings;
         next();
     });
-}
+};
