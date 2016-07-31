@@ -459,7 +459,6 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   //when typing, perform a throttled search
   var streamSearch = debounce(function(){
     if ($scope.searchInput){
-      console.log('stream');
       $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
     }
   },streamSearchDelay);
@@ -475,7 +474,6 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     if ($scope.searchInput){
       streamSearch();
       if(!initSearch) {
-        console.log('search');
         initSearch = true;
         $state.go('main.search',{query:$scope.searchInput},{location:'replace'});
       }
