@@ -128,12 +128,17 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function(Api, $stateParams) {
+        results: function(Api, $stateParams, $q) {
           if ($stateParams.query) {
             return Api.search($stateParams.query);
           } else {
-            window.location.replace('/');
+            return $q.resolve(null);
           }
+        }
+      },
+      onEnter: function($stateParams, $state) {
+        if ($stateParams.query == null) {
+          $state.go('main');
         }
       },
       url : 'search?query',
@@ -216,9 +221,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
     function(event, toState, toParams, fromState, fromParams) {
     //header transitions
     if (toState.name=="main"){
-      if(fromState.name){
         $('header').transist({'remove':['minimized']},['height'],200)
-      }
     } else if(fromState.name=="main" && toState.name.indexOf('account') == -1){
       $('header').transist({'add':['minimized']},['height'],200)
     } else if(!fromState.name){ //init
