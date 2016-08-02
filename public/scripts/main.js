@@ -9,7 +9,6 @@ hitsTheBooks.run(function($rootScope, $state){
 //a more flexible keypress directive that maps keycodes to functions
 hitsTheBooks.directive('ngHtbKeypress', function() {
     return function(scope, element, attrs) {
-
         element.bind("keydown keypress", function(event) {
             var keyCode = event.which || event.keyCode;
             var map = scope.$eval("("+attrs.ngHtbKeypress+")");
@@ -93,7 +92,6 @@ hitsTheBooks.filter('ordinal', function() {
 
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
-
     .state('account', { url: '/account',
       views:{'account' : {
           templateUrl: '/partials/account',
@@ -130,8 +128,17 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function(Api, $stateParams) {
-          return Api.search($stateParams.query);
+        results: function(Api, $stateParams, $q) {
+          if ($stateParams.query) {
+            return Api.search($stateParams.query);
+          } else {
+            return $q.resolve(null);
+          }
+        }
+      },
+      onEnter: function($stateParams, $state) {
+        if ($stateParams.query == null) {
+          $state.go('main');
         }
       },
       url : 'search?query',
@@ -214,9 +221,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
     function(event, toState, toParams, fromState, fromParams) {
     //header transitions
     if (toState.name=="main"){
-      if(fromState.name){
         $('header').transist({'remove':['minimized']},['height'],200)
-      }
     } else if(fromState.name=="main" && toState.name.indexOf('account') == -1){
       $('header').transist({'add':['minimized']},['height'],200)
     } else if(!fromState.name){ //init
@@ -392,7 +397,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   }
 
   $scope.handleSearchPaneClick = function(){
-    if ($state.includes('main.detail')) {
+    if ($state.includes('main.detail') && $scope.searchInput) {
       $state.go('main.search',{query: $scope.searchInput});
     }
   }
@@ -401,7 +406,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   $scope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
     //if we're heading home, erase the search box
-    if (toState.name=="main"){
+    if (toState.name == "main"){
       //while this ↴ looks superfluous, it's necessary to change
       //the input value in time for updateSearchBox to resize.
       $('input#search-box').val('');
@@ -415,7 +420,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   function(event, toState, toParams, fromState, fromParams){
     var $sr = $('#search-results');
 
-    if (fromState.name=="main.search" && toState.name !== "main.search") {
+    if (fromState.name == "main.search" && toState.name !== "main.search") {
       $sr.transist({'add':['minimized']},['height'],200);
     }
 
@@ -424,11 +429,12 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
       $sr.transist({'remove':['minimized']},['height'],200);
     }
   });
+
   //transists continued...
   $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams){
     var $sr = $('#search-results');
-    if (fromState.name=="main" && toState.name=="main.search") {
+    if (fromState.name == "main" && toState.name == "main.search") {
       $sr.transist({'remove':['minimized']},['height'],200);
     }
   });
