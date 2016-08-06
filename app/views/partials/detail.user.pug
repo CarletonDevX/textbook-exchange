@@ -11,7 +11,89 @@ div.user-about
     h3(ng-if="user.bio") Bio
     p(ng-if="user.bio") {{user.bio}}
 
-div.private(ng-if="user.userID == currentUser.userID")
+    table.email-settings.info-table
+      thead
+        tr
+          td(colspan=2) Email me when...
+      tbody
+        tr
+          td
+            label(for="undercut-box") Someone undercuts one of my listings
+          td
+            input(
+              id="undercut-box",
+              type="checkbox",
+              ng-model="emailSettings.undercut",
+              ng-disabled="disabledComponents.undercutbox"
+              ng-change="handleEmailSettingChange('undercutbox')" )
+        tr
+          td
+            label(for= "watchlist-box") There's activity on a book on my watchlist
+          td
+            input(
+              id="watchlist-box",
+              type="checkbox",
+              ng-model="emailSettings.watchlist",
+              ng-disabled="disabledComponents.watchlistbox"
+              ng-change="handleEmailSettingChange('watchlistbox')" )
+        tr
+          td
+            label(for="htbupdate-box") Hits the Books recieves a major update
+          td
+            input(
+              id="htbupdate-box",
+              type="checkbox",
+              ng-model="emailSettings.updates",
+              ng-disabled="disabledComponents.htbupdatebox"
+              ng-change="handleEmailSettingChange('htbupdatebox')" )
+
+    form.password-changing(ng-submit="changePassword(changePwData)")
+      table.password-changing.info-table
+        thead
+          tr
+            td(colspan=2) Change my password
+        tbody
+          tr
+            td
+              label(for="old-pw") Old Password
+            td
+              input(
+                id="old-pw",
+                type="password",
+                required,
+                ng-model="changePwData.oldPw",
+                ng-disabled="disabledComponents.pwChanging" )
+          tr
+            td
+              label(for="new-pw") New Password
+                small At least 5 characters.
+            td
+              input(
+                id="new-pw",
+                pattern=".{5,}",
+                type="password",
+                required
+                ng-model="changePwData.newPw",
+                ng-disabled="disabledComponents.pwChanging" )
+          tr
+            td
+              label(for="new-pw-repeat") Retype New Password
+            td
+              input(
+                id="new-pw-repeat",
+                pattern=".{5,}",
+                type="password",
+                required,
+                ng-model="changePwData.newPwRepeat",
+                ng-disabled="disabledComponents.pwChanging" )
+        tfoot
+          tr
+            td(colspan=2, ng-if="true") This is where errors go.
+          tr
+            td(colspan=2)
+              button(type="submit") Submit
+
+div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
   table.watchlist.info-table
     thead
       tr
@@ -23,7 +105,7 @@ div.private(ng-if="user.userID == currentUser.userID")
         td.cover-image
           a(href="book/{{book.ISBN}}")
             img(src="{{book.coverImage}}")
-        td
+        td.name
           a(href="book/{{book.ISBN}}") {{book.name}}
         td
           button.cancel(ng-click="unsubscribe(book.ISBN)")
@@ -35,41 +117,6 @@ div.private(ng-if="user.userID == currentUser.userID")
             i.fa.fa-trash-o(aria-hidden="true")
             |  Unwatch all
 
-  table.email-settings
-    thead
-      tr
-        td(colspan=2) Email me when...
-    tbody
-      tr
-        td
-          label(for="undercut-box") Someone undercuts one of my listings
-        td
-          input(
-            id="undercut-box",
-            type="checkbox",
-            ng-model="emailSettings.undercut",
-            ng-disabled="disabledComponents.undercutbox"
-            ng-change="handleEmailSettingChange('undercutbox')" )
-      tr
-        td
-          label(for= "watchlist-box") There's activity on a book on my watchlist
-        td
-          input(
-            id="watchlist-box",
-            type="checkbox",
-            ng-model="emailSettings.watchlist",
-            ng-disabled="disabledComponents.watchlistbox"
-            ng-change="handleEmailSettingChange('watchlistbox')" )
-      tr
-        td
-          label(for="htbupdate-box") Hits the Books recieves a major update
-        td
-          input(
-            id="htbupdate-box",
-            type="checkbox",
-            ng-model="emailSettings.updates",
-            ng-disabled="disabledComponents.htbupdatebox"
-            ng-change="handleEmailSettingChange('htbupdatebox')" )
 
 div.listings
     div.tabs

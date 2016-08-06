@@ -781,37 +781,42 @@ div.user-about {
     flex-grow: 1;
     padding-left: 20px; }
 
-table.watchlist {
-  width: calc(50% - 10px);
-  float: left; }
-  table.watchlist thead {
-    font-family: 'Droid Serif', Serif;
-    font-size: 20px; }
-    table.watchlist thead td {
-      text-align: center;
-      border-bottom: solid 2px #ddd;
-      padding: 10px; }
-  table.watchlist td.cover-image img {
-    width: 40px;
-    max-height: 65px; }
-  table.watchlist tbody td button.cancel {
-    width: 100%;
-    font-size: 14px;
-    padding: 10px;
-    height: 70px; }
-  table.watchlist tbody td:last-child {
-    padding: 0; }
-  table.watchlist tbody {
-    display: block;
-    max-height: 250px;
-    overflow-x: hidden;
-    overflow-y: auto; }
+table.watchlist thead {
+  font-family: 'Droid Serif', Serif;
+  font-size: 20px; }
+  table.watchlist thead td {
+    text-align: center;
+    border-bottom: solid 2px #ddd;
+    padding: 10px; }
+
+table.watchlist td.cover-image img {
+  width: 150px;
+  object-fit: cover;
+  max-height: 70px; }
+
+table.watchlist td.name {
+  width: 500px; }
+
+table.watchlist tbody td button.cancel {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px;
+  height: 70px; }
+
+table.watchlist tbody td:last-child {
+  padding: 0; }
+
+table.watchlist tbody {
+  display: block;
+  max-height: 250px;
+  overflow-x: hidden;
+  overflow-y: auto; }
 
 table.email-settings {
   width: calc(50% - 10px);
   float: right; }
 
-.private {
+.watchlist-wrapper {
   overflow: auto;
   border-bottom: solid 1px #eee;
   border-top: solid 1px #eee;

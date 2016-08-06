@@ -400,8 +400,6 @@ div.user-about{
 }
 
 table.watchlist{
-  width: calc(50% - 10px);
-  float:left;
 
   thead{
     font-family: 'Droid Serif', Serif;
@@ -414,8 +412,14 @@ table.watchlist{
   }
 
   td.cover-image img{
-    width: 40px;
-    max-height: 65px;
+    width: 150px;
+    object-fit: cover;
+    // object-position: top;
+    max-height: 70px;
+  }
+
+  td.name {
+    width:500px;
   }
 
   tbody td button.cancel{
@@ -443,7 +447,7 @@ table.email-settings{
   float:right;
 }
 
-.private{
+.watchlist-wrapper{
   overflow:auto;
   border-bottom: solid 1px $light-border-color;
   border-top: solid 1px $light-border-color;
