@@ -22,8 +22,16 @@ h2 Login or Register
 		input(ng-model="registerData.username" type='text' placeholder='Email' autofill="email" required autofocus)
 		input(ng-model="registerData.givenName" type='text' placeholder='First Name' autofill="given-name" required)
 		input(ng-model="registerData.familyName" type='text' placeholder='Last Name' autofill="family-name" required)
-		input(ng-model="registerData.gradYear" type='text' placeholder='Graduation Year' autofill="grad-year" required)
+
 		input(ng-model="registerData.password" type='password' placeholder='Password' required)
+		select(ng-model="registerData.gradYear" required)
+			option(value='' disabled selected) Graduation Year
+			option(value='2015') 2015
+			option(value='2015') 2016
+			option(value='2015') 2017
+			option(value='2015') 2018
+			option(value='2015') 2019
+			option(value='2015') 2020
 		button(type='submit') Register
 		p(ng-if='registerAlert == RegisterAlert.INVALID_INFO' ng-bind='registrationError')
 		p(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
