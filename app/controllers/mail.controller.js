@@ -33,7 +33,7 @@ exports.sendRegistrationEmail = function (req, res, next) {
     var user = req.rUser;
     var options = {
         subject: 'Complete your Hits The Books registration',
-        html: readEmail('registration.html').format(user.name.givenName, config.url, user._id, user.verifier),
+        html: readEmail('registration.html').format(user.name.givenName, req.subdomain + "." + config.url, user._id, user.verifier),
         user: user,
     };
     mailer.send(options, function (err) {
@@ -45,7 +45,7 @@ exports.sendRequestPasswordEmail = function (req, res, next) {
     var user = req.rUser;
     var options = {
         subject: 'Confirm password reset',
-        html: readEmail('requestPassword.html').format(config.url, user._id, user.verifier),
+        html: readEmail('requestPassword.html').format(req.subdomain + "." + config.url, user._id, user.verifier),
         user: user,
     };
     mailer.send(options, function (err) {

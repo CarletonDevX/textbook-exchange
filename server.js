@@ -63,6 +63,7 @@ app.set('subdomain offset', config.subdomain_offset);
 app.use(function (req, res, next) {
     var subs = req.subdomains;
     if (subs.length != 1 || subs[0] != 'carleton') return res.render('catchall.pug');
+    req.subdomain = subs[0];
     next();
 });
 
