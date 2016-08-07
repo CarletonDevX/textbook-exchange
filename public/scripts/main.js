@@ -780,13 +780,65 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
       picFile: null,
       croppedImage: ''
     },
+    changePwData : {},
+    editingUser : false,
     removingListingID : null,
     disabledComponents : {
       watchlistbox : false,
       undercutbox : false,
-      htbupdatebox : false
+      htbupdatebox : false,
+      pwChanging : false,
+      newUserInfo : false
     },
   });
+
+  $scope.initiateUserEdit = function() {
+    $scope.editingUser = true;
+    $scope.newUserInfo = {
+      givenName : $scope.user.name.givenName,
+      familyName : $scope.user.name.familyName,
+      gradYear: $scope.user.gradYear,
+      bio: $scope.user.bio
+    }
+  }
+
+  $scope.cancelUserEdit = function() {
+    $scope.editingUser = false;
+  }
+
+  $scope.updateUser = function() {
+    $scope.disabledComponents.newUserInfo = true;
+    Api.updateCurrentUser({
+      bio: $scope.newUserInfo.bio,
+      givenName : $scope.newUserInfo.givenName,
+      familyName : $scope.newUserInfo.familyName,
+      gradYear : $scope.newUserInfo.gradYear
+    }).then(function(res){
+      console.log(res);
+      $scope.disabledComponents.newUserInfo = false;
+      refreshUser();
+    }, function (err){
+      console.log(err)
+    });
+  }
+
+  $scope.changePassword = function(pwData) {
+    $scope.disabledComponents.pwChanging = true;
+    Api.updateCurrentUser({
+      oldPassword : pwData.oldPw,
+      password : pwData.newPw
+    }).then(
+    function(res){
+      console.log(res);
+      $scope.changePwData.alert = "Password changed!"
+      $scope.disabledComponents.pwChanging = false;      
+    }, function(err){
+      console.log('error!')
+      console.log(err);
+      $scope.changePwData.alert = err.data;
+      $scope.disabledComponents.pwChanging = false;      
+    });
+  }
 
   $scope.openAvatarModal = function() { $scope.avatar.active = true; }
   $scope.closeAvatarModal = function() {

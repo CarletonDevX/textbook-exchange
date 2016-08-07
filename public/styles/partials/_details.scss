@@ -363,8 +363,20 @@ div.listings{
 
 
 // user view stuff
+button#edit-user{
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-left: 2px;
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+  background-color: #f3f3f3;
+}
+
 div#user-image{
   position:relative;
+  height: 0%;
   img{
     box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
     display: block;

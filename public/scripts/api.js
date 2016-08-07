@@ -18,13 +18,6 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
                 });
         },
-        getCurrentUser: function () {
-            return $http.get('/api/user/').then(
-                function (res) {
-                    return res.data;
-                }
-            );
-        },
         getUser: function (userID) {
             return $http.get('/api/user/'+userID).then(
                 function (res) {
@@ -32,8 +25,22 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },  
+        getCurrentUser: function () {
+            return $http.get('/api/user/').then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
         updateCurrentUser: function (data){
             return $http.put('/api/user', data).then(
+                function(res) {
+                    return res.data;
+                }
+            );
+        },
+        deleteCurrentUser: function () {
+            return $http.delete('/api/user').then(
                 function(res) {
                     return res.data;
                 }

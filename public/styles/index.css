@@ -481,7 +481,8 @@ main #detail-wrapper {
     margin: 10px auto 0 auto;
     padding: 20px;
     box-sizing: border-box;
-    background-color: white; }
+    background-color: white;
+    position: relative; }
 
 main #detail-wrapper.minimized {
   opacity: 0;
@@ -753,8 +754,19 @@ div.listings table.listings {
           display: inline-block;
           vertical-align: middle; }
 
+button#edit-user {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding-left: 2px;
+  height: 40px;
+  width: 40px;
+  font-size: 20px;
+  background-color: #f3f3f3; }
+
 div#user-image {
-  position: relative; }
+  position: relative;
+  height: 0%; }
   div#user-image img {
     box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.2);
     display: block;
