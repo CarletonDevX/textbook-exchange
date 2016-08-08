@@ -119,6 +119,11 @@ div.user-settings(ng-if="user.userID == currentUser.userID")
           td(colspan=2)
             button.submit(type="submit", ng-disabled="disabledComponents.pwChanging") Submit
 
+  p#account-links
+    a.logout(href, ng-click="logout()") Log out
+    |  
+    a.delete(href, ng-click="deleteAccount()") Delete my account...
+
 div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
   table.watchlist.info-table
     thead

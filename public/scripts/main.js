@@ -737,7 +737,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
   $scope.watchlist = watchlist; 
   $scope.emailSettings = {};
@@ -798,6 +798,18 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
 
   $scope.cancelUserEdit = function() {
     $scope.editingUser = false;
+  }
+
+  $scope.deleteAccount = function() {
+    if (confirm("Are you sure you want to delete all your HTB data? This action can't be undone.")) {
+      Api.deleteCurrentUser().then(function (res) {
+        $state.go('main');
+      }, function (err){
+        alert("Sorry we could not delete your account at this time.")
+      });
+    } else {
+      // Do nothing!
+    }
   }
 
   $scope.updateUser = function() {

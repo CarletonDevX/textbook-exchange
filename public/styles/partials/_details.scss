@@ -364,6 +364,9 @@ div.listings{
 
 // user view stuff
 button#edit-user, form.about button.confirm{
+  border: solid #d2d2d2 1px;
+  border-top: none;
+  border-right: none;
   position: absolute;
   top: 0;
   height: 40px;
@@ -371,7 +374,7 @@ button#edit-user, form.about button.confirm{
   padding: 0;
   font-style: normal;
   font-size: 20px;
-  background-color: #f3f3f3;
+  // background-color: #f3f3f3;
 }
 
 button#edit-user{
@@ -453,8 +456,17 @@ div.user-about{
 div.user-settings{
   border-top: 1px solid $light-border-color;
   padding-top: 20px;
-  table {
+  overflow: auto;
+  table.email-settings {
     width: calc(50% - 10px);
+    float:left;
+  }
+  form.password-changing {
+    width: calc(50% - 10px);
+    float: right;
+    table{
+      width: 100%;
+    }
   }
 }
 
@@ -510,9 +522,6 @@ table.password-changing{
   }
 }
 
-table.email-settings{
-  float:right;
-}
 
 .watchlist-wrapper{
   overflow:auto;
@@ -566,3 +575,14 @@ form.about textarea{
   resize: none;
 }
 
+#account-links{
+  font-size: 10pt;
+  float: left;
+  a.delete{
+    color: #b51f1f; 
+  }
+  a.logout{
+    color: black;
+    margin-right: 2em;
+  }
+}
