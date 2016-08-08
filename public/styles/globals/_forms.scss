@@ -79,4 +79,27 @@ input[type="password"]:disabled,
 input[type="number"]:disabled{
   border-bottom: solid 2px $disabled-rgba;
   color: lightgray;
-} 
+}
+
+textarea{
+  margin: 0px; 
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: rgb(247, 247, 247);
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: 'Droid Serif', Serif;
+  outline: none;
+  box-shadow: inset rgba(0,0,0,0) 0px 0px 4px 2px;  
+  transition: box-shadow .2s;
+}
+
+textarea:hover{
+  box-shadow: inset rgba(0,0,0,.1) 0px 0px 4px 2px;  
+}
+
+textarea:focus{
+  box-shadow: inset rgba(0,0,0,.2) 0px 0px 4px 2px;
+}

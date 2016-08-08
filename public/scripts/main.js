@@ -377,25 +377,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   }
 });
 
-hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {
-  $scope.watchlist = watchlist;
-
-  // Click background of modal to exit.
-  // (definitely not the best way to do this, just put it in for now, for convenience)
-  $('.modal-wrapper').click(function (){
-    $scope.closeAccount();
-  })
-  $('.modal').click(function (e){
-    e.stopPropagation();
-  });
-
-  $scope.logout = function () {
-    Api.logout().then(function () {
-      $scope.closeAccount();
-    });
-  }
-});
-
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
   return
 });
@@ -789,6 +770,10 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
     changePwData : {},
     editingUser : false,
     removingListingID : null,
+    newUserInfo : {
+      //hehehe -- Joe
+      possGradYears : (() => {d = new Date().getFullYear(); return Array.from(Array(6),(x,i)=>i+d-1)})()
+    },
     disabledComponents : {
       watchlistbox : false,
       undercutbox : false,
@@ -796,16 +781,19 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
       pwChanging : false,
       newUserInfo : false
     },
-  });
+  }); 
 
   $scope.initiateUserEdit = function() {
     $scope.editingUser = true;
-    $scope.newUserInfo = {
-      givenName : $scope.user.name.givenName,
-      familyName : $scope.user.name.familyName,
-      gradYear: $scope.user.gradYear,
-      bio: $scope.user.bio
-    }
+    angular.extend(
+      $scope.newUserInfo, 
+      {
+        givenName : $scope.user.name.givenName,
+        familyName : $scope.user.name.familyName,
+        gradYear: $scope.user.gradYear,
+        bio: $scope.user.bio
+      }
+    );
   }
 
   $scope.cancelUserEdit = function() {
@@ -822,10 +810,19 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
     }).then(function(res){
       console.log(res);
       $scope.disabledComponents.newUserInfo = false;
+      $scope.editingUser = false;
       refreshUser();
     }, function (err){
       console.log(err)
     });
+  }
+
+  $scope.validateNewPw = function() {
+    if ($scope.changePwData.newPw == $scope.changePwData.newPwRepeat) {
+      document.getElementById('new-pw-repeat').setCustomValidity('');
+    } else {
+      document.getElementById('new-pw-repeat').setCustomValidity('Must match the previous field');
+    }
   }
 
   $scope.changePassword = function(pwData) {
@@ -837,6 +834,9 @@ hitsTheBooks.controller('userPageController', function($scope, $timeout, $rootSc
     function(res){
       console.log(res);
       $scope.changePwData.alert = "Password changed!"
+      $scope.changePwData.oldPw = null;
+      $scope.changePwData.newPw = null;
+      $scope.changePwData.newPwRepeat = null;
       $scope.disabledComponents.pwChanging = false;      
     }, function(err){
       console.log('error!')
@@ -1053,6 +1053,12 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     },
     function (err) {
       $rootScope.currentUser = null;
+    });
+  }
+
+  $scope.logout = function () {
+    Api.logout().then(function () {
+      $scope.setCurrentUser();
     });
   }
 

@@ -1,10 +1,12 @@
 div.user-about
-  button(ng-click="initiateUserEdit()", ng-if="user.userID == currentUser.userID && !editingUser")#edit-user ✎
-  button#edit-user.cancel(ng-click="cancelUserEdit()", ng-if="user.userID == currentUser.userID && editingUser") x
+  button#edit-user(ng-click="initiateUserEdit()", ng-if="user.userID == currentUser.userID && !editingUser")
+    span.symbol ✎
+  button#edit-user.cancel(ng-click="cancelUserEdit()", ng-if="user.userID == currentUser.userID && editingUser")
+    span.symbol ✕
   div#user-image
     img(src="{{user.avatar}}")
     button(ng-if="user.userID == currentUser.userID", ng-click="openAvatarModal()")
-      span Change my picture
+      span.symbol ✎
   div.about(ng-if="!editingUser")
     h2 {{user.name.fullName}}
     p.stats
@@ -23,19 +25,18 @@ div.user-about
         ng-disabled="disabledComponents.newUserInfo",
         ng-model="newUserInfo.familyName")
     p.stats
-      p Books on offer: {{user.listings.length}} | 
-        input#grad-year(
-          type="number",
-          ng-disabled="disabledComponents.newUserInfo",
-          ng-model="newUserInfo.gradYear")
+      span Books on offer: {{user.listings.length}} 
+      span  | Class year: 
+        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in newUserInfo.possGradYears" )
     h3 Bio
     textarea(
       ng-disabled = "disabledComponents.newUserInfo",
-      ng-model="newUserInfo.bio")
-    button(type="submit") Submit
+      ng-model="newUserInfo.bio",
+      maxlength="200")
+    button.confirm(type="submit") ✓
 
 
-div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
+div.user-settings(ng-if="user.userID == currentUser.userID")
   table.email-settings.info-table
     thead
       tr
@@ -106,17 +107,17 @@ div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
           td
             input(
               id="new-pw-repeat",
-              pattern=".{5,}",
               type="password",
+              ng-change="validateNewPw()",
               required,
               ng-model="changePwData.newPwRepeat",
               ng-disabled="disabledComponents.pwChanging" )
       tfoot
-        tr
-          td(colspan=2, ng-if="true") {{changePwData.alert}}
+        tr(ng-if="changePwData.alert")
+          td(colspan=2) {{changePwData.alert}}
         tr
           td(colspan=2)
-            button(type="submit", ng-disabled="disabledComponents.pwChanging") Submit
+            button.submit(type="submit", ng-disabled="disabledComponents.pwChanging") Submit
 
 div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
   table.watchlist.info-table

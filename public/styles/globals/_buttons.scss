@@ -38,6 +38,10 @@ button{
   font-style: italic;
 }
 
+button span.symbol{
+  font-style: normal;
+}
+
 table button:focus{
     box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0,.4);
 }
