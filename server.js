@@ -4,7 +4,7 @@ var config = require('./app/config/config')();
 // Set up db
 var mongoose = require('mongoose');
 var db = mongoose.connect(config.db);
-require('./app/model');
+require('./app/models');
 
 var express = require('express'),
     bodyParser = require('body-parser'),

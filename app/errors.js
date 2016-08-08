@@ -33,9 +33,9 @@ var HTBError = function (status, message, stack) {
 exports.HTBError = HTBError;
 
 exports.MongoError = function (err) {
-    return new HTBError(500, 'Mongo error: ' + err.message);
+    return new HTBError(500, 'Mongo error: ' + String(err), err.stack);
 };
 
 exports.AmazonError = function (err) {
-    return new HTBError(500, 'Amazon error: ' +err.message);
+    return new HTBError(500, 'Amazon error: ' + String(err), err.stack);
 };

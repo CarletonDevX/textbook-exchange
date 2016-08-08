@@ -86,7 +86,7 @@ var createUser = function (req, res, next) {
         provider: 'local',
         // These may be null
         bio: info.bio,
-        gradYEar: info.gradYear,
+        gradYear: info.gradYear,
     });
     newUser.save(function (err, user) {
         if (err) return next(new MongoError(err));
@@ -223,7 +223,7 @@ exports.updateUser = function (req, res, next) {
         if (!updates.oldPassword) return next(new HTBError(400, 'Must include "oldPassword" attribute.'));
         if (!user.authenticate(updates.oldPassword)) return next(new HTBError(401, 'Invalid password.'));
         user.password = hash(updates.password);
-    } 
+    }
     user.save(function (err, user) {
         if (err) return next(new MongoError(err));
         req.rUser = user;

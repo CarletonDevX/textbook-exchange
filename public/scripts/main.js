@@ -309,7 +309,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   };
 
   // Registration
-  $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+  $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
   $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
   $scope.register = function (registerData) {
