@@ -38,9 +38,9 @@ div.user-about
       ng-model="newUserInfo.bio",
       maxlength="200")
     small Characters left: {{200-newUserInfo.bio.length}}
-    button.confirm(type="submit")
-      span.symbol ✓
-      | Update info
+    button.confirm(type="submit") ✓
+      //- span.symbol ✓
+      //- | Update info
 
 
 div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")

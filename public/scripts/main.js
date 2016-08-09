@@ -817,13 +817,13 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       gradYear : $scope.newUserInfo.gradYear
     }).then(function(res){
       $scope.disabledComponents.newUserInfo = false;
-      // $scope.editingUser = false;
+      $scope.editingUser = false;
       refreshUser();
       refreshCurrentUser();
     }, function (err){
       alert("Unable to update user.");
       $scope.disabledComponents.newUserInfo = false;
-      // $scope.editingUser = false;
+      $scope.editingUser = false;
     });
   }
 

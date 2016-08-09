@@ -363,7 +363,7 @@ div.listings{
 
 
 // user view stuff
-button#edit-user{
+button#edit-user, form.about button.confirm{
   border: solid #d2d2d2 1px;
   border-top: none;
   border-right: none;
@@ -382,15 +382,19 @@ button#edit-user{
 }
 
 form.about button.confirm{
-  padding: 15px;
-  float:right;
-
-  .symbol{
-    margin-right: 5px;
-    font-size: 14pt;
-    vertical-align: middle;
-  }
+  right: 40px;
 }
+
+// form.about button.confirm{
+//   padding: 15px;
+//   float:right;
+
+//   .symbol{
+//     margin-right: 5px;
+//     font-size: 14pt;
+//     vertical-align: middle;
+//   }
+// }
 
 div#user-image{
   position:relative;
@@ -615,7 +619,7 @@ div#edit-names input{
   font-weight: bold;
   display: inline-block;
   margin-right: 10px;
-  width: 7em;
+  width: 6.5em;
   font-family: 'Droid Sans', Sans;
   text-align: left;
 }
