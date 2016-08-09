@@ -471,6 +471,7 @@ div.user-settings{
 }
 
 table.watchlist{
+  width: 100%;
   thead{
     font-family: 'Droid Serif', Serif;
     font-size: 20px;
@@ -481,15 +482,38 @@ table.watchlist{
     }
   }
 
-  td.cover-image img{
-    width: 150px;
-    object-fit: cover;
-    // object-position: top;
-    max-height: 70px;
+  tr#watchlist-empty{
+    display: block;
+    width: 100%;
+    td{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Droid Serif', serif;
+      font-size: 10pt;
+      padding: 10px;
+    }
+  }
+
+  td.cover-image{
+    padding: 0;
+    line-height: 0;
+    a {
+      display: block;
+      height: 70px;
+      overflow: hidden;
+    }
+    img{
+      width: 150px;
+      object-fit: cover;
+      // object-position: top;
+      max-height: 70px;
+    }
   }
 
   td.name {
     width:500px;
+    padding-left: 20px;
   }
 
   tbody td button.cancel{
@@ -533,24 +557,46 @@ table.password-changing{
 
 div.modal.avatar{
   .cropArea {
-      background: #E4E4E4;
       overflow: hidden;
       width:480px;
       height:480px;
+      box-sizing: border-box;
       position: relative;
+      border: solid 1px $light-border-color;
+      box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0,.2);
+      border-bottom: none;
   }
   form .progress {
       line-height: 15px;
   }
   .progress {
       display: inline-block;
-      width: 100px;
-      border: 3px groove #CCC;
+      width: 100%;
+      border: 1px solid $light-border-color;
   }
   .progress div {
-      font-size: smaller;
-      background: orange;
       width: 0;
+      height: 100%;
+      line-height: 32px;
+      text-align: center;
+      vertical-align: middle;
+      font-family: 'Droid Sans', Sans-serif;
+      font-size: 9pt;
+      box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+  }
+
+  .button-container{
+    display: flex;
+    button{
+      width: 150px;
+      border: solid 1px $light-border-color;
+      border-right: none;
+      height: 35px;
+    }
+    button.cancel{
+      border: solid 1px $light-border-color;
+      border-left: none;
+    }
   }
 }
 
@@ -573,6 +619,10 @@ form.about input#grad-year{
 form.about textarea{
   height: 7em;
   resize: none;
+}
+
+form.about small{
+  font-style: italic;
 }
 
 #account-links{

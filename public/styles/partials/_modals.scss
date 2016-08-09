@@ -19,6 +19,11 @@
     width: 500px;
     margin: 100px calc(50vw - 250px);
     padding: 10px;
+
+    h2{
+      border-bottom: solid black 2px;
+      padding-bottom: 10px;
+    }
   }
 
   .modal.offer{
@@ -27,10 +32,6 @@
       height: 150px;
       resize: vertical;
       font-family: Monospace;
-    }
-    button{
-      padding: 20px;
-      margin-top: 10px;
     }
   }
 }

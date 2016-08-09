@@ -865,36 +865,51 @@ div.user-settings {
     div.user-settings form.password-changing table {
       width: 100%; }
 
-table.watchlist thead {
-  font-family: 'Droid Serif', Serif;
-  font-size: 20px; }
-  table.watchlist thead td {
-    text-align: center;
-    border-bottom: solid 2px #ddd;
-    padding: 10px; }
-
-table.watchlist td.cover-image img {
-  width: 150px;
-  object-fit: cover;
-  max-height: 70px; }
-
-table.watchlist td.name {
-  width: 500px; }
-
-table.watchlist tbody td button.cancel {
-  width: 100%;
-  font-size: 14px;
-  padding: 10px;
-  height: 70px; }
-
-table.watchlist tbody td:last-child {
-  padding: 0; }
-
-table.watchlist tbody {
-  display: block;
-  max-height: 250px;
-  overflow-x: hidden;
-  overflow-y: auto; }
+table.watchlist {
+  width: 100%; }
+  table.watchlist thead {
+    font-family: 'Droid Serif', Serif;
+    font-size: 20px; }
+    table.watchlist thead td {
+      text-align: center;
+      border-bottom: solid 2px #ddd;
+      padding: 10px; }
+  table.watchlist tr#watchlist-empty {
+    display: block;
+    width: 100%; }
+    table.watchlist tr#watchlist-empty td {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Droid Serif', serif;
+      font-size: 10pt;
+      padding: 10px; }
+  table.watchlist td.cover-image {
+    padding: 0;
+    line-height: 0; }
+    table.watchlist td.cover-image a {
+      display: block;
+      height: 70px;
+      overflow: hidden; }
+    table.watchlist td.cover-image img {
+      width: 150px;
+      object-fit: cover;
+      max-height: 70px; }
+  table.watchlist td.name {
+    width: 500px;
+    padding-left: 20px; }
+  table.watchlist tbody td button.cancel {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    height: 70px; }
+  table.watchlist tbody td:last-child {
+    padding: 0; }
+  table.watchlist tbody {
+    display: block;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto; }
 
 table.password-changing input {
   width: 5em;
@@ -911,24 +926,43 @@ table.password-changing small {
   margin: 20px 0; }
 
 div.modal.avatar .cropArea {
-  background: #E4E4E4;
   overflow: hidden;
   width: 480px;
   height: 480px;
-  position: relative; }
+  box-sizing: border-box;
+  position: relative;
+  border: solid 1px #eee;
+  box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0, 0.2);
+  border-bottom: none; }
 
 div.modal.avatar form .progress {
   line-height: 15px; }
 
 div.modal.avatar .progress {
   display: inline-block;
-  width: 100px;
-  border: 3px groove #CCC; }
+  width: 100%;
+  border: 1px solid #eee; }
 
 div.modal.avatar .progress div {
-  font-size: smaller;
-  background: orange;
-  width: 0; }
+  width: 0;
+  height: 100%;
+  line-height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Droid Sans', Sans-serif;
+  font-size: 9pt;
+  box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130, 0.4); }
+
+div.modal.avatar .button-container {
+  display: flex; }
+  div.modal.avatar .button-container button {
+    width: 150px;
+    border: solid 1px #eee;
+    border-right: none;
+    height: 35px; }
+  div.modal.avatar .button-container button.cancel {
+    border: solid 1px #eee;
+    border-left: none; }
 
 div#edit-names input {
   font-size: 24px;
@@ -947,6 +981,9 @@ form.about input#grad-year {
 form.about textarea {
   height: 7em;
   resize: none; }
+
+form.about small {
+  font-style: italic; }
 
 #account-links {
   font-size: 10pt;
@@ -976,11 +1013,11 @@ form.about textarea {
     width: 500px;
     margin: 100px calc(50vw - 250px);
     padding: 10px; }
+    .modal-wrapper.visible .modal h2 {
+      border-bottom: solid black 2px;
+      padding-bottom: 10px; }
   .modal-wrapper.visible .modal.offer textarea {
     width: 100%;
     height: 150px;
     resize: vertical;
     font-family: Monospace; }
-  .modal-wrapper.visible .modal.offer button {
-    padding: 20px;
-    margin-top: 10px; }

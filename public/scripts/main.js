@@ -824,6 +824,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       $scope.disabledComponents.newUserInfo = false;
       $scope.editingUser = false;
       refreshUser();
+      refreshCurrentUser();
     }, function (err){
       console.log(err)
     });
