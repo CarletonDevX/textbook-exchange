@@ -16,6 +16,8 @@ input, select{
 
 select{
   border-bottom: solid 2px black;
+  font-size: 14px;
+  font-family: 'Droid Sans', Sans;
 }
 
 input[type="checkbox"]{
@@ -24,24 +26,31 @@ input[type="checkbox"]{
   margin: 0 10px;
 }
 
+@-moz-document url-prefix() {
+  input[type="checkbox"]{
+    visibility: visible;
+  }
+}
+
 input[type="checkbox"]::before{
   content:"";
-  border:solid black 2px;
+  border:solid black 1px;
   visibility: visible;
   display: inline-block;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 2px;
   position: relative;
-  top: -2px;
+  // top: -2px;
 }
 
 input[type="checkbox"]::after{
   visibility: visible;
-  content:"✓";
+  content: "✓";
   position: absolute;
-  top: -13px;
-  font-size: 32px;
+  top: -12px;
+  font-size: 22px;
+  left: 3px;
   color:rgba(0,0,0,0);
 }
 
@@ -62,10 +71,35 @@ input[type="text"], input[type="password"], input[type="number"]{
   vertical-align: top;
   font-family: 'Droid Serif', Serif;
   border-bottom: solid 2px black;
+  font-size: 14px;
 } 
 
 input[type="text"]:disabled,
 input[type="password"]:disabled,
 input[type="number"]:disabled{
   border-bottom: solid 2px $disabled-rgba;
-} 
+  color: lightgray;
+}
+
+textarea{
+  margin: 0px; 
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: rgb(247, 247, 247);
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-family: 'Droid Serif', Serif;
+  outline: none;
+  box-shadow: inset rgba(0,0,0,0) 0px 0px 4px 2px;  
+  transition: box-shadow .2s;
+}
+
+textarea:hover{
+  box-shadow: inset rgba(0,0,0,.1) 0px 0px 4px 2px;  
+}
+
+textarea:focus{
+  box-shadow: inset rgba(0,0,0,.2) 0px 0px 4px 2px;
+}

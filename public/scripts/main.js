@@ -1,4 +1,4 @@
-var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras']);
+var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop']);
 
 hitsTheBooks.run(function($rootScope, $state){
   $rootScope.is = function(name){ return $state.is(name) };
@@ -20,15 +20,15 @@ hitsTheBooks.directive('ngHtbKeypress', function() {
     };
 });
 
-// Like ng-click but not activated when click event
+// Like ng-mousedown but not activated when click event
 // is bubbled up the the el with the directive
-hitsTheBooks.directive('ngHtbSelfClick', [ '$parse', '$rootScope', function($parse, $rootScope) {
+hitsTheBooks.directive('ngHtbSelfMousedown', [ '$parse', '$rootScope', function($parse, $rootScope) {
   return {
     restrict: 'A',
     compile: function($element, attrs){
-      var fn = $parse(attrs['ngHtbSelfClick'], null, true);
+      var fn = $parse(attrs['ngHtbSelfMousedown'], null, true);
       return function ngHtbEventHandler(scope, element) {
-        element.on('click', function(event) {
+        element.on('mousedown', function(event) {
           var callback = function() {
             fn(scope, {$event:event});
           };
@@ -110,10 +110,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         }
       }
     })
-    .state('account.edit',{ url: '/edit',
-      templateUrl : '/partials/account.edit',
-      controller  : 'accountEditController'
-    })
     .state('main',{
       url: '/',
       sticky: true,
@@ -175,8 +171,19 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       resolve : {
         userInfo: function(Api, $stateParams) {
           return Api.getUser($stateParams.userID);
-        }
-      },
+        },
+        //rootscope works mostly, unless you're landing on your own userpage
+        watchlist: function(Api, $stateParams) {
+          /* do this instead */
+          return Api.getWatchlist()
+            .then(function(result) {
+              if (result.status && result.status == 401) {
+                result = [];
+              }
+              return result
+            });
+        } 
+      },  
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
@@ -212,7 +219,9 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   }
 
   $rootScope.openAccount = function(){
-    $state.go('account')
+    if ($scope.currentUser){
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else $state.go('account');
     $previousState.memo('accountEntryPoint');
   }
 
@@ -234,7 +243,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
   if ($scope.currentUser) {
-    $state.go('account.details')
+    $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
   } else {
     $state.go('account.access')
   }
@@ -365,25 +374,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   }
 });
 
-hitsTheBooks.controller('accountDetailsController', function($scope, watchlist, $rootScope, $state, Api, AUTH_EVENTS) {
-  $scope.watchlist = watchlist;
-
-  // Click background of modal to exit.
-  // (definitely not the best way to do this, just put it in for now, for convenience)
-  $('.modal-wrapper').click(function (){
-    $scope.closeAccount();
-  })
-  $('.modal').click(function (e){
-    e.stopPropagation();
-  });
-
-  $scope.logout = function () {
-    Api.logout().then(function () {
-      $scope.closeAccount();
-    });
-  }
-});
-
 hitsTheBooks.controller('accountEditController', function($scope, $state) {
   return
 });
@@ -391,6 +381,20 @@ hitsTheBooks.controller('accountEditController', function($scope, $state) {
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $document) {
   var streamSearchDelay = 200; //ms
   var initSearch = false;
+  angular.extend($scope, {
+      conditionOptions : [
+      {code: 0, name: "New"},
+      {code: 1, name: "Lightly Used"},
+      {code: 2, name: "Used"},
+      {code: 3, name: "Heavily Used"}
+    ],
+    conditionDescriptions : {
+      0 : "Pristine condition, rarely opened if at all",
+      1 : "No writing inside, spine may be creased, cover otherwise undamaged",
+      2 : "Writing or minor cover damage",
+      3 : "Lots of writing, heavy cover and/or page damage"
+    },
+  });
 
   //inject the query if we init on the search page
   if ($state.is('main.search')) {
@@ -526,18 +530,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     // NEW LISTING DEFAULTS
     listingPaneOpen : false,
     currUserListing : false,
-    conditionOptions : [
-      {code: 0, name: "New"},
-      {code: 1, name: "Lightly Used"},
-      {code: 2, name: "Used"},
-      {code: 3, name: "Heavily Used"}
-    ],
-    conditionDescriptions : {
-      0 : "Pristine condition, rarely opened if at all",
-      1 : "No writing inside, spine may be creased, cover otherwise undamaged",
-      2 : "Writing or minor cover damage",
-      3 : "Lots of writing, heavy cover and/or page damage"
-    },
     newListing : {
       selling: true,
       renting: true,
@@ -632,10 +624,9 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.makeOfferInit = function(listing) {
     $scope.offer.listing = listing;
-    console.log(listing);
     $scope.offer.message =
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
-      + "I am interested in [buying/renting] your copy of "+$scope.book.name+". "
+      + "I am interested in [buying/renting] your copy of \""+$scope.book.name+"\". "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
@@ -743,8 +734,320 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, userInfo, $stateParams) {
+hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
+  $scope.watchlist = watchlist; 
+  $scope.emailSettings = {};
+  if ($rootScope.currentUser){
+    angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+  }
+
+  $scope.$on(AUTH_EVENTS.loginSuccess,
+    function() {
+      refreshUser();
+      refreshWatchlist();
+    }
+  );
+  angular.extend($scope, {
+    listingOrder : "price",
+    whichListings : "both",
+    reverseSort : true,
+    descMinimized : false,
+    descMinHeight : null,
+    offer : {
+      active: false,
+      listing: null,
+      message: null
+    },
+    avatar : {
+      active: false,
+      picFile: null,
+      croppedImage: ''
+    },
+    changePwData : {},
+    editingUser : false,
+    removingListingID : null,
+    newUserInfo : {
+      //hehehe -- Joe
+      possGradYears : (() => {d = new Date().getFullYear(); return Array.from(Array(6),(x,i)=>i+d-1)})()
+    },
+    disabledComponents : {
+      watchlistbox : false,
+      undercutbox : false,
+      htbupdatebox : false,
+      pwChanging : false,
+      newUserInfo : false
+    },
+  }); 
+
+  $scope.initiateUserEdit = function() {
+    $scope.editingUser = true;
+    angular.extend(
+      $scope.newUserInfo, 
+      {
+        givenName : $scope.user.name.givenName,
+        familyName : $scope.user.name.familyName,
+        gradYear: $scope.user.gradYear,
+        bio: $scope.user.bio
+      }
+    );
+  }
+
+  $scope.cancelUserEdit = function() {
+    $scope.editingUser = false;
+  }
+
+  $scope.deleteAccount = function() {
+    if (confirm("Are you sure you want to delete all your HTB data? This action can't be undone.")) {
+      Api.deleteCurrentUser().then(function (res) {
+        $state.go('main');
+      }, function (err){
+        alert("Sorry we could not delete your account at this time.")
+      });
+    } else {
+      // Do nothing!
+    }
+  }
+
+  $scope.updateUser = function() {
+    $scope.disabledComponents.newUserInfo = true;
+    Api.updateCurrentUser({
+      bio: $scope.newUserInfo.bio,
+      givenName : $scope.newUserInfo.givenName,
+      familyName : $scope.newUserInfo.familyName,
+      gradYear : $scope.newUserInfo.gradYear
+    }).then(function(res){
+      $scope.disabledComponents.newUserInfo = false;
+      $scope.editingUser = false;
+      refreshUser();
+      refreshCurrentUser();
+    }, function (err){
+      alert("Unable to update user.");
+      $scope.disabledComponents.newUserInfo = false;
+      $scope.editingUser = false;
+    });
+  }
+
+  $scope.validateNewPw = function() {
+    if ($scope.changePwData.newPw == $scope.changePwData.newPwRepeat) {
+      document.getElementById('new-pw-repeat').setCustomValidity('');
+    } else {
+      document.getElementById('new-pw-repeat').setCustomValidity('Must match the previous field');
+    }
+  }
+
+  $scope.changePassword = function(pwData) {
+    $scope.disabledComponents.pwChanging = true;
+    Api.updateCurrentUser({
+      oldPassword : pwData.oldPw,
+      password : pwData.newPw
+    }).then(
+    function(res){
+      console.log(res);
+      $scope.changePwData.alert = "Password changed!"
+      $scope.changePwData.oldPw = null;
+      $scope.changePwData.newPw = null;
+      $scope.changePwData.newPwRepeat = null;
+      $scope.disabledComponents.pwChanging = false;      
+    }, function(err){
+      console.log('error!')
+      console.log(err);
+      $scope.changePwData.alert = err.data;
+      $scope.disabledComponents.pwChanging = false;      
+    });
+  }
+
+  $scope.openAvatarModal = function() { $scope.avatar.active = true; }
+  $scope.closeAvatarModal = function() {
+    $scope.avatar = {
+      active: false,
+      picFile: null,
+      croppedImage: '',
+      progress: null
+    };
+  }
+
+  $scope.upload = function(dataUrl, name) {
+    Upload.upload({
+      url: '/api/avatar',
+      data: {
+        file: Upload.dataUrltoBlob(dataUrl, name)
+      }
+    }).then(function (response) {
+      $timeout(function () {
+        // $scope.result = response.data;
+        refreshUser();
+        $scope.closeAvatarModal();
+      });
+    }, function (response) {
+      if (response.status > 0) $scope.errorMsg = response.status 
+        + ': ' + response.data;
+    }, function (evt) {
+      $scope.avatar.progress = parseInt(100.0 * evt.loaded / evt.total);
+    });
+  }
+
+  $scope.handleEmailSettingChange = function (componentName) {
+    $scope.disabledComponents[componentName] = true;
+    data = {emailSettings: JSON.stringify($scope.emailSettings)};
+    Api.updateCurrentUser(data).then(
+      function(res) {
+        $scope.disabledComponents[componentName] = false;
+        $rootScope.currentUser = res;
+        angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+      }, function (err) {
+        $scope.disabledComponents[componentName] = false;
+        angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
+        console.log(err)
+      });
+  }
+
+  var refreshWatchlist = function() {
+    Api.getWatchlist().then(
+      function (res) { $scope.watchlist = res },
+      function (err) { console.log(err); }
+    );
+  }
+
+  $scope.unsubscribe = function(ISBN) {
+    Api.removeFromWatchlist(ISBN).then(
+      function (res) { refreshWatchlist(); },
+      function (err) { console.log(err); }
+    );
+  }
+
+  $scope.clearWatchlist = function() {
+    Api.clearWatchlist().then(
+      function (res) { refreshWatchlist(); },
+      function (err) { console.log(err); }
+    );
+  }
+
+  $scope.openRemovingListing = function(listing) {
+    $scope.removingListingID = listing.listingID;
+  }
+
+  $scope.closeRemovingListing = function() {
+    $scope.removingListingID = null;
+  }
+
+  var refreshUser = function() {
+    Api.getUser($stateParams.userID).then( function(user) {
+      $scope.user = user;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
+  $scope.removeListing = function(listing, itSold) {
+    if (itSold) {
+      Api.completeListing(listing.listingID).then(
+        function (res) {
+          refreshUser();
+          refreshCurrentUser();
+          $scope.closeRemovingListing();
+        },
+        function (err) { console.log(err) }
+      );
+    } else { //it didn't sell but the user wants to remove it anyway
+      Api.removeListing(listing.listingID).then(
+        function (res) {
+          refreshUser();
+          refreshCurrentUser();
+          $scope.closeRemovingListing();
+        },
+        function (err) { console.log(err) }
+      );
+    }
+  }
+
+  $scope.makeOfferInit = function(listing) {
+    $scope.offer.listing = listing;
+    $scope.offer.message =
+      "Hi "+$scope.user.name.fullName+",\n\n"
+      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+"\". "
+      + "Please let me know when we could meet.\n\n"
+      + "Thanks"
+      + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
+    $scope.offer.active = true;
+  }
+
+  var refreshCurrentUser = function() {
+    $scope.setCurrentUser();
+  }
+
+  $scope.makeOffer = function() {
+    Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
+      .then( function (data) {
+        refreshCurrentUser();
+        $scope.offer.active = false;
+      }, function (err) {
+        console.log(err);
+      })
+  }
+
+  $scope.handleReorder = function(category) {
+    if ($scope.listingOrder == category) $scope.reverseSort = !$scope.reverseSort;
+    else {
+      $scope.listingOrder = category;
+      $scope.reverseSort = {'lastName':true,
+                            'condition':false,
+                            'price':true}[category];
+    }
+  }
+
+  $scope.openListingPane = function(listing) {
+    // initializes the listing pane with correct settings
+    // cast prices to checkmarks -- should this be done elsewhere?
+    //copy the deets of the user's listing into the panel
+    console.log("listing: ", listing)
+    $scope.newListing = {
+      bookName : listing.book.name,
+      condition : $scope.conditionOptions[listing.condition],
+      // if there are prices set, set the form values to those prices, o/w use amazon or fall back on 0.
+      sellingPrice : (listing.sellingPrice != null) ? listing.sellingPrice : 0,
+      rentingPrice : (listing.rentingPrice != null) ? listing.rentingPrice : 0,
+      selling   : (listing.sellingPrice != null),
+      renting   : (listing.rentingPrice != null),
+      listingID : listing.listingID
+    };
+    $scope.listingPaneOpen = true;
+  }
+
+  $scope.closeListingPane = function() {
+    $scope.listingPaneOpen = false;
+  }
+
+  $scope.submitListing = function () {
+    //build the data object
+    var data = {
+      condition: $scope.newListing.condition.code
+    }
+    // using -1 tells the server to wipe the selling/renting
+    // price. Null tells the server not to record it in the
+    // first place. might be more consistent to just use neg-
+    // ative numbers.
+    if ($scope.newListing.selling) {
+      data['sellingPrice'] = $scope.newListing.sellingPrice;
+    } else {
+      data['sellingPrice'] = -1;
+    }
+
+    if($scope.newListing.renting) {
+      data['rentingPrice'] = $scope.newListing.rentingPrice;
+    } else {
+      data['rentingPrice'] = -1;
+    } 
+
+    Api.updateListing($scope.newListing.listingID, data).then( function (res) {
+      refreshUser();
+      refreshCurrentUser();
+      $scope.closeListingPane();
+    }, function (err) {
+      console.log(err);
+    });
+}
+
 });
 
 // Top-level shit
@@ -758,10 +1061,15 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
       $rootScope.currentUser = res;
-      console.log("current user is", res);
     },
     function (err) {
       $rootScope.currentUser = null;
+    });
+  }
+
+  $scope.logout = function () {
+    Api.logout().then(function () {
+      $scope.setCurrentUser();
     });
   }
 

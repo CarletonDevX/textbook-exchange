@@ -5,7 +5,8 @@
   "main": "index.js",
   "authors": [
     "David Pickart",
-    "Joe Slote"
+    "Joe Slote",
+    "Duo Tao"
   ],
   "engines": {
     "node": "0.12.0"

@@ -18,6 +18,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
                 });
         },
+        getUser: function (userID) {
+            return $http.get('/api/user/'+userID).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },  
         getCurrentUser: function () {
             return $http.get('/api/user/').then(
                 function (res) {
@@ -25,9 +32,16 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
-        getUser: function (userID) {
-            return $http.get('/api/user/'+userID).then(
-                function (res) {
+        updateCurrentUser: function (data){
+            return $http.put('/api/user', data).then(
+                function(res) {
+                    return res.data;
+                }
+            );
+        },
+        deleteCurrentUser: function () {
+            return $http.delete('/api/user').then(
+                function(res) {
                     return res.data;
                 }
             );
@@ -36,7 +50,7 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
             return $http.get('/api/subscriptions').then(
                 function (res) {
                     return res.data;
-                }
+                }, function(err) { return err }
             );
         },
         addToWatchlist: function (isbn) {
@@ -48,6 +62,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
         },
         removeFromWatchlist: function (isbn) {
             return $http.post('/api/subscriptions/remove/'+isbn).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
+        clearWatchlist: function() {
+            return $http.post('api/subscriptions/clear').then(
                 function (res) {
                     return res.data;
                 }

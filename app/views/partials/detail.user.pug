@@ -1,33 +1,280 @@
-h2 {{user.name.fullName}}
-img(src="{{user.avatar}}")
-h4 {{user.bio}}
-div.listing#selling
-    table
-      thead
-        tr
-          th Book
-          th Condition
-          th Price
-      tbody
-        //- todo: filter on whether it's for sale or rent
-        tr(ng-repeat="listing in user.listings")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-          td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
-          td {{listing.condition}}
-          td {{listing.sellingPrice}}
-          td: button: img(src="/images/email.png")
-div.listing#renting
-  table
+div.user-about
+  button#edit-user(ng-click="initiateUserEdit()", ng-if="user.userID == currentUser.userID && !editingUser")
+    span.symbol ✎
+  button#edit-user.cancel(ng-click="cancelUserEdit()", ng-if="user.userID == currentUser.userID && editingUser")
+    span.symbol ✕
+  div#user-image
+    img(src="{{user.avatar}}")
+    button(ng-if="user.userID == currentUser.userID", ng-click="openAvatarModal()")
+      span.symbol ✎
+  div.about(ng-if="!editingUser")
+    h2 {{user.name.fullName}}
+    h3 {{user.gradYear}}
+    h4(ng-if="user.bio") Bio
+    p.bio(ng-if="user.bio") {{user.bio}}
+  form.about(ng-if="editingUser", ng-submit="updateUser()")
+    div#edit-names
+      input#given-name(
+        placeholder="Given Name",
+        type="text",
+        maxlength="35",
+        ng-disabled="disabledComponents.newUserInfo",
+        ng-model="newUserInfo.givenName")
+      input#family-name(
+        placeholder="Family Name",
+        type="text",
+        maxlength="35",
+        ng-disabled="disabledComponents.newUserInfo",
+        ng-model="newUserInfo.familyName")
+    p.stats
+      span Class year: 
+        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in newUserInfo.possGradYears" )
+    h4 Bio
+    textarea(
+      ng-disabled = "disabledComponents.newUserInfo",
+      ng-model="newUserInfo.bio",
+      maxlength="200")
+    small Characters left: {{200-newUserInfo.bio.length}}
+    button.confirm(type="submit") ✓
+      //- span.symbol ✓
+      //- | Update info
+
+
+div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
+  table.email-settings.info-table
     thead
       tr
-        th Book
-        th Condition
-        th Price
+        td(colspan=2) Email me when:
     tbody
-      //-todo: filter on whether it's for sale or rent
-      tr(ng-repeat="listing in user.listings")
-        td: a(ui-sref="main.detail.book({isbn: listing.ISBN})"): img(src="{{listing.book.coverImage}}")
-        td: a(ui-sref="main.detail.book({isbn: listing.ISBN})") {{listing.book.name}}
-        td {{listing.condition}}
-        td {{listing.rentingPrice}}
-        td: button: img(src="/images/email.png")
+      tr
+        td
+          label(for="undercut-box") Someone undercuts one of my listings
+        td
+          input(
+            id="undercut-box",
+            type="checkbox",
+            ng-model="emailSettings.undercut",
+            ng-disabled="disabledComponents.undercutbox"
+            ng-change="handleEmailSettingChange('undercutbox')" )
+      tr
+        td
+          label(for= "watchlist-box") There's activity on a book on my watchlist
+        td
+          input(
+            id="watchlist-box",
+            type="checkbox",
+            ng-model="emailSettings.watchlist",
+            ng-disabled="disabledComponents.watchlistbox"
+            ng-change="handleEmailSettingChange('watchlistbox')" )
+      tr
+        td
+          label(for="htbupdate-box") Hits the Books recieves a major update
+        td
+          input(
+            id="htbupdate-box",
+            type="checkbox",
+            ng-model="emailSettings.updates",
+            ng-disabled="disabledComponents.htbupdatebox"
+            ng-change="handleEmailSettingChange('htbupdatebox')" )
+
+  form.password-changing(ng-submit="changePassword(changePwData)")
+    table.password-changing.info-table
+      thead
+        tr
+          td(colspan=2) Change my password:
+      tbody
+        tr
+          td
+            label(for="old-pw") Old Password
+          td
+            input(
+              id="old-pw",
+              type="password",
+              required,
+              ng-model="changePwData.oldPw",
+              ng-disabled="disabledComponents.pwChanging" )
+        tr
+          td
+            label(for="new-pw") New Password
+              small At least 5 characters.
+          td
+            input(
+              id="new-pw",
+              type="password",
+              required
+              ng-model="changePwData.newPw",
+              ng-disabled="disabledComponents.pwChanging" )
+        tr
+          td
+            label(for="new-pw-repeat") Retype New Password
+          td
+            input(
+              id="new-pw-repeat",
+              type="password",
+              ng-change="validateNewPw()",
+              required,
+              ng-model="changePwData.newPwRepeat",
+              ng-disabled="disabledComponents.pwChanging" )
+      tfoot
+        tr(ng-if="changePwData.alert")
+          td.alert(colspan=2) {{changePwData.alert}}
+        tr
+          td(colspan=2)
+            button.submit(type="submit", ng-disabled="disabledComponents.pwChanging") Submit
+
+  p#account-links
+    a.logout(href, ng-click="logout()") Log out
+    |  
+    a.delete(href, ng-click="deleteAccount()") Delete my account...
+
+div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
+  table.watchlist.info-table
+    thead
+      tr
+        td(colspan="3") Watchlist
+    tbody
+      tr#watchlist-empty(ng-if="!watchlist.length")
+        td(colspan=3) Search for a book and click "watchlist" to make it show up here!
+      tr(ng-repeat="book in watchlist")
+        td.cover-image
+          a(href="book/{{book.ISBN}}")
+            img(src="{{book.coverImage}}")
+        td.name
+          a(href="book/{{book.ISBN}}") {{book.name}}
+        td
+          button.cancel(ng-click="unsubscribe(book.ISBN)")
+            i.fa.fa-trash-o(aria-hidden="true")
+    tfoot
+      tr
+        td(colspan="3")
+          button.cancel(ng-click="clearWatchlist()")
+            i.fa.fa-trash-o(aria-hidden="true")
+            |  Unwatch all
+
+
+div.listings
+    div.tabs
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") 
+        | All Listings
+      button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
+        | Selling
+      button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
+        | Renting
+    table.listings
+      thead
+        tr
+          th.seller.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title
+          th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+          th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
+          th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Contact'}}
+      tbody(ng-if="whichListings=='both'")
+        //- TODO: change hrefs to ui-srefs
+        tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.user.listings'")
+
+      tbody(ng-if="whichListings=='selling'")
+        tr(ng-repeat="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.user.listings'")
+
+      tbody(ng-if="whichListings=='renting'")
+        //- TODO: change hrefs to ui-srefs
+        tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+           ng-include="'partials/detail.user.listings'")
+      tfoot(ng-if="user.userID == currentUser.userID")
+        tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
+          td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":
+          td.condition
+            select(
+              ng-model="newListing.condition",
+              ng-options="opt.name for opt in conditionOptions track by opt.code"
+            )
+            small.description {{conditionDescriptions[newListing.condition.code]}}
+
+          td
+            p
+              input(
+                type="checkbox",
+                id="sellbox",
+                ng-model="newListing.selling",
+                ng-disabled="newListing.selling && !newListing.renting"
+                )
+              span.label Sell for 
+              input.price(
+                type="text",
+                ng-model="newListing.sellingPrice",
+                placeholder="$12",
+                ng-disabled="!newListing.selling"
+              )
+            p
+              input(
+                type="checkbox",
+                id="rentbox",
+                ng-model="newListing.renting",
+                ng-disabled="!newListing.selling && newListing.renting"
+                )
+              span.label Rent for 
+              input.price(
+                type="text",
+                ng-model="newListing.rentingPrice",
+                placeholder="$12",
+                ng-disabled="!newListing.renting"
+              )
+          td.confirm
+            button.confirm(ng-click="submitListing()")
+              span.symbol ✓
+              | update!
+        tr.add-listing: td(colspan="5")
+          div(ng-if="!currentUser")
+            a(href, ng-click="openAccount()") log in
+            |  to add a listing
+          button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
+            span.symbol ×
+            |  cancel
+          div(ng-if="!listingPaneOpen && currentUser")
+            |  Search for a book to add a listing
+          button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
+            span.symbol &#9998;
+            |  edit my listing
+
+div.modal-wrapper(
+  ng-class="{'visible':offer.active}",
+  ng-htb-self-mousedown="offer.active = false"
+  )
+  div.modal.offer
+    h2 Make an offer
+    textarea(ng-model="offer.message")
+    button(ng-click="makeOffer()") Send email
+    | |
+    button.cancel(ng-click="offer.active = false") Cancel
+
+div.modal-wrapper(
+  ng-class="{'visible':avatar.active}",
+  ng-htb-self-mousedown="closeAvatarModal()"
+  )
+  div.modal.avatar
+    h2 Change your avatar:
+    form(name="avatarUpload")
+      div.cropArea(
+        ng-if="avatar.picFile",
+        ngf-drop,
+        ng-model="avatar.picFile",
+        ngf-pattern="image/*"
+      )
+        img-crop(
+          image="avatar.picFile | ngfDataUrl",
+          result-image="avatar.croppedImage",
+          ng-init="avatar.croppedImage=''",
+          area-type="square"
+        )
+      //- div
+      //-   img(ng-src="{{avatar.croppedImage}}")
+      div.button-container
+        button(ngf-select, ng-model="avatar.picFile", accept="image/*") Select picture
+        button.confirm(
+          ng-if="avatar.picFile",
+          ng-click="upload(avatar.croppedImage, avatar.picFile.name)"
+          ) Submit
+        div.progress
+          div(style="width:{{avatar.progress}}%") {{avatar.progress? (avatar.progress < 100 ? avatar.progress + '%' : 'Saving...'): '' }}
+        button.cancel(ng-click="closeAvatarModal()")
+          span.symbol Cancel

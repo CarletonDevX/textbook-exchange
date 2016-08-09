@@ -1,4 +1,8 @@
 $listing-row-height: 80px;
+$dark-border-color: #ccc;
+$light-border-color: #eee;
+$row-highlight-color: #fffcf5;
+
 
 #book-details{
   h2, h3{
@@ -23,6 +27,9 @@ $listing-row-height: 80px;
     img{
       box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
       width:200px;
+      position: relative;
+      left: -2px;
+      top: 1px;
     }
   }
 
@@ -34,6 +41,11 @@ $listing-row-height: 80px;
 
     p{
       line-height: 157%;
+      margin: 0
+    }
+
+    p:not(:first-of-type)   {
+      text-indent: 2em;
     }
 
     p:first-of-type:first-letter{
@@ -43,6 +55,10 @@ $listing-row-height: 80px;
       line-height: 100%;
       margin-top: 0px;
       margin-right: 10px;
+    }
+
+    p:last-of-type{
+      padding-bottom: 20px;
     }
 
     .expand{
@@ -73,50 +89,6 @@ $listing-row-height: 80px;
       margin-bottom: 20px;
       width:310px;
       float: left;
-
-      tfoot td {
-        padding: 0;
-        border-top: solid 2px #ddd;
-        $footer-el-height: 30px;
-        div {
-          line-height: $footer-el-height;
-          text-align: center;
-        }
-        button, div {
-          padding: 5px;
-          height: $footer-el-height;
-          width:100%;
-          border-bottom-left-radius: 8px;
-          border-bottom-right-radius: 8px;
-          font-style: italic;
-          font-family: 'Droid Serif', Serif;
-        }
-        button span.symbol{
-          font-size: 24px;
-          display:inline-block;
-          vertical-align: middle;
-          line-height: 0;
-          position: relative;
-          transition: color .2s;
-          width:1.5em;
-        }
-        button.cancel span.symbol::before{
-          font-size: 24px;
-          content:'×';
-          color: rgba(0,0,0,0);
-          width: 0;
-          display:inline-block;
-          vertical-align: middle;
-          transition: color .2s;
-          line-height: 0;
-        }
-        button.cancel:hover span.symbol{
-          color: rgba(0,0,0,0);
-        }
-        button.cancel:hover span::before{
-          color: black;
-        }
-      }
     }
   }
 
@@ -128,205 +100,565 @@ $listing-row-height: 80px;
     text-align: center;
     font-variant: small-caps;
   }
+}
 
-  .listings{
-    .tabs{
-      display: flex;
-      button{
-        // flex-basis: 100%;
-        flex-grow: 1;
-        background: none;
-        font-family: 'Droid Serif', Serif;
-        font-size: 20px;
-        padding: 10px;
-        border: none;
-        outline: none;
-        // font-style: italic;
-        // font-variant: inherit;
-        font-variant: small-caps;
-        transition: color .2s, font-size .2s;
-        color: gray;
-        height: 75px;
-        font-size: 18px;
-      }
-      button.active{
-        border-bottom: solid black 2px;
-        font-style: inherit;
-        font-size: 22px;
-        color: black;
-      }
-      button:hover{
-        // background-color: #eee;
-        color: black;
+div.listings{
+  .tabs{
+    display: flex;
+    button{
+      // flex-basis: 100%;
+      flex-grow: 1;
+      background: none;
+      font-family: 'Droid Serif', Serif;
+      font-size: 20px;
+      padding: 10px;
+      border: none;
+      outline: none;
+
+      // font-style: italic;
+      // font-variant: inherit;
+      font-variant: small-caps;
+      transition: color .2s, font-size .2s;
+      color: gray;
+      height: 75px;
+      font-size: 18px;
+    }
+    button.active{
+      border-bottom: solid black 2px;
+      font-style: inherit;
+      font-size: 22px;
+      color: black;
+    }
+    button:hover{
+      // background-color: #eee;
+      color: black;
+    }
+  }
+  table.listings{
+    width:100%;
+    table-layout: fixed;
+    border-spacing: 0;
+    border: solid 1px $dark-border-color;
+    border-top: 2px solid black;
+    overflow: hidden;
+    thead{
+      tr{
+        background-color: $row-highlight-color;
+        height: 4em;
+        th{
+          font-weight: 400;
+          font-style: italic;
+          height: 40px;
+          border-bottom: 2px solid $dark-border-color;
+          border-right: 1px solid $light-border-color;
+          position: relative;
+          }
+        th.seller{
+          width: 6em;
+        }
+        th.price{
+          width: 7.5em;
+        }
+        th.contact{
+          width:$listing-row-height;
+        }
+        th.sortable{
+          padding: 0 20px;
+          cursor: pointer;
+        }
+        th.sortable:hover{
+          text-decoration: underline;
+        }
+        th.active::before{
+          content: '';
+          background-color: rgba(252, 255, 100, 0.07);
+          width: 100%;
+          height: 2000px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: -1;
+        }
+        th.active::after{
+          // content: '▲';
+          content: '▴';
+          position: absolute;
+          width: 1.5em;
+          color:gray;
+          font-style: normal;
+        }
+        th.active.reversed::after{
+          // content: '▼';
+          content: '▾';
+        }
+        th:last-child{
+          border-right: none;
+        }
       }
     }
-    table{
-      width:100%;
-      $dark-border-color: #ccc;
-      $light-border-color: #eee;
-      border-spacing: 0;
-      border: solid 1px $dark-border-color;
-      border-top: 2px solid black;
-      overflow: hidden;
-      thead{
-        tr{
-          height: 4em;
-          th{
-            font-weight: 400;
-            font-style: italic;
-            height: 40px;
-            border-bottom: 2px solid $dark-border-color;
-            border-right: 1px solid $light-border-color;
-            position: relative;
-            }
-          th.sortable{
-            padding: 0 20px;
-            cursor: pointer;
-          }
-          th.sortable:hover{
-            text-decoration: underline;
-          }
-          th.active::before{
-            content: '';
-            background-color: rgba(252, 255, 100, 0.07);
-            width: 100%;
-            height: 2000px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            z-index: -1;
-          }
-          th.active::after{
-            // content: '▲';
-            content: '▴';
-            position: absolute;
-            width: 1.5em;
-            color:gray;
-            font-style: normal;
-          }
-          th.active.reversed::after{
-            // content: '▼';
-            content: '▾';
-          }
-          th:last-child{
-            border-right: none;
-          }
-        }
-      }
-      tbody,tfoot{
-        font-family: 'Droid Sans', sans-serif;
-        font-size: 14px;
-        tr{
-          td{
-            text-align: center;
-            border-bottom: solid 2px $dark-border-color;
-            border-right:solid 1px $light-border-color;
-            img{
-              width:40px;
-              height:40px;
-              vertical-align: middle;
-              margin:5px;
-            }
-          }
-          td:last-child{
-            border-right: none;
-          }
-          td.image{
-            text-align: right;
-            border-right: none;
-            padding-right: 5px;
-          }
-          td.username{
-            text-align:left;
-            padding-left: 5px;
-          }
-        }
-
-        td.make-an-offer button.email,
-        td.confirm button.confirm{
-          width: 100%;
-          padding: 0;
-          height: $listing-row-height;
-        }
-          
-        td.make-an-offer{
-          padding: 0;
-          button.edit, button.delete{
-            display: inline-block;
-            width: 50%;
-            height: $listing-row-height;
-            padding: 0;
-          }
-          div.remove-listing{
-            p{
-              width: 100%;
-              margin: 5px;
-            }
-            button{
-              height:28px;
-            }
-            button.cancel{
-              width:100%;
-            }
-            button.confirm, button.no{
-              width:50%;
-              display: inline-block;
-            }
-          }
-        }
-
-
-      }
-      tbody{
+    tbody:last-child tr:last-child td{
+      border-bottom: none;
+    }
+    tbody,tfoot{
+      font-family: 'Droid Sans', sans-serif;
+      font-size: 14px;
+      tr{
         td{
-          height: $listing-row-height;
-        }
-        // span.label{
-        //   font-size: 14pt;
-        // }
-      }
-      tfoot{
-        background-color: white;
-        tr.make-listing{
-          background-color: #FCFFEE;
-          p{
-            text-align: center;
+          text-align: center;
+          border-bottom: solid 2px $dark-border-color;
+          border-right:solid 1px $light-border-color;
+          img{
+            width:40px;
+            vertical-align: middle;
+            margin:5px;
           }
-          span.label{
-            width: 4.5em;
+        }
+        td:last-child{
+          border-right: none;
+        }
+        td.image{
+          text-align: right;
+          border-right: none;
+          padding-right: 5px;
+        }
+        td.username{
+          text-align:left;
+          padding-left: 5px;
+          word-break: break-all;
+          /* Non standard for webkit */
+          word-break: break-word;
+          -webkit-hyphens: auto;
+             -moz-hyphens: auto;
+              -ms-hyphens: auto;
+                  hyphens: auto;
+        }
+      }
+
+      tbody:last-child td {
+        border-bottom: 1px $dark-border-color;
+      }
+
+      td.quality a.tooltip{
+        border-bottom: black 1px dashed;
+      }
+
+      td.make-an-offer button.email,
+      td.confirm button.confirm{
+        width: 100%;
+        padding: 0;
+        height: $listing-row-height;
+        .symbol{
+          font-size: 16px;
+        }
+      }
+        
+      td.make-an-offer{
+        padding: 0;
+        button.email span.symbol{
+          font-style: normal;
+          font-size: 36px;
+        }
+        button.edit, button.delete{
+          display: inline-block;
+          width: 50%;
+          height: $listing-row-height;
+          padding: 0;
+          font-size: 16px;
+        }
+        div.remove-listing{
+          p{
+            width: 100%;
+            margin: 5px;
+          }
+          button{
+            height:28px;
+          }
+          button.cancel{
+            width:100%;
+          }
+          button.confirm, button.no{
+            width:50%;
             display: inline-block;
           }
-          input.price{
-            width:4em;
-          }
         }
-        tr.make-listing.inactive{
-          display:none;
-        }
-        tr.add-listing{
-          td{
-            text-align: center;
-            border-bottom: none;
-            padding: 0;
+      }
 
-            $footer-el-height: 2.5em;
-            div{
-              line-height: $footer-el-height;
-            }
-            button, div{
-              font-style: italic;
-              font-family: 'Droid Serif', Serif;
-              width: 100%;
-              height: $footer-el-height;
-              span.symbol{
-                font-size: 24px;
-                display: inline-block;
-                vertical-align: middle;
-              }
+
+    }
+    tbody{
+      td{
+        height: $listing-row-height;
+        padding:0;
+      }
+      table.price-table{
+        width: 100%;
+        height:79px;
+        border-collapse: collapse;
+        table-layout: fixed;
+        td:first-child{
+          font-family: 'Droid Serif', Serif;
+          font-style: italic;
+          width: 3.5em;
+        }
+        td{
+          height: auto;
+          border-bottom: none;
+        }
+        tr:first-child{
+          border-bottom: 1px solid $light-border-color;
+        }
+      }
+    }
+    tfoot{
+      background-color: white;
+      tr.make-listing{
+        background-color: $row-highlight-color;
+        p{
+          text-align: center;
+        }
+        span.label{
+          width: 4.5em;
+          display: inline-block;
+        }
+        input.price{
+          width:2em;
+        }
+
+        td.condition small.description {
+          display: block;
+          margin-top: 10px;
+          font-family: 'Droid Serif', Serif;
+          font-style:italic;
+        }
+      }
+      tr.make-listing.inactive{
+        display:none;
+      }
+      tr.add-listing{
+        td{
+          text-align: center;
+          border-bottom: none;
+          padding: 0;
+
+          $footer-el-height: 2.5em;
+          div{
+            line-height: $footer-el-height;
+          }
+          button, div{
+            font-style: italic;
+            font-family: 'Droid Serif', Serif;
+            width: 100%;
+            height: $footer-el-height;
+            span.symbol{
+              font-size: 16px;
+              display: inline-block;
+              vertical-align: middle;
             }
           }
         }
       }
     }
   }
+}
+
+
+// user view stuff
+button#edit-user, form.about button.confirm{
+  border: solid #d2d2d2 1px;
+  border-top: none;
+  border-right: none;
+  position: absolute;
+  top: 0;
+  height: 40px;
+  width: 40px;
+  padding: 0;
+  font-style: normal;
+  font-size: 20px;
+  // background-color: #f3f3f3;
+}
+
+button#edit-user{
+  right: 0;
+}
+
+form.about button.confirm{
+  right: 40px;
+}
+
+// form.about button.confirm{
+//   padding: 15px;
+//   float:right;
+
+//   .symbol{
+//     margin-right: 5px;
+//     font-size: 14pt;
+//     vertical-align: middle;
+//   }
+// }
+
+div#user-image{
+  position:relative;
+  height: 0%;
+  img{
+    box-shadow: 0 1px 3px 1px rgba(0,0,0,.2);
+    display: block;
+    padding: 10px;
+    width: 100px;
+  }
+  button{
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    overflow:hidden;
+
+    span{
+      position: absolute;
+      left: -30px;
+      bottom: -30px;
+      background-color: rgba(255,255,255,.6);
+      border-radius: 100px;
+      padding: 5px;
+      width: 60px;
+      height: 60px;
+      font-size: 18px;
+      font-style: normal;
+      text-align: right;
+      padding-right: 10px;
+      padding-top: 5px;
+      box-sizing: border-box;
+      transition: padding .2s, width .2s, height .2s, font-size .2s, left .2s, bottom .2s, background-color .2s;
+    }
+  }
+
+  button:hover span{
+    padding-right: 15px;
+    padding-top: 10px;
+    width: 100px;
+    height: 100px;
+    font-size: 24px;
+    left: -50px;
+    bottom: -50px;
+    background-color: rgba(255,255,255,.8);
+  }
+}
+
+div.user-about{
+  h2, h3, h4, .edit-names{
+    font-family: 'Droid Sans', serif; 
+  }
+  h2{
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  h3{
+    margin-top: 5px;
+  }
+  h3, p.stats{
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+  }
+  h4{
+    margin-bottom: 2px;
+  }
+  p.bio{
+    margin-top:5px;
+  }
+  .about{
+    flex-grow: 1;
+    padding-left: 20px;
+  }
+  overflow: visible;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+div.user-settings{
+  border-top: 1px solid $light-border-color;
+  padding-top: 20px;
+  overflow: auto;
+  table.email-settings {
+    width: calc(50% - 10px);
+    float:left;
+  }
+  form.password-changing {
+    width: calc(50% - 10px);
+    float: right;
+    table{
+      width: 100%;
+    }
+  }
+}
+
+table.watchlist{
+  width: 100%;
+  thead{
+    font-family: 'Droid Serif', Serif;
+    font-size: 20px;
+    td{
+      text-align: center;
+      border-bottom: solid 2px #ddd;
+      padding: 10px;
+    }
+  }
+
+  tr#watchlist-empty{
+    display: block;
+    width: 100%;
+    td{
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-family: 'Droid Serif', serif;
+      font-size: 10pt;
+      padding: 10px;
+    }
+  }
+
+  td.cover-image{
+    padding: 0;
+    line-height: 0;
+    a {
+      display: block;
+      height: 70px;
+      overflow: hidden;
+    }
+    img{
+      width: 150px;
+      object-fit: cover;
+      // object-position: top;
+      max-height: 70px;
+    }
+  }
+
+  td.name {
+    width:500px;
+    padding-left: 20px;
+  }
+
+  tbody td button.cancel{
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    height: 70px;
+  }
+
+  tbody td:last-child{
+    padding: 0;
+  }
+
+  tbody{
+    display: block;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+}
+
+table.password-changing{
+  input {
+    width: 5em;
+    border: none;
+  }
+  small {
+    display: block;
+  }
+  .alert{
+    text-align: center;
+    padding: 5px;
+  }
+}
+
+
+.watchlist-wrapper{
+  overflow:auto;
+  border-bottom: solid 1px $light-border-color;
+  border-top: solid 1px $light-border-color;
+  padding: 20px 0;
+  margin: 20px 0;
+}
+
+div.modal.avatar{
+  .cropArea {
+      overflow: hidden;
+      width:480px;
+      height:480px;
+      box-sizing: border-box;
+      position: relative;
+      border: solid 1px $light-border-color;
+      box-shadow: inset 0px 0px 25px 0px rgba(0, 0, 0,.2);
+      border-bottom: none;
+  }
+  form .progress {
+      line-height: 15px;
+  }
+  .progress {
+      display: inline-block;
+      width: 100%;
+      border: 1px solid $light-border-color;
+  }
+  .progress div {
+      width: 0;
+      height: 100%;
+      line-height: 32px;
+      text-align: center;
+      vertical-align: middle;
+      font-family: 'Droid Sans', Sans-serif;
+      font-size: 9pt;
+      box-shadow: inset 0px 0px 25px 0px rgba(130, 255, 130,.4);
+  }
+
+  .button-container{
+    display: flex;
+    button{
+      width: 150px;
+      border: solid 1px $light-border-color;
+      border-right: none;
+      height: 35px;
+    }
+    button.cancel{
+      border: solid 1px $light-border-color;
+      border-left: none;
+    }
+  }
+}
+
+div#edit-names input{
+  font-size: 24px;
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 10px;
+  width: 6.5em;
+  font-family: 'Droid Sans', Sans;
+  text-align: left;
+}
+
+form.about input#grad-year{
+  width:5em;
+  font-family: 'Droid Sans', Sans;
+  text-align: center;
+}
+
+form.about textarea{
+  height: 7em;
+  resize: none;
+}
+
+form.about small{
+  font-style: italic;
+}
+
+#account-links{
+  font-size: 10pt;
+  float: left;
+  a.delete{
+    color: #b51f1f; 
+  }
+  a.logout{
+    color: black;
+    margin-right: 2em;
+  }
+  margin-bottom: 0;
 }

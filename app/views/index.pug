@@ -2,15 +2,27 @@ doctype html
 html(ng-app="hitsTheBooks")
   head
     title Carleton Hits the Books
+    link(rel="stylesheet" type="text/css" href="/styles/index.css")
+    script(src="https://use.fontawesome.com/f91a067268.js")
     script(src="https://code.jquery.com/jquery-1.11.3.min.js")
     //- script(src="https://rawgit.com/Box9/jss/master/jss.js")
     //- script(src="https://cdnjs.cloudflare.com/ajax/libs/balance-text/1.6.0/jquery.balancetext.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js")
     script(src="https://rawgit.com/christopherthielen/ui-router-extras/master/release/ct-ui-router-extras.js")
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload-all.js")
+
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.js")
+    link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.css")
+
+    //- script(src="https://cdn.rawgit.com/CrackerakiUA/ngImgCropFullExtended/master/compile/unminified/ng-img-crop.js")
+    //- link(rel="stylesheet", type="text/css", href="https://cdn.rawgit.com/CrackerakiUA/ngImgCropFullExtended/master/compile/unminified/ng-img-crop.css")
+
     script(src="/static/scripts/client.js")
+
     link(rel="shortcut icon" type="image/x-icon" href="/images/favicon.png")
-    link(rel="stylesheet" type="text/css" href="/styles/index.css")
+
     base(href="/")
   body(ng-controller="applicationController")
     include header

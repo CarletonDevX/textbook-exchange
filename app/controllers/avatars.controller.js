@@ -16,7 +16,6 @@ var storage = multer.diskStorage({
 var uploadLocal = multer({ storage: storage }).single('file');
 
 exports.uploadAvatar = function (req, res, next) {
-    if (!req.file) return next(new HTBError(400, 'Must include "file" attribute.'));
     // Upload locally to tmp
     uploadLocal(req, res, function (err) {
         if (err) return next(new HTBError(500, err.message));

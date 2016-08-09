@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
+  @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,400italic,700,700italic);
 
 ::-moz-focus-inner {border:0;}
@@ -34,8 +34,7 @@ body::before{
   position: fixed;
   top: 0;
   left: 0;
-  background-image: url(http://www.radionorthland.org/wp-content/uploads/2012/01/Library-Books.jpg); 
-  background-size:cover;
+  background-image: url(/images/wov.png); 
   width: 100%;
   height: 100%;
   opacity : .5;
@@ -152,6 +151,11 @@ main{
           font-family: 'Droid Sans', serif;
           font-weight: 400;
           margin-top:0;
+          padding-bottom: 6px;
+          border-bottom: 2px solid black;
+        }
+        table{
+          width: 100%;
         }
       }
       li:hover{
@@ -219,6 +223,7 @@ main{
       padding:20px;
       box-sizing: border-box;
       background-color:white;
+      position: relative;
     }
   }
 
@@ -237,6 +242,7 @@ main{
   #detail-wrapper.maximized{
     width:750px;
     max-width: 100vw;
+    overflow: visible;
     #detail{
       width:570px;
       box-shadow: 0px 3px 10px 2px rgba(0,0,0,.3);
@@ -245,7 +251,6 @@ main{
     height:auto;
   }
 }
-
 
 @import "partials/details";
 @import "partials/modals";
