@@ -216,8 +216,8 @@ exports.updateUser = function (req, res, next) {
             return next(new HTBError(400, 'Couldn\'t parse emailSettings object: '+err.message));
         }
     }
-    if (updates.givenName) user.name.givenName = updates.givenName;
-    if (updates.familyName) user.name.familyName = updates.familyName;
+    if (updates.givenName != null) user.name.givenName = updates.givenName;
+    if (updates.familyName != null) user.name.familyName = updates.familyName;
     user.name.fullName = user.name.givenName + ' ' + user.name.familyName;
     if (updates.password) {
         if (!updates.oldPassword) return next(new HTBError(400, 'Must include "oldPassword" attribute.'));

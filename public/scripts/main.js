@@ -816,14 +816,12 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       familyName : $scope.newUserInfo.familyName,
       gradYear : $scope.newUserInfo.gradYear
     }).then(function(res){
-      console.log(res);
       $scope.disabledComponents.newUserInfo = false;
       // $scope.editingUser = false;
       refreshUser();
       refreshCurrentUser();
     }, function (err){
-      console.log(err)
-      alert("Sorry, that name is invalid, you aren't connected to the internet, or we're experiencing technical difficulties.");
+      alert("Unable to update user.");
       $scope.disabledComponents.newUserInfo = false;
       // $scope.editingUser = false;
     });
