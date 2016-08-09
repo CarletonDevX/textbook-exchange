@@ -22,13 +22,13 @@ exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
     app.route('/*')
-        .get(users.countUsers,          // Should we cache this stuff?
-             listings.countListings,
-             offers.countOffers,
+        .get(users.countUsers,                      // TODO: Cache these things?
+             listings.countOpenListings,
+             listings.countCompletedListings,
              function (req, res) {
                  res.render('index.pug', {
-                     numListings: req.rSchoolStats.numListings,
-                     numOffers: req.rSchoolStats.numOffers,
+                     numOpenListings: req.rSchoolStats.numOpenListings,
+                     numCompletedListings: req.rSchoolStats.numCompletedListings,
                      numUsers: req.rSchoolStats.numUsers,
                  });
              });
@@ -104,8 +104,8 @@ exports.setup = function (app) {
     /* Schools */
     app.route('/api/schoolStats')
         .get(users.countUsers,
-             listings.countListings,
-             offers.countOffers,
+             listings.countOpenListings,
+             listings.countCompletedListings,
              responder.formatSchoolStats);
 
     /* Users */

@@ -20,8 +20,8 @@ exports.successUpdateEmail = function (req, res) {
 
 exports.formatSchoolStats = function (req, res) {
     var stats = {
-        'numUsers': req.rSchoolStats.numUsers,
-        'numListings': req.rSchoolStats.numListings,
+        'numOpenListings': req.rSchoolStats.numOpenListings,
+        'numCompletedListings': req.rSchoolStats.numCompletedListings,
         'numOffers': req.rSchoolStats.numOffers,
     };
     res.json(stats);

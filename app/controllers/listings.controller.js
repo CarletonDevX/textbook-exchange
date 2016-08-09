@@ -2,11 +2,20 @@ var HTBError = require('../errors').HTBError,
     Listing = require('mongoose').model('listings'),
     MongoError = require('../errors').MongoError;
 
-exports.countListings = function (req, res, next) {
+exports.countOpenListings = function (req, res, next) {
+    if (!req.rSchoolStats) req.rSchoolStats = {};
+    Listing.count({completed: false}, function (err, count) {
+        if (err) return next(new MongoError(err));
+        req.rSchoolStats.numOpenListings = count;
+        return next();
+    });
+};
+
+exports.countCompletedListings = function (req, res, next) {
     if (!req.rSchoolStats) req.rSchoolStats = {};
     Listing.count({completed: true}, function (err, count) {
         if (err) return next(new MongoError(err));
-        req.rSchoolStats.numListings = count;
+        req.rSchoolStats.numCompletedListings = count;
         return next();
     });
 };
