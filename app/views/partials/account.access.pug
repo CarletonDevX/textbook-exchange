@@ -48,11 +48,11 @@ div.register
 				tr
 					td First Name
 					td
-						input(ng-model="registerData.givenName" type='text' maxlength=35 autofill="given-name" required)
+						input(ng-model="registerData.givenName" type='text' maxlength=35 placeholder='Friedrich' autofill="given-name" required)
 				tr
 					td Last Name
 					td
-						input(ng-model="registerData.familyName" type='text' maxlength=35 autofill="family-name" required)
+						input(ng-model="registerData.familyName", placeholder='Schiller' type='text' maxlength=35 autofill="family-name" required)
 				tr
 					td Password
 					td
@@ -61,7 +61,7 @@ div.register
 					td Graduation Year
 					td
 						select(ng-model="registerData.gradYear" required)
-							option(value='' disabled selected) Graduation Year
+							option(value='' disabled selected) —
 							option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
 				tfoot
 					tr(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
