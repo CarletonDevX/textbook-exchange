@@ -842,12 +842,20 @@ div.user-about {
   overflow: visible;
   display: flex;
   margin-bottom: 20px; }
-  div.user-about h2, div.user-about h3, div.user-about p.stats, div.user-about .edit-names {
+  div.user-about h2, div.user-about h3, div.user-about h4, div.user-about .edit-names {
     font-family: 'Droid Sans', serif; }
-  div.user-about p.stats {
-    font-size: 14px; }
   div.user-about h2 {
-    margin-top: 0; }
+    margin-top: 0;
+    margin-bottom: 5px; }
+  div.user-about h3 {
+    margin-top: 5px; }
+  div.user-about h3, div.user-about p.stats {
+    border-bottom: 2px solid black;
+    padding-bottom: 10px; }
+  div.user-about h4 {
+    margin-bottom: 2px; }
+  div.user-about p.bio {
+    margin-top: 5px; }
   div.user-about .about {
     flex-grow: 1;
     padding-left: 20px; }

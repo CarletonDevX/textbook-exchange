@@ -445,14 +445,25 @@ div#user-image{
 }
 
 div.user-about{
-  h2, h3, p.stats, .edit-names{
+  h2, h3, h4, .edit-names{
     font-family: 'Droid Sans', serif; 
-  }
-  p.stats{
-    font-size: 14px;
   }
   h2{
     margin-top: 0;
+    margin-bottom: 5px;
+  }
+  h3{
+    margin-top: 5px;
+  }
+  h3, p.stats{
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+  }
+  h4{
+    margin-bottom: 2px;
+  }
+  p.bio{
+    margin-top:5px;
   }
   .about{
     flex-grow: 1;

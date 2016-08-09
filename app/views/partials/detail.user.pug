@@ -9,11 +9,9 @@ div.user-about
       span.symbol ✎
   div.about(ng-if="!editingUser")
     h2 {{user.name.fullName}}
-    p.stats
-      span Books on offer: {{user.listings.length}}
-      span(ng-if="user.gradYear")  | Class year: {{user.gradYear}}
-    h3(ng-if="user.bio") Bio
-    p(ng-if="user.bio") {{user.bio}}
+    h3 {{user.gradYear}}
+    h4(ng-if="user.bio") Bio
+    p.bio(ng-if="user.bio") {{user.bio}}
   form.about(ng-if="editingUser", ng-submit="updateUser()")
     div#edit-names
       input#given-name(
@@ -29,10 +27,9 @@ div.user-about
         ng-disabled="disabledComponents.newUserInfo",
         ng-model="newUserInfo.familyName")
     p.stats
-      span Books on offer: {{user.listings.length}} 
-      span  | Class year: 
+      span Class year: 
         select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in newUserInfo.possGradYears" )
-    h3 Bio
+    h4 Bio
     textarea(
       ng-disabled = "disabledComponents.newUserInfo",
       ng-model="newUserInfo.bio",
