@@ -1028,7 +1028,8 @@ form.about small {
     box-sizing: border-box;
     width: 500px;
     margin: 100px calc(50vw - 250px);
-    padding: 10px; }
+    padding: 10px;
+    overflow: auto; }
     .modal-wrapper.visible .modal h2 {
       border-bottom: solid black 2px;
       padding-bottom: 10px; }
@@ -1037,3 +1038,22 @@ form.about small {
     height: 150px;
     resize: vertical;
     font-family: Monospace; }
+
+#account-wrapper .login {
+  width: 50%;
+  float: left;
+  padding-right: 10px;
+  box-sizing: border-box; }
+
+#account-wrapper .register {
+  padding-left: 10px;
+  width: 50%;
+  float: right;
+  box-sizing: border-box; }
+
+#account-wrapper table {
+  width: 100%; }
+
+#account-wrapper input, #account-wrapper select {
+  border-bottom: none;
+  width: 100%; }
