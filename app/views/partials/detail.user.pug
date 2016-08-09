@@ -17,11 +17,15 @@ div.user-about
   form.about(ng-if="editingUser", ng-submit="updateUser()")
     div#edit-names
       input#given-name(
+        placeholder="Given Name",
         type="text",
+        maxlength="35",
         ng-disabled="disabledComponents.newUserInfo",
         ng-model="newUserInfo.givenName")
       input#family-name(
+        placeholder="Family Name",
         type="text",
+        maxlength="35",
         ng-disabled="disabledComponents.newUserInfo",
         ng-model="newUserInfo.familyName")
     p.stats
@@ -34,10 +38,12 @@ div.user-about
       ng-model="newUserInfo.bio",
       maxlength="200")
     small Characters left: {{200-newUserInfo.bio.length}}
-    button.confirm(type="submit") ✓
+    button.confirm(type="submit")
+      span.symbol ✓
+      | Update info
 
 
-div.user-settings(ng-if="user.userID == currentUser.userID")
+div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
   table.email-settings.info-table
     thead
       tr
@@ -97,7 +103,6 @@ div.user-settings(ng-if="user.userID == currentUser.userID")
           td
             input(
               id="new-pw",
-              pattern=".{5,}",
               type="password",
               required
               ng-model="changePwData.newPw",
@@ -115,7 +120,7 @@ div.user-settings(ng-if="user.userID == currentUser.userID")
               ng-disabled="disabledComponents.pwChanging" )
       tfoot
         tr(ng-if="changePwData.alert")
-          td(colspan=2) {{changePwData.alert}}
+          td.alert(colspan=2) {{changePwData.alert}}
         tr
           td(colspan=2)
             button.submit(type="submit", ng-disabled="disabledComponents.pwChanging") Submit

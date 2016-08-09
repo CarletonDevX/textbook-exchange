@@ -3,8 +3,8 @@ var crypto = require('crypto'),
 
 var User = new Schema({
     name: {
-        givenName: { type: String, required: true, maxlength: 20 },
-        familyName: { type: String, required: true, maxlength: 20 },
+        givenName: { type: String, required: true, maxlength: 35 },
+        familyName: { type: String, required: true, maxlength: 35 },
         fullName: { type: String, required: true },
     },
     email: { type: String, unique: true, required: true },

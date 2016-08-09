@@ -110,10 +110,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         }
       }
     })
-    .state('account.edit',{ url: '/edit',
-      templateUrl : '/partials/account.edit',
-      controller  : 'accountEditController'
-    })
     .state('main',{
       url: '/',
       sticky: true,
@@ -822,11 +818,14 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     }).then(function(res){
       console.log(res);
       $scope.disabledComponents.newUserInfo = false;
-      $scope.editingUser = false;
+      // $scope.editingUser = false;
       refreshUser();
       refreshCurrentUser();
     }, function (err){
       console.log(err)
+      alert("Sorry, that name is invalid, you aren't connected to the internet, or we're experiencing technical difficulties.");
+      $scope.disabledComponents.newUserInfo = false;
+      // $scope.editingUser = false;
     });
   }
 
