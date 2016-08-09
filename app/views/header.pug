@@ -9,8 +9,8 @@ header(ng-controller="headerController")
           span.interject  the 
           | Books
     ul#college-info
-      li #{numListings} books available
-      li #{numOffers} successful listings
+      li #{numOpenListings} books listed
+      li #{numCompletedListings} successful listings
       li #{numUsers} active users
   div#blurb(ng-class="{'hidden': !modalStates.blurb||currentUser}")
     | Welcome to the streamlined platform for buying, selling, and trading textbooks face-to-face.
