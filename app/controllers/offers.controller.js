@@ -2,15 +2,6 @@ var HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError,
     Offer = require('mongoose').model('offers');
 
-exports.countOffers = function (req, res, next) {
-    if (!req.rSchoolStats) req.rSchoolStats = {};
-    Offer.count({'completed': true}, function (err, count) {
-        if (err) return next(new MongoError(err));
-        req.rSchoolStats.numOffers = count;
-        return next();
-    });
-};
-
 exports.getOffer = function (req, res, next) {
     var offerID = req.params.offerID;
     Offer.findOne({_id: offerID}, function (err, offer) {
