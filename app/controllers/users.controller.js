@@ -36,7 +36,7 @@ var validatePassword = function (password) {
 };
 
 var validateRegistrationInfo = function (info, callback) {
-    var err;
+    var err = null;
     if (info.username == null || !validateEmail(info.username)) {
         err = new HTBError(400, 'Must provide a valid Carleton email address.');
     } else if (info.password == null || !validatePassword(info.password)) {
@@ -45,6 +45,8 @@ var validateRegistrationInfo = function (info, callback) {
         err = new HTBError(400, 'Must provide "givenName" attribute.');
     } else if (info.familyName == null) {
         err = new HTBError(400, 'Must provide "familyName" attribute.');
+    } else if (info.gradYear == null) {
+        err = new HTBError(400, 'Must provide "gradYear" attribute.');
     }
     return callback(err);
 };
@@ -84,9 +86,9 @@ var createUser = function (req, res, next) {
         password: hash(info.password),
         verified: false,
         provider: 'local',
-        // These may be null
-        bio: info.bio,
         gradYear: info.gradYear,
+        // This may be null
+        bio: info.bio,
     });
     newUser.save(function (err, user) {
         if (err) return next(new MongoError(err));

@@ -297,6 +297,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
+  $scope.possibleYears = (() => {d = new Date().getFullYear(); return Array.from(Array(6),(x,i)=>i+d-1)})();
   $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
   $scope.register = function (registerData) {

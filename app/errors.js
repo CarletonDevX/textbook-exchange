@@ -31,7 +31,9 @@ var HTBError = function (status, message, stack) {
 exports.HTBError = HTBError;
 
 exports.MongoError = function (err) {
-    return new HTBError(500, 'Mongo error: ' + String(err), err.stack);
+    var code = 500;
+    if (err.name == "ValidationError") code = 422;
+    return new HTBError(code, 'Mongo error: ' + String(err), err.stack);
 };
 
 exports.AmazonError = function (err) {

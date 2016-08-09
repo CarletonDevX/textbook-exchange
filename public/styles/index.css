@@ -15,6 +15,9 @@ body, html {
 a, input {
   outline: none; }
 
+a, button {
+  cursor: pointer; }
+
 .interject {
   font-size: smaller;
   font-style: italic;

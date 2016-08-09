@@ -26,12 +26,7 @@ h2 Login or Register
 		input(ng-model="registerData.password" type='password' placeholder='Password' required)
 		select(ng-model="registerData.gradYear" required)
 			option(value='' disabled selected) Graduation Year
-			option(value='2015') 2015
-			option(value='2015') 2016
-			option(value='2015') 2017
-			option(value='2015') 2018
-			option(value='2015') 2019
-			option(value='2015') 2020
+			option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
 		button(type='submit') Register
 		p(ng-if='registerAlert == RegisterAlert.INVALID_INFO' ng-bind='registrationError')
 		p(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
