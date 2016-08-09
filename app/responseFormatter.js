@@ -20,9 +20,9 @@ exports.successUpdateEmail = function (req, res) {
 
 exports.formatSchoolStats = function (req, res) {
     var stats = {
+        'numOpenListings': req.rSchoolStats.numOpenListings,
+        'numCompletedListings': req.rSchoolStats.numCompletedListings,
         'numUsers': req.rSchoolStats.numUsers,
-        'numListings': req.rSchoolStats.numListings,
-        'numOffers': req.rSchoolStats.numOffers,
     };
     res.json(stats);
 };
@@ -65,6 +65,7 @@ exports.formatCurrentUser = function (req, res) {
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
         var lstng = req.rListings[i];
+
         var formattedBook;
         if (lstng.book != undefined) {
             formattedBook = {
