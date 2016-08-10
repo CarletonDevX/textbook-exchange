@@ -1097,5 +1097,9 @@ form.about small {
   border-bottom: none;
   width: 100%; }
 
+#account-wrapper .alert td {
+  padding: 10px;
+  text-align: center; }
+
 #contact-wrapper button {
   padding: 20px; }

@@ -17,19 +17,19 @@ div.login
 					td
 						input(ng-model='loginData.password' type='password' placeholder='Password' required)
 			tfoot
-				tr(ng-if='signinAlert == SignInAlert.INCORRECT_INFO')
-					td(colspan=2) Incorrect Email or Password.
+				tr.alert(ng-if='signinAlert == SignInAlert.INCORRECT_INFO')
+					td(colspan=2) Incorrect Email or Password. 
 						a(href='#' ng-click='requestPasswordReset()') Forgot Password?
 
-				tr(ng-if='signinAlert == SignInAlert.UNVERIFIED')
+				tr.alert(ng-if='signinAlert == SignInAlert.UNVERIFIED')
 					td(colspan=2) Account not verified.
 						a(href='#' ng-click='resendVerification()') Resend Verification Link?
 
-				tr(ng-if='signinAlert == SignInAlert.SERVER_ERROR')
+				tr.alert(ng-if='signinAlert == SignInAlert.SERVER_ERROR')
 					td(colspan=2) Internal Server Error.
 						a(href='#' ng-click='modalStates.contact = true') Report Error
 
-				tr(ng-if='signinAlert == SignInAlert.RESEND_RESET_ALERT')
+				tr.alert(ng-if='signinAlert == SignInAlert.RESEND_RESET_ALERT')
 					td(colspan=2, ng-bind='resendResetAlert')
 
 				tr
@@ -64,13 +64,12 @@ div.register
 							option(value='' disabled selected) —
 							option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
 				tfoot
-					tr(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
-						td(colspan=2)
-							p(ng-bind='registrationError')
-					tr(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
+					tr.alert(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
+						td(colspan=2, ng-bind='registrationError')
+					tr.alert(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
 						td(colspan=2) Internal Server Error.
 								a(href='#' ng-click='modalStates.contact = true') Report Error
-					tr(ng-if='registerAlert == RegisterAlert.SUCCESS')
+					tr.alert(ng-if='registerAlert == RegisterAlert.SUCCESS')
 						td(colspan=2) Registration Successful! Please check your email to proceed.
 					tr
 						td(colspan=2)
