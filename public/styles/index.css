@@ -1039,18 +1039,6 @@ form.about small {
     resize: vertical;
     font-family: Monospace; }
 
-#account-wrapper .login {
-  width: 50%;
-  float: left;
-  padding-right: 10px;
-  box-sizing: border-box; }
-
-#account-wrapper .register {
-  padding-left: 10px;
-  width: 50%;
-  float: right;
-  box-sizing: border-box; }
-
 #account-wrapper table {
   width: 100%; }
 
