@@ -58,7 +58,7 @@ exports.sendNewPasswordEmail = function (req, res, next) {
     var password = req.rPassword;
     var options = {
         subject: 'Your password has been reset',
-        html: readEmail('newPassword.html').format(password),
+        html: readEmail('newPassword.html').format(password, req.subdomain + '.' + config.url),
         user: user,
     };
     mailer.send(options, function (err) {

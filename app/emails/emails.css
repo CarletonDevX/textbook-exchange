@@ -1,6 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 body {
   font-family: 'Droid Serif', serif;
+  font-size: 14;
 }
 .mini {
   font-size: 10;
