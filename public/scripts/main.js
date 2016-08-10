@@ -382,9 +382,10 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   var streamSearchDelay = 200; //ms
   var initSearch = false;
   angular.extend($scope, {
-    searchIsSearching : false,
+    searchIsSearching : $state.current.name.indexOf('search') > -1,
     detailIsMaximized : $state.current.name.indexOf('detail') > -1,
     searchIsBehindDetail: $state.current.name.indexOf('detail') > -1,
+    searchLoading: false,
     conditionOptions : [
       {code: 0, name: "New"},
       {code: 1, name: "Lightly Used"},
@@ -426,6 +427,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   // transists for search view
   $rootScope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
+
     var $sr = $('#search-results');
 
     if (fromState.name == "main.search" && 
@@ -440,6 +442,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     } else if (toState.name == "main.search"){
       $sr.transist({'remove':['minimized']},['height'],200);
       $scope.searchIsSearching = true;
+      $scope.searchLoading = true;
     } else {
       // $scope.searchIsSearching = false; 
     }
@@ -452,13 +455,14 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     if (fromState.name == "main" && toState.name == "main.search") {
       $sr.transist({'remove':['minimized']},['height'],200);
     }
-
+    if (toState.name == "main.search") {
+      $scope.searchLoading = false;
+    }
     if (toState.name.indexOf('main.detail') > -1 || 
         (fromState.name.indexOf('main.detail') >-1 && 
          toState.name.indexOf('account') > -1)
        ){
       $scope.searchIsBehindDetail = true;
-      console.log("what")
     } else {
       $scope.searchIsBehindDetail = false;
     }
@@ -469,7 +473,6 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
 
   $rootScope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
-    console.log("tostate", toState)
     if (fromState.name.indexOf('account') > -1 && 
         toState.name.indexOf('account') == -1 && 
         toState.name.indexOf('account') == -1) {

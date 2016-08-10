@@ -20,6 +20,7 @@ div#search(ng-class="\
                      ng-htb-keypress="{13:'classicSearch()'}",
                      placeholder=placeHolders[randi])
     //- a(ui-sref="main.search({query: searchInput})") Search
+    div.loading(ng-class="searchLoading?'visible':''")
 
   div#search-results(ui-view="search")
 
