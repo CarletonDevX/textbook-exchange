@@ -19,6 +19,7 @@
     width: 500px;
     margin: 100px calc(50vw - 250px);
     padding: 10px;
+    overflow: auto;
 
     h2{
       border-bottom: solid black 2px;
@@ -33,5 +34,16 @@
       resize: vertical;
       font-family: Monospace;
     }
+  }
+}
+
+#account-wrapper{
+  table{
+    width: 100%;
+  }
+
+  input, select{
+    border-bottom: none;
+    width: 100%;
   }
 }

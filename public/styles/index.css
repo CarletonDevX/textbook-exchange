@@ -1046,7 +1046,8 @@ form.about small {
     box-sizing: border-box;
     width: 500px;
     margin: 100px calc(50vw - 250px);
-    padding: 10px; }
+    padding: 10px;
+    overflow: auto; }
     .modal-wrapper.visible .modal h2 {
       border-bottom: solid black 2px;
       padding-bottom: 10px; }
@@ -1055,3 +1056,10 @@ form.about small {
     height: 150px;
     resize: vertical;
     font-family: Monospace; }
+
+#account-wrapper table {
+  width: 100%; }
+
+#account-wrapper input, #account-wrapper select {
+  border-bottom: none;
+  width: 100%; }
