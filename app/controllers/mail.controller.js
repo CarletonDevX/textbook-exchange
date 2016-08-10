@@ -58,7 +58,7 @@ exports.sendNewPasswordEmail = function (req, res, next) {
     var password = req.rPassword;
     var options = {
         subject: 'Your password has been reset',
-        html: readEmail('newPassword.html').format(password),
+        html: readEmail('newPassword.html').format(password, req.subdomain + '.' + config.url),
         user: user,
     };
     mailer.send(options, function (err) {
@@ -71,11 +71,10 @@ exports.sendOfferEmail = function (req, res, next) {
     var book = listing.book;
     var lister = listing.user;
     var offerer = req.rUser;
-    var message = req.body.message || '';
-    if (message) message = '<br>--<br>' + offerer.name.givenName + ' has included the following message:<br>' + message;
+    var message = req.body.message || '<No message>';
     var options = {
         subject: 'Someone has made an offer on your book ' + book.name,
-        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.email, message),
+        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.email, offerer.name.givenName, message, req.subdomain + '.' + config.url),
         user: lister,
     };
     mailer.send(options, function (err) {
@@ -93,7 +92,7 @@ exports.sendSubscribersEmail = function (req, res, next) {
     }
     var options = {
         subject: 'Someone has posted a listing for a book on your watchlist.',
-        html: readEmail('watchlist.html').format(book.name, listing._id),
+        html: readEmail('watchlist.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
         users: subscribers,
         setting: 'watchlist',
     };
@@ -108,7 +107,7 @@ exports.sendUndercutEmail = function (req, res, next) {
     var users = req.rUndercutUsers;
     var options = {
         subject: 'Someone has undercut your price for ' + book.name,
-        html: readEmail('undercut.html').format(book.name, listing._id),
+        html: readEmail('undercut.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
         users: users,
         setting: 'undercut',
     };
@@ -133,7 +132,9 @@ exports.sendReportEmail = function (req, res, next) {
 /* HELPERS */
 
 var readEmail = function (file) {
-    return String(fs.readFileSync(__dirname + '/../emails/' + file, 'utf8'));
+    var body = String(fs.readFileSync(__dirname + '/../emails/' + file, 'utf8'));
+    var header = '<style>' + String(fs.readFileSync(__dirname + '/../emails/emails.css', 'utf8')) + '</style>';
+    return header + body;
 };
 
 // Basic string formatting function for templates (http://stackoverflow.com/a/4673436)
