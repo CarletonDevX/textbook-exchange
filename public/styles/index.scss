@@ -195,6 +195,34 @@ main{
     // }
   }
 
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loading{
+    display: inline-block;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    border: 0.25rem solid black;
+    border-top-color: white;
+    border-bottom-color: white;
+    border-top-width: .15em;
+    border-bottom-width: .15em;
+    animation: spin 1s infinite linear;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+
+  .loading.visible{
+    opacity: 1;
+  }
+
   #detail-wrapper{
     width:500px;
     margin: -10px auto 40px auto;

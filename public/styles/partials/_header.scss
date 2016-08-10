@@ -221,6 +221,14 @@ header.minimized{
   overflow: hidden;
 }
 
+@media (max-width: 1000px) {
+  header.minimized{
+    height: 160px;
+  }
+}
+
+
+
 
 // header.minimized div#main-box:hover .app-name::before{
 //   width:15%;

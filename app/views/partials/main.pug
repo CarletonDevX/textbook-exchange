@@ -3,9 +3,9 @@
 
 div#search(ng-class="\
   {\
-    'searching'    : includes('main.search'),\
+    'searching'    : searchIsSearching,\
     'home-view'    : is('main'),\
-    'behind-detail' : includes('main.detail')\
+    'behind-detail' : searchIsBehindDetail\
   }",
   ng-click="handleSearchPaneClick()")
 
@@ -20,7 +20,8 @@ div#search(ng-class="\
                      ng-htb-keypress="{13:'classicSearch()'}",
                      placeholder=placeHolders[randi])
     //- a(ui-sref="main.search({query: searchInput})") Search
+    div.loading(ng-class="searchLoading?'visible':''")
 
   div#search-results(ui-view="search")
 
-div#detail-wrapper(ui-view="detail", ng-class="includes('main.detail')?'maximized':'minimized'")
+div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")
