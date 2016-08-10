@@ -3,9 +3,9 @@
 
 div#search(ng-class="\
   {\
-    'searching'    : includes('main.search'),\
+    'searching'    : searchIsSearching,\
     'home-view'    : is('main'),\
-    'behind-detail' : includes('main.detail')\
+    'behind-detail' : searchIsBehindDetail\
   }",
   ng-click="handleSearchPaneClick()")
 
@@ -23,4 +23,4 @@ div#search(ng-class="\
 
   div#search-results(ui-view="search")
 
-div#detail-wrapper(ui-view="detail", ng-class="includes('main.detail')?'maximized':'minimized'")
+div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")

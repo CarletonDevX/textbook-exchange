@@ -382,7 +382,10 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   var streamSearchDelay = 200; //ms
   var initSearch = false;
   angular.extend($scope, {
-      conditionOptions : [
+    searchIsSearching : false,
+    detailIsMaximized : $state.current.name.indexOf('detail') > -1,
+    searchIsBehindDetail: $state.current.name.indexOf('detail') > -1,
+    conditionOptions : [
       {code: 0, name: "New"},
       {code: 1, name: "Lightly Used"},
       {code: 2, name: "Used"},
@@ -425,13 +428,21 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
   function(event, toState, toParams, fromState, fromParams){
     var $sr = $('#search-results');
 
-    if (fromState.name == "main.search" && toState.name !== "main.search") {
+    if (fromState.name == "main.search" && 
+        toState.name !== "main.search" && 
+        toState.name.indexOf('account') == -1) {
       $sr.transist({'add':['minimized']},['height'],200);
-    }
-
-    if (fromState.name.indexOf("main.detail") > -1 &&
-        toState.name == "main.search"){
+      $scope.searchIsSearching = false;
+    } else if (fromState.name == 'main.search' && toState.name.indexOf('account') > -1){
+      $scope.searchIsSearching = true;
+    } else if (fromState.name.indexOf('detail') > -1 && toState.name.indexOf('account') > -1) {
+      $scope.searchIsSearching = true;
+    } else if (toState.name == "main.search"){
       $sr.transist({'remove':['minimized']},['height'],200);
+      $scope.searchIsSearching = true;
+    } else {
+      console.log("Joe, you missed a spot")
+      console.log($scope.searchIsSearching)
     }
   });
 
@@ -442,16 +453,42 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     if (fromState.name == "main" && toState.name == "main.search") {
       $sr.transist({'remove':['minimized']},['height'],200);
     }
+
+    if (toState.name.indexOf('main.detail') > -1 || 
+        (fromState.name.indexOf('main.detail') && 
+         toState.name.indexOf('account') > -1)
+       ){
+      $scope.searchIsBehindDetail = true;
+    } else {
+      $scope.searchIsBehindDetail = false;
+    }
   });
 
   //TODO:
-  //transists for detail view
+  // transists for detail view
+
+  $rootScope.$on('$stateChangeStart',
+  function(event, toState, toParams, fromState, fromParams){
+    console.log("tostate", toState)
+    if (fromState.name.indexOf('account') > -1 && 
+        toState.name.indexOf('account') == -1 && 
+        toState.name.indexOf('account') == -1) {
+      $scope.detailIsMaximized = false;
+    }
+    if (fromState.name.indexOf("main.detail") > -1 && toState.name.indexOf('account') > -1) {
+      $scope.detailIsMaximized = true;
+    }
+    if (toState.name.indexOf("main.detail") > -1) {
+      $scope.detailIsMaximized = true;
+    }
+  });
+
   // $rootScope.$on('$stateChangeSuccess',
   // function(event, toState, toParams, fromState, fromParams){
-  //   var $sr = $('#search-results');
+  //   var $dt = $('#search-results');
   //   if (fromState.name !== "main.detail" &&
   //       toState.name.indexOf()=="main.detail") {
-  //     $sr.transist({'remove':['minimized']},['height'],200);
+  //     $dt.transist({'add':['maximized'],'remove':['minimized']},['height'],200);
   //   }
   // });
 
