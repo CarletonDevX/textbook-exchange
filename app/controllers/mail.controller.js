@@ -107,7 +107,7 @@ exports.sendUndercutEmail = function (req, res, next) {
     var users = req.rUndercutUsers;
     var options = {
         subject: 'Someone has undercut your price for ' + book.name,
-        html: readEmail('undercut.html').format(book.name, listing._id),
+        html: readEmail('undercut.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
         users: users,
         setting: 'undercut',
     };
