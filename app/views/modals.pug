@@ -15,7 +15,7 @@ div#contact-wrapper.modal-wrapper(
     div#contact.modal
       h2 Contact Us
       form#contact-form(ng-submit='submit()' ng-if="!showSuccess")
-        h4 Tell us about the issue
+        h4 Tell us about the issue:
         textarea(rows="4" cols="50" style='display:block' ng-model='formData.message' name='message')
         button.confirm(type='submit') Submit
         p(ng-if='showError' style='color:red; font-size:10px' ng-bind='errorMessage')

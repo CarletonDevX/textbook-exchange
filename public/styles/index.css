@@ -361,6 +361,12 @@ header {
         flex-grow: 1;
         padding: 10px 0;
         text-align: center; }
+  @media (max-width: 1000px) {
+    header #sub-box {
+      right: calc(50vw - 259px);
+      left: initial; }
+    header #main-box {
+      margin-top: 85px; } }
   header #blurb {
     width: 480px;
     height: 65px;

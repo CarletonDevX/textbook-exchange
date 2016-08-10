@@ -333,7 +333,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
       switch (res.status) {
         case 200:
           $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data;
+          $scope.resendResetAlert = "Password reset submitted. Please check your email for the next step.";
           break;
         case 400:
           $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
