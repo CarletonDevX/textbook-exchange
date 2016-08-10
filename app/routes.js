@@ -121,7 +121,7 @@ exports.setup = function (app) {
         .get(users.getUnverifiedUser,
              users.verifyUser,
              function (req, res) {
-                 res.redirect('/');
+                 res.redirect('/?flash=Great!%20We%27ve%20set%20you%20up%20with%20an%20account%20and%20signed%20you%20in.');
              });
 
     // Resend verification email

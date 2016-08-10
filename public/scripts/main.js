@@ -111,7 +111,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       }
     })
     .state('main',{
-      url: '/',
+      url: '/?flash',
       sticky: true,
       // deepStateRedirect: true,
       views:{
@@ -378,7 +378,10 @@ hitsTheBooks.controller('accountEditController', function($scope, $state) {
   return
 });
 
-hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $document) {
+hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
+  if ($stateParams.flash) {
+    alert($stateParams.flash);
+  }
   var streamSearchDelay = 200; //ms
   var initSearch = false;
   angular.extend($scope, {
