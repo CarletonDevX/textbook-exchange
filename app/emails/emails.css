@@ -6,3 +6,7 @@ body {
 .mini {
   font-size: 10;
 }
+.message {
+  font-family: 'Courier', serif;
+  white-space: pre-wrap;
+}

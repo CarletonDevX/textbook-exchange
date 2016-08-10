@@ -626,7 +626,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     $scope.offer.listing = listing;
     $scope.offer.message =
       "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
-      + "I am interested in [buying/renting] your copy of \""+$scope.book.name+"\". "
+      + "I'm interested in [buying/renting] your copy of \""+$scope.book.name+"\". "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
