@@ -337,7 +337,7 @@ header {
           background-repeat: no-repeat;
           position: absolute;
           left: calc(50% - 14.5px);
-          top: -14px;
+          top: -12px;
           border-left: solid white 2px;
           border-right: solid white 2px;
           transition: border-width .2s, left .2s; }
