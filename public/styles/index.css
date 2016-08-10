@@ -327,11 +327,29 @@ header {
           border-radius: 10px;
           position: absolute;
           transition: width .2s, height .2s, margin .2s, top .2s; }
+        header #main-box #wordmark-link #wordmark .app-name::after {
+          content: '';
+          width: 25px;
+          background-image: url(/images/logo_small.png);
+          height: 17px;
+          display: block;
+          background-size: contain;
+          background-repeat: no-repeat;
+          position: absolute;
+          left: calc(50% - 14.5px);
+          top: -14px;
+          border-left: solid white 2px;
+          border-right: solid white 2px;
+          transition: border-width .2s, left .2s; }
       header #main-box #wordmark-link #wordmark:hover .app-name::before {
         width: 50%;
         height: 3px;
         top: -6px;
         margin: 0 25%; }
+      header #main-box #wordmark-link #wordmark:hover .app-name::after {
+        left: calc(50% - 16.5px);
+        border-left: solid white 4px;
+        border-right: solid white 4px; }
     header #main-box #college-info {
       list-style-type: none;
       display: flex;
