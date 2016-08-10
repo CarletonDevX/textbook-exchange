@@ -441,8 +441,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
       $sr.transist({'remove':['minimized']},['height'],200);
       $scope.searchIsSearching = true;
     } else {
-      console.log("Joe, you missed a spot")
-      console.log($scope.searchIsSearching)
+      // $scope.searchIsSearching = false; 
     }
   });
 
@@ -455,10 +454,11 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $state, $
     }
 
     if (toState.name.indexOf('main.detail') > -1 || 
-        (fromState.name.indexOf('main.detail') && 
+        (fromState.name.indexOf('main.detail') >-1 && 
          toState.name.indexOf('account') > -1)
        ){
       $scope.searchIsBehindDetail = true;
+      console.log("what")
     } else {
       $scope.searchIsBehindDetail = false;
     }
