@@ -93,7 +93,7 @@ exports.sendSubscribersEmail = function (req, res, next) {
     }
     var options = {
         subject: 'Someone has posted a listing for a book on your watchlist.',
-        html: readEmail('watchlist.html').format(book.name, listing._id),
+        html: readEmail('watchlist.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
         users: subscribers,
         setting: 'watchlist',
     };
@@ -133,7 +133,9 @@ exports.sendReportEmail = function (req, res, next) {
 /* HELPERS */
 
 var readEmail = function (file) {
-    return String(fs.readFileSync(__dirname + '/../emails/' + file, 'utf8'));
+    var body = String(fs.readFileSync(__dirname + '/../emails/' + file, 'utf8'));
+    var header = '<style>' + String(fs.readFileSync(__dirname + '/../emails/emails.css', 'utf8')) + '</style>';
+    return header + body;
 };
 
 // Basic string formatting function for templates (http://stackoverflow.com/a/4673436)
