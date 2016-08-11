@@ -41,7 +41,7 @@ module.exports = function () {
         break;
     case 'production':
         settings.port = 1337;
-        settings.db = 'mongodb://localhost/textbook-exchange-production';
+        settings.db = env.MONGODB_URI;
         settings.mailEnabled = true;
         settings.url = 'hitsthebooks.com';
         settings.subdomain_offset = 2;
