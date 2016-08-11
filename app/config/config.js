@@ -43,7 +43,7 @@ module.exports = function () {
         settings.port = env.PORT || 1337;
         settings.db = env.MONGODB_URI;
         settings.mailEnabled = true;
-        settings.url = 'hitsthebooks.com';
+        settings.url = env.URL;
         settings.subdomain_offset = 2;
         break;
     default:
