@@ -78,7 +78,8 @@ exports.sendOfferEmail = function (req, res, next) {
     var message = req.body.message || '<No message>';
     var options = {
         subject: 'Someone has made an offer on your book ' + book.name,
-        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.email, offerer.name.givenName, message, url),
+        'h:Reply-To': offerer.email,
+        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.name.givenName, message, url),
         user: lister,
     };
     mailer.send(options, function (err) {
