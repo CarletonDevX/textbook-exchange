@@ -476,14 +476,13 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
   $rootScope.$on('$stateChangeStart',
   function(event, toState, toParams, fromState, fromParams){
-    if (fromState.name.indexOf('account') > -1 && 
-        toState.name.indexOf('account') == -1 && 
-        toState.name.indexOf('account') == -1) {
+    if (toState.name.indexOf('main') > -1 && toState.name.indexOf('detail') == -1){
       $scope.detailIsMaximized = false;
     }
-    if (fromState.name.indexOf("main.detail") > -1 && toState.name.indexOf('account') > -1) {
-      $scope.detailIsMaximized = true;
-    }
+  });
+
+  $rootScope.$on('$stateChangeSuccess', 
+  function(event, toState, toParams, fromState, fromParams){
     if (toState.name.indexOf("main.detail") > -1) {
       $scope.detailIsMaximized = true;
     }
