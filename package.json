@@ -106,8 +106,8 @@
     }
   },
   "scripts": {
-    "start": ". setup-env.sh && NODE_ENV=development nodemon server.js",
-    "test": ". setup-env.sh && NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/**.js"
+    "start": "NODE_ENV=development nodemon server.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec test/**.js"
   },
   "keywords": [
     "textbook"
