@@ -31,9 +31,10 @@ exports.sendUpdateEmail = function (req, res, next) {
 
 exports.sendRegistrationEmail = function (req, res, next) {
     var user = req.rUser;
+    var url = config.url; // req.subdomain + '.' + config.url
     var options = {
         subject: 'Complete your Hits The Books registration',
-        html: readEmail('registration.html').format(user.name.givenName, req.subdomain + '.' + config.url, user._id, user.verifier),
+        html: readEmail('registration.html').format(user.name.givenName, url, user._id, user.verifier),
         user: user,
     };
     mailer.send(options, function (err) {
@@ -43,9 +44,10 @@ exports.sendRegistrationEmail = function (req, res, next) {
 
 exports.sendRequestPasswordEmail = function (req, res, next) {
     var user = req.rUser;
+    var url = config.url;
     var options = {
         subject: 'Confirm password reset',
-        html: readEmail('requestPassword.html').format(req.subdomain + '.' + config.url, user._id, user.verifier),
+        html: readEmail('requestPassword.html').format(url, user._id, user.verifier),
         user: user,
     };
     mailer.send(options, function (err) {
@@ -56,9 +58,10 @@ exports.sendRequestPasswordEmail = function (req, res, next) {
 exports.sendNewPasswordEmail = function (req, res, next) {
     var user = req.rUser;
     var password = req.rPassword;
+    var url = config.url;
     var options = {
         subject: 'Your password has been reset',
-        html: readEmail('newPassword.html').format(password, req.subdomain + '.' + config.url),
+        html: readEmail('newPassword.html').format(password, url),
         user: user,
     };
     mailer.send(options, function (err) {
@@ -71,10 +74,11 @@ exports.sendOfferEmail = function (req, res, next) {
     var book = listing.book;
     var lister = listing.user;
     var offerer = req.rUser;
+    var url = config.url;
     var message = req.body.message || '<No message>';
     var options = {
         subject: 'Someone has made an offer on your book ' + book.name,
-        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.email, offerer.name.givenName, message, req.subdomain + '.' + config.url),
+        html: readEmail('offer.html').format(offerer.name.fullName, book.name, offerer.email, offerer.name.givenName, message, url),
         user: lister,
     };
     mailer.send(options, function (err) {
@@ -86,13 +90,14 @@ exports.sendSubscribersEmail = function (req, res, next) {
     var listing = req.rListings[0];
     var book = req.rBook;
     var subscribers = [];
+    var url = config.url;
     // Remove current user from list of subscribers if necessary
     for (var i = 0; i < req.rSubscribers.length; i++) {
         if (req.rSubscribers[i]._id.toString() != req.user._id.toString()) subscribers.push(req.rSubscribers[i]);
     }
     var options = {
         subject: 'Someone has posted a listing for a book on your watchlist.',
-        html: readEmail('watchlist.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
+        html: readEmail('watchlist.html').format(book.name, url, book.ISBN),
         users: subscribers,
         setting: 'watchlist',
     };
@@ -105,9 +110,10 @@ exports.sendUndercutEmail = function (req, res, next) {
     var listing = req.rListings[0];
     var book = req.rBook;
     var users = req.rUndercutUsers;
+    var url = config.url;
     var options = {
         subject: 'Someone has undercut your price for ' + book.name,
-        html: readEmail('undercut.html').format(book.name, req.subdomain + '.' + config.url, book.ISBN),
+        html: readEmail('undercut.html').format(book.name, url, book.ISBN),
         users: users,
         setting: 'undercut',
     };
