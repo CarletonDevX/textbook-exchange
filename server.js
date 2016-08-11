@@ -19,9 +19,9 @@ var express = require('express'),
 var app = express();
 
 // Frontend
-app.use(sass({
-    src: __dirname + '/public'
-}));
+//app.use(sass({
+//    src: __dirname + '/public'
+//}));
 
 // Concatenate and minify JS
 var assetsManagerMiddleware = assetManager({

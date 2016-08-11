@@ -46,6 +46,6 @@ var validateGradYear = function (value) {
     return (validYears().indexOf(value) > -1);
 };
 
-User.path('gradYear').validate(validateGradYear, `"gradYear" must be a value between ${validYears()[0]} and ${validYears().pop()}.`);
+User.path('gradYear').validate(validateGradYear, '"gradYear" must be a value between ' + validYears()[0] + ' and '+ validYears().pop());
 
 module.exports = User;
