@@ -306,11 +306,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
-  $scope.possibleYears = []
-  var lastYear = new Date().getFullYear() - 1;
-  for (var i = 0; i < 6; i++) {
-    $scope.possibleYears.push(lastYear+i);
-  };
+  $scope.possibleYears = [2015, 2016, 2017, 2018, 2019, 2020];
   $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
   $scope.register = function (registerData) {
@@ -815,7 +811,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     removingListingID : null,
     newUserInfo : {
       //hehehe -- Joe
-      possGradYears : (() => {d = new Date().getFullYear(); return Array.from(Array(6),(x,i)=>i+d-1)})()
+      possGradYears : [2015, 2016, 2017, 2018, 2019, 2020]
     },
     disabledComponents : {
       watchlistbox : false,
