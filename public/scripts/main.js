@@ -1100,6 +1100,19 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     $state.go('main.detail.error', {message:error.data}, {location: false});
   });
 
+  $scope.homeState = true;
+
+  $scope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams) {
+    //background transitions
+    if (toState.name.indexOf("main") > -1 && toState.name != "main"){
+      $scope.homeState = false;
+    }
+    if (toState.name.indexOf == "main") {
+      $scope.homeState = true;
+    }
+  });
+
   $scope.setCurrentUser = function () {
     Api.getCurrentUser().then(function (res) {
       $rootScope.currentUser = res;
