@@ -15,7 +15,7 @@ var Listing = new Schema({
 var validatePrice = function (value) {
     // Integer?
     if (value % 1 === 0) {
-        if (0 <= value && value <= 100) {
+        if (0 <= value && value <= 250) {
             return true;
         }
     }
@@ -32,8 +32,8 @@ var validateCondition = function (value) {
     return false;
 };
 
-Listing.path('sellingPrice').validate(validatePrice, '"sellingPrice" must be an integer between 0-100');
-Listing.path('rentingPrice').validate(validatePrice, '"rentingPrice" must be an integer between 0-100');
+Listing.path('sellingPrice').validate(validatePrice, '"sellingPrice" must be an integer between 0-250');
+Listing.path('rentingPrice').validate(validatePrice, '"rentingPrice" must be an integer between 0-250');
 Listing.path('condition').validate(validateCondition, '"condition" must be be an integer between 0-3');
 
 module.exports = Listing;
