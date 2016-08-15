@@ -1,6 +1,6 @@
 header(ng-controller="headerController")
   div#main-box
-    a#wordmark-link(ui-sref="main")
+    a#wordmark-link(ng-click="headerClick()")
       //-  ui-sref-opts="{reload: true}" to forget prev search
       h1#wordmark
         span.college-name Carleton

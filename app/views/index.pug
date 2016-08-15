@@ -25,6 +25,7 @@ html(ng-app="hitsTheBooks")
   body(ng-controller="applicationController" ng-class="homeState ? 'mainpage' : '' ")
     include header
     main(ui-view='main')
+    div#flash-message
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload-all.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.js")
