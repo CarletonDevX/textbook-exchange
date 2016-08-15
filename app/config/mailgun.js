@@ -10,7 +10,10 @@ var send = function (options, callback) {
     // If there's no user, we're done (success)
     if (!options.user) return callback(null);
     // If configs say so, skip the email
-    if (!config.mailEnabled || options.user.emailSettings[options.setting] == false) return send(options, callback);
+    if (!config.mailEnabled || options.user.emailSettings[options.setting] == false) {
+        delete options.user;
+        return send(options, callback);
+    }
 
     options.to = options.user.email;
     options.from = config.mailgun.from;
