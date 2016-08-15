@@ -4,6 +4,9 @@
 ::-moz-focus-inner {
   border: 0; }
 
+html {
+  overflow-y: scroll; }
+
 body, html {
   margin: 0;
   padding: 0;
@@ -26,10 +29,10 @@ body::after, body::before {
   content: "";
   display: block;
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  bottom: -30px;
   z-index: -1; }
 
 body::before {
@@ -38,12 +41,14 @@ body::before {
   background-position: center; }
 
 body::after {
-  background-image: url(/images/wov.png);
+  background-image: url(/images/landing_bg_blur.jpg);
+  background-size: cover;
+  background-position: center;
   transition: opacity .5s;
   opacity: 1; }
 
 body.main-page::after {
-  opacity: .5; }
+  opacity: 0; }
 
 table.info-table {
   font-family: 'Droid Sans', sans-serif;
@@ -273,7 +278,7 @@ header {
   header #sub-box, header #blurb {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
   header #sub-box {
-    background-color: rgba(255, 255, 255, 0.34);
+    background-color: rgba(255, 255, 255, 0.7);
     position: absolute;
     padding: 14px 6px;
     top: 25px;
