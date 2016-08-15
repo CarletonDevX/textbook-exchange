@@ -234,6 +234,14 @@ main{
 
   .loading{
     display: inline-block;
+    opacity: 0;
+    width: 0;
+    // float: right;
+  }
+
+  .loading::before{
+    content: '';
+    display: block;
     border-radius: 50%;
     width: 16px;
     height: 16px;
@@ -243,7 +251,6 @@ main{
     border-top-width: .15em;
     border-bottom-width: .15em;
     animation: spin 1s infinite linear;
-    opacity: 0;
     transition: opacity .2s;
   }
 
@@ -309,6 +316,7 @@ main{
 }
 
 #flash-message{
+  display: none;
   width: 500px;
   height: 3em;
   line-height: 3em;
