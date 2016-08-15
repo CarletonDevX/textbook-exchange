@@ -1104,11 +1104,12 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
+    console.log("tostatename", toState.name);
     //background transitions
     if (toState.name.indexOf("main") > -1 && toState.name != "main"){
       $scope.homeState = false;
     }
-    if (toState.name.indexOf == "main") {
+    if (toState.name == "main") {
       $scope.homeState = true;
     }
   });

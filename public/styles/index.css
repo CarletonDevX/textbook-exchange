@@ -4,9 +4,6 @@
 ::-moz-focus-inner {
   border: 0; }
 
-html {
-  overflow-y: scroll; }
-
 body, html {
   margin: 0;
   padding: 0;
@@ -42,6 +39,10 @@ body::before {
 
 body::after {
   background-image: url(/images/wov.png);
+  transition: opacity .5s;
+  opacity: 1; }
+
+body.main-page::after {
   opacity: .5; }
 
 table.info-table {
