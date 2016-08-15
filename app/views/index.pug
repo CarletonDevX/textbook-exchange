@@ -22,7 +22,7 @@ html(ng-app="hitsTheBooks")
     link(rel="shortcut icon" type="image/x-icon" href="/images/favicon.png")
 
     base(href="/")
-  body(ng-controller="applicationController" ng-class="homeState ? 'mainpage' : '' ")
+  body(ng-controller="applicationController" ng-class="mainState ? 'main-page' : '' ")
     include header
     main(ui-view='main')
     div#flash-message

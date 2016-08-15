@@ -10,7 +10,8 @@ html {
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'Droid Serif', serif; }
+  font-family: 'Droid Serif', serif;
+  height: 100%; }
 
 a, input {
   outline: none; }
@@ -24,17 +25,35 @@ a, button {
   font-variant: normal;
   font-weight: 400; }
 
-body::before {
+body::after, body::before {
   content: "";
   display: block;
   position: fixed;
-  top: 0;
-  left: 0;
-  background-image: url(/images/wov.png);
-  width: 100%;
-  height: 100%;
-  opacity: .5;
-  z-index: -1; }
+  top: -30px;
+  left: -30px;
+  right: -30px;
+  bottom: -30px;
+  z-index: -1;
+  transition: opacity .2s; }
+
+body::before {
+  background-image: url(/images/landing_bg.jpg);
+  background-size: cover;
+  background-position: center;
+  opacity: 0; }
+
+body::after {
+  background-image: url(/images/landing_bg_blur.jpg);
+  background-size: cover;
+  background-position: center;
+  transition: opacity .2s;
+  opacity: .7; }
+
+body.main-page::after {
+  opacity: 0; }
+
+body.main-page::before {
+  opacity: .7; }
 
 table.info-table {
   font-family: 'Droid Sans', sans-serif;
@@ -264,7 +283,7 @@ header {
   header #sub-box, header #blurb {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
   header #sub-box {
-    background-color: rgba(255, 255, 255, 0.34);
+    background-color: rgba(255, 255, 255, 0.7);
     position: absolute;
     padding: 14px 6px;
     top: 25px;
