@@ -4,3 +4,5 @@ npm-debug.log
 secure-config.js
 .sass-cache
 /*.env
+setup_env.sh
+

@@ -10,7 +10,8 @@ html {
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'Droid Serif', serif; }
+  font-family: 'Droid Serif', serif;
+  height: 100%; }
 
 a, input {
   outline: none; }
@@ -24,17 +25,24 @@ a, button {
   font-variant: normal;
   font-weight: 400; }
 
-body::before {
+body::after, body::before {
   content: "";
   display: block;
   position: fixed;
   top: 0;
   left: 0;
-  background-image: url(/images/wov.png);
   width: 100%;
   height: 100%;
-  opacity: .5;
   z-index: -1; }
+
+body::before {
+  background-image: url(/images/landing_bg.jpg);
+  background-size: cover;
+  background-position: center; }
+
+body::after {
+  background-image: url(/images/wov.png);
+  opacity: .5; }
 
 table.info-table {
   font-family: 'Droid Sans', sans-serif;
