@@ -1115,6 +1115,14 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     });
   }
 
+  $scope.headerClick = function () {
+    if ($state.current.name == "main") {
+      window.location.reload();
+    } else {
+      $state.go("main");
+    }
+  }
+
   $rootScope.currentUser = null;
   $scope.setCurrentUser();
 
