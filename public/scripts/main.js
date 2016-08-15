@@ -1100,18 +1100,19 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     $state.go('main.detail.error', {message:error.data}, {location: false});
   });
 
-  $scope.homeState = true;
+  $scope.mainState = true;
 
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
     console.log("tostatename", toState.name);
     //background transitions
-    if (toState.name.indexOf("main") > -1 && toState.name != "main"){
-      $scope.homeState = false;
-    }
-    if (toState.name == "main") {
-      $scope.homeState = true;
-    }
+    // if (toState.name.indexOf("main") > -1 && toState.name != "main"){
+    //   $scope.mainState = false;
+    // }
+    // if (toState.name == "main") {
+    //   $scope.mainState = true;
+    // }
+    $scope.mainState = (toState.name == "main")
   });
 
   $scope.setCurrentUser = function () {

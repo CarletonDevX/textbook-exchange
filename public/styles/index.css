@@ -33,22 +33,27 @@ body::after, body::before {
   left: -30px;
   right: -30px;
   bottom: -30px;
-  z-index: -1; }
+  z-index: -1;
+  transition: opacity .2s; }
 
 body::before {
   background-image: url(/images/landing_bg.jpg);
   background-size: cover;
-  background-position: center; }
+  background-position: center;
+  opacity: 0; }
 
 body::after {
   background-image: url(/images/landing_bg_blur.jpg);
   background-size: cover;
   background-position: center;
-  transition: opacity .5s;
-  opacity: 1; }
+  transition: opacity .2s;
+  opacity: .7; }
 
 body.main-page::after {
   opacity: 0; }
+
+body.main-page::before {
+  opacity: .7; }
 
 table.info-table {
   font-family: 'Droid Sans', sans-serif;
