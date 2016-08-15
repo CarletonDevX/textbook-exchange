@@ -280,5 +280,19 @@ main{
   }
 }
 
+#flash-message{
+  display: none;
+  width: 500px;
+  background: #66ff66;
+  height: 3em;
+  line-height: 3em;
+  color: green;
+  border-radius: 3px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 10px;
+  opacity: .8;
+}
+
 @import "partials/details";
 @import "partials/modals";

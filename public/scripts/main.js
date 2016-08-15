@@ -380,7 +380,7 @@ hitsTheBooks.controller('accountEditController', function($scope, $state) {
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
   if ($stateParams.flash) {
-    alert($stateParams.flash);
+    $scope.flashMessage($stateParams.flash);
   }
   var streamSearchDelay = 200; //ms
   var initSearch = false;
@@ -843,8 +843,8 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     if (confirm("Are you sure you want to delete all your HTB data? This action can't be undone.")) {
       Api.deleteCurrentUser().then(function (res) {
         $state.go('main');
-      }, function (err){
-        alert("Sorry we could not delete your account at this time.")
+      }, function (err) {
+        alert("Sorry, we could not delete your account at this time.")
       });
     } else {
       // Do nothing!
@@ -1121,6 +1121,17 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     } else {
       $state.go("main");
     }
+  }
+
+  $scope.flashMessage = function (message) {
+    var pane = $("#flash-message");
+    pane.html(message);
+    // Fade in, then out
+    pane.fadeIn(500, function () {
+      setTimeout(function () {
+        pane.fadeOut(800);
+      }, 1800);
+    });
   }
 
   $rootScope.currentUser = null;
