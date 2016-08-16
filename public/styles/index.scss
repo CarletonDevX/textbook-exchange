@@ -309,11 +309,11 @@ main{
 }
 
 #flash-message{
+  display: none;
   width: 500px;
   height: 3em;
   line-height: 3em;
   color: #047d04;
-  /* border-radius: 5px; */
   text-align: center;
   margin: 0 auto;
   margin-top: 10px;
