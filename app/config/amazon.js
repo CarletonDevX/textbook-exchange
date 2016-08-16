@@ -45,6 +45,7 @@ exports.bookWithISBN = function (ISBN, callback) {
 
 var formatBook = function (item) {
     var info = item.ItemAttributes;
+    var ISBN = info.EAN || info.ISBN;
     var OfferSummary = item.OfferSummary || { TotalNew: 0, TotalUsed: 0 };
     var author = formatAuthor(info.Author);
     var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
@@ -56,7 +57,7 @@ var formatBook = function (item) {
     if (price == 0) price = null;
 
     return {
-        ISBN: info.ISBN,
+        ISBN: ISBN,
         name: info.Title,
         coverImage: imageURL,
         author: author,
