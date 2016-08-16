@@ -495,9 +495,12 @@ main #search {
       margin: 0 auto 30px auto;
       transition: box-shadow .1s; }
       main #search #search-results ul li div.preview {
-        padding: 20px; }
+        padding: 20px;
+        flex-shrink: 0;
+        flex-basis: auto; }
         main #search #search-results ul li div.preview img {
-          width: 125px; }
+          width: 125px;
+          display: block; }
       main #search #search-results ul li div.info {
         flex-grow: 1;
         padding-right: 20px;

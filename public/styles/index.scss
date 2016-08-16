@@ -154,8 +154,15 @@ main{
         transition: box-shadow .1s;
         div.preview{
           padding: 20px;
+          
+          //fix for safari bug https://github.com/philipwalton/flexbugs#1-minimum-content-sizing-of-flex-items-not-honored
+          flex-shrink: 0;
+          flex-basis: auto;
+          //endfix
+
           img {
             width:125px;
+            display: block;
           }
         }
         div.info{
