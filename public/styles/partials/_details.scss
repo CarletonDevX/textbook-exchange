@@ -238,7 +238,7 @@ div.listings{
         border-bottom: 1px $dark-border-color;
       }
 
-      td.quality a.tooltip{
+      a.dashed{
         border-bottom: black 1px dashed;
       }
 
@@ -451,6 +451,7 @@ div.user-about{
   h2{
     margin-top: 0;
     margin-bottom: 5px;
+    max-width: 390px;
   }
   h3{
     margin-top: 5px;

@@ -153,32 +153,50 @@ button span.symbol {
 table button:focus {
   box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0, 0.4); }
 
-.tooltip {
+.tooltip, .tooltip-left {
   position: relative; }
 
 .tooltip:hover::after,
-.tooltip.tooltip-active::after {
+.tooltip.tooltip-active::after,
+.tooltip-left:hover::after,
+.tooltip-left.tooltip-active::after {
   background: #333;
   background: rgba(0, 0, 0, 0.8);
   bottom: 26px;
   color: #fff;
   content: attr(title);
-  left: 20%;
   padding: 5px 15px;
   position: absolute;
   z-index: 98;
   width: 220px; }
 
 .tooltip:hover::before,
-.tooltip.tooltip-active::before {
+.tooltip.tooltip-active::before,
+.tooltip-left:hover::before,
+.tooltip-left.tooltip-active::before {
   border: solid;
   border-color: #333 transparent;
   border-width: 6px 6px 0 6px;
   bottom: 20px;
   content: "";
-  left: 50%;
   position: absolute;
   z-index: 99; }
+
+.tooltip:hover::after,
+.tooltip.tooltip-active::after {
+  left: 20%; }
+
+.tooltip:hover::before,
+.tooltip.tooltip-active::before {
+  left: 50%; }
+
+.tooltip-left:hover::after,
+.tooltip-left.tooltip-active::after {
+  right: 20%; }
+
+.tooltip-left:hover::before,
+.tooltip-left.tooltip-active::before {
+  right: 50%; }
 
 label, .label {
   font-family: 'Droid Serif';
@@ -626,6 +644,14 @@ main #detail-wrapper.maximized {
   box-shadow: 0 2px 10px 5px rgba(33, 164, 22, 0.2);
   font-style: italic; }
 
+.hyphenate {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto; }
+
 #book-details h2, #book-details h3 {
   font-family: 'Droid Sans', Sans-serif; }
 
@@ -793,7 +819,7 @@ div.listings table.listings {
       hyphens: auto; }
     div.listings table.listings tbody tbody:last-child td, div.listings table.listings tfoot tbody:last-child td {
       border-bottom: 1px #ccc; }
-    div.listings table.listings tbody td.quality a.tooltip, div.listings table.listings tfoot td.quality a.tooltip {
+    div.listings table.listings tbody a.dashed, div.listings table.listings tfoot a.dashed {
       border-bottom: black 1px dashed; }
     div.listings table.listings tbody td.make-an-offer button.email,
     div.listings table.listings tbody td.confirm button.confirm, div.listings table.listings tfoot td.make-an-offer button.email,
@@ -944,7 +970,8 @@ div.user-about {
     font-family: 'Droid Sans', serif; }
   div.user-about h2 {
     margin-top: 0;
-    margin-bottom: 5px; }
+    margin-bottom: 5px;
+    max-width: 390px; }
   div.user-about h3 {
     margin-top: 5px; }
   div.user-about h3, div.user-about p.stats {

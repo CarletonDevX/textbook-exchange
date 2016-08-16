@@ -2,10 +2,10 @@ td.image: a(href="book/{{listing.ISBN}}")
 	//- TODO: ^^MAKE THIS A REAL LINK
 	img(src="{{listing.book.coverImage}}")
 
-td.name: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
+td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
 td.quality
-	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
 	table.price-table

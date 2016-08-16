@@ -4,12 +4,12 @@ td.image(ng-if="listing.isAmazonListing"): a(href="{{listing.amazonUrl}}", targe
 	img(src="images/amazon.jpg")
 
 
-td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.givenName}}
+td.username.hyphenate(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.givenName | limitTo: 20 }}{{listing.user.name.givenName.length > 20 ? '…' : ''}}
 td.username(ng-if="listing.isAmazonListing") Amazon
 
 
 td.quality
-	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td(ng-if="!listing.isAmazonListing")
 	table.price-table
@@ -26,6 +26,11 @@ td(ng-if="!listing.isAmazonListing")
 td(ng-if="listing.isAmazonListing")
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice == null")
+		a.dashed.tooltip-left(title="Amazon doesn't let us see information about its 3rd-party marketplace.")
+			| 3
+			sup rd
+			|-party sellers only.
 
 td.make-an-offer(ng-if="!listing.isAmazonListing")
 	p(ng-if="!currentUser")
