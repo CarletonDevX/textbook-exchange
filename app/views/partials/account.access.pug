@@ -1,85 +1,85 @@
 h2 Sign In or Register
 
 div.login
-	h3 Sign In
-	//- Necessary for browser autofill
-	iframe(src="/sink" name="sink" style="display:none")
+  h3 Sign In
+  //- Necessary for browser autofill
+  iframe(src="/sink" name="sink" style="display:none")
 
-	form(class='account-entry' name="loginForm" ng-submit="login(loginData)" action="/sink" target="sink" method="post" formAutofillFix)
-		table.info-table
-			tbody
-				tr
-					td Email
-					td
-						input(ng-model="loginData.username" type='text' placeholder='Email' required autofocus)
-				tr
-					td Password
-					td
-						input(ng-model='loginData.password' type='password' placeholder='Password' required)
-			tfoot
-				tr.alert(ng-if='signinAlert == SignInAlert.INCORRECT_INFO')
-					td(colspan=2) Incorrect Email or Password. 
-						a(href='#' ng-click='requestPasswordReset()') Forgot Password?
+  form(class='account-entry' name="loginForm" ng-submit="login(loginData)" action="/sink" target="sink" method="post" formAutofillFix)
+    table.info-table
+      tbody
+        tr
+          td Email
+          td
+            input(ng-model="loginData.username" type='text' placeholder='Email' required autofocus)
+        tr
+          td Password
+          td
+            input(ng-model='loginData.password' type='password' placeholder='Password' required)
+      tfoot
+        tr.alert(ng-if='signinAlert == SignInAlert.INCORRECT_INFO')
+          td(colspan=2) Incorrect Email or Password. 
+            a(href='#' ng-click='requestPasswordReset()') Forgot Password?
 
-				tr.alert(ng-if='signinAlert == SignInAlert.UNVERIFIED')
-					td(colspan=2) Account not verified.
-						a(href='#' ng-click='resendVerification()') Resend Verification Link?
+        tr.alert(ng-if='signinAlert == SignInAlert.UNVERIFIED')
+          td(colspan=2) Account not verified.
+            a(href='#' ng-click='resendVerification()') Resend Verification Link?
 
-				tr.alert(ng-if='signinAlert == SignInAlert.SERVER_ERROR')
-					td(colspan=2) Internal Server Error.
-						a(href='#' ng-click='modalStates.contact = true') Report Error
+        tr.alert(ng-if='signinAlert == SignInAlert.SERVER_ERROR')
+          td(colspan=2) Internal Server Error.
+            a(href='#' ng-click='modalStates.contact = true') Report Error
 
-				tr.alert(ng-if='signinAlert == SignInAlert.RESEND_RESET_ALERT')
-					td(colspan=2, ng-bind='resendResetAlert')
+        tr.alert(ng-if='signinAlert == SignInAlert.RESEND_RESET_ALERT')
+          td(colspan=2, ng-bind='resendResetAlert')
 
-				tr
-					td(colspan=2)
-						button.confirm(type='submit') Sign In
+        tr
+          td(colspan=2)
+            button.confirm(type='submit') Sign In
 
 div.register
-	h3 Register
-	form(class='form-register' name="registerForm" ng-submit="register(registerData)")
-		table.info-table
-			tbody
-				tr
-					td Email
-					td
-						input(ng-model="registerData.username" type='text' placeholder='name@carleton.edu' autofill="email" required autofocus)
-				tr
-					td First Name
-					td
-						input(ng-model="registerData.givenName" type='text' maxlength=35 placeholder='Friedrich' autofill="given-name" required)
-				tr
-					td Last Name
-					td
-						input(ng-model="registerData.familyName", placeholder='Schiller' type='text' maxlength=35 autofill="family-name" required)
-				tr
-					td Password
-					td
-						input(ng-model="registerData.password" type='password' required)
-				tr
-					td Graduation Year
-					td
-						select(ng-model="registerData.gradYear" required)
-							option(value='' disabled selected) —
-							option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
-				tfoot
-					tr.alert(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
-						td(colspan=2, ng-bind='registrationError')
-					tr.alert(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
-						td(colspan=2) Internal Server Error.
-								a(href='#' ng-click='modalStates.contact = true') Report Error
-					tr.alert(ng-if='registerAlert == RegisterAlert.SUCCESS')
-						td(colspan=2) Registration Successful! Please check your email to proceed.
-					tr
-						td(colspan=2)
-							button.confirm(type='submit') Register
-	//- p
-	//- | You can also sign in with Google or Facebook.
-	//- | Just make sure to use an account with a verified @carleton.edu address.
-
-	//- form(action='oauth/facebook' method='get')
-	//- 	button(class = 'button-alt' type='submit') Facebook
-
-	//- form(action='oauth/google' method='get')
-	//- 	button(class = 'button-alt' type='submit') Google
+  h3 Register
+  form(class='form-register' name="registerForm" ng-submit="register(registerData)")
+    table.info-table
+      tbody
+        tr
+          td Email
+          td
+            input(ng-model="registerData.username" type='text' placeholder='name@carleton.edu' autofill="email" required autofocus)
+        tr
+          td First Name
+          td
+            input(ng-model="registerData.givenName" type='text' maxlength=35 placeholder='Friedrich' autofill="given-name" required)
+        tr
+          td Last Name
+          td
+            input(ng-model="registerData.familyName", placeholder='Schiller' type='text' maxlength=35 autofill="family-name" required)
+        tr
+          td Password
+          td
+            input(ng-model="registerData.password" type='password' required)
+        tr
+          td Graduation Year
+          td
+            select(ng-model="registerData.gradYear" required)
+              option(value='' disabled selected) —
+              option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
+        tr          
+          td Retype Password
+            td
+              input(
+                id="pw-repeat",
+                type="password",
+                ng-change="validatePw()",
+                required,
+                ng-model="regPwRepeat")
+        tfoot
+          tr.alert(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
+            td(colspan=2, ng-bind='registrationError')
+          tr.alert(ng-if='registerAlert == RegisterAlert.SERVER_ERROR')
+            td(colspan=2) Internal Server Error.
+                a(href='#' ng-click='modalStates.contact = true') Report Error
+          tr.alert(ng-if='registerAlert == RegisterAlert.SUCCESS')
+            td(colspan=2) Registration Successful! Please check your email to proceed.
+          tr
+            td(colspan=2)
+              button.confirm(type='submit') Register

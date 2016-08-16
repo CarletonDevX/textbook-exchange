@@ -34,7 +34,7 @@ exports.bookWithISBN = function (ISBN, callback) {
         // Response type can be {} or [{}, {}...] so we check if there are multiple items.
         if (items.constructor === Array) {
             for (var i = 0; i < items.length; i++) {
-                if (items[i].ItemAttributes.ISBN == ISBN) book = formatBook(items[i]);
+                if (items[i].ItemAttributes.EAN == ISBN) book = formatBook(items[i]);
             }
         } else {
             book = formatBook(items);
@@ -45,6 +45,7 @@ exports.bookWithISBN = function (ISBN, callback) {
 
 var formatBook = function (item) {
     var info = item.ItemAttributes;
+    var ISBN = info.EAN; // This is the same as ISBN-13
     var OfferSummary = item.OfferSummary || { TotalNew: 0, TotalUsed: 0 };
     var author = formatAuthor(info.Author);
     var priceString = get(item, 'Offers.Offer.OfferListing.Price.Amount') || '0';
@@ -56,7 +57,7 @@ var formatBook = function (item) {
     if (price == 0) price = null;
 
     return {
-        ISBN: info.ISBN,
+        ISBN: ISBN,
         name: info.Title,
         coverImage: imageURL,
         author: author,
