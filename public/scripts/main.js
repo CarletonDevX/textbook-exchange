@@ -103,12 +103,7 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     })
     .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
-      controller  : 'accountDetailsController',
-      resolve : {
-        watchlist: function(Api, $stateParams) {
-          return Api.getWatchlist();
-        }
-      }
+      controller  : 'accountDetailsController'
     })
     .state('main',{
       url: '/?flash',
@@ -221,7 +216,7 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   $rootScope.openAccount = function(){
     if ($scope.currentUser){
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-    } else $state.go('account');
+    } else $state.go('account.access');
     $previousState.memo('accountEntryPoint');
   }
 
@@ -250,23 +245,22 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
 
   $scope.closeAccount = function(){
     if ($previousState.get('accountEntryPoint')){
-      // console.log('previousState is', $previousState.get('accountEntryPoint'))
       $previousState.go('accountEntryPoint');
     } else {
-      $state.go('main')
+      $state.go('main');
     }
-
   }
 });
 
-// Enum for events that will be broadcasted
-hitsTheBooks.constant('AUTH_EVENTS', {
-  loginSuccess: 'auth-login-success',
-  loginFailed: 'auth-login-failed',
-  logoutSuccess: 'auth-logout-success'
+hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope, $state, $previousState) {
+    if ($scope.currentUser){
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else $state.go('account.access');
+    $previousState.memo('accountEntryPoint');
 });
 
 hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+
   $scope.SignInAlert = {
     NONE : 0,
     INCORRECT_INFO : 1,
@@ -297,6 +291,7 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
           $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
           break;
         default:
+          $rootScope.currentUser = res;
           $scope.closeAccount();
           $scope.signinAlert = $scope.SignInAlert.NONE;
           break;
@@ -372,10 +367,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
       }
     });
   }
-});
-
-hitsTheBooks.controller('accountEditController', function($scope, $state) {
-  return
 });
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
@@ -1156,7 +1147,7 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $scope.$on(AUTH_EVENTS.loginSuccess,
   function(event, args){
     console.log("Logged in.");
-    $scope.setCurrentUser();
+    // $scope.setCurrentUser();
   });
   $scope.$on(AUTH_EVENTS.loginFailed,
   function(event, args){
@@ -1192,4 +1183,11 @@ hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $h
       $scope.errorMessage = err.data.errors[0];
     });
   }
+});
+
+// Enum for events that will be broadcasted
+hitsTheBooks.constant('AUTH_EVENTS', {
+  loginSuccess: 'auth-login-success',
+  loginFailed: 'auth-login-failed',
+  logoutSuccess: 'auth-logout-success'
 });
