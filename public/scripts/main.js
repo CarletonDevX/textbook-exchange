@@ -304,6 +304,13 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
   $scope.possibleYears = [2015, 2016, 2017, 2018, 2019, 2020];
   $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
+  $scope.validatePw = function() {
+    if ($scope.registerData.password == $scope.regPwRepeat) {
+      document.getElementById('pw-repeat').setCustomValidity('');
+    } else {
+      document.getElementById('pw-repeat').setCustomValidity('Must match the previous field');
+    }
+  }
   $scope.register = function (registerData) {
     Api.register(registerData).then(function(res) {
       switch (res.status) {
