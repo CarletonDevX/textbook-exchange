@@ -36,11 +36,11 @@ User.methods.authenticate = function (password) {
 // Validation
 var validYears = function () {
     var lastYear = new Date().getFullYear() - 1;
-    var yearRange = 6
+    var yearRange = 6;
     var years = [];
     for (var i = 0; i < yearRange; i++) years.push(lastYear+i);
     return years;
-}
+};
 
 var validateGradYear = function (value) {
     return (validYears().indexOf(value) > -1);

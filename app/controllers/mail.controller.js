@@ -88,7 +88,6 @@ exports.sendOfferEmail = function (req, res, next) {
 };
 
 exports.sendSubscribersEmail = function (req, res, next) {
-    var listing = req.rListings[0];
     var book = req.rBook;
     var subscribers = [];
     var url = config.url;
@@ -108,7 +107,6 @@ exports.sendSubscribersEmail = function (req, res, next) {
 };
 
 exports.sendUndercutEmail = function (req, res, next) {
-    var listing = req.rListings[0];
     var book = req.rBook;
     var users = req.rUndercutUsers;
     var url = config.url;
