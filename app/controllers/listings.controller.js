@@ -84,6 +84,28 @@ exports.createListing = function (req, res, next) {
     });
 };
 
+exports.addExchangeActivity = function (req, res, next) {
+    var user = req.rUser;
+    var book = req.rListings[0];
+    req.rActivity = {
+        userID: user._id,
+        ISBN: book.ISBN,
+        verb: 'exchange'
+    };
+    next();
+}
+
+exports.addListActivity = function (req, res, next) {
+    var book = req.rBook;
+    var user = req.rUser;
+    req.rActivity = {
+        userID: user._id,
+        ISBN: book.ISBN,
+        verb: 'list'
+    };
+    next();
+}
+
 exports.updateListing = function (req, res, next) {
     var listing = req.rListings[0];
     var updates = req.body;

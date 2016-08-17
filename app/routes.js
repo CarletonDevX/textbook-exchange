@@ -1,4 +1,5 @@
-var avatars = require('./controllers/avatars.controller'),
+var activities = require('./controllers/activities.controller'),
+    avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
     handlers = require('./errors'),
     HTBError = handlers.HTBError,
@@ -251,6 +252,8 @@ exports.setup = function (app) {
              listings.getUserListings,
              books.getBook,
              listings.createListing,
+             listings.addListActivity,
+             activities.pushActivity,
              users.getSubscribers,
              mail.sendSubscribersEmail,
              listings.getUndercutListings,
@@ -315,6 +318,8 @@ exports.setup = function (app) {
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
+              listings.addExchangeActivity,
+              activities.pushActivity,
               listings.completeListing,
               responder.formatSingleListing);
 
@@ -340,6 +345,11 @@ exports.setup = function (app) {
     app.route('/api/search')
         .get(books.search,
              responder.formatBooks);
+
+    /* Activity */
+    app.route('/api/activity')
+        .get(activities.getActivities,
+             responder.formatActivities);
 
     /* Errors */
 

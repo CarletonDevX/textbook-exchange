@@ -302,6 +302,18 @@ exports.formatBooks = function (req, res) {
     res.json(books);
 };
 
+/* ACTIVITY */
+exports.formatActivities = function(req, res) {
+    var activities = [];
+    for (var i = 0; i < req.rActivities.length; i++) {
+        var activity = req.rActivities[i];
+        //placholder:
+        var formattedActivity = activity;
+        activities.push(formattedActivity);
+    }
+    res.json(activities);
+};
+
 /* ERRORS */
 
 // This is a great function name
