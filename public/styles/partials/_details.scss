@@ -35,9 +35,10 @@ $row-highlight-color: #fffcf5;
 
 
   .info{
-    // max-height: 350px;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
+    padding-bottom: 30px;
 
     p{
       line-height: 157%;

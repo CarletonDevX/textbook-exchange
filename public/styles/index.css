@@ -672,7 +672,9 @@ main #detail-wrapper.maximized {
 
 #book-details .info {
   position: relative;
-  overflow: hidden; }
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-bottom: 30px; }
   #book-details .info p {
     line-height: 157%;
     margin: 0; }
