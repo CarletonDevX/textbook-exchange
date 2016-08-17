@@ -341,7 +341,7 @@ exports.search = function (req, res, next) {
     var query = req.query.query;
     req.rUsers = [];
     if (!query) return next();
-    var re = new RegExp("\w*"+query+"\w*", "i");
+    var re = new RegExp('\w*'+query+'\w*', 'i');
     User.find({verified: true}, function (err, users) {
         if (err) return next(new MongoError(err));
         for (var i = users.length - 1; i >= 0; i--) {
@@ -349,7 +349,7 @@ exports.search = function (req, res, next) {
             if (re.test(user.name.fullName)) {
                 req.rUsers.push(user);
             }
-        };
+        }
         return next();
     });
 };

@@ -149,7 +149,7 @@ exports.formatUsers = function (req, res) {
             'offers': user.offers,
         };
         users.push(formattedUser);
-    };
+    }
     res.json(users);
 };
 

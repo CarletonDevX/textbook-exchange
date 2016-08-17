@@ -34,7 +34,7 @@ exports.HTBError = HTBError;
 
 exports.MongoError = function (err) {
     var code = 500;
-    if (err.name == "ValidationError") code = 422;
+    if (err.name == 'ValidationError') code = 422;
     return new HTBError(code, 'Mongo error: ' + String(err), err.stack);
 };
 

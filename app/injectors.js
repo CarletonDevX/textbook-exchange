@@ -47,21 +47,21 @@ exports.ListingsIntoBooks = function (req, res, next) {
     for (var i = 0; i < books.length; i++) {
         ISBNs.push(books[i].ISBN);
         listingDict[books[i].ISBN] = [];
-    };
+    }
     Listing.find({ISBN: {$in: ISBNs}}, function (err, listings) {
         if (err) return next(new MongoError(err));
         // Map listings to books
         for (var i = 0; i < listings.length; i++) {
             listingDict[listings[i].ISBN].push(listings[i]);
-        };
+        }
         var newBooks = [];
         for (var i = 0; i < books.length; i++) {
             books[i].listings = listingDict[books[i].ISBN];
             newBooks.push(books[i]);
-        };
+        }
         req.rBooks = newBooks;
         next();
     });
-}
+};
 
 
