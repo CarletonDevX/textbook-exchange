@@ -177,8 +177,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
               }
               return result
             });
-        } 
-      },  
+        }
+      },
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
@@ -431,8 +431,8 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
     var $sr = $('#search-results');
 
-    if (fromState.name == "main.search" && 
-        toState.name !== "main.search" && 
+    if (fromState.name == "main.search" &&
+        toState.name !== "main.search" &&
         toState.name.indexOf('account') == -1) {
       $sr.transist({'add':['minimized']},['height'],200);
       $scope.searchIsSearching = false;
@@ -445,7 +445,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
       $scope.searchIsSearching = true;
       $scope.searchLoading = true;
     } else {
-      // $scope.searchIsSearching = false; 
+      // $scope.searchIsSearching = false;
     }
   });
 
@@ -459,8 +459,8 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     if (toState.name == "main.search") {
       $scope.searchLoading = false;
     }
-    if (toState.name.indexOf('main.detail') > -1 || 
-        (fromState.name.indexOf('main.detail') >-1 && 
+    if (toState.name.indexOf('main.detail') > -1 ||
+        (fromState.name.indexOf('main.detail') >-1 &&
          toState.name.indexOf('account') > -1)
        ){
       $scope.searchIsBehindDetail = true;
@@ -479,9 +479,10 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     }
   });
 
-  $rootScope.$on('$stateChangeSuccess', 
+  $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams){
     if (toState.name.indexOf("main.detail") > -1) {
+      $scope.searchLoading = false;
       $scope.detailIsMaximized = true;
     }
   });
@@ -776,7 +777,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
 hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
-  $scope.watchlist = watchlist; 
+  $scope.watchlist = watchlist;
   $scope.emailSettings = {};
   if ($rootScope.currentUser){
     angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
@@ -818,12 +819,12 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       pwChanging : false,
       newUserInfo : false
     },
-  }); 
+  });
 
   $scope.initiateUserEdit = function() {
     $scope.editingUser = true;
     angular.extend(
-      $scope.newUserInfo, 
+      $scope.newUserInfo,
       {
         givenName : $scope.user.name.givenName,
         familyName : $scope.user.name.familyName,
@@ -888,12 +889,12 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       $scope.changePwData.oldPw = null;
       $scope.changePwData.newPw = null;
       $scope.changePwData.newPwRepeat = null;
-      $scope.disabledComponents.pwChanging = false;      
+      $scope.disabledComponents.pwChanging = false;
     }, function(err){
       console.log('error!')
       console.log(err);
       $scope.changePwData.alert = err.data;
-      $scope.disabledComponents.pwChanging = false;      
+      $scope.disabledComponents.pwChanging = false;
     });
   }
 
@@ -920,7 +921,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
         $scope.closeAvatarModal();
       });
     }, function (response) {
-      if (response.status > 0) $scope.errorMsg = response.status 
+      if (response.status > 0) $scope.errorMsg = response.status
         + ': ' + response.data;
     }, function (evt) {
       $scope.avatar.progress = parseInt(100.0 * evt.loaded / evt.total);
@@ -1077,7 +1078,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       data['rentingPrice'] = $scope.newListing.rentingPrice;
     } else {
       data['rentingPrice'] = -1;
-    } 
+    }
 
     Api.updateListing($scope.newListing.listingID, data).then( function (res) {
       refreshUser();
