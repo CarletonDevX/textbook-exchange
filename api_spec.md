@@ -203,6 +203,19 @@ emailSettings: {
 
 `GET hitsthebooks.com/api/search?query=query`
 
+##Activity
+#### Get last 5 (or fewer) important things that happened:
+
+`GET hitsthebooks.com/api/activity`
+
+Return object looks like 
+> {
+> 	userID: string,
+> 	ISBN: string,
+> 	verb: string['list','exchange'],
+> 	when: date
+> }
+
 ##Errors
 #### Report an error:
 
