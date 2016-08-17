@@ -336,3 +336,19 @@ exports.makeOffer = function (req, res, next) {
         return next();
     });
 };
+
+exports.search = function (req, res, next) {
+    var query = req.query.query;
+    req.rUsers = [];
+    if (!query) return next();
+    User.find({verified: true}, function (err, users) {
+        if (err) return next(new MongoError(err));
+        for (var i = users.length - 1; i >= 0; i--) {
+            var user = users[i];
+            if (user.name.fullName.indexOf(query) > -1) {
+                req.rUsers.push(user);
+            }
+        };
+        return next();
+    });
+};

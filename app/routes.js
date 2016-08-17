@@ -341,6 +341,10 @@ exports.setup = function (app) {
         .get(books.search,
              responder.formatBooks);
 
+    app.route('/api/searchUser')
+        .get(users.search,
+             responder.formatUsers);
+
     /* Errors */
 
     // Report error
