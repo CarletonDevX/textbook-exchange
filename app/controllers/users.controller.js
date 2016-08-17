@@ -341,11 +341,12 @@ exports.search = function (req, res, next) {
     var query = req.query.query;
     req.rUsers = [];
     if (!query) return next();
+    var re = new RegExp("\w*"+query+"\w*", "i");
     User.find({verified: true}, function (err, users) {
         if (err) return next(new MongoError(err));
         for (var i = users.length - 1; i >= 0; i--) {
             var user = users[i];
-            if (user.name.fullName.indexOf(query) > -1) {
+            if (re.test(user.name.fullName)) {
                 req.rUsers.push(user);
             }
         };
