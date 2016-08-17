@@ -135,6 +135,24 @@ exports.formatUser = function (req, res) {
     res.json(user);
 };
 
+exports.formatUsers = function (req, res) {
+    var users = [];
+    for (var i = 0; i < req.rUsers.length; i++) {
+        var user = req.rUsers[i];
+        var formattedUser = {
+            'userID': user._id,
+            'avatar': user.avatar,
+            'bio': user.bio,
+            'created': user.created,
+            'gradYear': user.gradYear,
+            'name': trimName(user.name, req),
+            'offers': user.offers,
+        };
+        users.push(formattedUser);
+    };
+    res.json(users);
+};
+
 exports.formatSubscriptions = function (req, res) {
     var subscriptions = req.rUser.subscriptions;
     res.json(subscriptions);
