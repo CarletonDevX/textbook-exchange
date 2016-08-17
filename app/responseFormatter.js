@@ -314,6 +314,7 @@ exports.formatBooks = function (req, res) {
             'publishDate': book.publishDate,
             'publisher': book.publisher,
             'subscribers': book.subscribers,
+            'listings': book.listings || [],
         };
         books.push(formattedBook);
     }

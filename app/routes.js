@@ -339,6 +339,7 @@ exports.setup = function (app) {
     // Search
     app.route('/api/search')
         .get(books.search,
+             inject.ListingsIntoBooks,
              responder.formatBooks);
 
     app.route('/api/searchUser')
