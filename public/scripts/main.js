@@ -499,7 +499,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   //the classic type-and-hit-[enter] search
   $scope.classicSearch = function() {
     if (!initSearch && $scope.searchInput) {
-      $state.go('main.search',{query:$scope.searchInput})
+      $state.go('main.search',{query:$scope.searchInput});
     }
   }
 
