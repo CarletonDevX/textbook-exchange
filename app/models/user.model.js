@@ -22,7 +22,6 @@ var User = new Schema({
     bio: { type: String, maxlength: 200 },
     avatar: { type: String, default: 'https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png' },
     gradYear: { type: Number, required: true },
-    offers: [],
     created: { type: Date, default: new Date() },
 });
 

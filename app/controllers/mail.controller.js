@@ -75,7 +75,7 @@ exports.sendOfferEmail = function (req, res, next) {
     var lister = listing.user;
     var offerer = req.rUser;
     var url = config.url;
-    var message = req.body.message || '<No message>';
+    var message = req.rOffer.message || '<No message>';
     var options = {
         subject: 'Someone has made an offer on your book ' + book.name,
         'h:Reply-To': offerer.email,

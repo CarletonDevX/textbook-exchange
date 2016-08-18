@@ -43,27 +43,29 @@ exports.getOffersForListings = function (req, res, next) {
     });
 };
 
-exports.makeOffer = function (req, res, next) {
+exports.create = function (req, res, next) {
     var listing = req.rListings[0];
     var user = req.rUser;
-    for (var i = 0; i < user.offers.length; i++) {
-        if (user.offers[i] == listing._id) return next(new HTBError(400, 'User has already made an offer on this listing.'));
-    }
     if (user._id == listing.userID) return next(new HTBError(400, 'You can\'t make an offer on your own listing.'));
-
-    var newOffer = new Offer({
-        listingID: listing._id,
-        buyerID: user._id,
-        sellerID: listing.userID,
-        ISBN: listing.ISBN,
-        date: new Date(),
-        completed: false,
-    });
-    newOffer.save(function (err, offer) {
+    // Check for duplicates
+    Offer.findOne({listingID: listing._id, buyerID: user._id}, function (err, offer) {
         if (err) return next(new MongoError(err));
-        req.rOffer = offer;
-        return next();
+        if (offer) return next(new HTBError(400, 'User has already made an offer on this listing.'));
+        var newOffer = new Offer({
+            listingID: listing._id,
+            buyerID: user._id,
+            sellerID: listing.userID,
+            ISBN: listing.ISBN,
+            date: new Date(),
+            message: req.body.message,
+        });
+        newOffer.save(function (err, offer) {
+            if (err) return next(new MongoError(err));
+            req.rOffer = offer;
+            return next();
+        });
     });
+
 }; 
 
 exports.removeOffers = function (req, res, next) {

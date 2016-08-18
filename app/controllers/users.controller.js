@@ -270,17 +270,6 @@ exports.getUndercutUsers = function (req, res, next) {
     });
 };
 
-exports.makeOffer = function (req, res, next) {
-    var user = req.rUser;
-    var listing = req.rListings[0];
-    user.offers.push(listing._id.toString());
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
 exports.search = function (req, res, next) {
     var query = req.query.query;
     req.rUsers = [];

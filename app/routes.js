@@ -311,8 +311,7 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.makeOffer,
-              users.makeOffer,
+              offers.create,
               mail.sendOfferEmail,
               responder.formatOffer);
 

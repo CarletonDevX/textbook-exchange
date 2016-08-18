@@ -58,7 +58,6 @@ exports.formatCurrentUser = function (req, res) {
         'created': req.rUser.created,
         'gradYear': req.rUser.gradYear,
         'name': req.rUser.name,
-        'offers': req.rUser.offers,
     };
 
     var listings = [];
@@ -105,7 +104,6 @@ exports.formatUser = function (req, res) {
         'created': req.rUser.created,
         'gradYear': req.rUser.gradYear,
         'name': trimName(req.rUser.name, req),
-        'offers': req.rUser.offers,
     };
 
     var listings = [];
@@ -145,7 +143,6 @@ exports.formatUsers = function (req, res) {
             'created': user.created,
             'gradYear': user.gradYear,
             'name': trimName(user.name, req),
-            'offers': user.offers,
         };
         users.push(formattedUser);
     }
