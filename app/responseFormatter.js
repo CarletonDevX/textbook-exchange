@@ -58,7 +58,6 @@ exports.formatCurrentUser = function (req, res) {
         'created': req.rUser.created,
         'gradYear': req.rUser.gradYear,
         'name': req.rUser.name,
-        'subscriptions': req.rUser.subscriptions,
         'offers': req.rUser.offers,
     };
 
@@ -151,11 +150,6 @@ exports.formatUsers = function (req, res) {
         users.push(formattedUser);
     }
     res.json(users);
-};
-
-exports.formatSubscriptions = function (req, res) {
-    var subscriptions = req.rUser.subscriptions;
-    res.json(subscriptions);
 };
 
 /** REPORTS **/
@@ -270,7 +264,6 @@ exports.formatBook = function (req, res) {
         'pageCount': req.rBook.pageCount,
         'publishDate': req.rBook.publishDate,
         'publisher': req.rBook.publisher,
-        'subscribers': req.rBook.subscribers,
     };
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
@@ -313,7 +306,6 @@ exports.formatBooks = function (req, res) {
             'pageCount': book.pageCount,
             'publishDate': book.publishDate,
             'publisher': book.publisher,
-            'subscribers': book.subscribers,
             'listings': book.listings || [],
         };
         books.push(formattedBook);

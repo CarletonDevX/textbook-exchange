@@ -257,15 +257,15 @@ exports.reportUser = function (req, res, next) {
     });
 };
 
-exports.getSubscribers = function (req, res, next) {
-    var book = req.rBook;
-    if (book.subscribers.length == 0) {
-        req.rSubscribers = [];
-        return next();
-    }
-    User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
+exports.getSubscriptionUsers = function (req, res, next) {
+    var subscriptions = req.rSubscriptions;
+    var userIDs = [];
+    for (var i = 0; i < subscriptions.length; i++) {
+        userIDs.push(subscriptions[i].ISBN);
+    };
+    User.find({_id: {$in: userIDs}}, function (err, users) {
         if (err) return next(new MongoError(err));
-        req.rSubscribers = subscribers;
+        req.rUsers = users;
         return next();
     });
 };
@@ -277,51 +277,12 @@ exports.getUndercutUsers = function (req, res, next) {
         userIDs.push(listings[i].userID);
     }
     if (userIDs.length == 0) {
-        req.rUndercutUsers = [];
+        req.rUsers = [];
         return next();
     }
     User.find({_id: {$in : userIDs}}, function (err, users) {
         if (err) return next(new MongoError(err));
-        req.rUndercutUsers = users;
-        return next();
-    });
-};
-
-exports.subscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    for (var i = 0; i < user.subscriptions.length; i++) {
-        if (book.ISBN == user.subscriptions[i]) return next(new HTBError('User is already subscribed to book.'));
-    }
-    user.subscriptions.push(book.ISBN);
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.unsubscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    var newSubs = [];
-    for (var i = 0; i < user.subscriptions.length; i++) {
-        if (user.subscriptions[i] != book.ISBN) newSubs.push(user.subscriptions[i]);
-    }
-    user.subscriptions = newSubs;
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.clearUserSubscriptions = function (req, res, next) {
-    var user = req.rUser;
-    user.subscriptions = [];
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
+        req.rUsers = users;
         return next();
     });
 };
