@@ -43,6 +43,15 @@ exports.getOffersForListings = function (req, res, next) {
     });
 };
 
+exports.getOffersForUser = function (req, res, next) {
+    var user = req.rUser;
+    Offer.find({buyerID: user._id}, function (err, offers) {
+        if (err) return next(new MongoError(err));
+        req.rOffers = offers;
+        return next();
+    });
+};
+
 exports.create = function (req, res, next) {
     var listing = req.rListings[0];
     var user = req.rUser;

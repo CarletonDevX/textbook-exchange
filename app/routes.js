@@ -297,8 +297,17 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
+    /* OFFERS */
+
+    // Get offers for current user
+    app.route('/api/offers')
+        .get(authenticate, 
+            users.getCurrentUser,
+            offers.getOffersForUser,
+            responder.formatOffers);
+
     // Get previous offer on a listing
-    app.route('/api/listings/offer/:listingID')
+    app.route('/api/offers/:listingID')
         .get(authenticate,
              users.getCurrentUser,
              listings.getListing,

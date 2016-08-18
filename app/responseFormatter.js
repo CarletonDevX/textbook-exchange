@@ -233,6 +233,25 @@ exports.formatSingleListing = function (req, res) {
     res.json(formattedListing);
 };
 
+/** OFFERS **/
+
+exports.formatOffers = function (req, res) {
+    var offers = [];
+    for (var i = 0; i < req.rOffers.length; i++) {
+        var offer = req.rOffers[i];
+        var formattedOffer = {
+            'offerID': offer._id,
+            'listingID': offer.listingID,
+            'buyerID': offer.buyerID,
+            'sellerID': offer.sellerID,
+            'ISBN': offer.ISBN,
+            'date': offer.date,
+        };
+        offers.push(formattedOffer);
+    };
+    res.json(offers);
+};
+
 exports.formatOffer = function (req, res) {
     var offer = {
         'offerID': req.rOffer._id,
