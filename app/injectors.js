@@ -63,5 +63,3 @@ exports.ListingsIntoBooks = function (req, res, next) {
         next();
     });
 };
-
-
