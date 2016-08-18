@@ -173,21 +173,26 @@ emailSettings: {
 
 `DELETE /api/listings/:id`
 
+#### Complete a listing with listing ID [Requires auth]:
+
+`POST /api/listings/complete/:id`
+
+##Offers
+#### Get offers for current user
+
+`GET /api/offers`
+
 #### Get previous offer on a listing with listing ID [Requires auth]:
 
-`GET /api/listings/offer/:id`
+`GET /api/offers/:id`
 
 #### Make an offer on a listing with listing ID [Requires auth]:
 
-`POST /api/listings/offer/:id`
+`POST /api/offers/:id`
 
 | key           | type    | required |
 | --------------| --------| -------- |
 | message       | string  | no       |
-
-#### Complete a listing with listing ID [Requires auth]:
-
-`POST /api/listings/complete/:id`
 	
 ##Books
 #### Get book with book ID:

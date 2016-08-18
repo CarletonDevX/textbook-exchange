@@ -3,7 +3,6 @@ exports.sendHTBErrors = function (err, req, res, next) {
         // This means it's a nice HTBError
         if (err.status == 500) console.log(err.stack);
         res.status(err.status);
-        console.log(err);
         return res.send(err.message);
     }
     console.log(err);

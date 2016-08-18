@@ -75,7 +75,7 @@ exports.sendOfferEmail = function (req, res, next) {
     var lister = listing.user;
     var offerer = req.rUser;
     var url = config.url;
-    var message = req.body.message || '<No message>';
+    var message = req.rOffer.message || '<No message>';
     var options = {
         subject: 'Someone has made an offer on your book ' + book.name,
         'h:Reply-To': offerer.email,
@@ -92,8 +92,8 @@ exports.sendSubscribersEmail = function (req, res, next) {
     var subscribers = [];
     var url = config.url;
     // Remove current user from list of subscribers if necessary
-    for (var i = 0; i < req.rSubscribers.length; i++) {
-        if (req.rSubscribers[i]._id.toString() != req.user._id.toString()) subscribers.push(req.rSubscribers[i]);
+    for (var i = 0; i < req.rUsers.length; i++) {
+        if (req.rUsers[i]._id.toString() != req.user._id.toString()) subscribers.push(req.rUsers[i]);
     }
     var options = {
         subject: 'Someone has posted a listing for a book on your watchlist.',
@@ -108,7 +108,7 @@ exports.sendSubscribersEmail = function (req, res, next) {
 
 exports.sendUndercutEmail = function (req, res, next) {
     var book = req.rBook;
-    var users = req.rUndercutUsers;
+    var users = req.rUsers;
     var url = config.url;
     var options = {
         subject: 'Someone has undercut your price for ' + book.name,
