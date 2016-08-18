@@ -158,6 +158,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         },
         watchlist: function(Api) {
           return Api.getWatchlist();
+        },
+        offers: function(Api) {
+          return Api.getOffers();
         }
       },
       url : 'book/:isbn',
@@ -172,6 +175,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         },
         watchlist: function(Api) {
           return Api.getWatchlist();
+        },
+        offers: function(Api) {
+          return Api.getOffers();
         }
       },
       templateUrl : '/partials/detail.user',
@@ -546,8 +552,10 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 });
 
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, $state, $rootScope, $stateParams, Api) {
+hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, offers, $state, $rootScope, $stateParams, Api, AUTH_EVENTS) {
   $scope.watchlist = watchlist;
+  $scope.offers = offers;
+  $scope.offersDict = {};
   $scope.watching = true;
 
   $scope.$watch('watchlist', function() {
@@ -558,6 +566,20 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
       };
       $scope.watching = ISBNs[bookInfo.ISBN];
   });
+
+  $scope.$watch('offers', function() {
+      // When offers change, update offers dict
+      $scope.offersDict = {};
+      for (var i = 0; i < $scope.offers.length; i++) {
+          $scope.offersDict[$scope.offers[i].listingID] = true;
+      };
+  });
+
+  $scope.$on(AUTH_EVENTS.loginSuccess,
+    function() {
+      refreshOffers();
+    }
+  );
 
   //View defaults & settings
   angular.extend($scope, {
@@ -624,6 +646,14 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
     });
   }
 
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
   var refreshCurrentUser = function() {
     $scope.setCurrentUser();
   }
@@ -684,7 +714,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
   $scope.makeOffer = function() {
     Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
       .then( function (data) {
-        refreshCurrentUser();
+        refreshOffers();
         $scope.offer.active = false;
       }, function (err) {
         console.log(err);
@@ -782,10 +812,21 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, offers, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
   $scope.watchlist = watchlist;
   $scope.emailSettings = {};
+  $scope.offers = offers;
+  $scope.offersDict = {};
+
+  $scope.$watch('offers', function() {
+      // When offers change, update offers dict
+      $scope.offersDict = {};
+      for (var i = 0; i < $scope.offers.length; i++) {
+          $scope.offersDict[$scope.offers[i].listingID] = true;
+      };
+  });
+
   if ($rootScope.currentUser){
     angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
   }
@@ -794,6 +835,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     function() {
       refreshUser();
       refreshWatchlist();
+      refreshOffers();
     }
   );
   angular.extend($scope, {
@@ -957,6 +999,14 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     );
   }
 
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
   $scope.unsubscribe = function(ISBN) {
     Api.removeFromWatchlist(ISBN).then(
       function (res) { refreshWatchlist(); },
@@ -1013,7 +1063,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     $scope.offer.listing = listing;
     $scope.offer.message =
       "Hi "+$scope.user.name.fullName+",\n\n"
-      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+"\". "
+      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+".\" "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
@@ -1027,7 +1077,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
   $scope.makeOffer = function() {
     Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
       .then( function (data) {
-        refreshCurrentUser();
+        refreshOffers();
         $scope.offer.active = false;
       }, function (err) {
         console.log(err);
