@@ -1,7 +1,6 @@
 var crypto = require('crypto'),
     HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError,
-    Report = require('mongoose').model('reports'),
     User = require('mongoose').model('users');
 
 var hash = function (string) {
@@ -237,22 +236,6 @@ exports.removeUser = function (req, res, next) {
     var user = req.rUser;
     user.remove(function (err) {
         if (err) return next(new MongoError(err));
-        return next();
-    });
-};
-
-exports.reportUser = function (req, res, next) {
-    var user = req.rUser;
-    var description = req.body.description;
-    if (!description) return next(new HTBError(400, 'Must include "description" attribute.'));
-    user.reports.push(new Report({
-        'userID': user._id,
-        'reporterID': req.user._id,
-        'description': description,
-    }));
-    user.save(function (err, user) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
         return next();
     });
 };

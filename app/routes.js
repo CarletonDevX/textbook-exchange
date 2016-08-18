@@ -7,6 +7,7 @@ var avatars = require('./controllers/avatars.controller'),
     mail = require('./controllers/mail.controller'),
     offers = require('./controllers/offers.controller'),
     passport = require('passport'),
+    reports = require('./controllers/reports.controller'),
     responder = require('./responseFormatter'),
     subscriptions = require('./controllers/subscriptions.controller'),
     users = require('./controllers/users.controller');
@@ -195,7 +196,7 @@ exports.setup = function (app) {
     app.route('/api/report/:userID')
         .post(authenticate,
              users.getUser,
-             users.reportUser,
+             reports.create,
              responder.successReport);
 
     /* Subscriptions */
