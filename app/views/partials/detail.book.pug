@@ -31,12 +31,13 @@ div#book-details
             span
               a(href, ng-click="openAccount()") log in
               |  to track this book
-          button.confirm(ng-if="currentUser.subscriptions.indexOf(book.ISBN) == -1", ng-click="addToWatchlist()")
-            span.symbol +
-            |  add to watchlist
-          button.cancel(ng-if="currentUser.subscriptions.indexOf(book.ISBN) > -1", ng-click="removeFromWatchlist()")
-            span.symbol ✓
-            span watching
+          div(ng-if="currentUser")
+            button.confirm(ng-if="!watching", ng-click="addToWatchlist()")
+              span.symbol +
+              |  add to watchlist
+            button.cancel(ng-if="watching", ng-click="removeFromWatchlist()")
+              span.symbol ✓
+              span watching
     div.preview
       img(src="{{book.coverImage}}")
 

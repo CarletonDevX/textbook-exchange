@@ -155,6 +155,9 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       resolve : {
         bookInfo: function(Api, $stateParams) {
           return Api.getBook($stateParams.isbn);
+        },
+        watchlist: function(Api) {
+          return Api.getWatchlist();
         }
       },
       url : 'book/:isbn',
@@ -167,16 +170,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         userInfo: function(Api, $stateParams) {
           return Api.getUser($stateParams.userID);
         },
-        //rootscope works mostly, unless you're landing on your own userpage
-        watchlist: function(Api, $stateParams) {
-          /* do this instead */
-          return Api.getWatchlist()
-            .then(function(result) {
-              if (result.status && result.status == 401) {
-                result = [];
-              }
-              return result
-            });
+        watchlist: function(Api) {
+          return Api.getWatchlist();
         }
       },
       templateUrl : '/partials/detail.user',
@@ -551,7 +546,19 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 });
 
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
+hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, $state, $rootScope, $stateParams, Api) {
+  $scope.watchlist = watchlist;
+  $scope.watching = true;
+
+  $scope.$watch('watchlist', function() {
+      // When watchlist changes, update watching
+      var ISBNs = {};
+      for (var i = 0; i < $scope.watchlist.length; i++) {
+          ISBNs[$scope.watchlist[i].ISBN] = true;
+      };
+      $scope.watching = ISBNs[bookInfo.ISBN];
+  });
+
   //View defaults & settings
   angular.extend($scope, {
     book : bookInfo,
@@ -696,7 +703,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.addToWatchlist = function () {
     Api.addToWatchlist($scope.book.ISBN).then(
-      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (res) { $scope.watchlist = res; },
       function (err) { console.log(err); }
     );
   }
@@ -704,7 +711,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.removeFromWatchlist = function () {
     //TODO: this shit shouldn't happen here.
     Api.removeFromWatchlist($scope.book.ISBN).then(
-      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (res) { $scope.watchlist = res; },
       function (err) { console.log(err); }
     );
   }
