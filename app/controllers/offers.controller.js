@@ -17,7 +17,6 @@ exports.getOffer = function (req, res, next) {
 exports.getUserOfferForListing = function (req, res, next) {
     var listing = req.rListings[0];
     var user = req.rUser;
-    // TODO: test this 
     Offer.findOne({listingID: listing._id, buyerID: user._id}, function (err, offer) {
         if (err) return next(new MongoError(err));
         if (!offer) return next(new HTBError(404, 'User hasn\'t made an offer on this listing.'));
@@ -28,13 +27,13 @@ exports.getUserOfferForListing = function (req, res, next) {
 
 exports.getOffersForListings = function (req, res, next) {
     var listings = req.rListings;
+    if (listings.length == 0) {
+        req.rOffers = [];
+        return next();
+    }
     var listingIDs = [];
     for (var i = 0; i < listings.length; i++) {
         listingIDs.push(listings[i]._id);
-    }
-    if (listingIDs.length == 0) {
-        req.rOffers = [];
-        return next();
     }
     Offer.find({listingID: {$in: listingIDs}}, function (err, offers) {
         if (err) return next(new MongoError(err));
@@ -79,12 +78,11 @@ exports.create = function (req, res, next) {
 
 exports.removeOffers = function (req, res, next) {
     var offers = req.rOffers;
+    if (offers.length == 0) return next();
     var offerIDs = [];
     for (var i = 0; i < offers.length; i++) {
         offerIDs.push(offers[i]._id);
     }
-    if (offerIDs.length == 0) return next();
-    // TODO: should we be checking for ownership here?
     Offer.remove({_id: {$in: offerIDs}}, function (err) {
         if (err) return next(new MongoError(err));
         return next();

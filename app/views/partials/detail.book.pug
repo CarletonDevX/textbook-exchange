@@ -63,7 +63,6 @@ div#book-details
           th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
           th.contact Contact
       tbody(ng-if="whichListings=='both'")
-        //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
 
@@ -72,7 +71,6 @@ div#book-details
            ng-include="'partials/detail.book.listings'")
 
       tbody(ng-if="whichListings=='renting'")
-        //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.book.listings'")
       tfoot

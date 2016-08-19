@@ -1,7 +1,6 @@
 var avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
     handlers = require('./errors'),
-    HTBError = handlers.HTBError,
     inject = require('./injectors'),
     listings = require('./controllers/listings.controller'),
     mail = require('./controllers/mail.controller'),
@@ -24,7 +23,7 @@ exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
     app.route('/*')
-        .get(users.countUsers,          // TODO: Should we cache this stuff?
+        .get(users.countUsers,
              listings.countOpenListings,
              listings.countCompletedListings,
              function (req, res) {
@@ -70,23 +69,11 @@ exports.setup = function (app) {
 
     // Login
     app.route('/api/login')
-        .post(
-            // TODO: Can we put this somewhere else? -dp
-            function (req, res, next) {
-                passport.authenticate('local', function (err, user) {
-                    if (err) return next(new HTBError(500, err.message));
-                    if (!user) return next(new HTBError(401, 'Incorrect email or password'));
-                    if (!user.verified) next(new HTBError(400, 'User is not verified'));
-                    req.login(user, function (err) {
-                        if (err) return next(new HTBError(500, 'Login failed.'));
-                        next();
-                    });  
-                })(req, res, next);
-            },
-            users.getCurrentUser,
-            listings.getUserListings,
-            inject.BooksIntoListings,
-            responder.formatCurrentUser
+        .post(passport.attemptLogin,
+             users.getCurrentUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatCurrentUser
         );
 
     // Logout
@@ -247,9 +234,6 @@ exports.setup = function (app) {
              responder.formatUserListings);
 
     // Add listing with book ID
-    // TODO: might it be slow if we
-    // send out all the emails before
-    // we respond to the user?
     app.route('/api/listings/add/:ISBN')
         .post(authenticate,
              users.getCurrentUser,
