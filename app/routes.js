@@ -234,9 +234,6 @@ exports.setup = function (app) {
              responder.formatUserListings);
 
     // Add listing with book ID
-    // TODO: might it be slow if we
-    // send out all the emails before
-    // we respond to the user?
     app.route('/api/listings/add/:ISBN')
         .post(authenticate,
              users.getCurrentUser,

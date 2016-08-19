@@ -42,7 +42,6 @@ exports.updateAmazonInfo = function (req, res, next) {
     Amazon.bookWithISBN(book.ISBN, function (err, result) {
         if (err) return next(new AmazonError(err));
         if (!result) return next(new HTBError(404, 'Amazon info not found for ISBN: ' + book.ISBN));
-        // TODO: Should we update more than just the pricing info?
         book.amazonInfo = result.amazonInfo;
         book.save(function (err, book) {
             if (err) return next(new MongoError(err));
