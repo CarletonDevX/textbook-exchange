@@ -71,7 +71,7 @@ div.register
           td
             select(ng-model="registerData.gradYear" required)
               option(value='' disabled selected) —
-              option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
+              option(ng-repeat="year in gradYears", value="{{year}}") {{year}}
         tfoot
           tr.alert(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
             td(colspan=2, ng-bind='registrationError')

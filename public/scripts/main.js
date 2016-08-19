@@ -302,7 +302,6 @@ hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, 
 
   // Registration
   $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
-  $scope.possibleYears = [2015, 2016, 2017, 2018, 2019, 2020];
   $scope.registerAlert = $scope.RegisterAlert.NONE;
   $scope.registrationError = "";
   $scope.validatePw = function() {
@@ -857,10 +856,6 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     changePwData : {},
     editingUser : false,
     removingListingID : null,
-    newUserInfo : {
-      //hehehe -- Joe
-      possGradYears : [2015, 2016, 2017, 2018, 2019, 2020]
-    },
     disabledComponents : {
       watchlistbox : false,
       undercutbox : false,
@@ -1155,6 +1150,13 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     $state.go('main.detail.error', {message:error.data}, {location: false});
   });
+
+  // Set possible years for users
+  var lastYear = new Date().getFullYear() - 1;
+  $rootScope.gradYears = [];
+  for (var i = 0; i < 6; i++) {
+    $rootScope.gradYears.push(lastYear + i);
+  };
 
   $scope.mainState = true;
 
