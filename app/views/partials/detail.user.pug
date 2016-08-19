@@ -28,7 +28,7 @@ div.user-about
         ng-model="newUserInfo.familyName")
     p.stats
       span Class year: 
-        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in newUserInfo.possGradYears" )
+        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in gradYears" )
     h4 Bio
     textarea(
       ng-disabled = "disabledComponents.newUserInfo",
