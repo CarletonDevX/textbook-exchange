@@ -867,6 +867,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
 
   $scope.initiateUserEdit = function() {
     $scope.editingUser = true;
+    $scope.newUserInfo = {};
     angular.extend(
       $scope.newUserInfo,
       {
