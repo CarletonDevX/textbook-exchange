@@ -615,7 +615,11 @@ main #detail-wrapper.maximized {
   opacity: .8;
   background-color: rgba(41, 255, 53, 0.25);
   box-shadow: 0 2px 10px 5px rgba(33, 164, 22, 0.2);
-  font-style: italic; }
+  font-style: italic;
+  transition: all 1s linear; }
+
+#flash-message.ng-hide {
+  opacity: 0; }
 
 #book-details h2, #book-details h3 {
   font-family: 'Droid Sans', Sans-serif; }

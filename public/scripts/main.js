@@ -1091,7 +1091,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
 });
 
 // Top-level shit
-hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS, $animate, $timeout) {
+hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS, $timeout) {
 
   // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
@@ -1137,12 +1137,13 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
   }
 
   $scope.flashMessageContent = "";
-  $scope.flashMsgShow = false;
+  $scope.showFlashMessage = false;
   $scope.flashMessage = function (message) {
-    var pane = $("#flash-message");
-    $scope.flashMsgShow = true;
+    $scope.showFlashMessage = true;
     $scope.flashMessageContent = message;
-    // Fade in, then out: 500 - 1800 - 800
+    $timeout(function() {
+      $scope.showFlashMessage = false;
+    }, 1800);
   }
 
   $rootScope.currentUser = null;
@@ -1163,7 +1164,6 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     console.log("Logged out.");
     $scope.setCurrentUser();
   });
-
 });
 
 hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http, Api) {
