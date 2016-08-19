@@ -767,6 +767,19 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
     $scope.listingPaneOpen = false;
   }
 
+  var priceStatus = function (price) {
+    if (price % 1 === 0 && (0 <= price && price <= 250)) return '';
+    return 'Must be an integer between 0-250';
+  }
+
+  $scope.validateSellingPrice = function () {
+    document.getElementById('sellingPriceInput').setCustomValidity(priceStatus($scope.newListing.sellingPrice));
+  };
+
+  $scope.validateRentingPrice = function () {
+    document.getElementById('rentingPriceInput').setCustomValidity(priceStatus($scope.newListing.rentingPrice));
+  };
+
   $scope.submitListing = function () {
     //build the data object
     var data = {

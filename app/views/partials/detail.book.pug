@@ -55,80 +55,83 @@ div#book-details
         | Selling
       button(ng-click="whichListings = 'renting'", ng-class="{'active': whichListings=='renting'}")
         | Renting
-    table.listings
-      thead
-        tr
-          th.seller.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
-          th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
-          th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th.contact Contact
-      tbody(ng-if="whichListings=='both'")
-        tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
-           ng-include="'partials/detail.book.listings'")
+    form(ng-submit="submitListing()")
+      table.listings
+        thead
+          tr
+            th.seller.sortable(colspan="2", ng-click="handleReorder('lastName')", ng-class="{'active':listingOrder=='lastName','reversed':reverseSort}") {{{'both':'Seller','selling':'Seller','renting':'Renter'}[whichListings]}}
+            th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
+            th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
+            th.contact Contact
+        tbody(ng-if="whichListings=='both'")
+          tr(ng-repeat="listing in mergedListings | orderBy:listingOrder:reverseSort",
+             ng-include="'partials/detail.book.listings'")
 
-      tbody(ng-if="whichListings=='selling'")
-        tr(ng-repeat="listing in mergedListings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
-           ng-include="'partials/detail.book.listings'")
+        tbody(ng-if="whichListings=='selling'")
+          tr(ng-repeat="listing in mergedListings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+             ng-include="'partials/detail.book.listings'")
 
-      tbody(ng-if="whichListings=='renting'")
-        tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
-           ng-include="'partials/detail.book.listings'")
-      tfoot
-        tr.make-listing(ng-class="{'inactive':(!listingPaneOpen || !currentUser)}")
-          td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
-          td.condition
-            select(
-              ng-model="newListing.condition",
-              ng-options="opt.name for opt in conditionOptions track by opt.code"
-            )
-            small.description {{conditionDescriptions[newListing.condition.code]}}
-
-          td
-            p
-              input(
-                type="checkbox",
-                id="sellbox",
-                ng-model="newListing.selling",
-                ng-disabled="newListing.selling && !newListing.renting"
-                )
-              span.label Sell for 
-              input.price(
-                type="text",
-                ng-model="newListing.sellingPrice",
-                placeholder="$12",
-                ng-disabled="!newListing.selling"
+        tbody(ng-if="whichListings=='renting'")
+          tr(ng-repeat="listing in mergedListings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+             ng-include="'partials/detail.book.listings'")
+        tfoot
+          tr.make-listing(ng-class="{'inactive':(!listingPaneOpen || !currentUser)}")
+            td.label(colspan="2") {{currUserListing ? 'Edit my listing:' : 'Add a listing:'}}
+            td.condition
+              select(
+                ng-model="newListing.condition",
+                ng-options="opt.name for opt in conditionOptions track by opt.code"
               )
-            p
-              input(
-                type="checkbox",
-                id="rentbox",
-                ng-model="newListing.renting",
-                ng-disabled="!newListing.selling && newListing.renting"
+              small.description {{conditionDescriptions[newListing.condition.code]}}
+
+            td
+              p
+                input(
+                  type="checkbox",
+                  id="sellbox",
+                  ng-model="newListing.selling",
+                  ng-disabled="newListing.selling && !newListing.renting"
+                  )
+                span.label Sell for 
+                input#sellingPriceInput.price(
+                  type="text",
+                  ng-model="newListing.sellingPrice",
+                  ng-change="validateSellingPrice()"
+                  placeholder="$12",
+                  ng-disabled="!newListing.selling"
                 )
-              span.label Rent for 
-              input.price(
-                type="text",
-                ng-model="newListing.rentingPrice",
-                placeholder="$12",
-                ng-disabled="!newListing.renting"
-              )
-          td.confirm
-            button.confirm(ng-click="submitListing()")
-              span.symbol {{currUserListing ? '✓':'+'}}
-              | {{currUserListing ? ' update!' : ' list!'}}
-        tr.add-listing: td(colspan="5")
-          div(ng-if="!currentUser")
-            a(href, ng-click="openAccount()") log in
-            |  to add a listing
-          button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
-            span.symbol ×
-            |  cancel
-          button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
-            span.symbol +
-            |  add a listing
-          button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
-            span.symbol &#9998;
-            |  edit my listing
+              p
+                input(
+                  type="checkbox",
+                  id="rentbox",
+                  ng-model="newListing.renting",
+                  ng-disabled="!newListing.selling && newListing.renting"
+                  )
+                span.label Rent for 
+                input#rentingPriceInput.price(
+                  type="text",
+                  ng-model="newListing.rentingPrice",
+                  ng-change="validateRentingPrice()"
+                  placeholder="$12",
+                  ng-disabled="!newListing.renting"
+                )
+            td.confirm.quality
+              button.confirm(type="submit")
+                span.symbol {{currUserListing ? '✓':'+'}}
+                | {{currUserListing ? ' update!' : ' list!'}}
+          tr.add-listing: td(colspan="5")
+            div(ng-if="!currentUser")
+              a(href, ng-click="openAccount()") log in
+              |  to add a listing
+            button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
+              span.symbol ×
+              |  cancel
+            button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
+              span.symbol +
+              |  add a listing
+            button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
+              span.symbol &#9998;
+              |  edit my listing
 
   div.modal-wrapper(
     ng-class="{'visible':offer.active}",
