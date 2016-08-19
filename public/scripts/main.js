@@ -1,4 +1,4 @@
-var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop']);
+var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop', 'ngAnimate']);
 
 hitsTheBooks.run(function($rootScope, $state){
   $rootScope.is = function(name){ return $state.is(name) };
@@ -1091,7 +1091,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
 });
 
 // Top-level shit
-hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS, $animate) {
+hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS, $animate, $timeout) {
 
   // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
@@ -1136,16 +1136,13 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     }
   }
 
+  $scope.flashMessageContent = "";
+  $scope.flashMsgShow = false;
   $scope.flashMessage = function (message) {
     var pane = $("#flash-message");
-    // pane.html(message);
-    $scope.flashMessage = message;
-    // Fade in, then out
-    pane.fadeIn(500, function () {
-      setTimeout(function () {
-        pane.fadeOut(800);
-      }, 1800);
-    });
+    $scope.flashMsgShow = true;
+    $scope.flashMessageContent = message;
+    // Fade in, then out: 500 - 1800 - 800
   }
 
   $rootScope.currentUser = null;
