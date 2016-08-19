@@ -7,7 +7,9 @@ var avatars = require('./controllers/avatars.controller'),
     mail = require('./controllers/mail.controller'),
     offers = require('./controllers/offers.controller'),
     passport = require('passport'),
+    reports = require('./controllers/reports.controller'),
     responder = require('./responseFormatter'),
+    subscriptions = require('./controllers/subscriptions.controller'),
     users = require('./controllers/users.controller');
 
 var authenticate = function (req, res, next) {
@@ -194,7 +196,7 @@ exports.setup = function (app) {
     app.route('/api/report/:userID')
         .post(authenticate,
              users.getUser,
-             users.reportUser,
+             reports.create,
              responder.successReport);
 
     /* Subscriptions */
@@ -203,6 +205,27 @@ exports.setup = function (app) {
     app.route('/api/subscriptions')
         .get(authenticate,
              users.getCurrentUser,
+             subscriptions.getUserSubscriptions,
+             books.getSubscriptionBooks,
+             responder.formatBooks);
+
+    // Subscribe current user to book with book ID
+    app.route('/api/subscriptions/add/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             subscriptions.add,
+             subscriptions.getUserSubscriptions,
+             books.getSubscriptionBooks,
+             responder.formatBooks);
+
+    // Unsubscribe current user from book with book ID
+    app.route('/api/subscriptions/remove/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             subscriptions.remove,
+             subscriptions.getUserSubscriptions,
              books.getSubscriptionBooks,
              responder.formatBooks);
 
@@ -210,26 +233,8 @@ exports.setup = function (app) {
     app.route('/api/subscriptions/clear')
         .post(authenticate,
              users.getCurrentUser,
-             users.clearUserSubscriptions,
+             subscriptions.clearUserSubscriptions,
              responder.successClearSubscriptions);
-
-    // Subscribe current user to book with book ID
-    app.route('/api/subscriptions/add/:ISBN')
-        .post(authenticate,
-             users.getCurrentUser,
-             books.getBook,
-             books.subscribe,
-             users.subscribe,
-             responder.formatSubscriptions);
-
-    // Unsubscribe current user from book with book ID
-    app.route('/api/subscriptions/remove/:ISBN')
-        .post(authenticate,
-             users.getCurrentUser,
-             books.getBook,
-             books.unsubscribe,
-             users.unsubscribe,
-             responder.formatSubscriptions);
 
     /* Listings */
 
@@ -251,7 +256,8 @@ exports.setup = function (app) {
              listings.getUserListings,
              books.getBook,
              listings.createListing,
-             users.getSubscribers,
+             subscriptions.getBookSubscriptions,
+             users.getSubscriptionUsers,
              mail.sendSubscribersEmail,
              listings.getUndercutListings,
              users.getUndercutUsers,
@@ -291,8 +297,17 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
+    /* OFFERS */
+
+    // Get offers for current user
+    app.route('/api/offers')
+        .get(authenticate, 
+            users.getCurrentUser,
+            offers.getOffersForUser,
+            responder.formatOffers);
+
     // Get previous offer on a listing
-    app.route('/api/listings/offer/:listingID')
+    app.route('/api/offers/:listingID')
         .get(authenticate,
              users.getCurrentUser,
              listings.getListing,
@@ -305,8 +320,7 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.makeOffer,
-              users.makeOffer,
+              offers.create,
               mail.sendOfferEmail,
               responder.formatOffer);
 

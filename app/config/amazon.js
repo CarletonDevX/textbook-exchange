@@ -66,7 +66,6 @@ var formatBook = function (item) {
         publishDate: info.PublicationDate,
         publisher: info.Publisher,
         description: description,
-        subscribers: [],
         amazonInfo: {
             id: item.ASIN,
             url: item.DetailPageURL,

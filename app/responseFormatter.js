@@ -58,8 +58,6 @@ exports.formatCurrentUser = function (req, res) {
         'created': req.rUser.created,
         'gradYear': req.rUser.gradYear,
         'name': req.rUser.name,
-        'subscriptions': req.rUser.subscriptions,
-        'offers': req.rUser.offers,
     };
 
     var listings = [];
@@ -106,7 +104,6 @@ exports.formatUser = function (req, res) {
         'created': req.rUser.created,
         'gradYear': req.rUser.gradYear,
         'name': trimName(req.rUser.name, req),
-        'offers': req.rUser.offers,
     };
 
     var listings = [];
@@ -146,16 +143,10 @@ exports.formatUsers = function (req, res) {
             'created': user.created,
             'gradYear': user.gradYear,
             'name': trimName(user.name, req),
-            'offers': user.offers,
         };
         users.push(formattedUser);
     }
     res.json(users);
-};
-
-exports.formatSubscriptions = function (req, res) {
-    var subscriptions = req.rUser.subscriptions;
-    res.json(subscriptions);
 };
 
 /** REPORTS **/
@@ -242,6 +233,25 @@ exports.formatSingleListing = function (req, res) {
     res.json(formattedListing);
 };
 
+/** OFFERS **/
+
+exports.formatOffers = function (req, res) {
+    var offers = [];
+    for (var i = 0; i < req.rOffers.length; i++) {
+        var offer = req.rOffers[i];
+        var formattedOffer = {
+            'offerID': offer._id,
+            'listingID': offer.listingID,
+            'buyerID': offer.buyerID,
+            'sellerID': offer.sellerID,
+            'ISBN': offer.ISBN,
+            'date': offer.date,
+        };
+        offers.push(formattedOffer);
+    };
+    res.json(offers);
+};
+
 exports.formatOffer = function (req, res) {
     var offer = {
         'offerID': req.rOffer._id,
@@ -270,7 +280,6 @@ exports.formatBook = function (req, res) {
         'pageCount': req.rBook.pageCount,
         'publishDate': req.rBook.publishDate,
         'publisher': req.rBook.publisher,
-        'subscribers': req.rBook.subscribers,
     };
     var listings = [];
     for (var i = 0; i < req.rListings.length; i++) {
@@ -313,7 +322,6 @@ exports.formatBooks = function (req, res) {
             'pageCount': book.pageCount,
             'publishDate': book.publishDate,
             'publisher': book.publisher,
-            'subscribers': book.subscribers,
             'listings': book.listings || [],
         };
         books.push(formattedBook);
