@@ -10,7 +10,6 @@ div.user-about
   div.about(ng-if="!editingUser")
     h2 {{user.name.fullName}}
     h3 {{user.gradYear}}
-    h4(ng-if="user.bio") Bio
     p.bio(ng-if="user.bio") {{user.bio}}
   form.about(ng-if="editingUser", ng-submit="updateUser()")
     div#edit-names

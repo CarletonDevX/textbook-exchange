@@ -208,7 +208,7 @@ exports.updateAvatar = function (req, res, next) {
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
     var updates = req.body;
-    if (updates.bio) user.bio = updates.bio;
+    if (updates.bio != null) user.bio = updates.bio;
     if (updates.gradYear) user.gradYear = updates.gradYear;
     if (updates.emailSettings) {
         try {
