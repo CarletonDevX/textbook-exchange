@@ -67,7 +67,6 @@ exports.inject = function (mainCollection, other, callback) {
 
         other.collection.find(query, other.propsNeeded.join(' '), response);
     } else { 
-        console.log('no req\'d params provided');
         other.collection.find(query, response);
     }
 };

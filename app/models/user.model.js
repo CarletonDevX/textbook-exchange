@@ -19,12 +19,9 @@ var User = new Schema({
     provider: String,
     providerId: String,
     providerData: {},
-    subscriptions: [],
     bio: { type: String, maxlength: 200 },
     avatar: { type: String, default: 'https://d30y9cdsu7xlg0.cloudfront.net/png/5020-200.png' },
     gradYear: { type: Number, required: true },
-    reports: [],
-    offers: [],
     created: { type: Date, default: new Date() },
 });
 
@@ -36,11 +33,11 @@ User.methods.authenticate = function (password) {
 // Validation
 var validYears = function () {
     var lastYear = new Date().getFullYear() - 1;
-    var yearRange = 6
+    var yearRange = 6;
     var years = [];
     for (var i = 0; i < yearRange; i++) years.push(lastYear+i);
     return years;
-}
+};
 
 var validateGradYear = function (value) {
     return (validYears().indexOf(value) > -1);

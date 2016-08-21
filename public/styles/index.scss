@@ -1,10 +1,10 @@
-  @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,400italic,700,700italic);
 @import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,400italic,700,700italic);
 
 ::-moz-focus-inner {border:0;}
 
 html{
-  overflow-y: scroll; 
+  overflow-y: scroll;
 }
 
 div {
@@ -105,7 +105,7 @@ main{
           transition: opacity .2s,
                       width .2s;
         }
-        
+
         label.pre-search{
           opacity:1;
           width: 250px;
@@ -133,12 +133,12 @@ main{
         transition: width .2s;
       }
     }
-    
+
     #search-results{
       overflow: hidden;
       transition: height .2s;
     }
-    
+
     #search-results.minimized{
       //TODO: in dire need of transition.
       height: 0;
@@ -202,7 +202,7 @@ main{
   #search.home-view{
     width: 500px;
   }
-  
+
   #search.searching, #search.behind-detail{
     width: 530px;
 
@@ -322,8 +322,7 @@ main{
   }
 }
 
-#flash-message{
-  display: none;
+#flash-message {
   width: 500px;
   height: 3em;
   line-height: 3em;
@@ -335,6 +334,11 @@ main{
   background-color: rgba(41, 255, 53, 0.25);
   box-shadow: 0 2px 10px 5px rgba(33,164,22, .2);
   font-style: italic;
+  transition: all 1s linear;
+}
+
+#flash-message.ng-hide {
+  opacity: 0;
 }
 
 .hyphenate {

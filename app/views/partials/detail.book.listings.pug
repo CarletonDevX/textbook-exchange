@@ -37,10 +37,11 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
-		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
+		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
+		p.email-label Make an <br> offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane()",

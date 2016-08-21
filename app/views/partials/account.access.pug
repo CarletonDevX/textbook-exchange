@@ -57,12 +57,6 @@ div.register
           td Password
           td
             input(ng-model="registerData.password" type='password' required)
-        tr
-          td Graduation Year
-          td
-            select(ng-model="registerData.gradYear" required)
-              option(value='' disabled selected) —
-              option(ng-repeat="year in possibleYears", value="{{year}}") {{year}}
         tr          
           td Retype Password
             td
@@ -72,6 +66,12 @@ div.register
                 ng-change="validatePw()",
                 required,
                 ng-model="regPwRepeat")
+        tr
+          td Graduation Year
+          td
+            select(ng-model="registerData.gradYear" required)
+              option(value='' disabled selected) —
+              option(ng-repeat="year in gradYears", value="{{year}}") {{year}}
         tfoot
           tr.alert(ng-if='registerAlert == RegisterAlert.INVALID_INFO')
             td(colspan=2, ng-bind='registrationError')

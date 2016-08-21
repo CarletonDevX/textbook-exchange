@@ -1,5 +1,4 @@
 td.image: a(href="book/{{listing.ISBN}}")
-	//- TODO: ^^MAKE THIS A REAL LINK
 	img(src="{{listing.book.coverImage}}")
 
 td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
@@ -25,10 +24,11 @@ td.make-an-offer
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
-		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
+		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
+		p.email-label Make an <br> offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane(listing)",
