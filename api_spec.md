@@ -3,11 +3,11 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 ##Authentication
 #### Authentification test [Requires auth]:
 
-`GET hitsthebooks.com/api/authTest`
+`GET /api/authTest`
 
 #### Login:
 
-`POST hitsthebooks.com/api/login`
+`POST /api/login`
 
 | key       | type    | required |
 | --------- | ------- | -------- |
@@ -16,17 +16,17 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 
 #### [Logout](http://stackoverflow.com/questions/3521290/logout-get-or-post):
 
-`POST hitsthebooks.com/api/logout`
+`POST /api/logout`
 	
 ##Schools
 #### Get statistics for current school:
 
-`GET hitsthebooks.com/api/schoolStats`
+`GET /api/schoolStats`
 	
 ##Users
 #### Register/create a user:
 
-`POST hitsthebooks.com/api/register`
+`POST /api/register`
 
 | key        | type    | required |
 | ---------- | ------- | -------- |
@@ -37,11 +37,11 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 
 #### Verify a user with user ID (logs in if successful):
 
-`GET hitsthebooks.com/api/verify?userID=userID&verifier=verifier`
+`GET /api/verify?userID=userID&verifier=verifier`
 
 #### Resend verification link for user
 
-`POST hitsthebooks.com/api/resendVerification/`
+`POST /api/resendVerification/`
 
 | key        | type    | required |
 | ---------- | ------- | -------- |
@@ -49,7 +49,7 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 
 #### Request password reset
 
-`POST hitsthebooks.com/api/requestPasswordReset`
+`POST /api/requestPasswordReset`
 
 | key        | type    | required |
 | ---------- | ------- | -------- |
@@ -57,15 +57,15 @@ Note: Make sure you have a persistent session enabled in whatever you're using t
 
 #### Reset password
 
-`GET hitsthebooks.com/api/resetPassword?userID=userID&verifier=verifier`
+`GET /api/resetPassword?userID=userID&verifier=verifier`
 
 #### Get current user [Requires auth]: 
 
-`GET hitsthebooks.com/api/user`
+`GET /api/user`
 
 #### Update current user [Requires auth]: 
 
-`PUT hitsthebooks.com/api/user`
+`PUT /api/user`
 
 | key           | type    | required |
 | --------------| ------- | -------- |
@@ -87,16 +87,16 @@ emailSettings: {
 
 #### Delete current user account [Requires auth]:
 
-`DELETE hitsthebooks.com/api/user`
+`DELETE /api/user`
 
 #### Get user with user ID:
 
-`GET hitsthebooks.com/api/user/:id`	
+`GET /api/user/:id`	
 	
 ##Avatars
 #### Upload an avatar photo [Requires auth]:
 
-`POST hitsthebooks.com/api/avatar`
+`POST /api/avatar`
 
 | key           | type    | required |
 | --------------| ------- | -------- |
@@ -105,7 +105,7 @@ emailSettings: {
 ##Reports
 #### Report a user with user ID [Requires auth]:
 
-`POST hitsthebooks.com/api/report/:id`
+`POST /api/report/:id`
 
 | key           | type    | required |
 | --------------| ------- | -------- |
@@ -114,28 +114,28 @@ emailSettings: {
 ##Subscriptions
 #### Get subscriptions of current user [Requires auth]:
 
-`GET hitsthebooks.com/api/subscriptions`
+`GET /api/subscriptions`
 
 #### Clear subscriptions of current user [Requires auth]:
 
-`POST hitsthebooks.com/api/subscriptions/clear`
+`POST /api/subscriptions/clear`
 
 #### Subscribe current user to book with book ID [Requires auth]:
 
-`POST hitsthebooks.com/api/subscriptions/add/:id`
+`POST /api/subscriptions/add/:id`
 
 #### Unsubscribe current user from book with book ID [Requires auth]:
 
-`DELETE hitsthebooks.com/api/subscriptions/remove/:id`
+`DELETE /api/subscriptions/remove/:id`
 	
 ##Listings
 #### Get listings for current user [Requires auth]:
 
-`GET hitsthebooks.com/api/listings` 
+`GET /api/listings` 
 
 #### Add a listing with book ID [Requires auth]:
 
-`POST hitsthebooks.com/api/listings/add/:id`
+`POST /api/listings/add/:id`
 
 | key           | type         | required |
 | --------------| -------------| -------- |
@@ -147,19 +147,19 @@ emailSettings: {
 
 #### Get listings for user with user ID: 
 
-`GET hitsthebooks.com/api/listings/user/:id`
+`GET /api/listings/user/:id`
 
 #### Get listings for book with book ID:
 
-`GET hitsthebooks.com/api/listings/book/:id`
+`GET /api/listings/book/:id`
 
 #### Get listing with listing ID:
 
-`GET hitsthebooks.com/api/listings/:id`
+`GET /api/listings/:id`
 
 #### Update listing with listing ID [Requires auth]:
 
-`PUT hitsthebooks.com/api/listings/:id`
+`PUT /api/listings/:id`
 
 | key           | type         | required |
 | --------------| -------------| -------- |
@@ -171,37 +171,46 @@ emailSettings: {
 
 #### Remove a listing [Requires auth]:
 
-`DELETE hitsthebooks.com/api/listings/:id`
+`DELETE /api/listings/:id`
+
+#### Complete a listing with listing ID [Requires auth]:
+
+`POST /api/listings/complete/:id`
+
+##Offers
+#### Get offers for current user
+
+`GET /api/offers`
 
 #### Get previous offer on a listing with listing ID [Requires auth]:
 
-`GET hitsthebooks.com/api/listings/offer/:id`
+`GET /api/offers/:id`
 
 #### Make an offer on a listing with listing ID [Requires auth]:
 
-`POST hitsthebooks.com/api/listings/offer/:id`
+`POST /api/offers/:id`
 
 | key           | type    | required |
 | --------------| --------| -------- |
 | message       | string  | no       |
-
-#### Complete a listing with listing ID [Requires auth]:
-
-`POST hitsthebooks.com/api/listings/complete/:id`
 	
 ##Books
 #### Get book with book ID:
 
-`GET hitsthebooks.com/api/book/:id`
+`GET /api/book/:id`
 
 #### Update amazon info of book with book ID (temporary):
 
-`POST hitsthebooks.com/api/book/:id`
+`POST /api/book/:id`
 
 ##Search
 #### Search for a book:
 
-`GET hitsthebooks.com/api/search?query=query`
+`GET /api/search?query=query`
+
+#### Search for a user:
+
+`GET /api/searchUser?query=query`
 
 ##Errors
 #### Report an error:
@@ -210,4 +219,4 @@ emailSettings: {
 | --------------| --------| -------- |
 | message       | string  | yes      |
 
-`POST hitsthebooks.com/api/errors`
+`POST /api/errors`

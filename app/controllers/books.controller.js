@@ -24,42 +24,13 @@ exports.getBook = function (req, res, next) {
     });
 };
 
-exports.subscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    for (var i = 0; i < book.subscribers.length; i++) {
-        if (user._id.toString() == book.subscribers[i]) return next(new HTBError(400, 'User is already subscribed to book.'));
-    }
-    book.subscribers.push(user._id);
-    book.save(function (err, book) {
-        if (err) return next(new MongoError(err));
-        req.rBook = book;
-        return next();
-    });
-};
-
-exports.unsubscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    var newSubs = [];
-    for (var i = 0; i < book.subscribers.length; i++) {
-        if (book.subscribers[i] != user._id.toString()) newSubs.push(book.subscribers[i]);
-    }
-    book.subscribers = newSubs;
-    book.save(function (err, book) {
-        if (err) return next(new MongoError(err));
-        req.rBook = book;
-        return next();
-    });
-};
-
 exports.getSubscriptionBooks = function (req, res, next) {
-    var subscriptions = req.rUser.subscriptions;
-    if (subscriptions.length == 0) {
-        req.rBooks = [];
-        return next();
-    }
-    Book.find({ISBN: {$in: subscriptions}}, function (err, books) {
+    var subscriptions = req.rSubscriptions;
+    var ISBNs = [];
+    for (var i = 0; i < subscriptions.length; i++) {
+        ISBNs.push(subscriptions[i].ISBN);
+    };
+    Book.find({ISBN: {$in: ISBNs}}, function (err, books) {
         if (err) return next(new MongoError(err));
         req.rBooks = books;
         return next();
@@ -71,7 +42,6 @@ exports.updateAmazonInfo = function (req, res, next) {
     Amazon.bookWithISBN(book.ISBN, function (err, result) {
         if (err) return next(new AmazonError(err));
         if (!result) return next(new HTBError(404, 'Amazon info not found for ISBN: ' + book.ISBN));
-        // TODO: Should we update more than just the pricing info?
         book.amazonInfo = result.amazonInfo;
         book.save(function (err, book) {
             if (err) return next(new MongoError(err));

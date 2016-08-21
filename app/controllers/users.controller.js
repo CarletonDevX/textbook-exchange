@@ -1,7 +1,6 @@
 var crypto = require('crypto'),
     HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError,
-    Report = require('mongoose').model('reports'),
     User = require('mongoose').model('users');
 
 var hash = function (string) {
@@ -209,7 +208,7 @@ exports.updateAvatar = function (req, res, next) {
 exports.updateUser = function (req, res, next) {
     var user = req.rUser;
     var updates = req.body;
-    if (updates.bio) user.bio = updates.bio;
+    if (updates.bio != null) user.bio = updates.bio;
     if (updates.gradYear) user.gradYear = updates.gradYear;
     if (updates.emailSettings) {
         try {
@@ -241,31 +240,15 @@ exports.removeUser = function (req, res, next) {
     });
 };
 
-exports.reportUser = function (req, res, next) {
-    var user = req.rUser;
-    var description = req.body.description;
-    if (!description) return next(new HTBError(400, 'Must include "description" attribute.'));
-    user.reports.push(new Report({
-        'userID': user._id,
-        'reporterID': req.user._id,
-        'description': description,
-    }));
-    user.save(function (err, user) {
+exports.getSubscriptionUsers = function (req, res, next) {
+    var subscriptions = req.rSubscriptions;
+    var userIDs = [];
+    for (var i = 0; i < subscriptions.length; i++) {
+        userIDs.push(subscriptions[i].ISBN);
+    };
+    User.find({_id: {$in: userIDs}}, function (err, users) {
         if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.getSubscribers = function (req, res, next) {
-    var book = req.rBook;
-    if (book.subscribers.length == 0) {
-        req.rSubscribers = [];
-        return next();
-    }
-    User.find({_id: {$in : book.subscribers}}, function (err, subscribers) {
-        if (err) return next(new MongoError(err));
-        req.rSubscribers = subscribers;
+        req.rUsers = users;
         return next();
     });
 };
@@ -277,62 +260,29 @@ exports.getUndercutUsers = function (req, res, next) {
         userIDs.push(listings[i].userID);
     }
     if (userIDs.length == 0) {
-        req.rUndercutUsers = [];
+        req.rUsers = [];
         return next();
     }
     User.find({_id: {$in : userIDs}}, function (err, users) {
         if (err) return next(new MongoError(err));
-        req.rUndercutUsers = users;
+        req.rUsers = users;
         return next();
     });
 };
 
-exports.subscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    for (var i = 0; i < user.subscriptions.length; i++) {
-        if (book.ISBN == user.subscriptions[i]) return next(new HTBError('User is already subscribed to book.'));
-    }
-    user.subscriptions.push(book.ISBN);
-    user.save(function (err) {
+exports.search = function (req, res, next) {
+    var query = req.query.query;
+    req.rUsers = [];
+    if (!query) return next();
+    var re = new RegExp('\w*'+query+'\w*', 'i');
+    User.find({verified: true}, function (err, users) {
         if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.unsubscribe = function (req, res, next) {
-    var book = req.rBook;
-    var user = req.rUser;
-    var newSubs = [];
-    for (var i = 0; i < user.subscriptions.length; i++) {
-        if (user.subscriptions[i] != book.ISBN) newSubs.push(user.subscriptions[i]);
-    }
-    user.subscriptions = newSubs;
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.clearUserSubscriptions = function (req, res, next) {
-    var user = req.rUser;
-    user.subscriptions = [];
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
-        return next();
-    });
-};
-
-exports.makeOffer = function (req, res, next) {
-    var user = req.rUser;
-    var listing = req.rListings[0];
-    user.offers.push(listing._id.toString());
-    user.save(function (err) {
-        if (err) return next(new MongoError(err));
-        req.rUser = user;
+        for (var i = users.length - 1; i >= 0; i--) {
+            var user = users[i];
+            if (re.test(user.name.fullName)) {
+                req.rUsers.push(user);
+            }
+        }
         return next();
     });
 };

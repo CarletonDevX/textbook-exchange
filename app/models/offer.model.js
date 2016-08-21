@@ -1,11 +1,12 @@
 var Schema = require('mongoose').Schema;
 
 var Offer = new Schema({
-    listingID: String,
-    buyerID: String,
-    sellerID: String,
-    ISBN: String,
-    date: Date,
+    listingID: { type: String, required: true },
+    buyerID: { type: String, required: true },
+    sellerID: { type: String, required: true },
+    message: String,
+    ISBN: { type: String, required: true },
+    date: { type: Date, default: new Date() },
 });
 
 module.exports = Offer;
