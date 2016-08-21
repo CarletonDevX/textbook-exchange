@@ -835,13 +835,17 @@ div.listings table.listings {
       padding: 0; }
       div.listings table.listings tbody td.make-an-offer button.email span.symbol, div.listings table.listings tfoot td.make-an-offer button.email span.symbol {
         font-style: normal;
-        font-size: 36px; }
+        font-size: 45px; }
       div.listings table.listings tbody td.make-an-offer button.edit, div.listings table.listings tbody td.make-an-offer button.delete, div.listings table.listings tfoot td.make-an-offer button.edit, div.listings table.listings tfoot td.make-an-offer button.delete {
         display: inline-block;
         width: 50%;
         height: 80px;
         padding: 0;
         font-size: 16px; }
+      div.listings table.listings tbody td.make-an-offer .email-label, div.listings table.listings tfoot td.make-an-offer .email-label {
+        font-style: normal;
+        color: rgba(0, 0, 0, 0.8);
+        margin-top: -5px; }
       div.listings table.listings tbody td.make-an-offer div.remove-listing p, div.listings table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
