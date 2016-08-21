@@ -28,6 +28,7 @@ td.make-an-offer
 		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
+		p.email-label Make an <br> offer
 	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",

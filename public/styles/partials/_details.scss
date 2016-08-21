@@ -257,7 +257,7 @@ div.listings{
         padding: 0;
         button.email span.symbol{
           font-style: normal;
-          font-size: 36px;
+          font-size: 45px;
         }
         button.edit, button.delete{
           display: inline-block;
@@ -265,6 +265,11 @@ div.listings{
           height: $listing-row-height;
           padding: 0;
           font-size: 16px;
+        }
+        .email-label {
+          font-style: normal;
+          color: rgba(0, 0, 0, 0.8);
+          margin-top: -5px;
         }
         div.remove-listing{
           p{
