@@ -20,15 +20,24 @@ exports.createExchangeActivity = function (req, res, next) {
 exports.createListActivity = function (req, res, next) {
     var user = req.rUser;
     var book = req.rBook;
+    var listing = req.rListings[0]
     var activity = new Activity({
         userID: user._id,
         ISBN: book.ISBN,
-        verb: 'list'
+        verb: 'list',
+        listing: listing._id,
     });
     activity.save(function (err, activity) {
         if (err) return next(new MongoError(err));
         req.rActivity = activity;
         return next();
+    });
+}
+
+exports.removeListActivity = function(req, res, next) {
+    console.log('req',req.rListingID);
+    Activity.find({listing: req.rListingID}, function(err, listing){
+        console.log(listing);
     });
 }
 

@@ -5,6 +5,7 @@ var Activity = new Schema({
         ISBN: { type: String, required: true},
         verb: { type: String, required: true, enum: ['list', 'exchange'] },
         created: { type: Date, default: Date.now() },
-    },{ capped: { size: 5242880, max: 100} });
+        listing: {type: String }
+    },{ capped: { max: 100} });
 
 module.exports = Activity;

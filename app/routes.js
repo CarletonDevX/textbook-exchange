@@ -291,6 +291,7 @@ exports.setup = function (app) {
                 offers.getOffersForListings,
                 offers.removeOffers,
                 listings.removeListings,
+                activities.removeListActivity,
                 responder.successRemoveListing);
 
     // Get previous offer on a listing
