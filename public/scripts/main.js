@@ -119,9 +119,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function(Api, $stateParams, $q) {
+        bookResults: function(Api, $stateParams, $q) {
           if ($stateParams.query) {
             return Api.search($stateParams.query);
+          } else {
+            return $q.resolve(null);
+          }
+        },
+        userResults: function(Api, $stateParams, $q) {
+          if ($stateParams.query) {
+            return Api.searchUser($stateParams.query);
           } else {
             return $q.resolve(null);
           }
@@ -537,9 +544,12 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
 });
 
-hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
+hitsTheBooks.controller('searchController', function($scope, bookResults, userResults, $stateParams) {
   $scope.query = $stateParams.query;
-  $scope.results = results;
+  $scope.displayedSearch = 'books';
+  $scope.bookResults = bookResults;
+  $scope.userResults = userResults;
+  scope = $scope;
 });
 
 hitsTheBooks.controller('detailsController', function($scope, $stateParams, $location) {

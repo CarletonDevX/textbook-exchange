@@ -499,6 +499,22 @@ main #search {
     transition: height .2s; }
   main #search #search-results.minimized {
     height: 0; }
+  main #search #search-results .tabs {
+    display: flex;
+    margin-bottom: 25px; }
+    main #search #search-results .tabs button {
+      font-variant: small-caps;
+      flex-grow: 1;
+      flex-basis: 0;
+      padding: 10px;
+      font-size: 14pt;
+      font-style: normal;
+      border-bottom: solid 1px black; }
+    main #search #search-results .tabs button.active {
+      font-weight: bold;
+      border-bottom: solid 3px black; }
+    main #search #search-results .tabs .stat {
+      margin-left: 20px; }
   main #search #search-results ul {
     list-style-type: none;
     padding: 0; }
@@ -518,7 +534,7 @@ main #search {
         flex-grow: 1;
         padding-right: 20px;
         padding-bottom: 20px; }
-      main #search #search-results ul li a.book {
+      main #search #search-results ul li a.book, main #search #search-results ul li a.user {
         text-decoration: none;
         color: black;
         text-align: left;
@@ -649,6 +665,30 @@ main #detail-wrapper.maximized {
   -ms-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto; }
+
+.stat {
+  display: inline-block;
+  font-weight: bold;
+  font-style: normal;
+  font-family: 'Droid Sans', Sans-serif;
+  padding: 5px;
+  border-radius: 50%;
+  margin: 0 10px;
+  min-width: 1em;
+  height: 1em;
+  color: gray;
+  line-height: 1.2em;
+  font-size: 11pt;
+  border: solid 1px; }
+
+.stat.good {
+  color: #45753c; }
+
+.stat.bad {
+  color: #901d1d; }
+
+.stat.active {
+  box-shadow: 0 0 3px 0; }
 
 #book-details h2, #book-details h3 {
   font-family: 'Droid Sans', Sans-serif; }

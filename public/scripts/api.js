@@ -145,6 +145,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 }
             );
         },
+        searchUser: function (query) {
+            return $http.get('/api/searchUser?query='+query).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
         reportError: function(message) {
             return $http({
               method  : 'POST',
