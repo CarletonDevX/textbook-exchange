@@ -229,6 +229,8 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   $rootScope.openAccount = function(){
     if ($scope.currentUser) {
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else {
+      $state.go('account.signin');
     }
     $previousState.memo('accountEntryPoint');
   }
