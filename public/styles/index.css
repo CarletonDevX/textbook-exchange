@@ -672,7 +672,7 @@ main #detail-wrapper.maximized {
   font-style: normal;
   font-family: 'Droid Sans', Sans-serif;
   padding: 5px;
-  border-radius: 50%;
+  border-radius: 1em;
   margin: 0 10px;
   min-width: 1em;
   height: 1em;
