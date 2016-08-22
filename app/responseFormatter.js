@@ -302,7 +302,8 @@ exports.formatBooks = function (req, res) {
     res.json(books);
 };
 
-/* ACTIVITY */
+/* ACTIVITES */
+
 exports.formatActivities = function(req, res) {
     var activities = [];
     for (var i = 0; i < req.rActivities.length; i++) {

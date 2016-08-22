@@ -168,6 +168,7 @@ exports.setup = function (app) {
                 listings.getUserListings,
                 offers.getOffersForListings,
                 offers.removeOffers,
+                activities.removeActivitiesForListings,
                 listings.removeListings,
                 users.removeUser,
                 responder.successRemoveUser);
@@ -290,8 +291,8 @@ exports.setup = function (app) {
                 listings.getListing,
                 offers.getOffersForListings,
                 offers.removeOffers,
+                activities.removeActivitiesForListings,
                 listings.removeListings,
-                activities.removeListActivity,
                 responder.successRemoveListing);
 
     // Get previous offer on a listing
