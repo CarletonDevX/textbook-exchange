@@ -77,6 +77,11 @@ $pane-spacing: 15px;
 @import "globals/forms";
 @import "partials/header";
 
+#account {
+  text-align: center;
+  padding: 1.5em;
+}
+
 main{
   #search{
     overflow: hidden;

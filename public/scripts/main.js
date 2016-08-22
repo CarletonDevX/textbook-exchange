@@ -95,11 +95,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('account', { url: '/account',
       views:{'account' : {
           templateUrl: '/partials/account',
-          controller: 'accountController' }}
+          controller: 'accountController' }
+      }
     })
-    .state('account.access', { url: '/access',
-      templateUrl : '/partials/account.access',
-      controller  : 'accountAccessController'
+    .state('account.signin', { url: '/signin',
+      templateUrl : '/partials/account.signin',
+      controller  : 'accountSigninController'
+    })
+    .state('account.register', { url: '/register',
+      templateUrl : '/partials/account.register',
+      controller  : 'accountRegisterController'
     })
     .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
@@ -222,12 +227,23 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   }
 
   $rootScope.openAccount = function(){
-    if ($scope.currentUser){
+    if ($scope.currentUser) {
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-    } else $state.go('account.access');
+    } else {
+      $state.go('account.signin');
+    }
     $previousState.memo('accountEntryPoint');
   }
 
+  $rootScope.openAccountSignin = function() {
+    $state.go('account.signin');
+    $previousState.memo('accountEntryPoint');
+  }
+
+  $rootScope.openAccountRegister = function() {
+    $state.go('account.register');
+    $previousState.memo('accountEntryPoint');
+  }
   //transists for header
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
@@ -245,10 +261,12 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 
 hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
-  if ($scope.currentUser) {
-    $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-  } else {
-    $state.go('account.access')
+  if ($state.current.name == "account") {
+    if ($scope.currentUser) {
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else {
+      $state.go('account.signin');
+    }
   }
 
   $scope.closeAccount = function(){
@@ -263,124 +281,125 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
 hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope, $state, $previousState) {
     if ($scope.currentUser){
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-    } else $state.go('account.access');
+    } else $state.go('account.signin');
     $previousState.memo('accountEntryPoint');
 });
 
-hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('accountSigninController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+    $scope.SignInAlert = {
+      NONE : 0,
+      INCORRECT_INFO : 1,
+      UNVERIFIED : 2,
+      SERVER_ERROR : 3,
+      RESEND_RESET_ALERT : 4
+    };
+    // Login
+    $scope.loginData = { username: '', password: '' };
+    $scope.signinAlert = $scope.SignInAlert.NONE;
+    $scope.login = function (loginData) {
+      Api.login(loginData).then(function (res) {
+        switch (res.status) {
+          case 401:
+            $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+          default:
+            $rootScope.currentUser = res;
+            $scope.closeAccount();
+            $scope.signinAlert = $scope.SignInAlert.NONE;
+            break;
+        }
+      });
+    };
 
-  $scope.SignInAlert = {
-    NONE : 0,
-    INCORRECT_INFO : 1,
-    UNVERIFIED : 2,
-    SERVER_ERROR : 3,
-    RESEND_RESET_ALERT : 4
-  };
-  $scope.RegisterAlert = {
-    NONE : 0,
-    INVALID_INFO : 1,
-    SERVER_ERROR : 2,
-    SUCCESS : 3
-  };
-
-  // Login
-  $scope.loginData = { username: '', password: '' };
-  $scope.signinAlert = $scope.SignInAlert.NONE;
-  $scope.login = function (loginData) {
-    Api.login(loginData).then(function (res) {
-      switch (res.status) {
-        case 401:
-          $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
-        default:
-          $rootScope.currentUser = res;
-          $scope.closeAccount();
-          $scope.signinAlert = $scope.SignInAlert.NONE;
-          break;
-      }
-    });
-  };
-
-  // Registration
-  $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
-  $scope.registerAlert = $scope.RegisterAlert.NONE;
-  $scope.registrationError = "";
-  $scope.validatePw = function() {
-    if ($scope.registerData.password == $scope.regPwRepeat) {
-      document.getElementById('pw-repeat').setCustomValidity('');
-    } else {
-      document.getElementById('pw-repeat').setCustomValidity('Must match the previous field');
+    $scope.requestPasswordReset = function() {
+      Api.requestPasswordReset($scope.loginData.username).then(function(res) {
+        switch (res.status) {
+          case 200:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "Password reset submitted. Please check your email for the next step.";
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data.errors[0];
+            break;
+          case 404:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "User not found";
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+        }
+      });
     }
-  }
-  $scope.register = function (registerData) {
-    Api.register(registerData).then(function(res) {
-      switch (res.status) {
-        case 400:
-          $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
-          $scope.registrationError = res.data;
-          break;
-        case 500:
-        case 0:
-          $scope.registerAlert = $scope.RegisterAlert.SERVER_ERROR;
-          break;
-        default:
-          $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-          $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
-          break;
-      }
-    });
-  };
 
-  $scope.requestPasswordReset = function() {
-    Api.requestPasswordReset($scope.loginData.username).then(function(res) {
-      switch (res.status) {
-        case 200:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "Password reset submitted. Please check your email for the next step.";
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data.errors[0];
-          break;
-        case 404:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "User not found";
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
-      }
-    });
+    $scope.resendVerification = function() {
+      Api.resendVerificationEmail($scope.loginData.username).then(function(res) {
+        switch (res.status) {
+          case 200:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data;
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data.errors[0];
+            break;
+          case 404:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "User not found.";
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+        }
+      });
+    }
+});
 
-  }
+hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+    $scope.RegisterAlert = {
+      NONE : 0,
+      INVALID_INFO : 1,
+      SERVER_ERROR : 2,
+      SUCCESS : 3
+    };
 
-  $scope.resendVerification = function() {
-    Api.resendVerificationEmail($scope.loginData.username).then(function(res) {
-      switch (res.status) {
-        case 200:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data;
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data.errors[0];
-          break;
-        case 404:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "User not found.";
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
+    // Registration
+    $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
+    $scope.registerAlert = $scope.RegisterAlert.NONE;
+    $scope.registrationError = "";
+    $scope.validatePw = function() {
+      if ($scope.registerData.password == $scope.regPwRepeat) {
+        document.getElementById('pw-repeat').setCustomValidity('');
+      } else {
+        document.getElementById('pw-repeat').setCustomValidity('Must match the previous field');
       }
-    });
-  }
+    }
+    $scope.register = function (registerData) {
+      Api.register(registerData).then(function(res) {
+        switch (res.status) {
+          case 400:
+            $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
+            $scope.registrationError = res.data;
+            break;
+          case 500:
+          case 0:
+            $scope.registerAlert = $scope.RegisterAlert.SERVER_ERROR;
+            break;
+          default:
+            $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+            $scope.regPwRepeat = "";
+            $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
+            break;
+        }
+      });
+    };
 });
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
