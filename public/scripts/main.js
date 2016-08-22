@@ -92,12 +92,6 @@ hitsTheBooks.filter('ordinal', function() {
 
 hitsTheBooks.config(function($stateProvider, $locationProvider) {
   $stateProvider
-    .state('account', { url: '/account',
-      views:{'account' : {
-          templateUrl: '/partials/account',
-          controller: 'accountController' }
-      }
-    })
     .state('account.signin', { url: '/signin',
       templateUrl : '/partials/account.signin',
       controller  : 'accountSigninController'
@@ -109,6 +103,12 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
       controller  : 'accountDetailsController'
+    })
+    .state('account', { url: '/account',
+      views:{'account' : {
+          templateUrl: '/partials/account',
+          controller: 'accountController' }
+      }
     })
     .state('main',{
       url: '/?flash',
@@ -259,8 +259,12 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 
 hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
-  if ($scope.currentUser) {
-    $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+  if ($state.current.name == "account") {
+    if ($scope.currentUser) {
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else {
+      $state.go('account.signin');
+    }
   }
 
   $scope.closeAccount = function(){
