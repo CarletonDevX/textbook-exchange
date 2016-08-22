@@ -1,4 +1,4 @@
-var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop', 'ngAnimate']);
+var hitsTheBooks = angular.module('hitsTheBooks', ['ui.router', 'ct.ui.router.extras', 'ngFileUpload', 'ngImgCrop']);
 
 hitsTheBooks.run(function($rootScope, $state){
   $rootScope.is = function(name){ return $state.is(name) };
