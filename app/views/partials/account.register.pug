@@ -20,7 +20,7 @@ div.register
         tr
           td Password
           td
-            input(ng-model="registerData.password" type='password' required)
+            input(ng-change='validatePw()' ng-model="registerData.password" type='password' required)
         tr
           td Retype Password
             td
