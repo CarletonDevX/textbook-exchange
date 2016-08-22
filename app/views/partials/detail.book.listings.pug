@@ -32,7 +32,7 @@ td(ng-if="listing.isAmazonListing")
 			sup rd
 			|-party sellers only.
 
-td.make-an-offer(ng-if="!listing.isAmazonListing")
+td.make-an-offer(ng-if="!listing.isAmazonListing", ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
 	p(ng-if="!currentUser")
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
@@ -40,8 +40,10 @@ td.make-an-offer(ng-if="!listing.isAmazonListing")
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-		p.email-label Make an <br> offer
-	div.complete(ng-if="currentUser && offersDict[listing.listingID]") ✓ offer made
+		p.email-label Make an offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
+		span.symbol ✓
+		p Offer sent
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane()",

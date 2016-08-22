@@ -831,21 +831,28 @@ div.listings table.listings {
       div.listings table.listings tbody td.confirm button.confirm .symbol, div.listings table.listings tfoot td.make-an-offer button.email .symbol,
       div.listings table.listings tfoot td.confirm button.confirm .symbol {
         font-size: 16px; }
+    div.listings table.listings tbody td.make-an-offer.complete-wrapper, div.listings table.listings tfoot td.make-an-offer.complete-wrapper {
+      background-color: #f7f7f7; }
     div.listings table.listings tbody td.make-an-offer, div.listings table.listings tfoot td.make-an-offer {
       padding: 0; }
-      div.listings table.listings tbody td.make-an-offer button.email span.symbol, div.listings table.listings tfoot td.make-an-offer button.email span.symbol {
+      div.listings table.listings tbody td.make-an-offer button.email span.symbol,
+      div.listings table.listings tbody td.make-an-offer div.complete span.symbol, div.listings table.listings tfoot td.make-an-offer button.email span.symbol,
+      div.listings table.listings tfoot td.make-an-offer div.complete span.symbol {
         font-style: normal;
-        font-size: 45px; }
+        font-size: 30px; }
+      div.listings table.listings tbody td.make-an-offer button.email p, div.listings table.listings tbody td.make-an-offer div.complete p, div.listings table.listings tfoot td.make-an-offer button.email p, div.listings table.listings tfoot td.make-an-offer div.complete p {
+        margin-top: 0; }
+      div.listings table.listings tbody td.make-an-offer div.complete p, div.listings table.listings tfoot td.make-an-offer div.complete p {
+        font-style: italic; }
+      div.listings table.listings tbody td.make-an-offer div.complete, div.listings table.listings tfoot td.make-an-offer div.complete {
+        color: gray;
+        font-family: 'Droid Serif', Serif; }
       div.listings table.listings tbody td.make-an-offer button.edit, div.listings table.listings tbody td.make-an-offer button.delete, div.listings table.listings tfoot td.make-an-offer button.edit, div.listings table.listings tfoot td.make-an-offer button.delete {
         display: inline-block;
         width: 50%;
         height: 80px;
         padding: 0;
         font-size: 16px; }
-      div.listings table.listings tbody td.make-an-offer .email-label, div.listings table.listings tfoot td.make-an-offer .email-label {
-        font-style: normal;
-        color: rgba(0, 0, 0, 0.8);
-        margin-top: -5px; }
       div.listings table.listings tbody td.make-an-offer div.remove-listing p, div.listings table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }

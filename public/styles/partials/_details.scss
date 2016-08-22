@@ -252,12 +252,27 @@ div.listings{
           font-size: 16px;
         }
       }
-        
+      
+
+      td.make-an-offer.complete-wrapper{
+        background-color: #f7f7f7;
+      }
       td.make-an-offer{
         padding: 0;
-        button.email span.symbol{
+        button.email span.symbol,
+        div.complete span.symbol{
           font-style: normal;
-          font-size: 45px;
+          font-size: 30px;
+        }
+        button.email p, div.complete p{
+          margin-top: 0;
+        }
+        div.complete p{
+          font-style: italic;
+        }
+        div.complete{
+          color: gray;
+          font-family: 'Droid Serif', Serif;
         }
         button.edit, button.delete{
           display: inline-block;
@@ -265,11 +280,6 @@ div.listings{
           height: $listing-row-height;
           padding: 0;
           font-size: 16px;
-        }
-        .email-label {
-          font-style: normal;
-          color: rgba(0, 0, 0, 0.8);
-          margin-top: -5px;
         }
         div.remove-listing{
           p{
