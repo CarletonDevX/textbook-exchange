@@ -25,7 +25,7 @@ exports.createListActivity = function (req, res, next) {
         userID: user._id,
         ISBN: book.ISBN,
         verb: 'list',
-        listing: listing._id,
+        listingID: listing._id,
     });
     activity.save(function (err, activity) {
         if (err) return next(new MongoError(err));
@@ -36,7 +36,7 @@ exports.createListActivity = function (req, res, next) {
 
 exports.removeListActivity = function(req, res, next) {
     console.log('req',req.rListingID);
-    Activity.find({listing: req.rListingID}, function(err, listing){
+    Activity.find({listingID: req.rListingID}, function(err, listing){
         console.log(listing);
     });
 }
