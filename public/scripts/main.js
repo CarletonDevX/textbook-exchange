@@ -95,7 +95,8 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('account', { url: '/account',
       views:{'account' : {
           templateUrl: '/partials/account',
-          controller: 'accountController' }}
+          controller: 'accountController' }
+      }
     })
     .state('account.signin', { url: '/signin',
       templateUrl : '/partials/account.signin',
@@ -238,7 +239,6 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   }
 
   $rootScope.openAccountRegister = function() {
-    console.log("click register");
     $state.go('account.register');
     $previousState.memo('accountEntryPoint');
   }
