@@ -154,8 +154,15 @@ main{
         transition: box-shadow .1s;
         div.preview{
           padding: 20px;
+          
+          //fix for safari bug https://github.com/philipwalton/flexbugs#1-minimum-content-sizing-of-flex-items-not-honored
+          flex-shrink: 0;
+          flex-basis: auto;
+          //endfix
+
           img {
             width:125px;
+            display: block;
           }
         }
         div.info{
@@ -234,6 +241,14 @@ main{
 
   .loading{
     display: inline-block;
+    opacity: 0;
+    width: 0;
+    // float: right;
+  }
+
+  .loading::before{
+    content: '';
+    display: block;
     border-radius: 50%;
     width: 16px;
     height: 16px;
@@ -243,7 +258,6 @@ main{
     border-top-width: .15em;
     border-bottom-width: .15em;
     animation: spin 1s infinite linear;
-    opacity: 0;
     transition: opacity .2s;
   }
 
@@ -325,6 +339,15 @@ main{
 
 #flash-message.ng-hide {
   opacity: 0;
+}
+
+.hyphenate {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
 }
 
 @import "partials/details";

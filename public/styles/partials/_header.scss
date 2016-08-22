@@ -111,22 +111,15 @@ header{
           top: -12px;
           border-left: solid white 2px;
           border-right: solid white 2px;
-          transition: border-width .2s,
-                      left .2s;
         }
       }
 
       #wordmark:hover{
         .app-name::before{
           width:50%;
-          height:3px;
+          height:2px;
           top: -6px;
           margin: 0 25%;
-        }
-        .app-name::after{
-          left: calc(50% - 16.5px);
-          border-left: solid white 4px;
-          border-right: solid white 4px;
         }
       }
     }
