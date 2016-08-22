@@ -6,7 +6,7 @@ header(ng-controller="headerController")
         span.college-name Carleton
         span.app-name
           | Hits
-          span.interject  the 
+          span.interject  the
           | Books
     ul#college-info
       li #{numOpenListings} books listed
@@ -19,7 +19,9 @@ header(ng-controller="headerController")
     a(class="close", ng-click="modalStates.blurb = false") ×
   div#sub-box
     a(ng-click="modalStates.about = true") About
-    a(ng-click="openAccount()") {{currentUser? currentUser.name.givenName :'Sign In or Register'}}
+    a(ng-click="openAccount()" ng-if="currentUser") {{ currentUser.name.givenName }}
+    a(ng-click="openAccount()" ng-if="!currentUser") Sign In
+    a(ng-click="openAccount()" ng-if="!currentUser") Register
     a(ng-click="logout()" ng-if="currentUser") Log Out
 
   include modals
