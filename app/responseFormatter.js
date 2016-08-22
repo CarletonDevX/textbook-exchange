@@ -302,7 +302,7 @@ exports.formatBooks = function (req, res) {
     res.json(books);
 };
 
-/* ACTIVITES */
+/* ACTIVITIES */
 
 exports.formatActivities = function(req, res) {
     var activities = [];
