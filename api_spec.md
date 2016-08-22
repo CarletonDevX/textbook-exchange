@@ -204,18 +204,18 @@ emailSettings: {
 `GET hitsthebooks.com/api/search?query=query`
 
 ##Activity
-#### Get last 5 (or fewer) important things that happened:
+#### Get most recent activities (default limit=100):
 
-`GET hitsthebooks.com/api/activity`
+`GET hitsthebooks.com/api/activities?limit=limit`
 
 Return object looks like 
 ```
-{
+[{
  	userID: string,
  	ISBN: string,
  	verb: string['list','exchange'],
  	when: date
-}
+}, ...]
  ```
 
 ##Errors

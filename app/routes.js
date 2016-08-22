@@ -252,8 +252,7 @@ exports.setup = function (app) {
              listings.getUserListings,
              books.getBook,
              listings.createListing,
-             listings.addListActivity,
-             activities.pushActivity,
+             activities.createListActivity,
              users.getSubscribers,
              mail.sendSubscribersEmail,
              listings.getUndercutListings,
@@ -318,8 +317,7 @@ exports.setup = function (app) {
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
-              listings.addExchangeActivity,
-              activities.pushActivity,
+              activities.createExchangeActivity,
               listings.completeListing,
               responder.formatSingleListing);
 
@@ -346,8 +344,10 @@ exports.setup = function (app) {
         .get(books.search,
              responder.formatBooks);
 
-    /* Activity */
-    app.route('/api/activity')
+    /* Activities */
+
+    // Get most recent activities
+    app.route('/api/activities')
         .get(activities.getActivities,
              responder.formatActivities);
 

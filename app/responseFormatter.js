@@ -307,8 +307,12 @@ exports.formatActivities = function(req, res) {
     var activities = [];
     for (var i = 0; i < req.rActivities.length; i++) {
         var activity = req.rActivities[i];
-        //placholder:
-        var formattedActivity = activity;
+        var formattedActivity = {
+            'userID': activity.userID,
+            'ISBN': activity.ISBN,
+            'verb': activity.verb,
+            'when': activity.created,
+        };
         activities.push(formattedActivity);
     }
     res.json(activities);
