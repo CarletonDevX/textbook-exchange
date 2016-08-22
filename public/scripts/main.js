@@ -388,6 +388,7 @@ hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope
             break;
           default:
             $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+            $scope.regPwRepeat = "";
             $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
             break;
         }
