@@ -20,8 +20,8 @@ header(ng-controller="headerController")
   div#sub-box
     a(ng-click="modalStates.about = true") About
     a(ng-click="openAccount()" ng-if="currentUser") {{ currentUser.name.givenName }}
-    a(ng-click="openAccount()" ng-if="!currentUser") Sign In
-    a(ng-click="openAccount()" ng-if="!currentUser") Register
+    a(ng-click="openAccountSignin()" ng-if="!currentUser") Sign In
+    a(ng-click="openAccountRegister()" ng-if="!currentUser") Register
     a(ng-click="logout()" ng-if="currentUser") Log Out
 
   include modals
