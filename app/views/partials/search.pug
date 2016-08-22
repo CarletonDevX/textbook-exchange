@@ -1,12 +1,12 @@
 div.tabs
-	button(ng-click="displayedSearch = 'books'", 
-		ng-class="{'active': displayedSearch == 'books'}") Books
-		span.stat(ng-class="{'good': !!bookResults.length, 'active': displayedSearch == 'books'}") {{bookResults.length}}
-	button(ng-click="displayedSearch = 'users'",
-		ng-class="{'active': displayedSearch == 'users'}") Members
-		span.stat(ng-class="{'good': !!userResults.length, 'active':displayedSearch == 'users'}") {{userResults.length}}
+	button(ng-click="$parent.displayedSearch = 'books'", 
+		ng-class="{'active': $parent.displayedSearch == 'books'}") Books
+		span.stat(ng-class="{'good': !!bookResults.length}") {{bookResults.length}}
+	button(ng-click="$parent.displayedSearch = 'users'",
+		ng-class="{'active': $parent.displayedSearch == 'users'}") Members
+		span.stat(ng-class="{'good': !!userResults.length}") {{userResults.length}}
 
-ul(ng-if="displayedSearch == 'books'")
+ul(ng-if="$parent.displayedSearch == 'books'")
 	li(ng-repeat="book in bookResults")
 		a.book(ui-sref="main.detail.book({isbn: book.ISBN})")
 			div.preview
@@ -28,7 +28,7 @@ ul(ng-if="displayedSearch == 'books'")
 						td ISBN:
 						td {{ book.ISBN }}
 
-ul(ng-if="displayedSearch == 'users'")
+ul(ng-if="$parent.displayedSearch == 'users'")
 	li(ng-repeat="user in userResults")
 		a.user(ui-sref="main.detail.user({userID: user.userID})")
 			div.preview

@@ -387,6 +387,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
+  $scope.displayedSearch = 'books';
   var streamSearchDelay = 200; //ms
   var initSearch = false;
   angular.extend($scope, {
@@ -546,7 +547,6 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
 hitsTheBooks.controller('searchController', function($scope, bookResults, userResults, $stateParams) {
   $scope.query = $stateParams.query;
-  $scope.displayedSearch = 'books';
   $scope.bookResults = bookResults;
   $scope.userResults = userResults;
   scope = $scope;
