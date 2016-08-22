@@ -33,11 +33,10 @@ exports.createListActivity = function (req, res, next) {
 }
 
 exports.getActivities = function (req, res, next) {
-    Activity.find({}, function (err, activities) {
+    var limit = Number(req.query.limit) || 100;
+    Activity.find({}).limit(limit).exec(function (err, activities) {
         if (err) return next(new MongoError(err));
         if (activities.length == 0) return next(new HTBError(404, 'No activities found.'));
-        var limit = Number(req.query.limit);
-        if (limit && activities.length > limit) activities = activities.slice(0, limit);
         req.rActivities = activities;
         return next();
     });
