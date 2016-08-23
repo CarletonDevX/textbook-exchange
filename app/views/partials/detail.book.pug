@@ -29,15 +29,15 @@ div#book-details
           //- button(ng-click="removeFromWatchlist()") Remove
           div(ng-if="!currentUser")
             span
-              a(href, ng-click="openAccount()") log in
+              a(href, ng-click="openAccount()") Sign in
               |  to track this book
           div(ng-if="currentUser")
             button.confirm(ng-if="!watching", ng-click="addToWatchlist()")
               span.symbol +
-              |  add to watchlist
+              |  Add to Watchlist
             button.cancel(ng-if="watching", ng-click="removeFromWatchlist()")
               span.symbol ✓
-              span watching
+              span Watching
     div.preview
       img(src="{{book.coverImage}}")
 
@@ -118,28 +118,29 @@ div#book-details
             td.confirm.quality
               button.confirm(type="submit")
                 span.symbol {{currUserListing ? '✓':'+'}}
-                | {{currUserListing ? ' update!' : ' list!'}}
+                | {{currUserListing ? ' Update!' : ' List!'}}
           tr.add-listing: td(colspan="5")
             div(ng-if="!currentUser")
-              a(href, ng-click="openAccount()") log in
+              a(href, ng-click="openAccount()") Sign in
               |  to add a listing
             button.cancel(type="button", ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
               span.symbol ×
-              |  cancel
+              |  Cancel
             button.confirm(type="button", ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
               span.symbol +
-              |  add a listing
+              |  Add A Listing
             button.edit(type="button", ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
               span.symbol &#9998;
-              |  edit my listing
+              |  Edit Listing
 
   div.modal-wrapper(
     ng-class="{'visible':offer.active}",
     ng-htb-self-mousedown="offer.active = false"
     )
     div.modal.offer
-      h3 Make an offer
+      h3 Make An Offer
       textarea(ng-model="offer.message")
       div.bottom-buttons
         button(ng-click="makeOffer()") Send email
         button.cancel(ng-click="offer.active = false") Cancel
+
