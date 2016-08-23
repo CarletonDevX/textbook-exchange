@@ -28,35 +28,22 @@ a, button {
   font-variant: normal;
   font-weight: 400; }
 
-body::after, body::before {
+body::before {
   content: "";
   display: block;
   position: fixed;
-  top: -30px;
-  left: -30px;
-  right: -30px;
-  bottom: -30px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: -1;
   transition: opacity .2s; }
 
 body::before {
-  background-image: url(/images/landing_bg.jpg);
+  background-image: url(/images/2.jpg);
   background-size: cover;
-  background-position: center;
-  opacity: 0; }
-
-body::after {
-  background-image: url(/images/landing_bg_blur.jpg);
-  background-size: cover;
-  background-position: center;
-  transition: opacity .2s;
-  opacity: .7; }
-
-body.main-page::after {
-  opacity: 0; }
-
-body.main-page::before {
-  opacity: .7; }
+  background-position: bottom;
+  opacity: 1; }
 
 table.info-table {
   font-family: 'Droid Sans', sans-serif;
