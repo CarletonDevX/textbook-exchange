@@ -212,6 +212,21 @@ emailSettings: {
 
 `GET /api/searchUser?query=query`
 
+##Activity
+#### Get most recent activities (default limit=100):
+
+`GET hitsthebooks.com/api/activities?limit=limit`
+
+Return object looks like 
+```
+[{
+ 	userID: string,
+ 	ISBN: string,
+ 	verb: string['list','exchange'],
+ 	when: date
+}, ...]
+ ```
+
 ##Errors
 #### Report an error:
 

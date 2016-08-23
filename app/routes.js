@@ -1,4 +1,5 @@
-var avatars = require('./controllers/avatars.controller'),
+var activities = require('./controllers/activities.controller'),
+    avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
     handlers = require('./errors'),
     inject = require('./injectors'),
@@ -156,6 +157,7 @@ exports.setup = function (app) {
                 listings.getUserListings,
                 offers.getOffersForListings,
                 offers.removeOffers,
+                activities.removeActivitiesForListings,
                 listings.removeListings,
                 users.removeUser,
                 responder.successRemoveUser);
@@ -240,6 +242,7 @@ exports.setup = function (app) {
              listings.getUserListings,
              books.getBook,
              listings.createListing,
+             activities.createListActivity,
              subscriptions.getBookSubscriptions,
              users.getSubscriptionUsers,
              mail.sendSubscribersEmail,
@@ -278,6 +281,7 @@ exports.setup = function (app) {
                 listings.getListing,
                 offers.getOffersForListings,
                 offers.removeOffers,
+                activities.removeActivitiesForListings,
                 listings.removeListings,
                 responder.successRemoveListing);
 
@@ -313,6 +317,7 @@ exports.setup = function (app) {
         .post(authenticate,
               users.getCurrentUser,
               listings.getListing,
+              activities.createExchangeActivity,
               listings.completeListing,
               responder.formatSingleListing);
 
@@ -343,6 +348,13 @@ exports.setup = function (app) {
     app.route('/api/searchUser')
         .get(users.search,
              responder.formatUsers);
+
+    /* Activities */
+
+    // Get most recent activities
+    app.route('/api/activities')
+        .get(activities.getActivities,
+             responder.formatActivities);
 
     /* Errors */
 

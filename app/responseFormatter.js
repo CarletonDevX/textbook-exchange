@@ -329,6 +329,23 @@ exports.formatBooks = function (req, res) {
     res.json(books);
 };
 
+/* ACTIVITIES */
+
+exports.formatActivities = function(req, res) {
+    var activities = [];
+    for (var i = 0; i < req.rActivities.length; i++) {
+        var activity = req.rActivities[i];
+        var formattedActivity = {
+            'userID': activity.userID,
+            'ISBN': activity.ISBN,
+            'verb': activity.verb,
+            'when': activity.created,
+        };
+        activities.push(formattedActivity);
+    }
+    res.json(activities);
+};
+
 /* ERRORS */
 
 // This is a great function name

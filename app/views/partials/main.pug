@@ -10,17 +10,17 @@ div#search(ng-class="\
   ng-click="handleSearchPaneClick()")
 
   div#search-form
-    span#search-labels
-      label(class="pre-search" for="search") Find or list a book:
-      label(class="post-search" for="search") Results for:
+    //- span#search-labels
+    //-   label(class="pre-search" for="search") Find or list a book:
+    //-   label(class="post-search" for="search") Results for:
     input#search-box(type="text",
                      ng-model="searchInput",
                      ng-focus="resetInitSearch()",
                      ng-change="updateSearchBox();search()",
                      ng-htb-keypress="{13:'classicSearch()'}",
-                     placeholder=placeHolders[randi])
+                     placeholder='Search the exchange…')
     //- a(ui-sref="main.search({query: searchInput})") Search
-    div.loading(ng-class="searchLoading?'visible':''")
+    div.search-loading(ng-click="classicSearch()", ng-class="searchLoading?'loading':''")
 
   div#search-results(ui-view="search")
 
