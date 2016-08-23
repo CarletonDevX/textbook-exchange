@@ -18,7 +18,7 @@ div#search(ng-class="\
                      ng-focus="resetInitSearch()",
                      ng-change="updateSearchBox();search()",
                      ng-htb-keypress="{13:'classicSearch()'}",
-                     placeholder='Search the exchange...')
+                     placeholder='Search the exchange…')
     //- a(ui-sref="main.search({query: searchInput})") Search
     div.search-loading(ng-click="classicSearch()", ng-class="searchLoading?'loading':''")
 
