@@ -24,6 +24,7 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
+		type="button",
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
@@ -32,16 +33,18 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 		span.symbol ✓
 		p Offer sent
 	button.edit(
+		type="button",
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane(listing)",
 		ng-hide="removingListingID == listing.listingID") &#9998;
 	button.delete(
+		type="button",
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openRemovingListing(listing)",
 		ng-hide="removingListingID == listing.listingID")
 		i.fa.fa-trash-o(aria-hidden="true")
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListingID == listing.listingID")
 		p Did it sell?
-		button.confirm(ng-click="removeListing(listing, true)") Yes
-		button.no(ng-click="removeListing(listing, false)") No
-		button.cancel(ng-click="closeRemovingListing()") Cancel
+		button.confirm(type="button", ng-click="removeListing(listing, true)") Yes
+		button.no(type="button", ng-click="removeListing(listing, false)") No
+		button.cancel(type="button", ng-click="closeRemovingListing()") Cancel
