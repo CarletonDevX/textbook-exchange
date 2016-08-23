@@ -133,7 +133,7 @@ div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
         td(colspan="3") Watchlist
     tbody
       tr#watchlist-empty(ng-if="!watchlist.length")
-        td(colspan=3) Search for a book and click "watchlist" to make it show up here!
+        td(colspan=3) Find a book and then click "add to watchlist" to make it show up here!
       tr(ng-repeat="book in watchlist")
         td.cover-image
           a(href="book/{{book.ISBN}}")
@@ -231,7 +231,8 @@ div.listings
               span.symbol ×
               |  cancel
             div(ng-if="!listingPaneOpen && currentUser")
-              |  Search for a book to add a listing
+              a(ui-sref="main") Search
+              |  for a book to add a listing
             button.edit(type="button", ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
               span.symbol &#9998;
               |  edit my listing
