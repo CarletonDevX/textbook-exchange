@@ -1265,7 +1265,11 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     $scope.flashMessageContent = message;
     $timeout(function() {
       $scope.showFlashMessage = false;
-    }, 1800);
+    }, 3000);
+  }
+
+  $scope.closeFlash = function() {
+    $scope.showFlashMessage = false;
   }
 
   $rootScope.currentUser = null;
