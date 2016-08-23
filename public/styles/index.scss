@@ -149,7 +149,7 @@ main{
         font-weight: bold;
         border-bottom: solid 3px black;
       }
-      button.hover{
+      button:hover{
         box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2);
       }
       .stat{
