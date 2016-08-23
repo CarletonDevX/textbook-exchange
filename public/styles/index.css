@@ -296,6 +296,7 @@ header {
       color: black;
       text-decoration: none;
       margin: 10px;
+      margin-left: 5px;
       position: relative;
       font-size: 12px;
       z-index: 1;
@@ -311,7 +312,7 @@ header {
       z-index: -1;
       transition: border .2s, padding .2s, left .2s; }
     header #toolbar a:hover::before {
-      border-bottom: solid rgba(212, 167, 75, 0.29) 20px; }
+      border-bottom: solid rgba(212, 167, 75, 0.29) 18px; }
   header #main-box {
     box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
     width: 500px;
@@ -423,10 +424,6 @@ header.minimized {
   margin-bottom: 0;
   height: 100px;
   overflow: hidden; }
-
-@media (max-width: 1000px) {
-  header.minimized {
-    height: 160px; } }
 
 #account {
   text-align: center;

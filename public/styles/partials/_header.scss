@@ -17,6 +17,7 @@ header{
       color: black;
       text-decoration: none;
       margin: 10px;
+      margin-left: 5px;
       position: relative;
       font-size: 12px;
       z-index:1;
@@ -40,7 +41,7 @@ header{
 
     a:hover::before{
       // border-bottom: solid rgba(41, 255, 53,.25) 20px;
-      border-bottom: solid $link-color 20px;
+      border-bottom: solid $link-color 18px;
     }
   }
 
@@ -202,12 +203,6 @@ header.minimized{
   margin-bottom: 0;
   height: 100px;
   overflow: hidden;
-}
-
-@media (max-width: 1000px) {
-  header.minimized{
-    height: 160px;
-  }
 }
 
 
