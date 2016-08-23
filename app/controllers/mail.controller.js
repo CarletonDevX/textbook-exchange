@@ -1,5 +1,5 @@
 // For sending mail.
-var config = require('../config/config')(),
+var config = require('../config/config'),
     fs = require('fs'),
     HTBError = require('../errors').HTBError,
     mailer = require('../config/mailgun');
