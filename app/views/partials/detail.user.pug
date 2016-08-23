@@ -244,9 +244,9 @@ div.modal-wrapper(
   div.modal.offer
     h2 Make An Offer
     textarea(ng-model="offer.message")
-    button(ng-click="makeOffer()") Send Email
-    | |
-    button.cancel(ng-click="offer.active = false") Cancel
+    div.bottom-buttons
+      button(ng-click="makeOffer()") Send email
+      button.cancel(ng-click="offer.active = false") Cancel
 
 div.modal-wrapper(
   ng-class="{'visible':avatar.active}",
