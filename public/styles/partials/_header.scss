@@ -23,6 +23,7 @@ header{
       font-size: 12px;
       z-index:1;
       padding: 0 2px;
+      font-weight: normal;
     }
 
     $link-color: rgba(75, 124, 130, 0.5);
@@ -187,7 +188,8 @@ header{
 
     a.close:hover{
       cursor: pointer;
-      color: gray
+      color: gray;
+      text-decoration: none;
     }
   }
 
@@ -245,6 +247,7 @@ header.minimized{
   .close:hover{
     cursor: pointer;
     color: #047d04;
+    text-decoration: none;
   }
 
 }

@@ -132,6 +132,7 @@ div.listings{
     button:hover{
       // background-color: #eee;
       color: black;
+      box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2);
     }
   }
   table.listings{
@@ -240,6 +241,11 @@ div.listings{
 
       a.dashed{
         border-bottom: black 1px dashed;
+        font-weight: normal;
+      }
+
+      a.dashed {
+        text-decoration: none;
       }
 
       td.make-an-offer button.email,
