@@ -765,12 +765,14 @@ div.listings .tabs {
   display: flex; }
   div.listings .tabs button {
     flex-grow: 1;
+    flex-basis: 0;
     background: none;
     font-family: 'Droid Serif', Serif;
     font-size: 20px;
     padding: 10px;
     border: none;
     outline: none;
+    font-style: normal;
     font-variant: small-caps;
     transition: color .2s, font-size .2s;
     color: gray;
@@ -778,7 +780,6 @@ div.listings .tabs {
     font-size: 18px; }
   div.listings .tabs button.active {
     border-bottom: solid black 2px;
-    font-style: inherit;
     font-size: 22px;
     color: black; }
   div.listings .tabs button:hover {

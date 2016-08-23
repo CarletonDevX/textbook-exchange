@@ -107,8 +107,8 @@ div.listings{
   .tabs{
     display: flex;
     button{
-      // flex-basis: 100%;
       flex-grow: 1;
+      flex-basis: 0;
       background: none;
       font-family: 'Droid Serif', Serif;
       font-size: 20px;
@@ -116,7 +116,7 @@ div.listings{
       border: none;
       outline: none;
 
-      // font-style: italic;
+      font-style: normal;
       // font-variant: inherit;
       font-variant: small-caps;
       transition: color .2s, font-size .2s;
@@ -126,7 +126,6 @@ div.listings{
     }
     button.active{
       border-bottom: solid black 2px;
-      font-style: inherit;
       font-size: 22px;
       color: black;
     }

@@ -123,13 +123,13 @@ div#book-details
             div(ng-if="!currentUser")
               a(href, ng-click="openAccount()") log in
               |  to add a listing
-            button.cancel(ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
+            button.cancel(type="button", ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
               span.symbol ×
               |  cancel
-            button.confirm(ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
+            button.confirm(type="button", ng-if="!listingPaneOpen && currentUser && !currUserListing", ng-click="openListingPane()")
               span.symbol +
               |  add a listing
-            button.edit(ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
+            button.edit(type="button", ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
               span.symbol &#9998;
               |  edit my listing
 
