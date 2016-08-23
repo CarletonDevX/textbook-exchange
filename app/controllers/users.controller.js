@@ -1,4 +1,5 @@
-var crypto = require('crypto'),
+var config = require('../config/config'),
+    crypto = require('crypto'),
     HTBError = require('../errors').HTBError,
     MongoError = require('../errors').MongoError,
     User = require('mongoose').model('users');
@@ -25,6 +26,7 @@ exports.countUsers = function (req, res, next) {
 };
 
 var validateEmail = function (email) {
+    if (config.whitelistEmails.indexOf(email) > -1) return true;
     var re = /^([\w-]+(?:\.[\w-]+)*)@carleton.edu$/i;
     return re.test(email);
 };

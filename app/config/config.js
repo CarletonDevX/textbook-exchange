@@ -2,10 +2,13 @@
 
 var env = process.env;
 
-module.exports = function () {
+var setupConfig = function () {
     // Global settings, setup with setup-env.sh
+    var whitelist = [];
+    if (env.WHITELIST_EMAILS) whitelist = env.WHITELIST_EMAILS.split(",");
     var settings = {
         reportEmail: env.REPORT_EMAIL,
+        whitelistEmails: whitelist,
         mailgun: {
             apiKey: env.MAILGUN_KEY,
             domain: env.MAILGUN_DOMAIN,
@@ -51,3 +54,5 @@ module.exports = function () {
     }
     return settings;
 };
+
+module.exports = setupConfig();

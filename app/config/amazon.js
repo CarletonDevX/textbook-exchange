@@ -1,4 +1,4 @@
-var config = require('./config')();
+var config = require('./config');
 var AWS = require('aws-lib').createProdAdvClient(config.amazon.clientID, config.amazon.clientSecret, config.amazon.tag);
 
 exports.searchWithKeywords = function (keywords, callback) {

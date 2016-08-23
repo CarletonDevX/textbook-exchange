@@ -1,4 +1,4 @@
-var config = require('./config')(),
+var config = require('./config'),
     HTBError = require('../errors').HTBError,
     mailgun = require('mailgun-js');
 
