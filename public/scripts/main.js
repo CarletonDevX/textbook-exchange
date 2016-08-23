@@ -413,7 +413,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     $scope.flashMessage($stateParams.flash);
   }
   $scope.displayedSearch = 'books';
-  var streamSearchDelay = 200; //ms
+  var streamSearchDelay = 250; //ms
   var initSearch = false;
   angular.extend($scope, {
     searchIsSearching : $state.current.name.indexOf('search') > -1,
@@ -531,8 +531,8 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
   //the classic type-and-hit-[enter] search
   $scope.classicSearch = function() {
-    if (!initSearch && $scope.searchInput) {
-      $state.go('main.search',{query:$scope.searchInput});
+    if ($scope.searchInput) {
+      $state.go('main.search',{query:$scope.searchInput}, {reload: true});
     }
   }
 

@@ -1,5 +1,11 @@
 header(ng-controller="headerController")
   div#main-box
+    nav#toolbar
+      a(ng-click="modalStates.about = true") About
+      a(ng-click="openAccount()" ng-if="currentUser") {{ currentUser.name.givenName }}
+      a(ng-click="openAccountSignin()" ng-if="!currentUser") Sign In
+      a(ng-click="openAccountRegister()" ng-if="!currentUser") Register
+      a(ng-click="logout()" ng-if="currentUser") Log Out
     a#wordmark-link(ng-click="headerClick()")
       //-  ui-sref-opts="{reload: true}" to forget prev search
       h1#wordmark
@@ -17,11 +23,5 @@ header(ng-controller="headerController")
     | By Carls for Carls.
     a(href="" class="toAbout", ng-click="modalStates.about = true") Learn more...
     a(class="close", ng-click="modalStates.blurb = false") ×
-  div#sub-box
-    a(ng-click="modalStates.about = true") About
-    a(ng-click="openAccount()" ng-if="currentUser") {{ currentUser.name.givenName }}
-    a(ng-click="openAccountSignin()" ng-if="!currentUser") Sign In
-    a(ng-click="openAccountRegister()" ng-if="!currentUser") Register
-    a(ng-click="logout()" ng-if="currentUser") Log Out
 
   include modals
