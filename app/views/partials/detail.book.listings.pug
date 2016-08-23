@@ -37,6 +37,7 @@ td.make-an-offer(ng-if="!listing.isAmazonListing", ng-class="(currentUser && off
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
+		type="button", 
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
@@ -45,18 +46,20 @@ td.make-an-offer(ng-if="!listing.isAmazonListing", ng-class="(currentUser && off
 		span.symbol ✓
 		p Offer sent
 	button.edit(
+		type="button", 
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane()",
 		ng-hide="removingListing") &#9998;
 	button.delete(
+		type="button", 
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openRemovingListing()",
 		ng-hide="removingListing")
 		i.fa.fa-trash-o(aria-hidden="true")
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
 		p Did it sell?
-		button.confirm(ng-click="removeListing(listing, true)") yes
-		button.no(ng-click="removeListing(listing, false)") no
-		button.cancel(ng-click="closeRemovingListing()") cancel
+		button.confirm(type="button", ng-click="removeListing(listing, true)") yes
+		button.no(type="button", ng-click="removeListing(listing, false)") no
+		button.cancel(type="button", ng-click="closeRemovingListing()") cancel
 td.make-an-offer(ng-if="listing.isAmazonListing")
 	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon
