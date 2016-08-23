@@ -47,7 +47,7 @@ div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
     tbody
       tr
         td
-          label(for="undercut-box") Someone undercuts one of my listings
+          label(for="undercut-box") Someone undercuts one of my prices
         td
           input(
             id="undercut-box",
@@ -57,7 +57,7 @@ div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
             ng-change="handleEmailSettingChange('undercutbox')" )
       tr
         td
-          label(for= "watchlist-box") There's activity on a book on my watchlist
+          label(for= "watchlist-box") Someone lists a book on my watchlist
         td
           input(
             id="watchlist-box",
@@ -122,9 +122,9 @@ div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
             button.submit(type="submit", ng-disabled="disabledComponents.pwChanging") Submit
 
   p#account-links
-    a.logout(href, ng-click="logout()") Log out
+    a.logout(href, ng-click="logout()") Log Out
     |  
-    a.delete(href, ng-click="deleteAccount()") Delete my account...
+    a.delete(href, ng-click="deleteAccount()") Delete My Account...
 
 div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
   table.watchlist.info-table
@@ -143,12 +143,12 @@ div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
         td
           button.cancel(ng-click="unsubscribe(book.ISBN)")
             i.fa.fa-trash-o(aria-hidden="true")
-    tfoot
+    tfoot(ng-if="watchlist.length")
       tr
         td(colspan="3")
           button.cancel(ng-click="clearWatchlist()")
             i.fa.fa-trash-o(aria-hidden="true")
-            |  Unwatch all
+            |  Unwatch All
 
 
 div.listings
@@ -222,29 +222,29 @@ div.listings
             td.confirm.quality
               button.confirm(type="submit")
                 span.symbol ✓
-                | update!
+                | Update!
           tr.add-listing: td(colspan="5")
             div(ng-if="!currentUser")
-              a(href, ng-click="openAccount()") log in
+              a(href, ng-click="openAccount()") Sign in
               |  to add a listing
             button.cancel(type="button", ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
               span.symbol ×
-              |  cancel
+              |  Cancel
             div(ng-if="!listingPaneOpen && currentUser")
-              a(ui-sref="main") Search
-              |  for a book to add a listing
+              a(ui-sref="main") Search for a book
+              |  to add a listing
             button.edit(type="button", ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
               span.symbol &#9998;
-              |  edit my listing
+              |  Edit Listing
 
 div.modal-wrapper(
   ng-class="{'visible':offer.active}",
   ng-htb-self-mousedown="offer.active = false"
   )
   div.modal.offer
-    h2 Make an offer
+    h2 Make An Offer
     textarea(ng-model="offer.message")
-    button(ng-click="makeOffer()") Send email
+    button(ng-click="makeOffer()") Send Email
     | |
     button.cancel(ng-click="offer.active = false") Cancel
 
@@ -270,7 +270,7 @@ div.modal-wrapper(
       //- div
       //-   img(ng-src="{{avatar.croppedImage}}")
       div.button-container
-        button(ngf-select, ng-model="avatar.picFile", accept="image/*") Select picture
+        button(ngf-select, ng-model="avatar.picFile", accept="image/*") Select Picture
         button.confirm(
           ng-if="avatar.picFile",
           ng-click="upload(avatar.croppedImage, avatar.picFile.name)"

@@ -21,17 +21,17 @@ td
 
 td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
 	p(ng-if="!currentUser")
-		a(href, ng-click="openAccount()") log in
+		a(href, ng-click="openAccount()") Sign in
 		|  to make an offer
 	button.confirm.email(
 		type="button",
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-		p Make an offer
+		p Make An Offer
 	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
 		span.symbol ✓
-		p Offer sent
+		p Offer Sent
 	button.edit(
 		type="button",
 		ng-if="listing.userID == currentUser.userID",
