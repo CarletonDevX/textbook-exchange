@@ -184,6 +184,17 @@ table button:focus {
 .tooltip-left.tooltip-active::before {
   right: 50%; }
 
+a {
+  font-weight: bold;
+  text-decoration: none;
+  color: black; }
+
+a:hover {
+  text-decoration: underline; }
+
+a:active {
+  color: gray; }
+
 label, .label {
   font-family: 'Droid Serif';
   font-style: italic; }
@@ -264,6 +275,7 @@ input[type="number"]:disabled {
   color: lightgray; }
 
 textarea {
+  display: block;
   margin: 0px;
   width: 100%;
   box-sizing: border-box;
@@ -286,7 +298,8 @@ textarea:focus {
 header {
   transition: height .2s;
   padding-bottom: 15px;
-  overflow: hidden; }
+  overflow: hidden;
+  margin-top: 25px; }
   header #blurb {
     box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.2); }
   header #toolbar {
@@ -300,7 +313,8 @@ header {
       position: relative;
       font-size: 12px;
       z-index: 1;
-      padding: 0 2px; }
+      padding: 0 2px;
+      font-weight: normal; }
     header #toolbar a::before {
       content: '';
       position: absolute;
@@ -308,15 +322,15 @@ header {
       height: 100%;
       bottom: -2px;
       left: 0;
-      border-bottom: solid rgba(212, 167, 75, 0.29) 3px;
+      border-bottom: solid rgba(75, 124, 130, 0.5) 3px;
       z-index: -1;
       transition: border .2s, padding .2s, left .2s; }
     header #toolbar a:hover::before {
-      border-bottom: solid rgba(212, 167, 75, 0.29) 18px; }
+      border-bottom: solid rgba(75, 124, 130, 0.5) 18px; }
   header #main-box {
     box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.2);
     width: 500px;
-    margin: 25px auto 0 auto;
+    margin: 0 auto;
     background-color: white; }
     header #main-box #wordmark-link {
       text-decoration: none;
@@ -395,7 +409,9 @@ header {
     transition: width .2s, height .2s, padding .2s, opacity .2s, margin .2s; }
     header #blurb a.toAbout {
       color: #888;
-      margin-left: 5px; }
+      margin-left: 5px;
+      font-weight: normal;
+      text-decoration: underline; }
     header #blurb a.toAbout:hover {
       color: #555; }
     header #blurb a.close {
@@ -411,7 +427,8 @@ header {
       font-family: "Times New Roman", Serif; }
     header #blurb a.close:hover {
       cursor: pointer;
-      color: gray; }
+      color: gray;
+      text-decoration: none; }
   header #blurb.hidden {
     width: 0px;
     height: 0px;
@@ -424,6 +441,44 @@ header.minimized {
   margin-bottom: 0;
   height: 100px;
   overflow: hidden; }
+
+#flash-message {
+  width: 480px;
+  position: relative;
+  line-height: 30px;
+  color: #047d04;
+  text-align: center;
+  margin: 0 auto;
+  opacity: 1;
+  background-color: #9ffb8f;
+  font-style: italic;
+  border-radius: 2px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 0px;
+  transition: all .5s;
+  overflow: hidden; }
+  #flash-message p {
+    position: relative;
+    margin: 0;
+    font-size: 14px; }
+  #flash-message .close {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 29px;
+    color: #50b14a;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    font-family: "Times New Roman", Serif; }
+  #flash-message .close:hover {
+    cursor: pointer;
+    color: #047d04;
+    text-decoration: none; }
+
+#flash-message.visible {
+  height: 30px; }
 
 #account {
   text-align: center;
@@ -490,6 +545,8 @@ main #search {
     main #search #search-results .tabs button.active {
       font-weight: bold;
       border-bottom: solid 3px black; }
+    main #search #search-results .tabs button:hover {
+      box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2); }
     main #search #search-results .tabs .stat {
       margin-left: 20px; }
   main #search #search-results ul {
@@ -641,23 +698,6 @@ main #detail-wrapper.maximized {
     width: 570px;
     box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3); }
 
-#flash-message {
-  width: 500px;
-  height: 3em;
-  line-height: 3em;
-  color: #047d04;
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 10px;
-  opacity: .8;
-  background-color: rgba(41, 255, 53, 0.25);
-  box-shadow: 0 2px 10px 5px rgba(33, 164, 22, 0.2);
-  font-style: italic;
-  transition: all 1s linear; }
-
-#flash-message.ng-hide {
-  opacity: 0; }
-
 .hyphenate {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -780,7 +820,8 @@ div.listings .tabs {
     font-size: 22px;
     color: black; }
   div.listings .tabs button:hover {
-    color: black; }
+    color: black;
+    box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2); }
 
 div.listings table.listings {
   width: 100%;
@@ -861,7 +902,10 @@ div.listings table.listings {
     div.listings table.listings tbody tbody:last-child td, div.listings table.listings tfoot tbody:last-child td {
       border-bottom: 1px #ccc; }
     div.listings table.listings tbody a.dashed, div.listings table.listings tfoot a.dashed {
-      border-bottom: black 1px dashed; }
+      border-bottom: black 1px dashed;
+      font-weight: normal; }
+    div.listings table.listings tbody a.dashed, div.listings table.listings tfoot a.dashed {
+      text-decoration: none; }
     div.listings table.listings tbody td.make-an-offer button.email,
     div.listings table.listings tbody td.confirm button.confirm, div.listings table.listings tfoot td.make-an-offer button.email,
     div.listings table.listings tfoot td.confirm button.confirm {
@@ -1207,11 +1251,24 @@ form.about small {
     .modal-wrapper.visible .modal h2 {
       border-bottom: solid black 2px;
       padding-bottom: 10px; }
-  .modal-wrapper.visible .modal.offer textarea {
-    width: 100%;
-    height: 150px;
-    resize: vertical;
-    font-family: Monospace; }
+    .modal-wrapper.visible .modal textarea {
+      width: 100%;
+      height: 150px;
+      resize: vertical;
+      border-bottom-right-radius: 0;
+      font-family: Monospace;
+      border: solid 1px #cecece; }
+
+.modal .bottom-buttons {
+  display: flex;
+  justify-content: flex-end; }
+  .modal .bottom-buttons button {
+    border: 1px solid #cecece;
+    border-top: none;
+    border-right: none;
+    padding: 10px; }
+  .modal .bottom-buttons button:last-child {
+    border-right: solid 1px #cecece; }
 
 #account-wrapper table {
   width: 100%; }
@@ -1223,6 +1280,3 @@ form.about small {
 #account-wrapper .alert td {
   padding: 10px;
   text-align: center; }
-
-#contact-wrapper button {
-  padding: 20px; }

@@ -2,6 +2,19 @@ $disabled-color: black;
 $disabled-opacity: .3;
 $disabled-rgba:rgba(0,0,0,.3);
 
+a{
+  font-weight: bold;
+  text-decoration: none;
+  color: black
+}
+a:hover{
+  text-decoration: underline;
+}
+
+a:active{
+  color: gray;
+}
+
 label, .label{
   font-family: 'Droid Serif';
   // text-transform: lowercase;
@@ -82,6 +95,7 @@ input[type="number"]:disabled{
 }
 
 textarea{
+  display: block;
   margin: 0px; 
   width: 100%;
   box-sizing: border-box;
