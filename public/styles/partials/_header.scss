@@ -20,7 +20,10 @@ header{
       position: relative;
       font-size: 12px;
       z-index:1;
+      padding: 0 2px;
     }
+
+    $link-color: rgba(212, 167, 75, 0.29);
 
     a::before {
       content: '';
@@ -30,16 +33,14 @@ header{
       bottom:-2px;
       left:0;
       // border-bottom: solid rgba(41, 255, 53,.25) 3px;
-      border-bottom: solid rgba(46, 84, 107, 0.48) 3px;
+      border-bottom: solid $link-color 3px;
       z-index: -1;
       transition: border .2s, padding .2s, left .2s;
     }
 
     a:hover::before{
       // border-bottom: solid rgba(41, 255, 53,.25) 20px;
-      border-bottom: solid rgba(46, 84, 107, 0.48) 20px;
-      padding:6px;
-      left:-6px;
+      border-bottom: solid $link-color 20px;
     }
   }
 
