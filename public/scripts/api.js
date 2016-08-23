@@ -18,6 +18,10 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
                 });
         },
+        getActivities: function() {
+            //WORKING: add
+            return
+        },
         getUser: function (userID) {
             return $http.get('/api/user/'+userID).then(
                 function (res) {

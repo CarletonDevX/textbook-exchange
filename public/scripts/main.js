@@ -109,6 +109,12 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       url: '/?flash',
       sticky: true,
       // deepStateRedirect: true,
+      // resolve : {
+      //   activity: function(Api) {
+      //     //WORKING: add
+      //     return 1
+      //   }
+      // },
       views:{
         'main' : {
           templateUrl: '/partials/main',
