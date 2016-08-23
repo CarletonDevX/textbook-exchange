@@ -409,7 +409,9 @@ header {
     transition: width .2s, height .2s, padding .2s, opacity .2s, margin .2s; }
     header #blurb a.toAbout {
       color: #888;
-      margin-left: 5px; }
+      margin-left: 5px;
+      font-weight: normal;
+      text-decoration: underline; }
     header #blurb a.toAbout:hover {
       color: #555; }
     header #blurb a.close {
