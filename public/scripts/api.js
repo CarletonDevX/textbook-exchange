@@ -55,7 +55,12 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                 function (res) {
                     return res.data;
                 }, function(err) { return err }
-            );
+            ).then(function(result) {
+              if (result.status && result.status == 401) {
+                result = [];
+              }
+              return result;
+            });
         },
         addToWatchlist: function (isbn) {
             return $http.post('/api/subscriptions/add/'+isbn).then(
@@ -81,7 +86,6 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
         getListings: function(isbn) {
             return $http.get('/api/listings/book/'+isbn)
                 .then( function (res) {
-                    console.log(res);
                     return res.data;
                 })
         },
@@ -110,11 +114,23 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     return res.data;
                 });
         },
+        getOffers: function() {
+            return $http.get('/api/offers').then(
+                function (res) {
+                    return res.data;
+                }, function(err) { return err }
+            ).then(function(result) {
+              if (result.status && result.status == 401) {
+                result = [];
+              }
+              return result;
+            });
+        },
         makeOffer: function(listingID, msg) {
             var data = {
                 message: msg
             }
-            return $http.post('/api/listings/offer/'+listingID, data)
+            return $http.post('/api/offers/'+listingID, data)
                 .then( function (res) {
                     return res.data;
                 });
@@ -128,6 +144,13 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
         },
         search: function (query) {
             return $http.get('/api/search?query='+query).then(
+                function (res) {
+                    return res.data;
+                }
+            );
+        },
+        searchUser: function (query) {
+            return $http.get('/api/searchUser?query='+query).then(
                 function (res) {
                     return res.data;
                 }

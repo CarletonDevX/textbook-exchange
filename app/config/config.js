@@ -24,7 +24,7 @@ module.exports = function () {
     };
     if (!settings.reportEmail) {
         throw Error('Must set env variables!');
-    };
+    }
     switch (env.NODE_ENV) {
     case 'development':
         settings.port = env.PORT || 1337;

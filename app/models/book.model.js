@@ -10,7 +10,6 @@ var Book = new Schema({
     publishDate: String,
     publisher: String,
     description: String,
-    subscribers: [],
     amazonInfo: {
         id: { type: String, required: true },
         url: { type: String, required: true },
