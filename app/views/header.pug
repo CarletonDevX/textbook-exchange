@@ -1,4 +1,8 @@
 header(ng-controller="headerController")
+  div#flash-message(ng-class="{'visible':showFlashMessage}")
+    p {{ flashMessageContent }}
+    a(class="close", ng-click="closeFlash()") ×
+
   div#main-box
     nav#toolbar
       a(ng-click="modalStates.about = true") About

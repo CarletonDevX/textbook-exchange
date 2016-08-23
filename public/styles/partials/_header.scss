@@ -3,6 +3,7 @@ header{
   $init-top-margin: 25px;
   padding-bottom: $pane-spacing;
   overflow: hidden;
+  margin-top: $init-top-margin;
 
   #blurb{
     box-shadow: 0px 1px 4px 1px rgba(0,0,0,.2);
@@ -49,7 +50,7 @@ header{
   #main-box{
     box-shadow: 0 3px 7px 0 rgba(0,0,0,.2);
     width: 500px;
-    margin: $init-top-margin auto 0 auto;
+    margin: 0 auto;
     background-color: white;
 
     #wordmark-link{
@@ -205,6 +206,51 @@ header.minimized{
   overflow: hidden;
 }
 
+
+#flash-message {
+  width: 480px;
+  position: relative;
+  line-height: 30px;
+  color: #047d04;
+  text-align: center;
+  margin: 0 auto;
+  opacity: 1;
+  background-color: rgb(159, 251, 143);
+  font-style: italic;
+  border-radius: 2px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 0px;
+  // height: 30px;
+  transition: all .5s;
+  overflow: hidden;
+  p{
+    position: relative;
+    margin: 0;
+    font-size: 14px;
+  }
+  .close{
+    position: absolute;
+    right: 5px;
+    top: 0;
+    font-size: 29px;
+    color: #50b14a;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    font-family: "Times New Roman", Serif;
+  }
+
+  .close:hover{
+    cursor: pointer;
+    color: #047d04;
+  }
+
+}
+
+#flash-message.visible {
+  height: 30px;
+}
 
 
 

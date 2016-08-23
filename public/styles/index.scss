@@ -356,25 +356,6 @@ main{
   }
 }
 
-#flash-message {
-  width: 500px;
-  height: 3em;
-  line-height: 3em;
-  color: #047d04;
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 10px;
-  opacity: .8;
-  background-color: rgba(41, 255, 53, 0.25);
-  box-shadow: 0 2px 10px 5px rgba(33,164,22, .2);
-  font-style: italic;
-  transition: all 1s linear;
-}
-
-#flash-message.ng-hide {
-  opacity: 0;
-}
-
 .hyphenate {
   overflow-wrap: break-word;
   word-wrap: break-word;
