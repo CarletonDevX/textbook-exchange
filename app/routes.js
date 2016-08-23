@@ -2,13 +2,14 @@ var activities = require('./controllers/activities.controller'),
     avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
     handlers = require('./errors'),
-    HTBError = handlers.HTBError,
     inject = require('./injectors'),
     listings = require('./controllers/listings.controller'),
     mail = require('./controllers/mail.controller'),
     offers = require('./controllers/offers.controller'),
     passport = require('passport'),
+    reports = require('./controllers/reports.controller'),
     responder = require('./responseFormatter'),
+    subscriptions = require('./controllers/subscriptions.controller'),
     users = require('./controllers/users.controller');
 
 var authenticate = function (req, res, next) {
@@ -23,7 +24,7 @@ exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
     app.route('/*')
-        .get(users.countUsers,          // TODO: Should we cache this stuff?
+        .get(users.countUsers,
              listings.countOpenListings,
              listings.countCompletedListings,
              function (req, res) {
@@ -69,23 +70,11 @@ exports.setup = function (app) {
 
     // Login
     app.route('/api/login')
-        .post(
-            // TODO: Can we put this somewhere else? -dp
-            function (req, res, next) {
-                passport.authenticate('local', function (err, user) {
-                    if (err) return next(new HTBError(500, err.message));
-                    if (!user) return next(new HTBError(401, 'Incorrect email or password'));
-                    if (!user.verified) next(new HTBError(400, 'User is not verified'));
-                    req.login(user, function (err) {
-                        if (err) return next(new HTBError(500, 'Login failed.'));
-                        next();
-                    });  
-                })(req, res, next);
-            },
-            users.getCurrentUser,
-            listings.getUserListings,
-            inject.BooksIntoListings,
-            responder.formatCurrentUser
+        .post(passport.attemptLogin,
+             users.getCurrentUser,
+             listings.getUserListings,
+             inject.BooksIntoListings,
+             responder.formatCurrentUser
         );
 
     // Logout
@@ -196,7 +185,7 @@ exports.setup = function (app) {
     app.route('/api/report/:userID')
         .post(authenticate,
              users.getUser,
-             users.reportUser,
+             reports.create,
              responder.successReport);
 
     /* Subscriptions */
@@ -205,6 +194,27 @@ exports.setup = function (app) {
     app.route('/api/subscriptions')
         .get(authenticate,
              users.getCurrentUser,
+             subscriptions.getUserSubscriptions,
+             books.getSubscriptionBooks,
+             responder.formatBooks);
+
+    // Subscribe current user to book with book ID
+    app.route('/api/subscriptions/add/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             subscriptions.add,
+             subscriptions.getUserSubscriptions,
+             books.getSubscriptionBooks,
+             responder.formatBooks);
+
+    // Unsubscribe current user from book with book ID
+    app.route('/api/subscriptions/remove/:ISBN')
+        .post(authenticate,
+             users.getCurrentUser,
+             books.getBook,
+             subscriptions.remove,
+             subscriptions.getUserSubscriptions,
              books.getSubscriptionBooks,
              responder.formatBooks);
 
@@ -212,26 +222,8 @@ exports.setup = function (app) {
     app.route('/api/subscriptions/clear')
         .post(authenticate,
              users.getCurrentUser,
-             users.clearUserSubscriptions,
+             subscriptions.clearUserSubscriptions,
              responder.successClearSubscriptions);
-
-    // Subscribe current user to book with book ID
-    app.route('/api/subscriptions/add/:ISBN')
-        .post(authenticate,
-             users.getCurrentUser,
-             books.getBook,
-             books.subscribe,
-             users.subscribe,
-             responder.formatSubscriptions);
-
-    // Unsubscribe current user from book with book ID
-    app.route('/api/subscriptions/remove/:ISBN')
-        .post(authenticate,
-             users.getCurrentUser,
-             books.getBook,
-             books.unsubscribe,
-             users.unsubscribe,
-             responder.formatSubscriptions);
 
     /* Listings */
 
@@ -244,9 +236,6 @@ exports.setup = function (app) {
              responder.formatUserListings);
 
     // Add listing with book ID
-    // TODO: might it be slow if we
-    // send out all the emails before
-    // we respond to the user?
     app.route('/api/listings/add/:ISBN')
         .post(authenticate,
              users.getCurrentUser,
@@ -254,7 +243,8 @@ exports.setup = function (app) {
              books.getBook,
              listings.createListing,
              activities.createListActivity,
-             users.getSubscribers,
+             subscriptions.getBookSubscriptions,
+             users.getSubscriptionUsers,
              mail.sendSubscribersEmail,
              listings.getUndercutListings,
              users.getUndercutUsers,
@@ -295,8 +285,17 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
+    /* OFFERS */
+
+    // Get offers for current user
+    app.route('/api/offers')
+        .get(authenticate, 
+            users.getCurrentUser,
+            offers.getOffersForUser,
+            responder.formatOffers);
+
     // Get previous offer on a listing
-    app.route('/api/listings/offer/:listingID')
+    app.route('/api/offers/:listingID')
         .get(authenticate,
              users.getCurrentUser,
              listings.getListing,
@@ -309,8 +308,7 @@ exports.setup = function (app) {
               listings.getListing,
               inject.BooksIntoListings, // necessary for the email
               inject.UsersIntoListings, // -----------------------
-              offers.makeOffer,
-              users.makeOffer,
+              offers.create,
               mail.sendOfferEmail,
               responder.formatOffer);
 
@@ -344,7 +342,12 @@ exports.setup = function (app) {
     // Search
     app.route('/api/search')
         .get(books.search,
+             inject.ListingsIntoBooks,
              responder.formatBooks);
+
+    app.route('/api/searchUser')
+        .get(users.search,
+             responder.formatUsers);
 
     /* Activities */
 

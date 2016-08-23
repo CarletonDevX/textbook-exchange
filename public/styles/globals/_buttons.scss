@@ -46,19 +46,20 @@ table button:focus{
     box-shadow: inset 0px 0px 7px 0px rgba(0, 0, 0,.4);
 }
 
-.tooltip{
+.tooltip, .tooltip-left{
   position: relative;
 }
 
 .tooltip:hover::after,
-.tooltip.tooltip-active::after{
+.tooltip.tooltip-active::after,
+.tooltip-left:hover::after,
+.tooltip-left.tooltip-active::after{
     background: #333;
     background: rgba(0,0,0,.8);
     // border-radius: 5px;
     bottom: 26px;
     color: #fff;
     content: attr(title);
-    left: 20%;
     padding: 5px 15px;
     position: absolute;
     z-index: 98;
@@ -66,13 +67,36 @@ table button:focus{
 }
 
 .tooltip:hover::before,
-.tooltip.tooltip-active::before{
+.tooltip.tooltip-active::before,
+.tooltip-left:hover::before,
+.tooltip-left.tooltip-active::before{
     border: solid;
     border-color: #333 transparent;
     border-width: 6px 6px 0 6px;
     bottom: 20px;
     content: "";
-    left: 50%;
     position: absolute;
     z-index: 99;
+}
+
+.tooltip:hover::after,
+.tooltip.tooltip-active::after{
+    left: 20%;
+
+}
+
+.tooltip:hover::before,
+.tooltip.tooltip-active::before{
+    left: 50%;
+}
+
+.tooltip-left:hover::after,
+.tooltip-left.tooltip-active::after{
+    right: 20%;
+
+}
+
+.tooltip-left:hover::before,
+.tooltip-left.tooltip-active::before{
+    right: 50%;
 }

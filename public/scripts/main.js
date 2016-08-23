@@ -95,11 +95,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('account', { url: '/account',
       views:{'account' : {
           templateUrl: '/partials/account',
-          controller: 'accountController' }}
+          controller: 'accountController' }
+      }
     })
-    .state('account.access', { url: '/access',
-      templateUrl : '/partials/account.access',
-      controller  : 'accountAccessController'
+    .state('account.signin', { url: '/signin',
+      templateUrl : '/partials/account.signin',
+      controller  : 'accountSigninController'
+    })
+    .state('account.register', { url: '/register',
+      templateUrl : '/partials/account.register',
+      controller  : 'accountRegisterController'
     })
     .state('account.details', { url : '/dash',
       templateUrl : '/partials/account.details',
@@ -125,9 +130,16 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
     .state('main.search',{
       resolve : {
         //get results of search from server
-        results: function(Api, $stateParams, $q) {
+        bookResults: function(Api, $stateParams, $q) {
           if ($stateParams.query) {
             return Api.search($stateParams.query);
+          } else {
+            return $q.resolve(null);
+          }
+        },
+        userResults: function(Api, $stateParams, $q) {
+          if ($stateParams.query) {
+            return Api.searchUser($stateParams.query);
           } else {
             return $q.resolve(null);
           }
@@ -161,6 +173,12 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       resolve : {
         bookInfo: function(Api, $stateParams) {
           return Api.getBook($stateParams.isbn);
+        },
+        watchlist: function(Api) {
+          return Api.getWatchlist();
+        },
+        offers: function(Api) {
+          return Api.getOffers();
         }
       },
       url : 'book/:isbn',
@@ -173,18 +191,13 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
         userInfo: function(Api, $stateParams) {
           return Api.getUser($stateParams.userID);
         },
-        //rootscope works mostly, unless you're landing on your own userpage
-        watchlist: function(Api, $stateParams) {
-          /* do this instead */
-          return Api.getWatchlist()
-            .then(function(result) {
-              if (result.status && result.status == 401) {
-                result = [];
-              }
-              return result
-            });
-        } 
-      },  
+        watchlist: function(Api) {
+          return Api.getWatchlist();
+        },
+        offers: function(Api) {
+          return Api.getOffers();
+        }
+      },
       templateUrl : '/partials/detail.user',
       controller  : 'userPageController'
     })
@@ -220,12 +233,23 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
   }
 
   $rootScope.openAccount = function(){
-    if ($scope.currentUser){
+    if ($scope.currentUser) {
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-    } else $state.go('account.access');
+    } else {
+      $state.go('account.signin');
+    }
     $previousState.memo('accountEntryPoint');
   }
 
+  $rootScope.openAccountSignin = function() {
+    $state.go('account.signin');
+    $previousState.memo('accountEntryPoint');
+  }
+
+  $rootScope.openAccountRegister = function() {
+    $state.go('account.register');
+    $previousState.memo('accountEntryPoint');
+  }
   //transists for header
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
@@ -243,10 +267,12 @@ hitsTheBooks.controller('headerController', function($scope, $rootScope, $state,
 
 hitsTheBooks.controller('accountController', function($scope, $previousState, $state) {
   //redirect to view depending on user state
-  if ($scope.currentUser) {
-    $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-  } else {
-    $state.go('account.access')
+  if ($state.current.name == "account") {
+    if ($scope.currentUser) {
+      $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
+    } else {
+      $state.go('account.signin');
+    }
   }
 
   $scope.closeAccount = function(){
@@ -261,131 +287,132 @@ hitsTheBooks.controller('accountController', function($scope, $previousState, $s
 hitsTheBooks.controller('accountDetailsController', function($scope, $rootScope, $state, $previousState) {
     if ($scope.currentUser){
       $state.go('main.detail.user', {userID: $scope.currentUser.userID} );
-    } else $state.go('account.access');
+    } else $state.go('account.signin');
     $previousState.memo('accountEntryPoint');
 });
 
-hitsTheBooks.controller('accountAccessController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('accountSigninController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+    $scope.SignInAlert = {
+      NONE : 0,
+      INCORRECT_INFO : 1,
+      UNVERIFIED : 2,
+      SERVER_ERROR : 3,
+      RESEND_RESET_ALERT : 4
+    };
+    // Login
+    $scope.loginData = { username: '', password: '' };
+    $scope.signinAlert = $scope.SignInAlert.NONE;
+    $scope.login = function (loginData) {
+      Api.login(loginData).then(function (res) {
+        switch (res.status) {
+          case 401:
+            $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+          default:
+            $rootScope.currentUser = res;
+            $scope.closeAccount();
+            $scope.signinAlert = $scope.SignInAlert.NONE;
+            break;
+        }
+      });
+    };
 
-  $scope.SignInAlert = {
-    NONE : 0,
-    INCORRECT_INFO : 1,
-    UNVERIFIED : 2,
-    SERVER_ERROR : 3,
-    RESEND_RESET_ALERT : 4
-  };
-  $scope.RegisterAlert = {
-    NONE : 0,
-    INVALID_INFO : 1,
-    SERVER_ERROR : 2,
-    SUCCESS : 3
-  };
-
-  // Login
-  $scope.loginData = { username: '', password: '' };
-  $scope.signinAlert = $scope.SignInAlert.NONE;
-  $scope.login = function (loginData) {
-    Api.login(loginData).then(function (res) {
-      switch (res.status) {
-        case 401:
-          $scope.signinAlert = $scope.SignInAlert.INCORRECT_INFO;
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.UNVERIFIED;
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
-        default:
-          $rootScope.currentUser = res;
-          $scope.closeAccount();
-          $scope.signinAlert = $scope.SignInAlert.NONE;
-          break;
-      }
-    });
-  };
-
-  // Registration
-  $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
-  $scope.possibleYears = [2015, 2016, 2017, 2018, 2019, 2020];
-  $scope.registerAlert = $scope.RegisterAlert.NONE;
-  $scope.registrationError = "";
-  $scope.validatePw = function() {
-    if ($scope.registerData.password == $scope.regPwRepeat) {
-      document.getElementById('pw-repeat').setCustomValidity('');
-    } else {
-      document.getElementById('pw-repeat').setCustomValidity('Must match the previous field');
+    $scope.requestPasswordReset = function() {
+      Api.requestPasswordReset($scope.loginData.username).then(function(res) {
+        switch (res.status) {
+          case 200:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "Password reset submitted. Please check your email for the next step.";
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data.errors[0];
+            break;
+          case 404:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "User not found";
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+        }
+      });
     }
-  }
-  $scope.register = function (registerData) {
-    Api.register(registerData).then(function(res) {
-      switch (res.status) {
-        case 400:
-          $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
-          $scope.registrationError = res.data;
-          break;
-        case 500:
-        case 0:
-          $scope.registerAlert = $scope.RegisterAlert.SERVER_ERROR;
-          break;
-        default:
-          $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
-          $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
-          break;
-      }
-    });
-  };
 
-  $scope.requestPasswordReset = function() {
-    Api.requestPasswordReset($scope.loginData.username).then(function(res) {
-      switch (res.status) {
-        case 200:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "Password reset submitted. Please check your email for the next step.";
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data.errors[0];
-          break;
-        case 404:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "User not found";
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
-      }
-    });
+    $scope.resendVerification = function() {
+      Api.resendVerificationEmail($scope.loginData.username).then(function(res) {
+        switch (res.status) {
+          case 200:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data;
+            break;
+          case 400:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = res.data.errors[0];
+            break;
+          case 404:
+            $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
+            $scope.resendResetAlert = "User not found.";
+            break;
+          case 500:
+            $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
+            break;
+        }
+      });
+    }
+});
 
-  }
+hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope, $state, Api, AUTH_EVENTS) {
+    $scope.RegisterAlert = {
+      NONE : 0,
+      INVALID_INFO : 1,
+      SERVER_ERROR : 2,
+      SUCCESS : 3
+    };
 
-  $scope.resendVerification = function() {
-    Api.resendVerificationEmail($scope.loginData.username).then(function(res) {
-      switch (res.status) {
-        case 200:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data;
-          break;
-        case 400:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = res.data.errors[0];
-          break;
-        case 404:
-          $scope.signinAlert = $scope.SignInAlert.RESEND_RESET_ALERT;
-          $scope.resendResetAlert = "User not found.";
-          break;
-        case 500:
-          $scope.signinAlert = $scope.SignInAlert.SERVER_ERROR;
-          break;
+    // Registration
+    $scope.registerData = { username: '', password: '', givenName: '', familyName: '', gradYear: '' }
+    $scope.registerAlert = $scope.RegisterAlert.NONE;
+    $scope.registrationError = "";
+    $scope.validatePw = function() {
+      if ($scope.registerData.password == $scope.regPwRepeat) {
+        document.getElementById('pw-repeat').setCustomValidity('');
+      } else {
+        document.getElementById('pw-repeat').setCustomValidity('Must match the previous field');
       }
-    });
-  }
+    }
+    $scope.register = function (registerData) {
+      Api.register(registerData).then(function(res) {
+        switch (res.status) {
+          case 400:
+            $scope.registerAlert = $scope.RegisterAlert.INVALID_INFO;
+            $scope.registrationError = res.data;
+            break;
+          case 500:
+          case 0:
+            $scope.registerAlert = $scope.RegisterAlert.SERVER_ERROR;
+            break;
+          default:
+            $scope.registerData = { username: '', password: '', givenName: '', familyName: '' }
+            $scope.regPwRepeat = "";
+            $scope.registerAlert = $scope.RegisterAlert.SUCCESS;
+            break;
+        }
+      });
+    };
 });
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
+  $scope.displayedSearch = 'books';
   var streamSearchDelay = 200; //ms
   var initSearch = false;
   angular.extend($scope, {
@@ -437,8 +464,8 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
     var $sr = $('#search-results');
 
-    if (fromState.name == "main.search" && 
-        toState.name !== "main.search" && 
+    if (fromState.name == "main.search" &&
+        toState.name !== "main.search" &&
         toState.name.indexOf('account') == -1) {
       $sr.transist({'add':['minimized']},['height'],200);
       $scope.searchIsSearching = false;
@@ -451,7 +478,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
       $scope.searchIsSearching = true;
       $scope.searchLoading = true;
     } else {
-      // $scope.searchIsSearching = false; 
+      // $scope.searchIsSearching = false;
     }
   });
 
@@ -465,8 +492,8 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     if (toState.name == "main.search") {
       $scope.searchLoading = false;
     }
-    if (toState.name.indexOf('main.detail') > -1 || 
-        (fromState.name.indexOf('main.detail') >-1 && 
+    if (toState.name.indexOf('main.detail') > -1 ||
+        (fromState.name.indexOf('main.detail') >-1 &&
          toState.name.indexOf('account') > -1)
        ){
       $scope.searchIsBehindDetail = true;
@@ -485,9 +512,10 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     }
   });
 
-  $rootScope.$on('$stateChangeSuccess', 
+  $rootScope.$on('$stateChangeSuccess',
   function(event, toState, toParams, fromState, fromParams){
     if (toState.name.indexOf("main.detail") > -1) {
+      $scope.searchLoading = false;
       $scope.detailIsMaximized = true;
     }
   });
@@ -504,7 +532,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   //the classic type-and-hit-[enter] search
   $scope.classicSearch = function() {
     if (!initSearch && $scope.searchInput) {
-      $state.go('main.search',{query:$scope.searchInput})
+      $state.go('main.search',{query:$scope.searchInput});
     }
   }
 
@@ -542,9 +570,11 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
 
 });
 
-hitsTheBooks.controller('searchController', function($scope, results, $stateParams) {
+hitsTheBooks.controller('searchController', function($scope, bookResults, userResults, $stateParams) {
   $scope.query = $stateParams.query;
-  $scope.results = results;
+  $scope.bookResults = bookResults;
+  $scope.userResults = userResults;
+  scope = $scope;
 });
 
 hitsTheBooks.controller('detailsController', function($scope, $stateParams, $location) {
@@ -556,7 +586,35 @@ hitsTheBooks.controller('detailsController', function($scope, $stateParams, $loc
 });
 
 
-hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $rootScope, $stateParams, Api) {
+hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, offers, $state, $rootScope, $stateParams, Api, AUTH_EVENTS) {
+  $scope.watchlist = watchlist;
+  $scope.offers = offers;
+  $scope.offersDict = {};
+  $scope.watching = true;
+
+  $scope.$watch('watchlist', function() {
+      // When watchlist changes, update watching
+      var ISBNs = {};
+      for (var i = 0; i < $scope.watchlist.length; i++) {
+          ISBNs[$scope.watchlist[i].ISBN] = true;
+      };
+      $scope.watching = ISBNs[bookInfo.ISBN];
+  });
+
+  $scope.$watch('offers', function() {
+      // When offers change, update offers dict
+      $scope.offersDict = {};
+      for (var i = 0; i < $scope.offers.length; i++) {
+          $scope.offersDict[$scope.offers[i].listingID] = true;
+      };
+  });
+
+  $scope.$on(AUTH_EVENTS.loginSuccess,
+    function() {
+      refreshOffers();
+    }
+  );
+
   //View defaults & settings
   angular.extend($scope, {
     book : bookInfo,
@@ -622,6 +680,14 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
     });
   }
 
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
   var refreshCurrentUser = function() {
     $scope.setCurrentUser();
   }
@@ -682,7 +748,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.makeOffer = function() {
     Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
       .then( function (data) {
-        refreshCurrentUser();
+        refreshOffers();
         $scope.offer.active = false;
       }, function (err) {
         console.log(err);
@@ -701,7 +767,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
 
   $scope.addToWatchlist = function () {
     Api.addToWatchlist($scope.book.ISBN).then(
-      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (res) { $scope.watchlist = res; },
       function (err) { console.log(err); }
     );
   }
@@ -709,7 +775,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.removeFromWatchlist = function () {
     //TODO: this shit shouldn't happen here.
     Api.removeFromWatchlist($scope.book.ISBN).then(
-      function (res) { $rootScope.currentUser.subscriptions = res; },
+      function (res) { $scope.watchlist = res; },
       function (err) { console.log(err); }
     );
   }
@@ -735,6 +801,19 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   $scope.closeListingPane = function() {
     $scope.listingPaneOpen = false;
   }
+
+  var priceStatus = function (price) {
+    if (price % 1 === 0 && (0 <= price && price <= 250)) return '';
+    return 'Must be an integer between 0-250';
+  }
+
+  $scope.validateSellingPrice = function () {
+    document.getElementById('sellingPriceInput').setCustomValidity(priceStatus($scope.newListing.sellingPrice));
+  };
+
+  $scope.validateRentingPrice = function () {
+    document.getElementById('rentingPriceInput').setCustomValidity(priceStatus($scope.newListing.rentingPrice));
+  };
 
   $scope.submitListing = function () {
     //build the data object
@@ -780,10 +859,21 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, $state, $ro
   }
 });
 
-hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, $stateParams, AUTH_EVENTS) {
+hitsTheBooks.controller('userPageController', function($scope, $state, $timeout, $rootScope, userInfo, Upload, Api, watchlist, offers, $stateParams, AUTH_EVENTS) {
   $scope.user = userInfo;
-  $scope.watchlist = watchlist; 
+  $scope.watchlist = watchlist;
   $scope.emailSettings = {};
+  $scope.offers = offers;
+  $scope.offersDict = {};
+
+  $scope.$watch('offers', function() {
+      // When offers change, update offers dict
+      $scope.offersDict = {};
+      for (var i = 0; i < $scope.offers.length; i++) {
+          $scope.offersDict[$scope.offers[i].listingID] = true;
+      };
+  });
+
   if ($rootScope.currentUser){
     angular.extend($scope.emailSettings, $rootScope.currentUser.emailSettings);
   }
@@ -792,6 +882,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     function() {
       refreshUser();
       refreshWatchlist();
+      refreshOffers();
     }
   );
   angular.extend($scope, {
@@ -813,10 +904,6 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     changePwData : {},
     editingUser : false,
     removingListingID : null,
-    newUserInfo : {
-      //hehehe -- Joe
-      possGradYears : [2015, 2016, 2017, 2018, 2019, 2020]
-    },
     disabledComponents : {
       watchlistbox : false,
       undercutbox : false,
@@ -824,12 +911,13 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       pwChanging : false,
       newUserInfo : false
     },
-  }); 
+  });
 
   $scope.initiateUserEdit = function() {
     $scope.editingUser = true;
+    $scope.newUserInfo = {};
     angular.extend(
-      $scope.newUserInfo, 
+      $scope.newUserInfo,
       {
         givenName : $scope.user.name.givenName,
         familyName : $scope.user.name.familyName,
@@ -894,12 +982,12 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       $scope.changePwData.oldPw = null;
       $scope.changePwData.newPw = null;
       $scope.changePwData.newPwRepeat = null;
-      $scope.disabledComponents.pwChanging = false;      
+      $scope.disabledComponents.pwChanging = false;
     }, function(err){
       console.log('error!')
       console.log(err);
       $scope.changePwData.alert = err.data;
-      $scope.disabledComponents.pwChanging = false;      
+      $scope.disabledComponents.pwChanging = false;
     });
   }
 
@@ -926,7 +1014,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
         $scope.closeAvatarModal();
       });
     }, function (response) {
-      if (response.status > 0) $scope.errorMsg = response.status 
+      if (response.status > 0) $scope.errorMsg = response.status
         + ': ' + response.data;
     }, function (evt) {
       $scope.avatar.progress = parseInt(100.0 * evt.loaded / evt.total);
@@ -953,6 +1041,14 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       function (res) { $scope.watchlist = res },
       function (err) { console.log(err); }
     );
+  }
+
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
   }
 
   $scope.unsubscribe = function(ISBN) {
@@ -1011,7 +1107,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     $scope.offer.listing = listing;
     $scope.offer.message =
       "Hi "+$scope.user.name.fullName+",\n\n"
-      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+"\". "
+      + "I am interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+".\" "
       + "Please let me know when we could meet.\n\n"
       + "Thanks"
       + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
@@ -1025,7 +1121,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
   $scope.makeOffer = function() {
     Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
       .then( function (data) {
-        refreshCurrentUser();
+        refreshOffers();
         $scope.offer.active = false;
       }, function (err) {
         console.log(err);
@@ -1083,7 +1179,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       data['rentingPrice'] = $scope.newListing.rentingPrice;
     } else {
       data['rentingPrice'] = -1;
-    } 
+    }
 
     Api.updateListing($scope.newListing.listingID, data).then( function (res) {
       refreshUser();
@@ -1097,12 +1193,19 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
 });
 
 // Top-level shit
-hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS) {
+hitsTheBooks.controller('applicationController', function($state, $scope, $rootScope, Api, AUTH_EVENTS, $timeout) {
 
   // Route change error handling
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
     $state.go('main.detail.error', {message:error.data}, {location: false});
   });
+
+  // Set possible years for users
+  var lastYear = new Date().getFullYear() - 1;
+  $rootScope.gradYears = [];
+  for (var i = 0; i < 6; i++) {
+    $rootScope.gradYears.push(lastYear + i);
+  };
 
   $scope.mainState = true;
 
@@ -1142,15 +1245,14 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     }
   }
 
+  $scope.flashMessageContent = "";
+  $scope.showFlashMessage = false;
   $scope.flashMessage = function (message) {
-    var pane = $("#flash-message");
-    pane.html(message);
-    // Fade in, then out
-    pane.fadeIn(500, function () {
-      setTimeout(function () {
-        pane.fadeOut(800);
-      }, 1800);
-    });
+    $scope.showFlashMessage = true;
+    $scope.flashMessageContent = message;
+    $timeout(function() {
+      $scope.showFlashMessage = false;
+    }, 1800);
   }
 
   $rootScope.currentUser = null;
@@ -1171,7 +1273,6 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
     console.log("Logged out.");
     $scope.setCurrentUser();
   });
-
 });
 
 hitsTheBooks.controller('errorReportController', function($scope, $rootScope, $http, Api) {

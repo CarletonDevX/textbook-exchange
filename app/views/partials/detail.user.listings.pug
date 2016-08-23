@@ -1,11 +1,10 @@
 td.image: a(href="book/{{listing.ISBN}}")
-	//- TODO: ^^MAKE THIS A REAL LINK
 	img(src="{{listing.book.coverImage}}")
 
-td.name: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
+td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
 td.quality
-	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
 	table.price-table
@@ -20,15 +19,18 @@ td
 			td(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 
-td.make-an-offer
+td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
 	p(ng-if="!currentUser")
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
-		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
+		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
+		p Make an offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
+		span.symbol ✓
+		p Offer sent
 	button.edit(
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane(listing)",
@@ -40,6 +42,6 @@ td.make-an-offer
 		i.fa.fa-trash-o(aria-hidden="true")
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListingID == listing.listingID")
 		p Did it sell?
-		button.confirm(ng-click="removeListing(listing, true)") yes
-		button.no(ng-click="removeListing(listing, false)") no
-		button.cancel(ng-click="closeRemovingListing()") cancel
+		button.confirm(ng-click="removeListing(listing, true)") Yes
+		button.no(ng-click="removeListing(listing, false)") No
+		button.cancel(ng-click="closeRemovingListing()") Cancel

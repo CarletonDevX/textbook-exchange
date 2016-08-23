@@ -8,9 +8,8 @@ div.user-about
     button(ng-if="user.userID == currentUser.userID", ng-click="openAvatarModal()")
       span.symbol ✎
   div.about(ng-if="!editingUser")
-    h2 {{user.name.fullName}}
+    h2.hyphenate {{user.name.fullName}}
     h3 {{user.gradYear}}
-    h4(ng-if="user.bio") Bio
     p.bio(ng-if="user.bio") {{user.bio}}
   form.about(ng-if="editingUser", ng-submit="updateUser()")
     div#edit-names
@@ -28,7 +27,7 @@ div.user-about
         ng-model="newUserInfo.familyName")
     p.stats
       span Class year: 
-        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in newUserInfo.possGradYears" )
+        select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in gradYears" )
     h4 Bio
     textarea(
       ng-disabled = "disabledComponents.newUserInfo",
@@ -166,9 +165,8 @@ div.listings
           th.seller.sortable(colspan="2", ng-click="handleReorder('title')", ng-class="{'active':listingOrder=='title','reversed':reverseSort}") Title
           th.condition.sortable(ng-click="handleReorder('condition')", ng-class="{'active':listingOrder=='condition','reversed':reverseSort}") Condition
           th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
-          th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Contact'}}
+          th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Offer'}}
       tbody(ng-if="whichListings=='both'")
-        //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.user.listings'")
 
@@ -177,7 +175,6 @@ div.listings
            ng-include="'partials/detail.user.listings'")
 
       tbody(ng-if="whichListings=='renting'")
-        //- TODO: change hrefs to ui-srefs
         tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
            ng-include="'partials/detail.user.listings'")
       tfoot(ng-if="user.userID == currentUser.userID")

@@ -35,9 +35,10 @@ $row-highlight-color: #fffcf5;
 
 
   .info{
-    // max-height: 350px;
     position: relative;
     overflow: hidden;
+    box-sizing: border-box;
+    padding-bottom: 30px;
 
     p{
       line-height: 157%;
@@ -106,8 +107,8 @@ div.listings{
   .tabs{
     display: flex;
     button{
-      // flex-basis: 100%;
       flex-grow: 1;
+      flex-basis: 0;
       background: none;
       font-family: 'Droid Serif', Serif;
       font-size: 20px;
@@ -115,7 +116,7 @@ div.listings{
       border: none;
       outline: none;
 
-      // font-style: italic;
+      font-style: normal;
       // font-variant: inherit;
       font-variant: small-caps;
       transition: color .2s, font-size .2s;
@@ -125,7 +126,6 @@ div.listings{
     }
     button.active{
       border-bottom: solid black 2px;
-      font-style: inherit;
       font-size: 22px;
       color: black;
     }
@@ -238,7 +238,7 @@ div.listings{
         border-bottom: 1px $dark-border-color;
       }
 
-      td.quality a.tooltip{
+      a.dashed{
         border-bottom: black 1px dashed;
       }
 
@@ -251,12 +251,27 @@ div.listings{
           font-size: 16px;
         }
       }
-        
+      
+
+      td.make-an-offer.complete-wrapper{
+        background-color: #f7f7f7;
+      }
       td.make-an-offer{
         padding: 0;
-        button.email span.symbol{
+        button.email span.symbol,
+        div.complete span.symbol{
           font-style: normal;
-          font-size: 36px;
+          font-size: 30px;
+        }
+        button.email p, div.complete p{
+          margin-top: 0;
+        }
+        div.complete p{
+          font-style: italic;
+        }
+        div.complete{
+          color: gray;
+          font-family: 'Droid Serif', Serif;
         }
         button.edit, button.delete{
           display: inline-block;
@@ -451,6 +466,7 @@ div.user-about{
   h2{
     margin-top: 0;
     margin-bottom: 5px;
+    max-width: 390px;
   }
   h3{
     margin-top: 5px;

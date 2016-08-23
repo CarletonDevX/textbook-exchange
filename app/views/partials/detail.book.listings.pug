@@ -4,12 +4,12 @@ td.image(ng-if="listing.isAmazonListing"): a(href="{{listing.amazonUrl}}", targe
 	img(src="images/amazon.jpg")
 
 
-td.username(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.givenName}}
+td.username.hyphenate(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.givenName | limitTo: 20 }}{{listing.user.name.givenName.length > 20 ? '…' : ''}}
 td.username(ng-if="listing.isAmazonListing") Amazon
 
 
 td.quality
-	a.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td(ng-if="!listing.isAmazonListing")
 	table.price-table
@@ -26,29 +26,40 @@ td(ng-if="!listing.isAmazonListing")
 td(ng-if="listing.isAmazonListing")
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
 		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+	p(ng-if="whichListings !== 'renting' && listing.sellingPrice == null")
+		a.dashed.tooltip-left(title="Amazon doesn't let us see information about its 3rd-party marketplace.")
+			| 3
+			sup rd
+			|-party sellers only.
 
-td.make-an-offer(ng-if="!listing.isAmazonListing")
+td.make-an-offer(ng-if="!listing.isAmazonListing", ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
 	p(ng-if="!currentUser")
 		a(href, ng-click="openAccount()") log in
 		|  to make an offer
 	button.confirm.email(
-		ng-if="currentUser && !currentUser.offers.includes(listing.listingID) && listing.userID !== currentUser.userID",
+		type="button", 
+		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-	div.complete(ng-if="currentUser.offers.includes(listing.listingID)") ✓ offer made
+		p.email-label Make an offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
+		span.symbol ✓
+		p Offer sent
 	button.edit(
+		type="button", 
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openListingPane()",
 		ng-hide="removingListing") &#9998;
 	button.delete(
+		type="button", 
 		ng-if="listing.userID == currentUser.userID",
 		ng-click="openRemovingListing()",
 		ng-hide="removingListing")
 		i.fa.fa-trash-o(aria-hidden="true")
 	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListing")
 		p Did it sell?
-		button.confirm(ng-click="removeListing(listing, true)") yes
-		button.no(ng-click="removeListing(listing, false)") no
-		button.cancel(ng-click="closeRemovingListing()") cancel
+		button.confirm(type="button", ng-click="removeListing(listing, true)") yes
+		button.no(type="button", ng-click="removeListing(listing, false)") no
+		button.cancel(type="button", ng-click="closeRemovingListing()") cancel
 td.make-an-offer(ng-if="listing.isAmazonListing")
 	a(href="{{listing.amazonUrl}}", target="_blank") Buy on Amazon

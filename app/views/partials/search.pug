@@ -1,5 +1,13 @@
-ul
-	li(ng-repeat="book in results")
+div.tabs
+	button(ng-click="$parent.displayedSearch = 'books'", 
+		ng-class="{'active': $parent.displayedSearch == 'books'}") Books
+		span.stat(ng-class="{'good': !!bookResults.length}") {{bookResults.length}}
+	button(ng-click="$parent.displayedSearch = 'users'",
+		ng-class="{'active': $parent.displayedSearch == 'users'}") Members
+		span.stat(ng-class="{'good': !!userResults.length}") {{userResults.length}}
+
+ul(ng-if="$parent.displayedSearch == 'books'")
+	li(ng-repeat="book in bookResults")
 		a.book(ui-sref="main.detail.book({isbn: book.ISBN})")
 			div.preview
 				img(src="{{book.coverImage}}")
@@ -19,6 +27,20 @@ ul
 					tr
 						td ISBN:
 						td {{ book.ISBN }}
+
+ul(ng-if="$parent.displayedSearch == 'users'")
+	li(ng-repeat="user in userResults")
+		a.user(ui-sref="main.detail.user({userID: user.userID})")
+			div.preview
+				img(src="{{user.avatar}}")
+			div.info
+				h4 {{ user.name.fullName }}
+				//- the toString.replace thing is to correctly format multiple authors
+				h5 {{ user.gradYear }}
+				table.info-table
+					tr
+						td Member since:
+						td {{ user.created | date:'MMMM, yyyy' }}
 
 p Can't find what you're looking for? 
 	a(href="#" ng-click='modalStates.contact = true') Send us an email.

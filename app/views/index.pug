@@ -10,8 +10,8 @@ html(ng-app="hitsTheBooks")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js")
     script(src="https://cdn.rawgit.com/christopherthielen/ui-router-extras/master/release/ct-ui-router-extras.min.js")
+    script(src="https://code.angularjs.org/1.5.8/angular-animate.js")
 
-    
     link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.css")
 
     //- script(src="https://cdn.rawgit.com/CrackerakiUA/ngImgCropFullExtended/master/compile/unminified/ng-img-crop.js")
@@ -25,7 +25,7 @@ html(ng-app="hitsTheBooks")
   body(ng-controller="applicationController" ng-class="mainState ? 'main-page' : '' ")
     include header
     main(ui-view='main')
-    div#flash-message
+    div#flash-message(ng-bind-html='flashMessageContent | unsafe' ng-if='showFlashMessage')
 
     script(src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.0.4/ng-file-upload-all.min.js")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/ng-img-crop/0.3.2/ng-img-crop.js")
