@@ -4,6 +4,10 @@
 ::-moz-focus-inner {border:0;}
 
 html{
+  overflow: hidden;
+}
+
+body{
   overflow-y: scroll;
 }
 
