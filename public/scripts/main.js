@@ -984,7 +984,6 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       $scope.changePwData.newPwRepeat = null;
       $scope.disabledComponents.pwChanging = false;
     }, function(err){
-      console.log('error!')
       console.log(err);
       $scope.changePwData.alert = err.data;
       $scope.disabledComponents.pwChanging = false;
@@ -1142,7 +1141,6 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     // initializes the listing pane with correct settings
     // cast prices to checkmarks -- should this be done elsewhere?
     //copy the deets of the user's listing into the panel
-    console.log("listing: ", listing)
     $scope.newListing = {
       bookName : listing.book.name,
       condition : $scope.conditionOptions[listing.condition],
@@ -1224,7 +1222,6 @@ hitsTheBooks.controller('applicationController', function($state, $scope, $rootS
 
   $scope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams) {
-    console.log("tostatename", toState.name);
     //background transitions
     // if (toState.name.indexOf("main") > -1 && toState.name != "main"){
     //   $scope.mainState = false;

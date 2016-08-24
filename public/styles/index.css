@@ -439,7 +439,7 @@ header {
 
 header.minimized {
   margin-bottom: 0;
-  height: 100px;
+  height: 85px;
   overflow: hidden; }
 
 #flash-message {
@@ -523,7 +523,7 @@ main #search {
       width: 70px;
       min-width: 70px;
       max-width: 400px;
-      margin: 0 20px;
+      margin: 0 7px 0 20px;
       text-overflow: ellipsis;
       transition: width .2s; }
   main #search #search-results {
@@ -613,8 +613,8 @@ main .search-loading {
   display: inline-block;
   position: relative;
   border-radius: 50%;
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border: 2px solid black; }
 
 main .search-loading:hover {
@@ -624,9 +624,9 @@ main .search-loading::before {
   content: '';
   display: block;
   border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  border: 3px solid rgba(255, 255, 255, 0.82);
+  width: 10px;
+  height: 10px;
+  border: 3px solid rgba(255, 255, 255, 0.92);
   border-top-color: white;
   border-bottom-color: rgba(255, 255, 255, 0);
   border-top-width: 0;
@@ -646,8 +646,8 @@ main .search-loading::after {
   border-bottom: 1px solid black;
   transition: opacity .2s;
   position: absolute;
-  top: 17px;
-  left: 13px;
+  top: 13px;
+  left: 10px;
   transform: rotate(45deg);
   border-radius: 2px; }
 
