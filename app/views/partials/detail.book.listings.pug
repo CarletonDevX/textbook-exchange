@@ -5,7 +5,8 @@ td.image(ng-if="listing.isAmazonListing"): a(href="{{listing.amazonUrl}}", targe
 
 
 td.username.hyphenate(ng-if="!listing.isAmazonListing"): a(href="user/{{listing.userID}}") {{listing.user.name.givenName | limitTo: 20 }}{{listing.user.name.givenName.length > 20 ? '…' : ''}}
-td.username(ng-if="listing.isAmazonListing") Amazon
+td.username(ng-if="listing.isAmazonListing")
+	a(href="{{listing.amazonUrl}}") Amazon
 
 
 td.quality

@@ -1,9 +1,8 @@
+$init-top-margin: 25px;
 header{
   transition: height .2s;
-  $init-top-margin: 25px;
   padding-bottom: $pane-spacing;
   overflow: hidden;
-  margin-top: $init-top-margin;
 
   #blurb{
     box-shadow: 0px 1px 4px 1px rgba(0,0,0,.2);
@@ -207,7 +206,7 @@ header{
 
 header.minimized{
   margin-bottom: 0;
-  height: 100px;
+  height: 85px;
   overflow: hidden;
 }
 
@@ -218,7 +217,7 @@ header.minimized{
   line-height: 30px;
   color: #047d04;
   text-align: center;
-  margin: 0 auto;
+  margin: $init-top-margin auto 0 auto;
   opacity: 1;
   background-color: rgb(159, 251, 143);
   font-style: italic;
