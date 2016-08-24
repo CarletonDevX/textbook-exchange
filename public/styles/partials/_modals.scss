@@ -70,3 +70,73 @@
   }
 
 }
+
+#about{
+  section{
+    margin: 0 10px;
+    margin-bottom: 30px;
+    padding-bottom: 45px;
+    border-bottom: 1px solid #cecece;
+  }
+
+  h2{
+    display: none;
+  }
+  h4, h5 {
+    text-align: left;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 48px;
+    padding: 10px 0;
+    margin: 0;
+    padding-left: 10px;
+    line-height: 1.5em;
+  }
+  h4 {
+    padding-left: 14px;
+    padding-right: 14px;
+    span.caps{
+      font-variant: small-caps;
+      font-style: normal;
+    }
+    span.the{
+      font-size: 40px;
+      display: inline-block;
+      margin: 0 5px;
+    }
+  }
+  h5{
+    span.caps{
+      font-variant: small-caps;
+      font-style: normal;
+    }
+    span.the{
+      font-size: smaller;
+      display: inline-block;
+      margin: 0 2px;
+    }
+  }
+  footer{
+    text-align: center;
+    font-family: 'Droid Sans', sans;
+    font-size: 10pt;
+  }
+  section p{
+    margin: 16px 0 0 16px;
+    padding: 0px 10px;
+    line-height: 1.5em;
+    border-left: solid black 2px;
+    font-family: 'Droid Sans', Sans;
+  }
+  h5 {
+    font-size: 24px;
+    text-align: center;
+  }
+  ul{
+    padding-left: 30px;
+  }
+  li {
+    font-family: 'Droid Sans';
+    margin-bottom: 10px; 
+  }
+}
