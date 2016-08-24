@@ -934,6 +934,14 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
   $scope.deleteAccount = function() {
     if (confirm("Are you sure you want to delete all your HTB data? This action can't be undone.")) {
       Api.deleteCurrentUser().then(function (res) {
+        Api.logout().then(function () {
+          Api.getCurrentUser().then(function (res) {
+            $rootScope.currentUser = res;
+          },
+          function (err) {
+            $rootScope.currentUser = null;
+          });
+        });
         $state.go('main');
       }, function (err) {
         alert("Sorry, we could not delete your account at this time.")
