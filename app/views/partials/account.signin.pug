@@ -17,7 +17,7 @@ div.login
             input(ng-model='loginData.password' type='password' placeholder='Password' required)
       tfoot
         tr.alert(ng-if='signinAlert == SignInAlert.INCORRECT_INFO')
-          td(colspan=2) Incorrect Email or Password.
+          td(colspan=2) Incorrect Email or Password. 
             a(href='#' ng-click='requestPasswordReset()') Forgot Password?
 
         tr.alert(ng-if='signinAlert == SignInAlert.UNVERIFIED')
