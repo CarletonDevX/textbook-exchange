@@ -258,6 +258,7 @@ exports.formatRecentListings = function (req, res) {
             'sellingPrice': lstng.sellingPrice,
             'user': formattedUser,
             'book': formattedBook,
+            'numListings': req.rSchoolStats.numOpenListings,
         };
         listings.push(formattedListing);
     }

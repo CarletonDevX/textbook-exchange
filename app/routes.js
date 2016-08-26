@@ -267,7 +267,8 @@ exports.setup = function (app) {
 
     // Get recent listings
     app.route('/api/listings/recent')
-        .get(listings.getRecentListings,
+        .get(listings.countOpenListings,
+             listings.getRecentListings,
              inject.UsersIntoListings,
              inject.BooksIntoListings,
              responder.formatRecentListings);
