@@ -44,12 +44,22 @@ exports.getUndercutListings = function (req, res, next) {
 
     // Get listings with prices higher than the new listing
     var orClause = [];
-    if (listing.rentingPrice != null)  orClause.push({'rentingPrice': {$gt: listing.rentingPrice}});
-    if (listing.sellingPrice != null)  orClause.push({'sellingPrice': {$gt: listing.sellingPrice}});
+    if (listing.rentingPrice != null) orClause.push({'rentingPrice': {$gt: listing.rentingPrice}});
+    if (listing.sellingPrice != null) orClause.push({'sellingPrice': {$gt: listing.sellingPrice}});
 
     Listing.find({completed: false, ISBN: ISBN, $or: orClause}, function (err, listings) {
         if (err) return next(new MongoError(err));
         req.rUndercutListings = listings;
+        return next();
+    });
+};
+
+exports.getRecentListings = function (req, res, next) {
+    var skip = Number(req.query.skip) || 0;
+    var limit = Number(req.query.limit) || null;
+    Listing.find({completed: false}).sort({'created':1}).skip(skip).limit(limit).exec(function (err, listings) {
+        if (err) return next(new MongoError(err));
+        req.rListings = listings;
         return next();
     });
 };
