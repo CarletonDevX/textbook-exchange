@@ -258,12 +258,10 @@ exports.formatRecentListings = function (req, res) {
             'sellingPrice': lstng.sellingPrice,
             'user': formattedUser,
             'book': formattedBook,
-            'numListings': req.rSchoolStats.numOpenListings,
         };
         listings.push(formattedListing);
     }
-
-    res.json(listings);
+    res.json({'listings': listings, 'numListings': req.rSchoolStats.numOpenListings});
 };
 
 /** OFFERS **/
