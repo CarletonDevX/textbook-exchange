@@ -1248,7 +1248,7 @@ form.about small {
     background-color: white;
     box-sizing: border-box;
     width: 480px;
-    margin: 100px auto;
+    margin: 35px auto;
     padding: 10px;
     overflow: auto;
     box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.5); }
@@ -1327,7 +1327,7 @@ form.about small {
 #about footer {
   text-align: center;
   font-family: 'Droid Sans', sans;
-  font-size: 10pt; }
+  font-size: 9pt; }
 
 #about section p {
   margin: 16px 0 0 16px;
