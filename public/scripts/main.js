@@ -403,7 +403,7 @@ hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope
 });
 
 hitsTheBooks.controller('recentListingsController',
-  function($scope, $rootScope, $interval, Api) {
+  function($scope, $rootScope, $interval, $state, Api) {
 
     var pagingData = {
       initNumListings : 5, // how many listings we want load with UpdateRecent...
@@ -445,14 +445,19 @@ hitsTheBooks.controller('recentListingsController',
     $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams){
       var $rl = $("#recent-listings")
+      //if it's a main transition and it's to main
       if(toState.name.indexOf("main") > -1 && toState.name == "main") {
         $scope.hideRecentListings = false;
         $rl.transist({'remove':['minimized']},['height'],500);
+      //it's a main transition and not to main
       } else if (toState.name.indexOf("main") > -1) {
         $scope.hideRecentListings = true;
         $rl.transist({'add':['minimized']},['height'],500);
       }
     });
+    if (!$state.is('main')) {
+      $("#recent-listings").addClass('minimized');
+    }
   });
 
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
@@ -488,8 +493,13 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   }
 
   $scope.handleSearchPaneClick = function(){
-    if ($state.includes('main.detail') && $scope.searchInput) {
-      $state.go('main.search',{query: $scope.searchInput});
+    if ($state.includes('main.detail')) {
+      if ($scope.searchInput) {
+        $state.go('main.search',{query: $scope.searchInput});
+      } else {
+        $state.go('main');
+        document.getElementById("search-box").focus();
+      }
     }
   }
 

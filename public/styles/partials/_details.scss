@@ -144,10 +144,10 @@ table.listings{
   border-top: 2px solid black;
   overflow: hidden;
   thead{
-    background-color: $row-highlight-color;
     tr{
       height: 4em;
       th{
+        background-color: $row-highlight-color;
         font-weight: 400;
         font-style: italic;
         height: 40px;
