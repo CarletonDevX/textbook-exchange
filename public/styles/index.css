@@ -705,7 +705,7 @@ main #detail-wrapper.maximized {
 #recent-listings {
   padding: 10px;
   background-color: white;
-  transition: opacity .5s, height .5s;
+  transition: opacity .5s, height .5s, padding .5s;
   overflow: hidden; }
   #recent-listings h3 {
     font-weight: normal;
@@ -740,7 +740,8 @@ main #detail-wrapper.maximized {
 
 #recent-listings.minimized {
   opacity: 0;
-  height: 0; }
+  height: 0;
+  padding: 0 10px; }
 
 .hyphenate {
   overflow-wrap: break-word;
@@ -876,46 +877,47 @@ table.listings {
   border: solid 1px #ccc;
   border-top: 2px solid black;
   overflow: hidden; }
-  table.listings thead tr {
-    background-color: #fffcf5;
-    height: 4em; }
-    table.listings thead tr th {
-      font-weight: 400;
-      font-style: italic;
-      height: 40px;
-      border-bottom: 2px solid #ccc;
-      border-right: 1px solid #eee;
-      position: relative; }
-    table.listings thead tr th.seller {
-      width: 6em; }
-    table.listings thead tr th.price {
-      width: 7.5em; }
-    table.listings thead tr th.contact {
-      width: 80px; }
-    table.listings thead tr th.sortable {
-      padding: 0 20px;
-      cursor: pointer; }
-    table.listings thead tr th.sortable:hover {
-      text-decoration: underline; }
-    table.listings thead tr th.active::before {
-      content: '';
-      background-color: rgba(252, 255, 100, 0.07);
-      width: 100%;
-      height: 2000px;
-      position: absolute;
-      left: 0;
-      top: 0;
-      z-index: -1; }
-    table.listings thead tr th.active::after {
-      content: '▴';
-      position: absolute;
-      width: 1.5em;
-      color: gray;
-      font-style: normal; }
-    table.listings thead tr th.active.reversed::after {
-      content: '▾'; }
-    table.listings thead tr th:last-child {
-      border-right: none; }
+  table.listings thead {
+    background-color: #fffcf5; }
+    table.listings thead tr {
+      height: 4em; }
+      table.listings thead tr th {
+        font-weight: 400;
+        font-style: italic;
+        height: 40px;
+        border-bottom: 2px solid #ccc;
+        border-right: 1px solid #eee;
+        position: relative; }
+      table.listings thead tr th.seller {
+        width: 6em; }
+      table.listings thead tr th.price {
+        width: 7.5em; }
+      table.listings thead tr th.contact {
+        width: 80px; }
+      table.listings thead tr th.sortable {
+        padding: 0 20px;
+        cursor: pointer; }
+      table.listings thead tr th.sortable:hover {
+        text-decoration: underline; }
+      table.listings thead tr th.active::before {
+        content: '';
+        background-color: rgba(252, 255, 100, 0.07);
+        width: 100%;
+        height: 2000px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1; }
+      table.listings thead tr th.active::after {
+        content: '▴';
+        position: absolute;
+        width: 1.5em;
+        color: gray;
+        font-style: normal; }
+      table.listings thead tr th.active.reversed::after {
+        content: '▾'; }
+      table.listings thead tr th:last-child {
+        border-right: none; }
   table.listings tbody:last-child tr:last-child td {
     border-bottom: none; }
   table.listings tbody, table.listings tfoot {

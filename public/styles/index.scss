@@ -420,13 +420,14 @@ main{
       }
     }
   }
-  transition: opacity .5s, height .5s;
+  transition: opacity .5s, height .5s, padding .5s;
   overflow: hidden;
 }
 
 #recent-listings.minimized{
   opacity: 0;
   height: 0;
+  padding: 0 10px;
 }
 
 .hyphenate {
