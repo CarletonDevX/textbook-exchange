@@ -23,28 +23,28 @@ div#search(ng-class="\
     div.search-loading(ng-click="classicSearch()", ng-class="searchLoading?'loading':''")
 
   div#search-results(ui-view="search")
+    
+  div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
+    //- h3 Fresh Listings
+    table.listings
+      thead
+        tr
+          th.book(colspan="2") Book
+          //- th.seller(colspan="2") Seller
+          th.seller Seller
+          th.quality
+          th.price Price
+          th.contact Offer
+      tbody
+        tr(ng-repeat="listing in recentListings",
+           ng-class="{'disabled': listing.userID == currentUser.userID}",
+           ng-include="'partials/main.recent_listings'")
+      tfoot
+        tr
+          td(colspan="6")
+            button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
+              span.symbol +
+              |  Load more
+            span(ng-if="recentListings.length >= totalListings") That's all she wrote!
 
 div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")
-
-div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
-  //- h3 Fresh Listings
-  table.listings
-    thead
-      tr
-        th.book(colspan="2") Book
-        //- th.seller(colspan="2") Seller
-        th.seller Seller
-        th.quality
-        th.price Price
-        th.contact Offer
-    tbody
-      tr(ng-repeat="listing in recentListings",
-         ng-class="{'disabled': listing.userID == currentUser.userID}",
-         ng-include="'partials/main.recent_listings'")
-    tfoot
-      tr
-        td(colspan="6")
-          button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
-            span.symbol +
-            |  Load more
-          span(ng-if="recentListings.length >= totalListings") That's all she wrote!

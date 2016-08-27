@@ -365,14 +365,14 @@ main{
 }
 
 #recent-listings{
-  width: 480px;
-  box-sizing: border-box;
-  margin: 0 auto;
+  // width: 480px;
+  // box-sizing: border-box;
+  // margin: 0 auto;
   padding: 10px;
   background-color: rgba(255,255,255,1);
-  margin-bottom: 40px;
-  margin-top: -11px;
-  padding-top: 15px;
+  // margin-bottom: 40px;
+  // margin-top: -11px;
+  // padding-top: 15px;
 
   h3{
     font-weight: normal;
@@ -420,7 +420,7 @@ main{
       }
     }
   }
-  transition: opacity .2s, height .2s;
+  transition: opacity .5s, height .5s;
   overflow: hidden;
 }
 
