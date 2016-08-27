@@ -3,13 +3,13 @@ td.image: a(href="book/{{listing.ISBN}}")
 
 td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
-td.image: a(href="user/{{listing.ISBN}}")
-	img(src="{{listing.user.avatar}}")
+//- td.image: a(href="user/{{listing.ISBN}}")
+//- 	img(src="{{listing.user.avatar}}")
 
 td.name.hyphenate: a(href="user/{{listing.userID}}") {{ listing.user.name.fullName | limitTo: 20 }}{{listing.user.name.fullName.length > 20 ? '…' : ''}}
 
 td.quality
-	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+	a.dashed.tooltip-left(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
 	table.price-table

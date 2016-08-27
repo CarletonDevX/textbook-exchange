@@ -383,9 +383,27 @@ main{
   }
 
   table.listings {
-  th.price{
-    width: 6em;
-  }
+    th.price{
+      width: 6em;
+    }
+    th.seller{
+      width: 4em;
+    }
+    td.image{
+      width: 45px;
+    }
+    tbody{
+      font-size: 10pt;
+      img{
+        margin: 0 5px;
+      }
+      td{
+        height: 70px;
+      }
+      table.price-table td{
+        height: auto;
+      }
+    }
     tfoot{
       td{
         padding: 0;

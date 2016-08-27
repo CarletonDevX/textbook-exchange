@@ -32,7 +32,8 @@ div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimi
     thead
       tr
         th.book(colspan="2") Book
-        th.seller(colspan="2") Seller
+        //- th.seller(colspan="2") Seller
+        th.seller Seller
         th.quality
         th.price Price
         th.contact Offer
@@ -42,7 +43,7 @@ div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimi
          ng-include="'partials/main.recent_listings'")
     tfoot
       tr
-        td(colspan="7")
+        td(colspan="6")
           button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
             span.symbol +
             |  Load more

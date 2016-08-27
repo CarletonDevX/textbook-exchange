@@ -721,6 +721,18 @@ main #detail-wrapper.maximized {
     text-align: center; }
   #recent-listings table.listings th.price {
     width: 6em; }
+  #recent-listings table.listings th.seller {
+    width: 4em; }
+  #recent-listings table.listings td.image {
+    width: 45px; }
+  #recent-listings table.listings tbody {
+    font-size: 10pt; }
+    #recent-listings table.listings tbody img {
+      margin: 0 5px; }
+    #recent-listings table.listings tbody td {
+      height: 70px; }
+    #recent-listings table.listings tbody table.price-table td {
+      height: auto; }
   #recent-listings table.listings tfoot td {
     padding: 0; }
   #recent-listings table.listings tfoot span {
@@ -866,7 +878,6 @@ div.listings .tabs {
 
 table.listings {
   width: 100%;
-  table-layout: fixed;
   border-spacing: 0;
   border: solid 1px #ccc;
   border-top: 2px solid black;
@@ -997,8 +1008,7 @@ table.listings {
   table.listings tbody table.price-table {
     width: 100%;
     height: 79px;
-    border-collapse: collapse;
-    table-layout: fixed; }
+    border-collapse: collapse; }
     table.listings tbody table.price-table td:first-child {
       font-family: 'Droid Serif', Serif;
       font-style: italic;
