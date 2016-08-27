@@ -3,6 +3,11 @@ td.image: a(href="book/{{listing.ISBN}}")
 
 td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
+td.image: a(href="user/{{listing.ISBN}}")
+	img(src="{{listing.user.avatar}}")
+
+td.name.hyphenate: a(href="user/{{listing.userID}}") {{ listing.user.name.fullName | limitTo: 20 }}{{listing.user.name.fullName.length > 20 ? '…' : ''}}
+
 td.quality
 	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
@@ -10,12 +15,12 @@ td
 	table.price-table
 		tr
 			td Buy:
-			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
+			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency : "$" : 0 }}
 			td.green-text(ng-if="listing.sellingPrice == 0") Free!
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
-			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency : "$" : 0 }}
 			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 
@@ -32,19 +37,5 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
 		span.symbol ✓
 		p Offer Sent
-	button.edit(
-		type="button",
-		ng-if="listing.userID == currentUser.userID",
-		ng-click="openListingPane(listing)",
-		ng-hide="removingListingID == listing.listingID") &#9998;
-	button.delete(
-		type="button",
-		ng-if="listing.userID == currentUser.userID",
-		ng-click="openRemovingListing(listing)",
-		ng-hide="removingListingID == listing.listingID")
-		i.fa.fa-trash-o(aria-hidden="true")
-	div.remove-listing(ng-if="listing.userID == currentUser.userID", ng-show="removingListingID == listing.listingID")
-		p Did it sell?
-		button.confirm(type="button", ng-click="removeListing(listing, true)") Yes
-		button.no(type="button", ng-click="removeListing(listing, false)") No
-		button.cancel(type="button", ng-click="closeRemovingListing()") Cancel
+	div.complete(ng-if="listing.userID == currentUser.userID")
+		| This is yours!

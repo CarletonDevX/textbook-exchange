@@ -114,12 +114,6 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       url: '/?flash',
       sticky: true,
       // deepStateRedirect: true,
-      // resolve : {
-      //   activity: function(Api) {
-      //     //WORKING: add
-      //     return 1
-      //   }
-      // },
       views:{
         'main' : {
           templateUrl: '/partials/main',
@@ -408,10 +402,64 @@ hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope
     };
 });
 
+hitsTheBooks.controller('recentListingsController',
+  function($scope, $rootScope, $interval, Api) {
+
+    var pagingData = {
+      totalListings   : 0, // how many listings the backend has
+      initNumListings : 5, // how many listings we want load with UpdateRecent...
+      querySize       : 5  // how many more to add on getMoreRecent....
+    }
+
+    $scope.recentListings = []
+
+    var updateRecentListings = function() {
+      Api.getRecentListings({
+        limit: Math.max(pagingData.initNumListings, $scope.recentListings.length)
+      }).then(
+        function(res){
+          $scope.recentListings = res.listings;
+          pagingData.totalListings = res.numListings;
+        }, function (err) {console.log(err)});
+    }
+
+    updateRecentListings();
+    var pingRecentListings = $interval(updateRecentListings, 300000);
+
+    $scope.getMoreRecentListings = function() {
+      if ($scope.recentListings.length < pagingData.totalListings) {
+        Api.getRecentListings({
+          limit: $scope.querySize,
+          skip: $scope.recentListings.length
+        }).then(function(res){
+          $scope.recentListings = $scope.recentListings.concat(res.listings)
+          // Don't include the following line because the new listings could
+          // have been added more recently in the stream, breaking EVERYTHING
+          // pagingData.totalListings = res.numListings
+          // ^ NO
+        }, function(err){ console.log(err) });
+      }
+    }
+
+    //for recent listings
+    $rootScope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams){
+      var $rl = $("#recent-listings")
+      if(toState.name.indexOf("main") > -1 && toState.name == "main") {
+        $scope.hideRecentListings = false;
+        $rl.transist({'remove':['minimized']},['height'],2000);
+      } else if (toState.name.indexOf("main") > -1) {
+        $scope.hideRecentListings = true;
+        $rl.transist({'add':['minimized']},['height'],2000);
+      }
+    });
+  });
+
 hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
+  
   $scope.displayedSearch = 'books';
   var streamSearchDelay = 250; //ms
   var initSearch = false;
@@ -467,9 +515,11 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     if (fromState.name == "main.search" &&
         toState.name !== "main.search" &&
         toState.name.indexOf('account') == -1) {
+      //we're actually moving away from main.search
       $sr.transist({'add':['minimized']},['height'],200);
       $scope.searchIsSearching = false;
     } else if (fromState.name == 'main.search' && toState.name.indexOf('account') > -1){
+      //we're staying on main.search
       $scope.searchIsSearching = true;
     } else if (fromState.name.indexOf('detail') > -1 && toState.name.indexOf('account') > -1) {
       $scope.searchIsSearching = true;

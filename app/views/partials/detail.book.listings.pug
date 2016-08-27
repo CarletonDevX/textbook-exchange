@@ -17,12 +17,12 @@ td(ng-if="!listing.isAmazonListing")
 		tr
 			td Buy:
 			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
-			td(ng-if="listing.sellingPrice == 0") Free!
+			td.green-text(ng-if="listing.sellingPrice == 0") Free!
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
 			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
-			td(ng-if="listing.rentingPrice == 0") Free!
+			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 td(ng-if="listing.isAmazonListing")
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").

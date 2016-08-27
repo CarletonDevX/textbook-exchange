@@ -24,8 +24,23 @@ div#search(ng-class="\
 
   div#search-results(ui-view="search")
 
-div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")
+div#detail-wrapper(ui-view="detail")
 
-div#recent-listings
-  h3 Fresh Listings
-  p etc. etc.
+div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
+  //- h3 Fresh Listings
+  table.listings
+    thead
+      tr
+        th.book(colspan="2") Book
+        th.seller(colspan="2") Seller
+        th.quality
+        th.price Price
+        th.contact Offer
+    tbody
+      tr(ng-repeat="listing in recentListings",
+         ng-class="{'disabled': listing.userID == currentUser.userID}",
+         ng-include="'partials/main.recent_listings'")
+    tfoot
+      tr
+        td(colspan="7")
+          button(ng-click="getMoreRecentListings()") Load more
