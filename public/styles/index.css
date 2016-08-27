@@ -959,7 +959,7 @@ table.listings {
     table.listings tfoot td.confirm button.confirm {
       width: 100%;
       padding: 0;
-      height: 80px; }
+      height: 100%; }
       table.listings tbody td.make-an-offer button.email .symbol,
       table.listings tbody td.confirm button.confirm .symbol, table.listings tfoot td.make-an-offer button.email .symbol,
       table.listings tfoot td.confirm button.confirm .symbol {
@@ -981,11 +981,14 @@ table.listings {
         color: gray;
         font-family: 'Droid Serif', Serif; }
       table.listings tbody td.make-an-offer button.edit, table.listings tbody td.make-an-offer button.delete, table.listings tfoot td.make-an-offer button.edit, table.listings tfoot td.make-an-offer button.delete {
-        display: inline-block;
+        display: block;
+        float: left;
         width: 50%;
         height: 80px;
         padding: 0;
         font-size: 16px; }
+      table.listings tbody td.make-an-offer button.delete, table.listings tfoot td.make-an-offer button.delete {
+        border-left: 1px solid #eee; }
       table.listings tbody td.make-an-offer div.remove-listing p, table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
@@ -1012,6 +1015,18 @@ table.listings {
       border-bottom: none; }
     table.listings tbody table.price-table tr:first-child {
       border-bottom: 1px solid #eee; }
+    table.listings tbody table.price-table span.per {
+      position: relative;
+      top: .3em;
+      left: 0.7em; }
+    table.listings tbody table.price-table span.per::before {
+      content: '';
+      border-left: 1px solid black;
+      position: absolute;
+      transform: rotate(20deg);
+      left: -.4em;
+      top: -.3em;
+      height: 1.5em; }
   table.listings tfoot tr.make-listing {
     background-color: #fffcf5; }
     table.listings tfoot tr.make-listing p {

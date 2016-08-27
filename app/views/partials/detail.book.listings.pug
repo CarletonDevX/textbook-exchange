@@ -9,24 +9,25 @@ td.username(ng-if="listing.isAmazonListing")
 	a(href="{{listing.amazonUrl}}") Amazon
 
 
-td.quality
+td.condition
 	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td(ng-if="!listing.isAmazonListing")
 	table.price-table
 		tr
 			td Buy:
-			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
+			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency : "$" : 0  }}
 			td.green-text(ng-if="listing.sellingPrice == 0") Free!
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
-			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency : "$" : 0  }}
+				span.per term
 			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 td(ng-if="listing.isAmazonListing")
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice !== null").
-		{{listing.sellingPrice | currency }} {{whichListings=='selling'?undefined:'to buy'}}
+		{{listing.sellingPrice | currency : "$" : 0  }} {{whichListings=='selling'?undefined:'to buy'}}
 	p(ng-if="whichListings !== 'renting' && listing.sellingPrice == null")
 		a.dashed.tooltip-left(title="Amazon doesn't let us see information about its 3rd-party marketplace.")
 			| 3

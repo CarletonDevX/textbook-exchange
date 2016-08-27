@@ -3,7 +3,7 @@ td.image: a(href="book/{{listing.ISBN}}")
 
 td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
-td.quality
+td.condition
 	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
@@ -15,7 +15,8 @@ td
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
-			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}
+				span.per term
 			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 

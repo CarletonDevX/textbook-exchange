@@ -256,7 +256,7 @@ table.listings{
     td.confirm button.confirm{
       width: 100%;
       padding: 0;
-      height: $listing-row-height;
+      height: 100%;
       .symbol{
         font-size: 16px;
       }
@@ -284,11 +284,15 @@ table.listings{
         font-family: 'Droid Serif', Serif;
       }
       button.edit, button.delete{
-        display: inline-block;
+        display: block;
+        float: left;
         width: 50%;
         height: $listing-row-height;
         padding: 0;
         font-size: 16px;
+      }
+      button.delete{
+        border-left: 1px solid $light-border-color;
       }
       div.remove-listing{
         p{
@@ -331,6 +335,21 @@ table.listings{
       }
       tr:first-child{
         border-bottom: 1px solid $light-border-color;
+      }
+      span.per {
+          position: relative;
+          top: .3em;
+          left: 0.7em;
+      }
+
+      span.per::before {
+          content: '';
+          border-left: 1px solid black;
+          position: absolute;
+          transform: rotate(20deg);
+          left: -.4em;
+          top: -.3em;
+          height: 1.5em;
       }
     }
   }

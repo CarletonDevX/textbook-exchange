@@ -447,10 +447,10 @@ hitsTheBooks.controller('recentListingsController',
       var $rl = $("#recent-listings")
       if(toState.name.indexOf("main") > -1 && toState.name == "main") {
         $scope.hideRecentListings = false;
-        $rl.transist({'remove':['minimized']},['height'],2000);
+        $rl.transist({'remove':['minimized']},['height'],500);
       } else if (toState.name.indexOf("main") > -1) {
         $scope.hideRecentListings = true;
-        $rl.transist({'add':['minimized']},['height'],2000);
+        $rl.transist({'add':['minimized']},['height'],500);
       }
     });
   });

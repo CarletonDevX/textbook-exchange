@@ -18,12 +18,12 @@ div#search(ng-class="\
                      ng-focus="resetInitSearch()",
                      ng-change="updateSearchBox();search()",
                      ng-htb-keypress="{13:'classicSearch()'}",
-                     placeholder='Search the exchange…')
+                     placeholder='Find books and people…')
     //- a(ui-sref="main.search({query: searchInput})") Search
     div.search-loading(ng-click="classicSearch()", ng-class="searchLoading?'loading':''")
 
   div#search-results(ui-view="search")
-    
+
   div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
     //- h3 Fresh Listings
     table.listings
