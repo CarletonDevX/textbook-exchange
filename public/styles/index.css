@@ -707,11 +707,11 @@ main #detail-wrapper.maximized {
   box-sizing: border-box;
   margin: 0 auto;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 20px;
+  background-color: white;
+  margin-bottom: 40px;
   margin-top: -11px;
   padding-top: 15px;
-  transition: opacity 2s, height 2s;
+  transition: opacity .2s, height .2s;
   overflow: hidden; }
   #recent-listings h3 {
     font-weight: normal;
@@ -723,6 +723,11 @@ main #detail-wrapper.maximized {
     width: 6em; }
   #recent-listings table.listings tfoot td {
     padding: 0; }
+  #recent-listings table.listings tfoot span {
+    padding: 5px;
+    display: inline-block;
+    font-family: 'Droid Serif', serif;
+    color: gray; }
   #recent-listings table.listings tfoot button {
     height: 30px;
     width: 100%; }

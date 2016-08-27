@@ -24,7 +24,7 @@ div#search(ng-class="\
 
   div#search-results(ui-view="search")
 
-div#detail-wrapper(ui-view="detail")
+div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")
 
 div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
   //- h3 Fresh Listings
@@ -43,4 +43,7 @@ div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimi
     tfoot
       tr
         td(colspan="7")
-          button(ng-click="getMoreRecentListings()") Load more
+          button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
+            span.symbol +
+            |  Load more
+          span(ng-if="recentListings.length >= totalListings") That's all she wrote!

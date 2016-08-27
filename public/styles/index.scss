@@ -369,8 +369,8 @@ main{
   box-sizing: border-box;
   margin: 0 auto;
   padding: 10px;
-  background-color: rgba(255,255,255,.9);
-  margin-bottom: 20px;
+  background-color: rgba(255,255,255,1);
+  margin-bottom: 40px;
   margin-top: -11px;
   padding-top: 15px;
 
@@ -390,13 +390,19 @@ main{
       td{
         padding: 0;
       }
+      span{
+        padding: 5px;
+        display: inline-block;
+        font-family: 'Droid Serif', serif;
+        color: gray;
+      }
       button{
         height: 30px;
         width: 100%;
       }
     }
   }
-  transition: opacity 2s, height 2s;
+  transition: opacity .2s, height .2s;
   overflow: hidden;
 }
 

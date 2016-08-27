@@ -406,12 +406,12 @@ hitsTheBooks.controller('recentListingsController',
   function($scope, $rootScope, $interval, Api) {
 
     var pagingData = {
-      totalListings   : 0, // how many listings the backend has
       initNumListings : 5, // how many listings we want load with UpdateRecent...
       querySize       : 5  // how many more to add on getMoreRecent....
     }
 
-    $scope.recentListings = []
+    $scope.recentListings = [];
+    $scope.totalListings = 0; // how many listings the backend has
 
     var updateRecentListings = function() {
       Api.getRecentListings({
@@ -419,7 +419,7 @@ hitsTheBooks.controller('recentListingsController',
       }).then(
         function(res){
           $scope.recentListings = res.listings;
-          pagingData.totalListings = res.numListings;
+          $scope.totalListings = res.numListings;
         }, function (err) {console.log(err)});
     }
 
@@ -427,7 +427,7 @@ hitsTheBooks.controller('recentListingsController',
     var pingRecentListings = $interval(updateRecentListings, 300000);
 
     $scope.getMoreRecentListings = function() {
-      if ($scope.recentListings.length < pagingData.totalListings) {
+      if ($scope.recentListings.length < $scope.totalListings) {
         Api.getRecentListings({
           limit: $scope.querySize,
           skip: $scope.recentListings.length
@@ -435,7 +435,7 @@ hitsTheBooks.controller('recentListingsController',
           $scope.recentListings = $scope.recentListings.concat(res.listings)
           // Don't include the following line because the new listings could
           // have been added more recently in the stream, breaking EVERYTHING
-          // pagingData.totalListings = res.numListings
+          // $scope.totalListings = res.numListings
           // ^ NO
         }, function(err){ console.log(err) });
       }
@@ -447,10 +447,10 @@ hitsTheBooks.controller('recentListingsController',
       var $rl = $("#recent-listings")
       if(toState.name.indexOf("main") > -1 && toState.name == "main") {
         $scope.hideRecentListings = false;
-        $rl.transist({'remove':['minimized']},['height'],2000);
+        $rl.transist({'remove':['minimized']},['height'],200);
       } else if (toState.name.indexOf("main") > -1) {
         $scope.hideRecentListings = true;
-        $rl.transist({'add':['minimized']},['height'],2000);
+        $rl.transist({'add':['minimized']},['height'],200);
       }
     });
   });
