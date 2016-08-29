@@ -1,8 +1,18 @@
 doctype html
 html(ng-app="hitsTheBooks")
   head
-    title [DEV] Carleton Hits the Books
-    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title #{metaProps["og:title"]}
+
+    //- TODO: make mobile styles work
+    //- meta(name="viewport" content="width=device-width, initial-scale=1")
+
+    //- For Search Engines:
+    meta(name="description" content=metaProps["og:description"])
+
+    //- For Facebook:
+    each cont, prop in metaProps
+        meta(property=prop, content=cont)
+
     link(rel="stylesheet" type="text/css" href="/styles/index.css")
     script(src="https://use.fontawesome.com/f91a067268.js")
     script(src="https://code.jquery.com/jquery-1.11.3.min.js")
