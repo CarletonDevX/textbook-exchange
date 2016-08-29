@@ -57,7 +57,7 @@ exports.getUndercutListings = function (req, res, next) {
 exports.getRecentListings = function (req, res, next) {
     var skip = Number(req.query.skip) || 0;
     var limit = Number(req.query.limit) || null;
-    Listing.find({completed: false}).sort({'created':1}).skip(skip).limit(limit).exec(function (err, listings) {
+    Listing.find({completed: false}).sort({'created':-1}).skip(skip).limit(limit).exec(function (err, listings) {
         if (err) return next(new MongoError(err));
         req.rListings = listings;
         return next();

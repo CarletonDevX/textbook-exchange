@@ -20,7 +20,7 @@ var User = new Schema({
     providerId: String,
     providerData: {},
     bio: { type: String, maxlength: 200 },
-    avatar: { type: String, default: 'http://i.imgur.com/gj1AFLy.png' },
+    avatar: { type: String, default: 'images/default-avatar.png' },
     gradYear: { type: Number, required: true },
     created: { type: Date, default: new Date() },
 });
