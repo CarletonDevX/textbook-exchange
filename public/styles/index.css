@@ -759,7 +759,8 @@ main {
   color: gray;
   line-height: 1.2em;
   font-size: 11pt;
-  border: solid 1px; }
+  border: solid 1px;
+  text-align: center; }
 
 .stat.good {
   color: #45753c; }
