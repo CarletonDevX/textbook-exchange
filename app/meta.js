@@ -18,7 +18,6 @@ exports.set = function (route) {
     switch(route){
         case routeNames.MAIN:
             // defaults are correct.
-            console.log("main was obtained")
             break;
         case routeNames.SEARCH:
             // TODO: Don't cache?
