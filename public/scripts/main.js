@@ -417,52 +417,22 @@ hitsTheBooks.controller('recentListingsController',
 
     $scope.recentListings = [];
     $scope.totalListings = 0; // how many listings the backend has
-    $scope.offersDict = {};
-    $scope.offer = {
+    $scope.$parent.offer = {
       active: false,
       listing: null,
       message: null
     }
-    $scope.$watch('offers', function() {
-        // When offers change, update offers dict
-        $scope.offersDict = {};
-        for (var i = 0; i < $scope.offers.length; i++) {
-            $scope.offersDict[$scope.offers[i].listingID] = true;
-        };
-    });
-    $scope.$on(AUTH_EVENTS.loginSuccess,
-      function() {
-        refreshOffers();
-      }
-    );
 
-    var refreshOffers = function() {
-      Api.getOffers().then( function(offers) {
-        $scope.offers = offers;
-      }, function(err) {
-        console.log(err);
-      });
-    }
     $scope.makeOfferInit = function(listing) {
-      $scope.offer.listing = listing;
-      $scope.offer.message =
-        "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
-        + "I'm interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+".\" "
+      $scope.$parent.offer.listing = listing;
+      $scope.$parent.offer.message =
+        "Hi "+$scope.$parent.offer.listing.user.name.fullName+",\n\n"
+        + "I'm interested in [buying/renting] your copy of \""+$scope.$parent.offer.listing.book.name+".\" "
         + "Please let me know when we could meet.\n\n"
         + "Thanks"
         + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
-      $scope.offer.active = true;
+      $scope.$parent.offer.active = true;
     }
-    $scope.makeOffer = function() {
-      Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
-        .then( function (data) {
-          refreshOffers();
-          $scope.offer.active = false;
-        }, function (err) {
-          console.log(err);
-        })
-    }
-
 
     var updateRecentListings = function() {
       Api.getRecentListings({
@@ -511,12 +481,55 @@ hitsTheBooks.controller('recentListingsController',
     }
   });
 
-hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document, offers) {
+hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document, offers, Api, AUTH_EVENTS) {
   $scope.offers = offers;
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
+
+  $scope.$on(AUTH_EVENTS.loginSuccess,
+    function() {
+      refreshOffers();
+    }
+  );
+
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
+  }
   
+  $scope.offersDict = {};
+  var updateOffersDict = function(){
+      // When offers change, update offers dict
+      $scope.offersDict = {};
+      for (var i = 0; i < $scope.offers.length; i++) {
+          $scope.offersDict[$scope.offers[i].listingID] = true;
+      };
+  }
+  $scope.$watch('offers', updateOffersDict);
+  updateOffersDict();
+
+  $scope.makeOffer = function() {
+    Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
+      .then( function (data) {
+        refreshOffers();
+        $scope.offer.active = false;
+      }, function (err) {
+        console.log(err);
+      })
+  }
+
+  var refreshOffers = function() {
+    Api.getOffers().then( function(offers) {
+      $scope.offers = offers;
+    }, function(err) {
+      console.log(err);
+    });
+  }
+
   $scope.displayedSearch = 'books';
   var streamSearchDelay = 250; //ms
   var initSearch = false;

@@ -49,13 +49,13 @@ div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimi
             |  Load more
           span(ng-if="recentListings.length >= totalListings") That's all she wrote!
 
-  div.modal-wrapper(
-    ng-class="{'visible':offer.active}",
-    ng-htb-self-mousedown="offer.active = false"
-    )
-    div.modal.offer
-      h2 Make an Offer
-      textarea(ng-model="offer.message")
-      div.bottom-buttons
-        button.cancel(ng-click="offer.active = false") Cancel
-        button(ng-click="makeOffer()") Send email
+div.modal-wrapper(
+  ng-class="{'visible':offer.active}",
+  ng-htb-self-mousedown="offer.active = false"
+  )
+  div.modal.offer
+    h2 Make an Offer
+    textarea(ng-model="offer.message")
+    div.bottom-buttons
+      button.cancel(ng-click="offer.active = false") Cancel
+      button(ng-click="makeOffer()") Send email
