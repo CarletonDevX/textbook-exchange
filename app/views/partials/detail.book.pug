@@ -45,11 +45,12 @@ div#book-details
 
     button.none.expand(
       ng-class="{'expanded':!descMinimized}",
-      ng-click="toggleDesc()") {{ descMinimized ? "- more -" : "- less -" }}
+      ng-click="toggleDesc()",
+      ng-if="expandButtonShow") {{ descMinimized ? "- more -" : "- less -" }}
 
   div.listings
     div.tabs
-      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") 
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}")
         | All Listings
       button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
         | Selling
@@ -92,7 +93,7 @@ div#book-details
                   ng-model="newListing.selling",
                   ng-disabled="newListing.selling && !newListing.renting"
                   )
-                span.label Sell for 
+                span.label Sell for
                 input#sellingPriceInput.price(
                   type="text",
                   ng-model="newListing.sellingPrice",
@@ -107,7 +108,7 @@ div#book-details
                   ng-model="newListing.renting",
                   ng-disabled="!newListing.selling && newListing.renting"
                   )
-                span.label Rent for 
+                span.label Rent for
                 input#rentingPriceInput.price(
                   type="text",
                   ng-model="newListing.rentingPrice",
@@ -143,4 +144,3 @@ div#book-details
       div.bottom-buttons
         button.cancel(ng-click="offer.active = false") Cancel
         button(ng-click="makeOffer()") Send email
-
