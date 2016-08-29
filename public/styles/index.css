@@ -580,6 +580,15 @@ main {
           flex-grow: 1;
           padding-right: 20px;
           padding-bottom: 20px; }
+          main #search #search-results ul li div.info div.listing-stats {
+            display: flex; }
+            main #search #search-results ul li div.info div.listing-stats p {
+              flex-grow: 1;
+              font-family: 'Droid Sans';
+              font-size: 10pt;
+              text-align: center; }
+              main #search #search-results ul li div.info div.listing-stats p .stat {
+                margin-right: 0; }
         main #search #search-results ul li a.book, main #search #search-results ul li a.user {
           text-decoration: none;
           color: black;

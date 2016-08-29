@@ -27,11 +27,12 @@ ul(ng-if="$parent.displayedSearch == 'books'")
 					tr
 						td ISBN:
 						td {{ book.ISBN }}
-				p Student Listings:
-					span.stat(ng-class="{'good': !!book.listings.length}")
-						| {{ book.listings.length }}
-					|  Amazon:
-					span.stat.good ✔
+				div.listing-stats
+					p Student Listings:
+						span.stat(ng-class="{'good': !!book.listings.length}")
+							| {{ book.listings.length }}
+					p Amazon:
+						span.stat.good ✔
 
 ul(ng-if="$parent.displayedSearch == 'users'")
 	li(ng-repeat="user in userResults")

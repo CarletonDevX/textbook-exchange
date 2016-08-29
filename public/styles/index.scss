@@ -188,6 +188,19 @@ main{
           flex-grow: 1;
           padding-right: 20px;
           padding-bottom: 20px;
+          div.listing-stats{
+            display: flex;
+            p {
+              flex-grow: 1;
+              // flex-basis: 0;
+              font-family: 'Droid Sans';
+              font-size: 10pt;
+              text-align: center;
+              .stat{
+                margin-right: 0;
+              }
+            }
+          }
         }
         a.book, a.user{
           text-decoration: none;
