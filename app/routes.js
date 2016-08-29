@@ -265,6 +265,14 @@ exports.setup = function (app) {
              inject.UsersIntoListings,
              responder.formatBookListings);
 
+    // Get recent listings
+    app.route('/api/listings/recent')
+        .get(listings.countOpenListings,
+             listings.getRecentListings,
+             inject.UsersIntoListings,
+             inject.BooksIntoListings,
+             responder.formatRecentListings);
+
     // Get listing with listing ID
     app.route('/api/listings/:listingID')
         .get(listings.getListing,
@@ -285,14 +293,23 @@ exports.setup = function (app) {
                 listings.removeListings,
                 responder.successRemoveListing);
 
+    // Complete a listing with listing ID
+    app.route('/api/listings/complete/:listingID')
+        .post(authenticate,
+             users.getCurrentUser,
+             listings.getListing,
+             activities.createExchangeActivity,
+             listings.completeListing,
+             responder.formatSingleListing);
+
     /* OFFERS */
 
     // Get offers for current user
     app.route('/api/offers')
         .get(authenticate, 
-            users.getCurrentUser,
-            offers.getOffersForUser,
-            responder.formatOffers);
+             users.getCurrentUser,
+             offers.getOffersForUser,
+             responder.formatOffers);
 
     // Get previous offer on a listing
     app.route('/api/offers/:listingID')
@@ -304,22 +321,13 @@ exports.setup = function (app) {
 
     // Make an offer on a listing
         .post(authenticate,
-              users.getCurrentUser,
-              listings.getListing,
-              inject.BooksIntoListings, // necessary for the email
-              inject.UsersIntoListings, // -----------------------
-              offers.create,
-              mail.sendOfferEmail,
-              responder.formatOffer);
-
-    // Complete a listing with listing ID
-    app.route('/api/listings/complete/:listingID')
-        .post(authenticate,
-              users.getCurrentUser,
-              listings.getListing,
-              activities.createExchangeActivity,
-              listings.completeListing,
-              responder.formatSingleListing);
+             users.getCurrentUser,
+             listings.getListing,
+             inject.BooksIntoListings, // necessary for the email
+             inject.UsersIntoListings, // -----------------------
+             offers.create,
+             mail.sendOfferEmail,
+             responder.formatOffer);
 
     /* Books */
 

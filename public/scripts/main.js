@@ -114,12 +114,11 @@ hitsTheBooks.config(function($stateProvider, $locationProvider) {
       url: '/?flash',
       sticky: true,
       // deepStateRedirect: true,
-      // resolve : {
-      //   activity: function(Api) {
-      //     //WORKING: add
-      //     return 1
-      //   }
-      // },
+      resolve: {
+        offers: function(Api) {
+          return Api.getOffers();
+        }
+      },
       views:{
         'main' : {
           templateUrl: '/partials/main',
@@ -408,10 +407,116 @@ hitsTheBooks.controller('accountRegisterController', function($scope, $rootScope
     };
 });
 
-hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
+hitsTheBooks.controller('recentListingsController',
+  function($scope, $rootScope, $interval, $state, Api, AUTH_EVENTS) {
+
+    var pagingData = {
+      initNumListings : 5, // how many listings we want load with UpdateRecent...
+      querySize       : 5  // how many more to add on getMoreRecent....
+    }
+
+    $scope.recentListings = [];
+    $scope.totalListings = 0; // how many listings the backend has
+    $scope.offersDict = {};
+    $scope.offer = {
+      active: false,
+      listing: null,
+      message: null
+    }
+    $scope.$watch('offers', function() {
+        // When offers change, update offers dict
+        $scope.offersDict = {};
+        for (var i = 0; i < $scope.offers.length; i++) {
+            $scope.offersDict[$scope.offers[i].listingID] = true;
+        };
+    });
+    $scope.$on(AUTH_EVENTS.loginSuccess,
+      function() {
+        refreshOffers();
+      }
+    );
+
+    var refreshOffers = function() {
+      Api.getOffers().then( function(offers) {
+        $scope.offers = offers;
+      }, function(err) {
+        console.log(err);
+      });
+    }
+    $scope.makeOfferInit = function(listing) {
+      $scope.offer.listing = listing;
+      $scope.offer.message =
+        "Hi "+$scope.offer.listing.user.name.fullName+",\n\n"
+        + "I'm interested in [buying/renting] your copy of \""+$scope.offer.listing.book.name+".\" "
+        + "Please let me know when we could meet.\n\n"
+        + "Thanks"
+        + ($rootScope.currentUser ? (",\n"+$rootScope.currentUser.name.fullName) : "!")
+      $scope.offer.active = true;
+    }
+    $scope.makeOffer = function() {
+      Api.makeOffer($scope.offer.listing.listingID, $scope.offer.message)
+        .then( function (data) {
+          refreshOffers();
+          $scope.offer.active = false;
+        }, function (err) {
+          console.log(err);
+        })
+    }
+
+
+    var updateRecentListings = function() {
+      Api.getRecentListings({
+        limit: Math.max(pagingData.initNumListings, $scope.recentListings.length)
+      }).then(
+        function(res){
+          $scope.recentListings = res.listings;
+          $scope.totalListings = res.numListings;
+        }, function (err) {console.log(err)});
+    }
+
+    updateRecentListings();
+    var pingRecentListings = $interval(updateRecentListings, 300000);
+
+    $scope.getMoreRecentListings = function() {
+      if ($scope.recentListings.length < $scope.totalListings) {
+        Api.getRecentListings({
+          limit: $scope.querySize,
+          skip: $scope.recentListings.length
+        }).then(function(res){
+          $scope.recentListings = $scope.recentListings.concat(res.listings)
+          // Don't include the following line because the new listings could
+          // have been added more recently in the stream, breaking EVERYTHING
+          // $scope.totalListings = res.numListings
+          // ^ NO
+        }, function(err){ console.log(err) });
+      }
+    }
+
+    //for recent listings
+    $rootScope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams){
+      var $rl = $("#recent-listings")
+      //if it's a main transition and it's to main
+      if(toState.name.indexOf("main") > -1 && toState.name == "main") {
+        $scope.hideRecentListings = false;
+        $rl.transist({'remove':['minimized']},['height'],200);
+      //it's a main transition and not to main
+      } else if (toState.name.indexOf("main") > -1) {
+        $scope.hideRecentListings = true;
+        $rl.transist({'add':['minimized']},['height'],200);
+      }
+    });
+    if (!$state.is('main')) {
+      $("#recent-listings").addClass('minimized');
+    }
+  });
+
+hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document, offers) {
+  $scope.offers = offers;
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
+  
   $scope.displayedSearch = 'books';
   var streamSearchDelay = 250; //ms
   var initSearch = false;
@@ -440,8 +545,13 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   }
 
   $scope.handleSearchPaneClick = function(){
-    if ($state.includes('main.detail') && $scope.searchInput) {
-      $state.go('main.search',{query: $scope.searchInput});
+    if ($state.includes('main.detail')) {
+      if ($scope.searchInput) {
+        $state.go('main.search',{query: $scope.searchInput});
+      } else {
+        $state.go('main');
+        document.getElementById("search-box").focus();
+      }
     }
   }
 
@@ -467,9 +577,11 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
     if (fromState.name == "main.search" &&
         toState.name !== "main.search" &&
         toState.name.indexOf('account') == -1) {
+      //we're actually moving away from main.search
       $sr.transist({'add':['minimized']},['height'],200);
       $scope.searchIsSearching = false;
     } else if (fromState.name == 'main.search' && toState.name.indexOf('account') > -1){
+      //we're staying on main.search
       $scope.searchIsSearching = true;
     } else if (fromState.name.indexOf('detail') > -1 && toState.name.indexOf('account') > -1) {
       $scope.searchIsSearching = true;

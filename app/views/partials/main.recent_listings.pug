@@ -1,0 +1,41 @@
+td.image: a(href="book/{{listing.ISBN}}")
+	img(src="{{listing.book.coverImage}}")
+
+td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
+
+//- td.image: a(href="user/{{listing.ISBN}}")
+//- 	img(src="{{listing.user.avatar}}")
+
+td.name.hyphenate: a(href="user/{{listing.userID}}") {{ listing.user.name.fullName | limitTo: 20 }}{{listing.user.name.fullName.length > 20 ? '…' : ''}}
+
+td.quality
+	a.dashed.tooltip-left(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
+
+td
+	table.price-table
+		tr
+			td Buy:
+			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency : "$" : 0 }}
+			td.green-text(ng-if="listing.sellingPrice == 0") Free!
+			td(ng-if="listing.sellingPrice == null") —
+		tr
+			td Rent:
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency : "$" : 0 }}
+			td.green-text(ng-if="listing.rentingPrice == 0") Free!
+			td(ng-if="listing.rentingPrice == null") —
+
+td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
+	p(ng-if="!currentUser")
+		a(href, ng-click="openAccount()") Sign in
+		|  to make an offer
+	button.confirm.email(
+		type="button",
+		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
+		ng-click="makeOfferInit(listing)")
+		span.symbol ✉
+		p Make an Offer
+	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
+		span.symbol ✓
+		p Offer Sent
+	div.complete(ng-if="listing.userID == currentUser.userID")
+		| This is yours!

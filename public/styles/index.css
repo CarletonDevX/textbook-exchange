@@ -191,7 +191,7 @@ table button:focus {
 a {
   font-weight: bold;
   text-decoration: none;
-  color: black; }
+  color: inherit; }
 
 a:hover {
   text-decoration: underline; }
@@ -211,7 +211,8 @@ input, select {
 select {
   border-bottom: solid 2px black;
   font-size: 14px;
-  font-family: 'Droid Sans', Sans; }
+  font-family: 'Droid Sans', Sans;
+  border-radius: 0; }
 
 input[type="checkbox"] {
   visibility: hidden;
@@ -487,219 +488,255 @@ header.minimized {
   text-align: center;
   padding: 1.5em; }
 
-main #search {
-  overflow: hidden;
-  box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  position: relative;
-  box-sizing: border-box;
-  background-color: white;
-  text-align: center;
-  width: 500px;
-  margin: 0 auto;
-  transition: width .3s; }
-  main #search #search-form {
-    margin: 30px;
-    transition: margin .2s; }
-    main #search #search-form #search-labels {
-      display: inline-block;
-      position: relative;
-      text-align: right; }
-      main #search #search-form #search-labels label {
-        font-size: 18px;
-        display: inline-block;
-        font-style: normal;
-        transition: opacity .2s, width .2s; }
-      main #search #search-form #search-labels label.pre-search {
-        opacity: 1;
-        width: 250px;
-        overflow: hidden;
-        white-space: nowrap; }
-      main #search #search-form #search-labels label.post-search {
-        opacity: 0;
-        position: absolute;
-        right: 0; }
-    main #search #search-form #search-box {
-      text-align: center;
-      vertical-align: top;
-      font-size: 18px;
-      width: 70px;
-      min-width: 70px;
-      max-width: 400px;
-      margin: 0 7px 0 20px;
-      text-overflow: ellipsis;
-      transition: width .2s; }
-  main #search #search-results {
+main {
+  margin-bottom: 40px; }
+  main #search {
     overflow: hidden;
-    transition: height .2s; }
-  main #search #search-results.minimized {
-    height: 0; }
-  main #search #search-results .tabs {
-    display: flex;
-    margin-bottom: 25px; }
-    main #search #search-results .tabs button {
-      font-variant: small-caps;
-      flex-grow: 1;
-      flex-basis: 0;
-      padding: 10px;
-      font-size: 14pt;
-      font-style: normal;
-      border-bottom: solid 1px black; }
-    main #search #search-results .tabs button.active {
-      font-weight: bold;
-      border-bottom: solid 3px black; }
-    main #search #search-results .tabs button:hover {
-      box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2); }
-    main #search #search-results .tabs .stat {
-      margin-left: 20px; }
-  main #search #search-results ul {
-    list-style-type: none;
-    padding: 0; }
-    main #search #search-results ul li {
-      box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
-      width: 490px;
-      margin: 0 auto 30px auto;
-      transition: box-shadow .1s; }
-      main #search #search-results ul li div.preview {
-        padding: 20px;
-        flex-shrink: 0;
-        flex-basis: auto; }
-        main #search #search-results ul li div.preview img {
-          width: 125px;
-          display: block; }
-      main #search #search-results ul li div.info {
+    box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    position: relative;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: center;
+    width: 500px;
+    margin: 0 auto;
+    transition: width .3s; }
+    main #search #search-form {
+      padding: 30px;
+      transition: margin .2s; }
+      main #search #search-form #search-labels {
+        display: inline-block;
+        position: relative;
+        text-align: right; }
+        main #search #search-form #search-labels label {
+          font-size: 18px;
+          display: inline-block;
+          font-style: normal;
+          transition: opacity .2s, width .2s; }
+        main #search #search-form #search-labels label.pre-search {
+          opacity: 1;
+          width: 250px;
+          overflow: hidden;
+          white-space: nowrap; }
+        main #search #search-form #search-labels label.post-search {
+          opacity: 0;
+          position: absolute;
+          right: 0; }
+      main #search #search-form #search-box {
+        text-align: center;
+        vertical-align: top;
+        font-size: 18px;
+        width: 70px;
+        min-width: 70px;
+        max-width: 400px;
+        margin: 0 7px 0 20px;
+        text-overflow: ellipsis;
+        transition: width .2s; }
+    main #search #search-results {
+      overflow: hidden;
+      transition: height .2s; }
+    main #search #search-results.minimized {
+      height: 0; }
+    main #search #search-results .tabs {
+      display: flex;
+      margin-bottom: 25px; }
+      main #search #search-results .tabs button {
+        font-variant: small-caps;
         flex-grow: 1;
-        padding-right: 20px;
-        padding-bottom: 20px; }
-      main #search #search-results ul li a.book, main #search #search-results ul li a.user {
-        text-decoration: none;
-        color: black;
-        text-align: left;
-        display: flex; }
-      main #search #search-results ul li h4 {
-        font-family: 'Droid Sans', serif;
-        margin-bottom: 0;
+        flex-basis: 0;
+        padding: 10px;
+        font-size: 14pt;
+        font-style: normal;
+        border-bottom: solid 1px black; }
+      main #search #search-results .tabs button.active {
         font-weight: bold;
-        color: black; }
-      main #search #search-results ul li h5 {
-        font-family: 'Droid Sans', serif;
-        font-weight: 400;
-        margin-top: 0;
-        padding-bottom: 6px;
-        border-bottom: 2px solid black; }
-      main #search #search-results ul li table {
-        width: 100%; }
-    main #search #search-results ul li:hover {
-      box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
-
-main #search.home-view {
-  width: 500px; }
-
-main #search.searching, main #search.behind-detail {
-  width: 530px; }
-  main #search.searching #search-form #search-labels label.pre-search, main #search.behind-detail #search-form #search-labels label.pre-search {
-    opacity: 0;
-    width: 100px; }
-  main #search.searching #search-form #search-labels label.post-search, main #search.behind-detail #search-form #search-labels label.post-search {
-    opacity: 1; }
-
-main #search.behind-detail #search-form {
-  margin: 15px; }
+        border-bottom: solid 3px black; }
+      main #search #search-results .tabs button:hover {
+        box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2); }
+      main #search #search-results .tabs .stat {
+        margin-left: 20px; }
+    main #search #search-results ul {
+      list-style-type: none;
+      padding: 0; }
+      main #search #search-results ul li {
+        box-shadow: 0px 1px 6px 0px rgba(0, 0, 0, 0.15);
+        width: 490px;
+        margin: 0 auto 30px auto;
+        transition: box-shadow .1s; }
+        main #search #search-results ul li div.preview {
+          padding: 20px;
+          flex-shrink: 0;
+          flex-basis: auto; }
+          main #search #search-results ul li div.preview img {
+            width: 125px;
+            display: block; }
+        main #search #search-results ul li div.info {
+          flex-grow: 1;
+          padding-right: 20px;
+          padding-bottom: 20px; }
+        main #search #search-results ul li a.book, main #search #search-results ul li a.user {
+          text-decoration: none;
+          color: black;
+          text-align: left;
+          display: flex; }
+        main #search #search-results ul li h4 {
+          font-family: 'Droid Sans', serif;
+          margin-bottom: 0;
+          font-weight: bold;
+          color: black; }
+        main #search #search-results ul li h5 {
+          font-family: 'Droid Sans', serif;
+          font-weight: 400;
+          margin-top: 0;
+          padding-bottom: 6px;
+          border-bottom: 2px solid black; }
+        main #search #search-results ul li table {
+          width: 100%; }
+      main #search #search-results ul li:hover {
+        box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.3); }
+  main #search.home-view {
+    width: 500px;
+    overflow: inherit; }
+  main #search.searching, main #search.behind-detail {
+    width: 530px; }
+    main #search.searching #search-form #search-labels label.pre-search, main #search.behind-detail #search-form #search-labels label.pre-search {
+      opacity: 0;
+      width: 100px; }
+    main #search.searching #search-form #search-labels label.post-search, main #search.behind-detail #search-form #search-labels label.post-search {
+      opacity: 1; }
+  main #search.behind-detail #search-form {
+    padding: 15px; }
 
 @keyframes spin {
   0% {
     transform: rotate(0deg); }
   100% {
     transform: rotate(360deg); } }
+  main .search-loading {
+    display: inline-block;
+    position: relative;
+    border-radius: 50%;
+    width: 12px;
+    height: 12px;
+    border: 2px solid black; }
+  main .search-loading:hover {
+    box-shadow: inset 0 0 3px 0 gray; }
+  main .search-loading::before {
+    content: '';
+    display: block;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border: 3px solid rgba(255, 255, 255, 0.92);
+    border-top-color: white;
+    border-bottom-color: rgba(255, 255, 255, 0);
+    border-top-width: 0;
+    border-bottom-width: 0;
+    animation: spin 1s infinite linear;
+    transition: opacity .5s;
+    position: absolute;
+    left: -2px;
+    top: 1px;
+    opacity: 0; }
+  main .search-loading::after {
+    content: '';
+    display: block;
+    width: 10px;
+    border-top: 3px solid black;
+    border-bottom: 1px solid black;
+    transition: opacity .2s;
+    position: absolute;
+    top: 13px;
+    left: 10px;
+    transform: rotate(45deg);
+    border-radius: 2px; }
+  main .search-loading.loading::before {
+    opacity: 1; }
+  main #detail-wrapper {
+    width: 500px;
+    margin: -10px auto 40px auto;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 20;
+    overflow: hidden;
+    transition: opacity .2s; }
+    main #detail-wrapper .detail-nav {
+      font-size: 24pt;
+      position: fixed;
+      top: calc(50vh - 32px);
+      width: 64px;
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 64px;
+      transition: color .2s; }
+    main #detail-wrapper .detail-nav:hover {
+      text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3); }
+    main #detail-wrapper #detail {
+      margin: 10px auto 0 auto;
+      padding: 20px;
+      box-sizing: border-box;
+      background-color: white;
+      position: relative; }
+  main #detail-wrapper.minimized {
+    opacity: 0;
+    margin-bottom: 0;
+    height: 0;
+    margin-bottom: 0; }
+    main #detail-wrapper.minimized #detail {
+      box-shadow: 0px 3px 10px 2px transparent; }
+    main #detail-wrapper.minimized .detail-nav {
+      color: transparent; }
+  main #detail-wrapper.maximized {
+    width: 750px;
+    max-width: 100vw;
+    overflow: visible;
+    opacity: 1;
+    height: auto; }
+    main #detail-wrapper.maximized #detail {
+      width: 570px;
+      box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3); }
 
-main .search-loading {
-  display: inline-block;
-  position: relative;
-  border-radius: 50%;
-  width: 12px;
-  height: 12px;
-  border: 2px solid black; }
+#recent-listings {
+  padding: 10px;
+  background-color: white;
+  transition: opacity .2s, height .2s, padding .2s;
+  overflow: hidden; }
+  #recent-listings h3 {
+    font-weight: normal;
+    font-variant: small-caps;
+    font-size: 23px;
+    border-bottom: 1px solid black;
+    text-align: center; }
+  #recent-listings table.listings th.condition {
+    width: inherit; }
+  #recent-listings table.listings th.price {
+    width: 6em; }
+  #recent-listings table.listings th.seller {
+    width: 4em; }
+  #recent-listings table.listings td.image {
+    width: 45px; }
+  #recent-listings table.listings tbody {
+    font-size: 10pt; }
+    #recent-listings table.listings tbody img {
+      margin: 0 5px; }
+    #recent-listings table.listings tbody td {
+      height: 70px; }
+    #recent-listings table.listings tbody table.price-table td {
+      height: auto; }
+  #recent-listings table.listings tfoot td {
+    padding: 0; }
+  #recent-listings table.listings tfoot span {
+    padding: 5px;
+    display: inline-block;
+    font-family: 'Droid Serif', serif;
+    color: gray; }
+  #recent-listings table.listings tfoot button {
+    height: 30px;
+    width: 100%; }
 
-main .search-loading:hover {
-  box-shadow: inset 0 0 3px 0 gray; }
-
-main .search-loading::before {
-  content: '';
-  display: block;
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
-  border: 3px solid rgba(255, 255, 255, 0.92);
-  border-top-color: white;
-  border-bottom-color: rgba(255, 255, 255, 0);
-  border-top-width: 0;
-  border-bottom-width: 0;
-  animation: spin 1s infinite linear;
-  transition: opacity .5s;
-  position: absolute;
-  left: -2px;
-  top: 1px;
-  opacity: 0; }
-
-main .search-loading::after {
-  content: '';
-  display: block;
-  width: 10px;
-  border-top: 3px solid black;
-  border-bottom: 1px solid black;
-  transition: opacity .2s;
-  position: absolute;
-  top: 13px;
-  left: 10px;
-  transform: rotate(45deg);
-  border-radius: 2px; }
-
-main .search-loading.loading::before {
-  opacity: 1; }
-
-main #detail-wrapper {
-  width: 500px;
-  margin: -10px auto 40px auto;
-  padding-bottom: 20px;
-  position: relative;
-  z-index: 20;
-  overflow: hidden;
-  transition: opacity .2s; }
-  main #detail-wrapper .detail-nav {
-    font-size: 24pt;
-    position: fixed;
-    top: calc(50vh - 32px);
-    width: 64px;
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 64px;
-    transition: color .2s; }
-  main #detail-wrapper .detail-nav:hover {
-    text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3); }
-  main #detail-wrapper #detail {
-    margin: 10px auto 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: white;
-    position: relative; }
-
-main #detail-wrapper.minimized {
+#recent-listings.minimized {
   opacity: 0;
   height: 0;
-  margin-bottom: 0; }
-  main #detail-wrapper.minimized #detail {
-    box-shadow: 0px 3px 10px 2px transparent; }
-  main #detail-wrapper.minimized .detail-nav {
-    color: transparent; }
-
-main #detail-wrapper.maximized {
-  width: 750px;
-  max-width: 100vw;
-  overflow: visible;
-  opacity: 1;
-  height: auto; }
-  main #detail-wrapper.maximized #detail {
-    width: 570px;
-    box-shadow: 0px 3px 10px 2px rgba(0, 0, 0, 0.3); }
+  padding: 0 10px; }
 
 .hyphenate {
   overflow-wrap: break-word;
@@ -732,6 +769,9 @@ main #detail-wrapper.maximized {
 
 .stat.active {
   box-shadow: 0 0 3px 0; }
+
+.green-text {
+  color: #2f982f; }
 
 #book-details h2, #book-details h3 {
   font-family: 'Droid Sans', Sans-serif; }
@@ -826,35 +866,36 @@ div.listings .tabs {
     color: black;
     box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2); }
 
-div.listings table.listings {
+table.listings {
   width: 100%;
-  table-layout: fixed;
   border-spacing: 0;
   border: solid 1px #ccc;
   border-top: 2px solid black;
   overflow: hidden; }
-  div.listings table.listings thead tr {
-    background-color: #fffcf5;
+  table.listings thead tr {
     height: 4em; }
-    div.listings table.listings thead tr th {
+    table.listings thead tr th {
+      background-color: #fffcf5;
       font-weight: 400;
       font-style: italic;
       height: 40px;
       border-bottom: 2px solid #ccc;
       border-right: 1px solid #eee;
       position: relative; }
-    div.listings table.listings thead tr th.seller {
+    table.listings thead tr th.seller {
       width: 6em; }
-    div.listings table.listings thead tr th.price {
+    table.listings thead tr th.condition {
+      width: 5.5em; }
+    table.listings thead tr th.price {
       width: 7.5em; }
-    div.listings table.listings thead tr th.contact {
+    table.listings thead tr th.contact {
       width: 80px; }
-    div.listings table.listings thead tr th.sortable {
+    table.listings thead tr th.sortable {
       padding: 0 20px;
       cursor: pointer; }
-    div.listings table.listings thead tr th.sortable:hover {
+    table.listings thead tr th.sortable:hover {
       text-decoration: underline; }
-    div.listings table.listings thead tr th.active::before {
+    table.listings thead tr th.active::before {
       content: '';
       background-color: rgba(252, 255, 100, 0.07);
       width: 100%;
@@ -863,36 +904,36 @@ div.listings table.listings {
       left: 0;
       top: 0;
       z-index: -1; }
-    div.listings table.listings thead tr th.active::after {
+    table.listings thead tr th.active::after {
       content: '▴';
       position: absolute;
       width: 1.5em;
       color: gray;
       font-style: normal; }
-    div.listings table.listings thead tr th.active.reversed::after {
+    table.listings thead tr th.active.reversed::after {
       content: '▾'; }
-    div.listings table.listings thead tr th:last-child {
+    table.listings thead tr th:last-child {
       border-right: none; }
-  div.listings table.listings tbody:last-child tr:last-child td {
+  table.listings tbody:last-child tr:last-child td {
     border-bottom: none; }
-  div.listings table.listings tbody, div.listings table.listings tfoot {
+  table.listings tbody, table.listings tfoot {
     font-family: 'Droid Sans', sans-serif;
     font-size: 14px; }
-    div.listings table.listings tbody tr td, div.listings table.listings tfoot tr td {
+    table.listings tbody tr td, table.listings tfoot tr td {
       text-align: center;
       border-bottom: solid 2px #ccc;
       border-right: solid 1px #eee; }
-      div.listings table.listings tbody tr td img, div.listings table.listings tfoot tr td img {
+      table.listings tbody tr td img, table.listings tfoot tr td img {
         width: 40px;
         vertical-align: middle;
         margin: 5px; }
-    div.listings table.listings tbody tr td:last-child, div.listings table.listings tfoot tr td:last-child {
+    table.listings tbody tr td:last-child, table.listings tfoot tr td:last-child {
       border-right: none; }
-    div.listings table.listings tbody tr td.image, div.listings table.listings tfoot tr td.image {
+    table.listings tbody tr td.image, table.listings tfoot tr td.image {
       text-align: right;
       border-right: none;
       padding-right: 5px; }
-    div.listings table.listings tbody tr td.username, div.listings table.listings tfoot tr td.username {
+    table.listings tbody tr td.username, table.listings tfoot tr td.username {
       text-align: left;
       padding-left: 5px;
       word-break: break-all;
@@ -902,105 +943,105 @@ div.listings table.listings {
       -moz-hyphens: auto;
       -ms-hyphens: auto;
       hyphens: auto; }
-    div.listings table.listings tbody tbody:last-child td, div.listings table.listings tfoot tbody:last-child td {
+    table.listings tbody tbody:last-child td, table.listings tfoot tbody:last-child td {
       border-bottom: 1px #ccc; }
-    div.listings table.listings tbody a.dashed, div.listings table.listings tfoot a.dashed {
+    table.listings tbody a.dashed, table.listings tfoot a.dashed {
       border-bottom: black 1px dashed;
       font-weight: normal; }
-    div.listings table.listings tbody a.dashed, div.listings table.listings tfoot a.dashed {
+    table.listings tbody a.dashed, table.listings tfoot a.dashed {
       text-decoration: none; }
-    div.listings table.listings tbody td.make-an-offer button.email,
-    div.listings table.listings tbody td.confirm button.confirm, div.listings table.listings tfoot td.make-an-offer button.email,
-    div.listings table.listings tfoot td.confirm button.confirm {
+    table.listings tbody tr.disabled, table.listings tfoot tr.disabled {
+      background-color: rgba(0, 0, 0, 0.1); }
+    table.listings tbody td.make-an-offer button.email,
+    table.listings tbody td.confirm button.confirm, table.listings tfoot td.make-an-offer button.email,
+    table.listings tfoot td.confirm button.confirm {
       width: 100%;
       padding: 0;
-      height: 80px; }
-      div.listings table.listings tbody td.make-an-offer button.email .symbol,
-      div.listings table.listings tbody td.confirm button.confirm .symbol, div.listings table.listings tfoot td.make-an-offer button.email .symbol,
-      div.listings table.listings tfoot td.confirm button.confirm .symbol {
+      height: 100%; }
+      table.listings tbody td.make-an-offer button.email .symbol,
+      table.listings tbody td.confirm button.confirm .symbol, table.listings tfoot td.make-an-offer button.email .symbol,
+      table.listings tfoot td.confirm button.confirm .symbol {
         font-size: 16px; }
-    div.listings table.listings tbody td.make-an-offer.complete-wrapper, div.listings table.listings tfoot td.make-an-offer.complete-wrapper {
+    table.listings tbody td.make-an-offer.complete-wrapper, table.listings tfoot td.make-an-offer.complete-wrapper {
       background-color: #f7f7f7; }
-    div.listings table.listings tbody td.make-an-offer, div.listings table.listings tfoot td.make-an-offer {
+    table.listings tbody td.make-an-offer, table.listings tfoot td.make-an-offer {
       padding: 0; }
-      div.listings table.listings tbody td.make-an-offer button.email span.symbol,
-      div.listings table.listings tbody td.make-an-offer div.complete span.symbol, div.listings table.listings tfoot td.make-an-offer button.email span.symbol,
-      div.listings table.listings tfoot td.make-an-offer div.complete span.symbol {
+      table.listings tbody td.make-an-offer button.email span.symbol,
+      table.listings tbody td.make-an-offer div.complete span.symbol, table.listings tfoot td.make-an-offer button.email span.symbol,
+      table.listings tfoot td.make-an-offer div.complete span.symbol {
         font-style: normal;
         font-size: 30px; }
-      div.listings table.listings tbody td.make-an-offer button.email p, div.listings table.listings tbody td.make-an-offer div.complete p, div.listings table.listings tfoot td.make-an-offer button.email p, div.listings table.listings tfoot td.make-an-offer div.complete p {
+      table.listings tbody td.make-an-offer button.email p, table.listings tbody td.make-an-offer div.complete p, table.listings tfoot td.make-an-offer button.email p, table.listings tfoot td.make-an-offer div.complete p {
         margin-top: 0; }
-      div.listings table.listings tbody td.make-an-offer div.complete p, div.listings table.listings tfoot td.make-an-offer div.complete p {
+      table.listings tbody td.make-an-offer div.complete p, table.listings tfoot td.make-an-offer div.complete p {
         font-style: italic; }
-      div.listings table.listings tbody td.make-an-offer div.complete, div.listings table.listings tfoot td.make-an-offer div.complete {
+      table.listings tbody td.make-an-offer div.complete, table.listings tfoot td.make-an-offer div.complete {
         color: gray;
         font-family: 'Droid Serif', Serif; }
-      div.listings table.listings tbody td.make-an-offer button.edit, div.listings table.listings tbody td.make-an-offer button.delete, div.listings table.listings tfoot td.make-an-offer button.edit, div.listings table.listings tfoot td.make-an-offer button.delete {
-        display: inline-block;
+      table.listings tbody td.make-an-offer button.edit, table.listings tbody td.make-an-offer button.delete, table.listings tfoot td.make-an-offer button.edit, table.listings tfoot td.make-an-offer button.delete {
+        display: block;
+        float: left;
         width: 50%;
         height: 80px;
         padding: 0;
         font-size: 16px; }
-      div.listings table.listings tbody td.make-an-offer div.remove-listing p, div.listings table.listings tfoot td.make-an-offer div.remove-listing p {
+      table.listings tbody td.make-an-offer button.delete, table.listings tfoot td.make-an-offer button.delete {
+        border-left: 1px solid #eee; }
+      table.listings tbody td.make-an-offer div.remove-listing p, table.listings tfoot td.make-an-offer div.remove-listing p {
         width: 100%;
         margin: 5px; }
-      div.listings table.listings tbody td.make-an-offer div.remove-listing button, div.listings table.listings tfoot td.make-an-offer div.remove-listing button {
+      table.listings tbody td.make-an-offer div.remove-listing button, table.listings tfoot td.make-an-offer div.remove-listing button {
         height: 28px; }
-      div.listings table.listings tbody td.make-an-offer div.remove-listing button.cancel, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.cancel {
+      table.listings tbody td.make-an-offer div.remove-listing button.cancel, table.listings tfoot td.make-an-offer div.remove-listing button.cancel {
         width: 100%; }
-      div.listings table.listings tbody td.make-an-offer div.remove-listing button.confirm, div.listings table.listings tbody td.make-an-offer div.remove-listing button.no, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.confirm, div.listings table.listings tfoot td.make-an-offer div.remove-listing button.no {
+      table.listings tbody td.make-an-offer div.remove-listing button.confirm, table.listings tbody td.make-an-offer div.remove-listing button.no, table.listings tfoot td.make-an-offer div.remove-listing button.confirm, table.listings tfoot td.make-an-offer div.remove-listing button.no {
         width: 50%;
         display: inline-block; }
-  div.listings table.listings tbody td {
+  table.listings tbody td {
     height: 80px;
     padding: 0; }
-  div.listings table.listings tbody table.price-table {
+  table.listings tbody table.price-table {
     width: 100%;
     height: 79px;
-    border-collapse: collapse;
-    table-layout: fixed; }
-    div.listings table.listings tbody table.price-table td:first-child {
+    border-collapse: collapse; }
+    table.listings tbody table.price-table td:first-child {
       font-family: 'Droid Serif', Serif;
       font-style: italic;
       width: 3.5em; }
-    div.listings table.listings tbody table.price-table td {
+    table.listings tbody table.price-table td {
       height: auto;
       border-bottom: none; }
-    div.listings table.listings tbody table.price-table tr:first-child {
+    table.listings tbody table.price-table tr:first-child {
       border-bottom: 1px solid #eee; }
-  div.listings table.listings tfoot {
-    background-color: white; }
-    div.listings table.listings tfoot tr.make-listing {
-      background-color: #fffcf5; }
-      div.listings table.listings tfoot tr.make-listing p {
-        text-align: center; }
-      div.listings table.listings tfoot tr.make-listing span.label {
-        width: 4.5em;
-        display: inline-block; }
-      div.listings table.listings tfoot tr.make-listing input.price {
-        width: 2em; }
-      div.listings table.listings tfoot tr.make-listing td.condition small.description {
-        display: block;
-        margin-top: 10px;
-        font-family: 'Droid Serif', Serif;
-        font-style: italic; }
-    div.listings table.listings tfoot tr.make-listing.inactive {
-      display: none; }
-    div.listings table.listings tfoot tr.add-listing td {
-      text-align: center;
-      border-bottom: none;
-      padding: 0; }
-      div.listings table.listings tfoot tr.add-listing td div {
-        line-height: 2.5em; }
-      div.listings table.listings tfoot tr.add-listing td button, div.listings table.listings tfoot tr.add-listing td div {
-        font-style: italic;
-        font-family: 'Droid Serif', Serif;
-        width: 100%;
-        height: 2.5em; }
-        div.listings table.listings tfoot tr.add-listing td button span.symbol, div.listings table.listings tfoot tr.add-listing td div span.symbol {
-          font-size: 16px;
-          display: inline-block;
-          vertical-align: middle; }
+  table.listings tfoot tr.make-listing {
+    background-color: #fffcf5; }
+    table.listings tfoot tr.make-listing p {
+      text-align: center; }
+    table.listings tfoot tr.make-listing span.label {
+      width: 4.5em;
+      display: inline-block; }
+    table.listings tfoot tr.make-listing input.price {
+      width: 2em; }
+    table.listings tfoot tr.make-listing td.condition a {
+      display: inline-block;
+      margin-top: 15px; }
+  table.listings tfoot tr.make-listing.inactive {
+    display: none; }
+  table.listings tfoot tr.add-listing td {
+    text-align: center;
+    border-bottom: none;
+    padding: 0; }
+    table.listings tfoot tr.add-listing td div {
+      line-height: 2.5em; }
+    table.listings tfoot tr.add-listing td button, table.listings tfoot tr.add-listing td div {
+      font-style: italic;
+      font-family: 'Droid Serif', Serif;
+      width: 100%;
+      height: 2.5em; }
+      table.listings tfoot tr.add-listing td button span.symbol, table.listings tfoot tr.add-listing td div span.symbol {
+        font-size: 16px;
+        display: inline-block;
+        vertical-align: middle; }
 
 button#edit-user, form.about button.confirm {
   border: solid #d2d2d2 1px;
@@ -1248,7 +1289,7 @@ form.about small {
     background-color: white;
     box-sizing: border-box;
     width: 480px;
-    margin: 100px auto;
+    margin: 35px auto;
     padding: 10px;
     overflow: auto;
     box-shadow: 0 3px 10px 0px rgba(0, 0, 0, 0.5); }
@@ -1327,7 +1368,7 @@ form.about small {
 #about footer {
   text-align: center;
   font-family: 'Droid Sans', sans;
-  font-size: 10pt; }
+  font-size: 9pt; }
 
 #about section p {
   margin: 16px 0 0 16px;

@@ -76,6 +76,8 @@ exports.registerUser = function (req, res, next) {
 
 var createUser = function (req, res, next) {
     var info = req.body;
+    var verifier = hash((Math.random()*100).toString());
+    console.log(verifier);
     var newUser = new User({
         email: info.username,
         name: {
@@ -83,7 +85,7 @@ var createUser = function (req, res, next) {
             familyName: info.familyName,
             fullName: info.givenName + ' ' + info.familyName,
         },
-        verifier: hash((Math.random()*100).toString()),
+        verifier: verifier,
         password: hash(info.password),
         verified: false,
         provider: 'local',
