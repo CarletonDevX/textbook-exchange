@@ -25,7 +25,8 @@ div#search(ng-class="\
   div#search-results(ui-view="search")
 
   div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
-    //- h3 Fresh Listings
+    //- div.tabs
+    //-   h3 Recent Listings
     table.listings
       thead
         tr
