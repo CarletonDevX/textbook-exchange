@@ -32,7 +32,7 @@ div#search(ng-class="\
           th.book(colspan="2") Book
           //- th.seller(colspan="2") Seller
           th.seller Seller
-          th.quality
+          th.condition Cond.
           th.price Price
           th.contact Offer
       tbody
@@ -46,5 +46,16 @@ div#search(ng-class="\
               span.symbol +
               |  Load more
             span(ng-if="recentListings.length >= totalListings") That's all she wrote!
+
+    div.modal-wrapper(
+      ng-class="{'visible':offer.active}",
+      ng-htb-self-mousedown="offer.active = false"
+      )
+      div.modal.offer
+        h2 Make An Offer
+        textarea(ng-model="offer.message")
+        div.bottom-buttons
+          button(ng-click="makeOffer()") Send email
+          button.cancel(ng-click="offer.active = false") Cancel
 
 div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")

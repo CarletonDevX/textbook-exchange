@@ -385,6 +385,9 @@ main{
   }
 
   table.listings {
+    th.condition{
+      width: inherit;
+    }
     th.price{
       width: 6em;
     }
@@ -422,7 +425,7 @@ main{
       }
     }
   }
-  transition: opacity .5s, height .5s, padding .5s;
+  transition: opacity .2s, height .2s, padding .2s;
   overflow: hidden;
 }
 

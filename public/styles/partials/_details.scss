@@ -158,6 +158,11 @@ table.listings{
       th.seller{
         width: 6em;
       }
+
+      th.condition{
+        width: 5.5em;
+      }
+
       th.price{
         width: 7.5em;
       }
@@ -368,11 +373,9 @@ table.listings{
         width:2em;
       }
 
-      td.condition small.description {
-        display: block;
-        margin-top: 10px;
-        font-family: 'Droid Serif', Serif;
-        font-style:italic;
+      td.condition a {
+        display: inline-block;
+        margin-top: 15px;
       }
     }
     tr.make-listing.inactive{

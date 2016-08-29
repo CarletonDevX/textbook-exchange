@@ -186,8 +186,7 @@ div.listings
                 ng-model="newListing.condition",
                 ng-options="opt.name for opt in conditionOptions track by opt.code"
               )
-              small.description {{conditionDescriptions[newListing.condition.code]}}
-
+              a.dashed.tooltip(title="{{conditionDescriptions[newListing.condition.code]}}") Definition
             td
               p
                 input(

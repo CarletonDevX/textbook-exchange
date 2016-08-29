@@ -696,7 +696,7 @@ main {
 #recent-listings {
   padding: 10px;
   background-color: white;
-  transition: opacity .5s, height .5s, padding .5s;
+  transition: opacity .2s, height .2s, padding .2s;
   overflow: hidden; }
   #recent-listings h3 {
     font-weight: normal;
@@ -704,6 +704,8 @@ main {
     font-size: 23px;
     border-bottom: 1px solid black;
     text-align: center; }
+  #recent-listings table.listings th.condition {
+    width: inherit; }
   #recent-listings table.listings th.price {
     width: 6em; }
   #recent-listings table.listings th.seller {
@@ -880,6 +882,8 @@ table.listings {
       position: relative; }
     table.listings thead tr th.seller {
       width: 6em; }
+    table.listings thead tr th.condition {
+      width: 5.5em; }
     table.listings thead tr th.price {
       width: 7.5em; }
     table.listings thead tr th.contact {
@@ -1028,11 +1032,9 @@ table.listings {
       display: inline-block; }
     table.listings tfoot tr.make-listing input.price {
       width: 2em; }
-    table.listings tfoot tr.make-listing td.condition small.description {
-      display: block;
-      margin-top: 10px;
-      font-family: 'Droid Serif', Serif;
-      font-style: italic; }
+    table.listings tfoot tr.make-listing td.condition a {
+      display: inline-block;
+      margin-top: 15px; }
   table.listings tfoot tr.make-listing.inactive {
     display: none; }
   table.listings tfoot tr.add-listing td {
