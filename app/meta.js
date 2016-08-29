@@ -8,7 +8,7 @@ exports.set = function (route) {
     var metaProps = {
         "fb:app_id"      :  1762840040660077,
         "og:description" : "The streamlined platform for face-to-face textbook transactions with fellow Carls. Buy, sell, lend, and track—all in a sorted and searchable interface.",
-        // "og:image"       : "",
+        "og:image"       : "/images/fb_rect.png",
         "og:site_name"   : "Carleton Hits the Books",
         "og:title"       : "Carleton Hits the Books",
         "og:type"        : "website",
