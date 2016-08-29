@@ -18,9 +18,15 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
                     $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
                 });
         },
-        getActivities: function() {
-            //WORKING: add
-            return
+        getRecentListings: function(options) {
+            opts = new Array;
+            if (options.limit) opts.push("limit="+options.limit);
+            if (options.skip)  opts.push("skip="+options.skip);
+            return $http.get('/api/listings/recent?'+opts.join("&")).then(
+                function (res) {
+                    return res.data;
+                }
+            );
         },
         getUser: function (userID) {
             return $http.get('/api/user/'+userID).then(

@@ -14,7 +14,7 @@ exports.UsersIntoListings = function (req, res, next) {
         propsNeeded: ['name', 'gradYear', 'avatar', 'email'],
     };
     // inject req'd user data into each listing
-    utils.inject(req.rListings, configParams, function (err, augListings){
+    utils.inject(req.rListings, configParams, function (err, augListings) {
         if (err) return next(new MongoError(err));
         req.rListings = augListings;
         next();
@@ -31,7 +31,7 @@ exports.BooksIntoListings = function (req, res, next) {
         propsNeeded: ['coverImage', 'name', 'edition'],
     };
     // inject req'd user data into each listing
-    utils.inject(req.rListings, configParams, function (err, augListings){
+    utils.inject(req.rListings, configParams, function (err, augListings) {
         if (err) return next(new MongoError(err));
         req.rListings = augListings;
         next();

@@ -233,6 +233,37 @@ exports.formatSingleListing = function (req, res) {
     res.json(formattedListing);
 };
 
+exports.formatRecentListings = function (req, res) {
+    var listings = [];
+    for (var i = 0; i < req.rListings.length; i++) {
+        var lstng = req.rListings[i];
+        var formattedUser = {
+            'name': trimName(lstng.user.name, req),
+            'avatar': lstng.user.avatar,
+            'gradYear': lstng.user.gradYear,
+        };
+        var formattedBook = {
+            'name': lstng.book.name,
+            'coverImage': lstng.book.coverImage,
+            'edition': lstng.book.edition,
+        };
+        var formattedListing = {
+            'userID': lstng.userID,
+            'ISBN': lstng.ISBN,
+            'listingID': lstng._id,
+            'condition': lstng.condition,
+            'created': lstng.created,
+            'completed': lstng.completed,
+            'rentingPrice': lstng.rentingPrice,
+            'sellingPrice': lstng.sellingPrice,
+            'user': formattedUser,
+            'book': formattedBook,
+        };
+        listings.push(formattedListing);
+    }
+    res.json({'listings': listings, 'numListings': req.rSchoolStats.numOpenListings});
+};
+
 /** OFFERS **/
 
 exports.formatOffers = function (req, res) {

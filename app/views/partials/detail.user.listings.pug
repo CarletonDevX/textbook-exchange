@@ -3,7 +3,7 @@ td.image: a(href="book/{{listing.ISBN}}")
 
 td.name.hyphenate: a(href="book/{{listing.ISBN}}") {{ listing.book.name | limitTo: 20 }}{{listing.book.name.length > 20 ? '…' : ''}}
 
-td.quality
+td.condition
 	a.dashed.tooltip(title="{{conditionDescriptions[listing.condition]}}") {{conditionOptions[listing.condition].name}}
 
 td
@@ -11,12 +11,12 @@ td
 		tr
 			td Buy:
 			td(ng-if="listing.sellingPrice") {{listing.sellingPrice | currency }}
-			td(ng-if="listing.sellingPrice == 0") Free!
+			td.green-text(ng-if="listing.sellingPrice == 0") Free!
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
 			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency }}/term
-			td(ng-if="listing.rentingPrice == 0") Free!
+			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 
 td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'complete-wrapper': ''")
@@ -28,7 +28,7 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-		p Make An Offer
+		p Make an Offer
 	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
 		span.symbol ✓
 		p Offer Sent

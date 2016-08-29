@@ -70,6 +70,8 @@ $pane-spacing: 15px;
 }
 
 main{
+  margin-bottom: 40px;
+  
   #search{
     overflow: hidden;
     box-shadow: 0px 3px 10px 2px rgba(0,0,0,.3);
@@ -83,7 +85,7 @@ main{
     transition: width .3s;
 
     #search-form{
-      margin:30px;
+      padding:30px;
       transition: margin .2s;
       #search-labels{
         display: inline-block;
@@ -218,6 +220,7 @@ main{
 
   #search.home-view{
     width: 500px;
+    overflow: inherit;
   }
 
   #search.searching, #search.behind-detail{
@@ -239,7 +242,7 @@ main{
 
   #search.behind-detail{
     #search-form{
-      margin:15px;
+      padding:15px;
     }
     // #search-results{
     //   //TODO: in dire need of transition.
@@ -340,6 +343,7 @@ main{
 
   #detail-wrapper.minimized{
     opacity:0;
+    margin-bottom: 0;
     #detail{
       box-shadow: 0px 3px 10px 2px rgba(0,0,0,0);
     }
@@ -361,6 +365,75 @@ main{
     opacity: 1;
     height:auto;
   }
+}
+
+#recent-listings{
+  // width: 480px;
+  // box-sizing: border-box;
+  // margin: 0 auto;
+  padding: 10px;
+  background-color: rgba(255,255,255,1);
+  // margin-bottom: 40px;
+  // margin-top: -11px;
+  // padding-top: 15px;
+
+  h3{
+    font-weight: normal;
+    font-variant: small-caps;
+    font-size: 23px;
+    border-bottom: 1px solid black;
+    text-align: center;
+  }
+
+  table.listings {
+    th.condition{
+      width: inherit;
+    }
+    th.price{
+      width: 6em;
+    }
+    th.seller{
+      width: 4em;
+    }
+    td.image{
+      width: 45px;
+    }
+    tbody{
+      font-size: 10pt;
+      img{
+        margin: 0 5px;
+      }
+      td{
+        height: 70px;
+      }
+      table.price-table td{
+        height: auto;
+      }
+    }
+    tfoot{
+      td{
+        padding: 0;
+      }
+      span{
+        padding: 5px;
+        display: inline-block;
+        font-family: 'Droid Serif', serif;
+        color: gray;
+      }
+      button{
+        height: 30px;
+        width: 100%;
+      }
+    }
+  }
+  transition: opacity .2s, height .2s, padding .2s;
+  overflow: hidden;
+}
+
+#recent-listings.minimized{
+  opacity: 0;
+  height: 0;
+  padding: 0 10px;
 }
 
 .hyphenate {
@@ -395,6 +468,10 @@ main{
 }
 .stat.active{
   box-shadow: 0 0 3px 0;
+}
+
+.green-text{
+  color: #2f982f;
 }
 
 @import "partials/details";

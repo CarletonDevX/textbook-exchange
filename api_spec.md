@@ -129,6 +129,7 @@ emailSettings: {
 `DELETE /api/subscriptions/remove/:id`
 	
 ##Listings
+
 #### Get listings for current user [Requires auth]:
 
 `GET /api/listings` 
@@ -152,6 +153,12 @@ emailSettings: {
 #### Get listings for book with book ID:
 
 `GET /api/listings/book/:id`
+
+#### Get recent listings:
+
+`GET /api/listings/recent?skip=skip&limit=limit`
+
+Use skip and limit for pagination.
 
 #### Get listing with listing ID:
 
@@ -213,7 +220,7 @@ emailSettings: {
 `GET /api/searchUser?query=query`
 
 ##Activity
-#### Get most recent activities (default limit=100):
+#### Get most recent activities (default/max limit=100):
 
 `GET hitsthebooks.com/api/activities?limit=limit`
 

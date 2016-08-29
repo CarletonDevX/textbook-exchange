@@ -135,246 +135,271 @@ div.listings{
       box-shadow: inset 0px -10px 10px -10px rgba(0, 0, 0, 0.2);
     }
   }
-  table.listings{
-    width:100%;
-    table-layout: fixed;
-    border-spacing: 0;
-    border: solid 1px $dark-border-color;
-    border-top: 2px solid black;
-    overflow: hidden;
-    thead{
-      tr{
+}
+table.listings{
+  width:100%;
+  // table-layout: fixed;
+  border-spacing: 0;
+  border: solid 1px $dark-border-color;
+  border-top: 2px solid black;
+  overflow: hidden;
+  thead{
+    tr{
+      height: 4em;
+      th{
         background-color: $row-highlight-color;
-        height: 4em;
-        th{
-          font-weight: 400;
-          font-style: italic;
-          height: 40px;
-          border-bottom: 2px solid $dark-border-color;
-          border-right: 1px solid $light-border-color;
-          position: relative;
-          }
-        th.seller{
-          width: 6em;
+        font-weight: 400;
+        font-style: italic;
+        height: 40px;
+        border-bottom: 2px solid $dark-border-color;
+        border-right: 1px solid $light-border-color;
+        position: relative;
         }
-        th.price{
-          width: 7.5em;
-        }
-        th.contact{
-          width:$listing-row-height;
-        }
-        th.sortable{
-          padding: 0 20px;
-          cursor: pointer;
-        }
-        th.sortable:hover{
-          text-decoration: underline;
-        }
-        th.active::before{
-          content: '';
-          background-color: rgba(252, 255, 100, 0.07);
-          width: 100%;
-          height: 2000px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          z-index: -1;
-        }
-        th.active::after{
-          // content: '▲';
-          content: '▴';
-          position: absolute;
-          width: 1.5em;
-          color:gray;
-          font-style: normal;
-        }
-        th.active.reversed::after{
-          // content: '▼';
-          content: '▾';
-        }
-        th:last-child{
-          border-right: none;
-        }
-      }
-    }
-    tbody:last-child tr:last-child td{
-      border-bottom: none;
-    }
-    tbody,tfoot{
-      font-family: 'Droid Sans', sans-serif;
-      font-size: 14px;
-      tr{
-        td{
-          text-align: center;
-          border-bottom: solid 2px $dark-border-color;
-          border-right:solid 1px $light-border-color;
-          img{
-            width:40px;
-            vertical-align: middle;
-            margin:5px;
-          }
-        }
-        td:last-child{
-          border-right: none;
-        }
-        td.image{
-          text-align: right;
-          border-right: none;
-          padding-right: 5px;
-        }
-        td.username{
-          text-align:left;
-          padding-left: 5px;
-          word-break: break-all;
-          /* Non standard for webkit */
-          word-break: break-word;
-          -webkit-hyphens: auto;
-             -moz-hyphens: auto;
-              -ms-hyphens: auto;
-                  hyphens: auto;
-        }
+      th.seller{
+        width: 6em;
       }
 
-      tbody:last-child td {
-        border-bottom: 1px $dark-border-color;
+      th.condition{
+        width: 5.5em;
       }
 
-      a.dashed{
-        border-bottom: black 1px dashed;
-        font-weight: normal;
+      th.price{
+        width: 7.5em;
       }
-
-      a.dashed {
-        text-decoration: none;
+      th.contact{
+        width:$listing-row-height;
       }
-
-      td.make-an-offer button.email,
-      td.confirm button.confirm{
+      th.sortable{
+        padding: 0 20px;
+        cursor: pointer;
+      }
+      th.sortable:hover{
+        text-decoration: underline;
+      }
+      th.active::before{
+        content: '';
+        background-color: rgba(252, 255, 100, 0.07);
         width: 100%;
-        padding: 0;
-        height: $listing-row-height;
-        .symbol{
-          font-size: 16px;
-        }
+        height: 2000px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
       }
-      
-
-      td.make-an-offer.complete-wrapper{
-        background-color: #f7f7f7;
+      th.active::after{
+        // content: '▲';
+        content: '▴';
+        position: absolute;
+        width: 1.5em;
+        color:gray;
+        font-style: normal;
       }
-      td.make-an-offer{
-        padding: 0;
-        button.email span.symbol,
-        div.complete span.symbol{
-          font-style: normal;
-          font-size: 30px;
-        }
-        button.email p, div.complete p{
-          margin-top: 0;
-        }
-        div.complete p{
-          font-style: italic;
-        }
-        div.complete{
-          color: gray;
-          font-family: 'Droid Serif', Serif;
-        }
-        button.edit, button.delete{
-          display: inline-block;
-          width: 50%;
-          height: $listing-row-height;
-          padding: 0;
-          font-size: 16px;
-        }
-        div.remove-listing{
-          p{
-            width: 100%;
-            margin: 5px;
-          }
-          button{
-            height:28px;
-          }
-          button.cancel{
-            width:100%;
-          }
-          button.confirm, button.no{
-            width:50%;
-            display: inline-block;
-          }
-        }
+      th.active.reversed::after{
+        // content: '▼';
+        content: '▾';
       }
-
-
+      th:last-child{
+        border-right: none;
+      }
     }
-    tbody{
+  }
+  tbody:last-child tr:last-child td{
+    border-bottom: none;
+  }
+  tbody,tfoot{
+    font-family: 'Droid Sans', sans-serif;
+    font-size: 14px;
+    tr{
       td{
-        height: $listing-row-height;
-        padding:0;
+        text-align: center;
+        border-bottom: solid 2px $dark-border-color;
+        border-right:solid 1px $light-border-color;
+        img{
+          width:40px;
+          vertical-align: middle;
+          margin:5px;
+        }
       }
-      table.price-table{
-        width: 100%;
-        height:79px;
-        border-collapse: collapse;
-        table-layout: fixed;
-        td:first-child{
-          font-family: 'Droid Serif', Serif;
-          font-style: italic;
-          width: 3.5em;
+      td:last-child{
+        border-right: none;
+      }
+      td.image{
+        text-align: right;
+        border-right: none;
+        padding-right: 5px;
+      }
+      td.username{
+        text-align:left;
+        padding-left: 5px;
+        word-break: break-all;
+        /* Non standard for webkit */
+        word-break: break-word;
+        -webkit-hyphens: auto;
+           -moz-hyphens: auto;
+            -ms-hyphens: auto;
+                hyphens: auto;
+      }
+    }
+
+    tbody:last-child td {
+      border-bottom: 1px $dark-border-color;
+    }
+
+    a.dashed{
+      border-bottom: black 1px dashed;
+      font-weight: normal;
+    }
+
+    a.dashed {
+      text-decoration: none;
+    }
+
+    tr.disabled {
+      background-color: rgba(0,0,0,.1);
+    }
+    td.make-an-offer button.email,
+    td.confirm button.confirm{
+      width: 100%;
+      padding: 0;
+      height: 100%;
+      .symbol{
+        font-size: 16px;
+      }
+    }
+    
+
+    td.make-an-offer.complete-wrapper{
+      background-color: #f7f7f7;
+    }
+    td.make-an-offer{
+      padding: 0;
+      button.email span.symbol,
+      div.complete span.symbol{
+        font-style: normal;
+        font-size: 30px;
+      }
+      button.email p, div.complete p{
+        margin-top: 0;
+      }
+      div.complete p{
+        font-style: italic;
+      }
+      div.complete{
+        color: gray;
+        font-family: 'Droid Serif', Serif;
+      }
+      button.edit, button.delete{
+        display: block;
+        float: left;
+        width: 50%;
+        height: $listing-row-height;
+        padding: 0;
+        font-size: 16px;
+      }
+      button.delete{
+        border-left: 1px solid $light-border-color;
+      }
+      div.remove-listing{
+        p{
+          width: 100%;
+          margin: 5px;
         }
-        td{
-          height: auto;
-          border-bottom: none;
+        button{
+          height:28px;
         }
-        tr:first-child{
-          border-bottom: 1px solid $light-border-color;
+        button.cancel{
+          width:100%;
+        }
+        button.confirm, button.no{
+          width:50%;
+          display: inline-block;
         }
       }
     }
-    tfoot{
-      background-color: white;
-      tr.make-listing{
-        background-color: $row-highlight-color;
-        p{
-          text-align: center;
-        }
-        span.label{
-          width: 4.5em;
-          display: inline-block;
-        }
-        input.price{
-          width:2em;
-        }
 
-        td.condition small.description {
-          display: block;
-          margin-top: 10px;
+
+  }
+  tbody{
+    td{
+      height: $listing-row-height;
+      padding:0;
+    }
+    table.price-table{
+      width: 100%;
+      height:79px;
+      border-collapse: collapse;
+      // table-layout: fixed;
+      td:first-child{
+        font-family: 'Droid Serif', Serif;
+        font-style: italic;
+        width: 3.5em;
+      }
+      td{
+        height: auto;
+        border-bottom: none;
+      }
+      tr:first-child{
+        border-bottom: 1px solid $light-border-color;
+      }
+      // span.per {
+      //     position: relative;
+      //     top: .3em;
+      //     left: 0.7em;
+      // }
+
+      // span.per::before {
+      //     content: '';
+      //     border-left: 1px solid black;
+      //     position: absolute;
+      //     transform: rotate(20deg);
+      //     left: -.4em;
+      //     top: -.3em;
+      //     height: 1.5em;
+      // }
+    }
+  }
+  tfoot{
+    // background-color: white;
+    tr.make-listing{
+      background-color: $row-highlight-color;
+      p{
+        text-align: center;
+      }
+      span.label{
+        width: 4.5em;
+        display: inline-block;
+      }
+      input.price{
+        width:2em;
+      }
+
+      td.condition a {
+        display: inline-block;
+        margin-top: 15px;
+      }
+    }
+    tr.make-listing.inactive{
+      display:none;
+    }
+    tr.add-listing{
+      td{
+        text-align: center;
+        border-bottom: none;
+        padding: 0;
+
+        $footer-el-height: 2.5em;
+        div{
+          line-height: $footer-el-height;
+        }
+        button, div{
+          font-style: italic;
           font-family: 'Droid Serif', Serif;
-          font-style:italic;
-        }
-      }
-      tr.make-listing.inactive{
-        display:none;
-      }
-      tr.add-listing{
-        td{
-          text-align: center;
-          border-bottom: none;
-          padding: 0;
-
-          $footer-el-height: 2.5em;
-          div{
-            line-height: $footer-el-height;
-          }
-          button, div{
-            font-style: italic;
-            font-family: 'Droid Serif', Serif;
-            width: 100%;
-            height: $footer-el-height;
-            span.symbol{
-              font-size: 16px;
-              display: inline-block;
-              vertical-align: middle;
-            }
+          width: 100%;
+          height: $footer-el-height;
+          span.symbol{
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: middle;
           }
         }
       }

@@ -5,7 +5,7 @@ $disabled-rgba:rgba(0,0,0,.3);
 a{
   font-weight: bold;
   text-decoration: none;
-  color: black
+  color: inherit;
 }
 a:hover{
   text-decoration: underline;
@@ -28,9 +28,17 @@ input, select{
 }
 
 select{
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  padding-bottom: 2px;
   border-bottom: solid 2px black;
   font-size: 14px;
   font-family: 'Droid Sans', Sans;
+  border-radius: 0;
+}
+
+select:hover{
+  cursor: pointer;
 }
 
 input[type="checkbox"]{

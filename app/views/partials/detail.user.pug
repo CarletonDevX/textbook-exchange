@@ -186,8 +186,7 @@ div.listings
                 ng-model="newListing.condition",
                 ng-options="opt.name for opt in conditionOptions track by opt.code"
               )
-              small.description {{conditionDescriptions[newListing.condition.code]}}
-
+              a.dashed.tooltip(title="{{conditionDescriptions[newListing.condition.code]}}") Definition
             td
               p
                 input(
@@ -219,7 +218,7 @@ div.listings
                   placeholder="$12",
                   ng-disabled="!newListing.renting"
                 )
-            td.confirm.quality
+            td.confirm
               button.confirm(type="submit")
                 span.symbol ✓
                 | Update!
@@ -242,7 +241,7 @@ div.modal-wrapper(
   ng-htb-self-mousedown="offer.active = false"
   )
   div.modal.offer
-    h2 Make An Offer
+    h2 Make an Offer
     textarea(ng-model="offer.message")
     div.bottom-buttons
       button(ng-click="makeOffer()") Send email
