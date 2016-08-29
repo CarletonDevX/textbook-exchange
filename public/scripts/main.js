@@ -411,8 +411,8 @@ hitsTheBooks.controller('recentListingsController',
   function($scope, $rootScope, $interval, $state, Api, AUTH_EVENTS) {
 
     var pagingData = {
-      initNumListings : 5, // how many listings we want load with UpdateRecent...
-      querySize       : 5  // how many more to add on getMoreRecent....
+      initNumListings : 3, // how many listings we want load with UpdateRecent...
+      querySize       : 3  // how many more to add on getMoreRecent....
     }
 
     $scope.recentListings = [];
@@ -480,7 +480,7 @@ hitsTheBooks.controller('recentListingsController',
     $scope.getMoreRecentListings = function() {
       if ($scope.recentListings.length < $scope.totalListings) {
         Api.getRecentListings({
-          limit: $scope.querySize,
+          limit: pagingData.querySize,
           skip: $scope.recentListings.length
         }).then(function(res){
           $scope.recentListings = $scope.recentListings.concat(res.listings)
@@ -495,7 +495,7 @@ hitsTheBooks.controller('recentListingsController',
     //for recent listings
     $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams){
-      var $rl = $("#recent-listings")
+      var $rl = $("#recent-!listings")
       //if it's a main transition and it's to main
       if(toState.name.indexOf("main") > -1 && toState.name == "main") {
         $scope.hideRecentListings = false;
