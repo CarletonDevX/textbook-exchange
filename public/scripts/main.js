@@ -495,7 +495,7 @@ hitsTheBooks.controller('recentListingsController',
     //for recent listings
     $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams){
-      var $rl = $("#recent-!listings")
+      var $rl = $("#recent-listings")
       //if it's a main transition and it's to main
       if(toState.name.indexOf("main") > -1 && toState.name == "main") {
         $scope.hideRecentListings = false;
