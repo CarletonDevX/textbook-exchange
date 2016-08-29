@@ -1,6 +1,7 @@
 var activities = require('./controllers/activities.controller'),
     avatars = require('./controllers/avatars.controller'),
     books = require('./controllers/books.controller'),
+    extend = require('util')._extend,
     handlers = require('./errors'),
     inject = require('./injectors'),
     listings = require('./controllers/listings.controller'),
@@ -9,6 +10,7 @@ var activities = require('./controllers/activities.controller'),
     passport = require('passport'),
     reports = require('./controllers/reports.controller'),
     responder = require('./responseFormatter'),
+    meta = require('./meta'),
     subscriptions = require('./controllers/subscriptions.controller'),
     users = require('./controllers/users.controller');
 
@@ -23,17 +25,38 @@ var authenticate = function (req, res, next) {
 exports.setupMain = function (app) {
     // Main page, in a separate function so it doesn't get buried at the bottom of the file.
     // Only reached if no other routes are engaged (see server.js)
+
+    app.route('/search')
+        .get(meta.set(meta.routeNames.SEARCH),
+            function(req, res) {
+                res.render('index.pug', { metaProps: req.rMetaProps });
+            });
+    app.route('/user/:userID')
+        .get(
+            meta.set(meta.routeNames.USER),
+            function(req, res) {
+                res.render('index.pug', { metaProps: req.rMetaProps });
+        });
+
+    app.route('/book/:ISBN')
+        .get(
+            meta.set(meta.routeNames.BOOK),
+            function(req, res) {
+                res.render('index.pug', { metaProps: req.rMetaProps });
+        });
+
     app.route('/*')
-        .get(users.countUsers,
-             listings.countOpenListings,
-             listings.countCompletedListings,
-             function (req, res) {
-                 res.render('index.pug', {
-                     numOpenListings: req.rSchoolStats.numOpenListings,
-                     numCompletedListings: req.rSchoolStats.numCompletedListings,
-                     numUsers: req.rSchoolStats.numUsers,
-                 });
-             });
+        .get(
+            // // These three lines aren't used on the frontend right now,
+            // // but are preserved here for posterity
+            // users.countUsers,
+            // listings.countOpenListings,
+            // listings.countCompletedListings,
+
+            meta.set(meta.routeNames.MAIN),
+            function(req, res) {
+                res.render('index.pug', { metaProps: req.rMetaProps });
+        });
 };
 
 exports.setup = function (app) {
