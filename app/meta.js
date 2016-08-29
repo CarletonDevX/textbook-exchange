@@ -6,9 +6,11 @@ exports.set = function (route) {
     // Default Meta tags with format property : content
     // Defaults to MAIN
     var metaProps = {
-        "fb:app_id"      :  1762840040660077,
+        "fb:app_id"      : 1762840040660077,
         "og:description" : "The streamlined platform for face-to-face textbook transactions with fellow Carls. Buy, sell, lend, and track—all in a sorted and searchable interface.",
-        "og:image"       : "/images/fb_rect.png",
+        "og:image"       : req.hostname+"/images/fb_rect.png",
+        "og:image:height": 630,
+        "og:image:width" : 1201,
         "og:site_name"   : "Carleton Hits the Books",
         "og:title"       : "Carleton Hits the Books",
         "og:type"        : "website",
