@@ -209,10 +209,16 @@ input, select {
   outline: none; }
 
 select {
+  -webkit-appearance: none;
+  -webkit-border-radius: 0px;
+  padding-bottom: 2px;
   border-bottom: solid 2px black;
   font-size: 14px;
   font-family: 'Droid Sans', Sans;
   border-radius: 0; }
+
+select:hover {
+  cursor: pointer; }
 
 input[type="checkbox"] {
   visibility: hidden;
