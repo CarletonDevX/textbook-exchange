@@ -516,7 +516,7 @@ hitsTheBooks.controller('mainController', function($scope, $rootScope, $statePar
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }
-  
+
   $scope.displayedSearch = 'books';
   var streamSearchDelay = 250; //ms
   var initSearch = false;
@@ -703,7 +703,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
   $scope.offers = offers;
   $scope.offersDict = {};
   $scope.watching = true;
-
+  $scope.expandButtonShow = true;
   $scope.$watch('watchlist', function() {
       // When watchlist changes, update watching
       var ISBNs = {};
@@ -766,6 +766,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
       return false;
     }
   }
+
   $scope.$watch('currentUser', function(){
     $scope.currUserListing = getCurrUserListing();
   });
@@ -780,6 +781,7 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
     });
     return merged
   }
+
   $scope.$watch('book.listings', function(){
     $scope.mergedListings = insertAmazonListing($scope.book.listings);
   });
@@ -808,11 +810,16 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
   var hideDesc = function(){
     infoContentHeight = Math.max(Math.max($(".info .info-table").height(),$(".info .preview").height()))
     totalInfoHeight = $("#book-details .info").height()
-
+    console.log("hideDesc called");
     if (totalInfoHeight > infoContentHeight + 40) {
       $scope.$apply(function(){
         $scope.descMinimized = true;
         $scope.descMinHeight = infoContentHeight + 40 + "px";
+        $scope.expandButtonShow = true;
+      });
+    } else {
+      $scope.$apply(function() {
+        $scope.expandButtonShow = false;
       })
     }
   }
