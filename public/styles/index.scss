@@ -368,24 +368,31 @@ main{
 }
 
 #recent-listings{
-  // width: 480px;
-  // box-sizing: border-box;
-  // margin: 0 auto;
+  width: 480px;
+  box-sizing: border-box;
+  margin: 4px auto 0 auto;
   padding: 10px;
-  background-color: rgba(255,255,255,1);
+  background-color: rgba(255,255,255,.8);
   // margin-bottom: 40px;
   // margin-top: -11px;
   // padding-top: 15px;
+  color: #555;
 
   h3{
     font-weight: normal;
     font-variant: small-caps;
     font-size: 23px;
-    border-bottom: 1px solid black;
     text-align: center;
+    float: left;
+    margin-bottom: 0;
+    border-bottom: solid 2px black;
+    padding: 0 6px 12px 6px;
+    padding-top: 0;
+    margin-top: 17px;
   }
 
   table.listings {
+    background-color: #f7f7f7;
     th.condition{
       width: inherit;
     }
