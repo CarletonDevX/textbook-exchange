@@ -810,7 +810,6 @@ hitsTheBooks.controller('bookController', function($scope, bookInfo, watchlist, 
   var hideDesc = function(){
     infoContentHeight = Math.max(Math.max($(".info .info-table").height(),$(".info .preview").height()))
     totalInfoHeight = $("#book-details .info").height()
-    console.log("hideDesc called");
     if (totalInfoHeight > infoContentHeight + 40) {
       $scope.$apply(function(){
         $scope.descMinimized = true;
