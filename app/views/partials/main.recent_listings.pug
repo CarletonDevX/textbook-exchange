@@ -33,7 +33,7 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-		p Make An Offer
+		p Make an Offer
 	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
 		span.symbol ✓
 		p Offer Sent

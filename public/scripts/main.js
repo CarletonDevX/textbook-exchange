@@ -417,7 +417,6 @@ hitsTheBooks.controller('recentListingsController',
 
     $scope.recentListings = [];
     $scope.totalListings = 0; // how many listings the backend has
-    $scope.offers = $scope.$parent.offers;
     $scope.offersDict = {};
     $scope.offer = {
       active: false,
@@ -512,7 +511,8 @@ hitsTheBooks.controller('recentListingsController',
     }
   });
 
-hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document) {
+hitsTheBooks.controller('mainController', function($scope, $rootScope, $stateParams, $state, $document, offers) {
+  $scope.offers = offers;
   if ($stateParams.flash) {
     $scope.flashMessage($stateParams.flash);
   }

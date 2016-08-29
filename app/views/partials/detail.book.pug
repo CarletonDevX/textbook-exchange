@@ -20,7 +20,7 @@ div#book-details
         tr
           td ISBN:
           td {{ book.ISBN }}
-        tr
+        tr(ng-if="book.pageCount")
           td Pages:
           td {{ book.pageCount }}
       tfoot
@@ -138,7 +138,7 @@ div#book-details
     ng-htb-self-mousedown="offer.active = false"
     )
     div.modal.offer
-      h3 Make An Offer
+      h3 Make an Offer
       textarea(ng-model="offer.message")
       div.bottom-buttons
         button(ng-click="makeOffer()") Send email

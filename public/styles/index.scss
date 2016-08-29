@@ -85,7 +85,7 @@ main{
     transition: width .3s;
 
     #search-form{
-      margin:30px;
+      padding:30px;
       transition: margin .2s;
       #search-labels{
         display: inline-block;
@@ -220,6 +220,7 @@ main{
 
   #search.home-view{
     width: 500px;
+    overflow: inherit;
   }
 
   #search.searching, #search.behind-detail{
@@ -241,7 +242,7 @@ main{
 
   #search.behind-detail{
     #search-form{
-      margin:15px;
+      padding:15px;
     }
     // #search-results{
     //   //TODO: in dire need of transition.

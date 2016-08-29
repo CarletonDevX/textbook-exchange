@@ -42,7 +42,7 @@ td.make-an-offer(ng-if="!listing.isAmazonListing", ng-class="(currentUser && off
 		ng-if="currentUser && !offersDict[listing.listingID] && listing.userID !== currentUser.userID",
 		ng-click="makeOfferInit(listing)")
 		span.symbol ✉
-		p.email-label Make An Offer
+		p.email-label Make an Offer
 	div.complete(ng-if="currentUser && offersDict[listing.listingID]")
 		span.symbol ✓
 		p Offer Sent
