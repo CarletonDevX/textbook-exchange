@@ -341,21 +341,21 @@ table.listings{
       tr:first-child{
         border-bottom: 1px solid $light-border-color;
       }
-      span.per {
-          position: relative;
-          top: .3em;
-          left: 0.7em;
-      }
+      // span.per {
+      //     position: relative;
+      //     top: .3em;
+      //     left: 0.7em;
+      // }
 
-      span.per::before {
-          content: '';
-          border-left: 1px solid black;
-          position: absolute;
-          transform: rotate(20deg);
-          left: -.4em;
-          top: -.3em;
-          height: 1.5em;
-      }
+      // span.per::before {
+      //     content: '';
+      //     border-left: 1px solid black;
+      //     position: absolute;
+      //     transform: rotate(20deg);
+      //     left: -.4em;
+      //     top: -.3em;
+      //     height: 1.5em;
+      // }
     }
   }
   tfoot{

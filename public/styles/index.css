@@ -1011,18 +1011,6 @@ table.listings {
       border-bottom: none; }
     table.listings tbody table.price-table tr:first-child {
       border-bottom: 1px solid #eee; }
-    table.listings tbody table.price-table span.per {
-      position: relative;
-      top: .3em;
-      left: 0.7em; }
-    table.listings tbody table.price-table span.per::before {
-      content: '';
-      border-left: 1px solid black;
-      position: absolute;
-      transform: rotate(20deg);
-      left: -.4em;
-      top: -.3em;
-      height: 1.5em; }
   table.listings tfoot tr.make-listing {
     background-color: #fffcf5; }
     table.listings tfoot tr.make-listing p {

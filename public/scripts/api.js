@@ -22,7 +22,6 @@ angular.module('hitsTheBooks').factory('Api', ['$rootScope', '$http', 'AUTH_EVEN
             opts = new Array;
             if (options.limit) opts.push("limit="+options.limit);
             if (options.skip)  opts.push("skip="+options.skip);
-            console.log(opts.join("&"))
             return $http.get('/api/listings/recent?'+opts.join("&")).then(
                 function (res) {
                     return res.data;

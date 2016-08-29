@@ -21,8 +21,7 @@ td(ng-if="!listing.isAmazonListing")
 			td(ng-if="listing.sellingPrice == null") —
 		tr
 			td Rent:
-			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency : "$" : 0  }}
-				span.per term
+			td(ng-if="listing.rentingPrice") {{listing.rentingPrice | currency : "$" : 0  }}/term
 			td.green-text(ng-if="listing.rentingPrice == 0") Free!
 			td(ng-if="listing.rentingPrice == null") —
 td(ng-if="listing.isAmazonListing")
