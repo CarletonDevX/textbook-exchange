@@ -11,7 +11,7 @@ div#search(ng-class="\
 
   div#search-form
     //- span#search-labels
-    //-   label(class="pre-search" for="search") Find or list a book:
+    //-   label(class="pre-search" for="search") Find books and people:
     //-   label(class="post-search" for="search") Results for:
     input#search-box(type="text",
                      ng-model="searchInput",
@@ -24,39 +24,38 @@ div#search(ng-class="\
 
   div#search-results(ui-view="search")
 
-  div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
-    //- div.tabs
-    //-   h3 Recent Listings
-    table.listings
-      thead
-        tr
-          th.book(colspan="2") Book
-          //- th.seller(colspan="2") Seller
-          th.seller Seller
-          th.condition Cond.
-          th.price Price
-          th.contact Offer
-      tbody
-        tr(ng-repeat="listing in recentListings",
-           ng-class="{'disabled': listing.userID == currentUser.userID}",
-           ng-include="'partials/main.recent_listings'")
-      tfoot
-        tr
-          td(colspan="6")
-            button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
-              span.symbol +
-              |  Load more
-            span(ng-if="recentListings.length >= totalListings") That's all she wrote!
-
-    div.modal-wrapper(
-      ng-class="{'visible':offer.active}",
-      ng-htb-self-mousedown="offer.active = false"
-      )
-      div.modal.offer
-        h2 Make an Offer
-        textarea(ng-model="offer.message")
-        div.bottom-buttons
-          button(ng-click="makeOffer()") Send email
-          button.cancel(ng-click="offer.active = false") Cancel
-
 div#detail-wrapper(ui-view="detail", ng-class="detailIsMaximized ? 'maximized':'minimized'")
+
+div#recent-listings(ng-controller="recentListingsController", ng-class="{'minimized': hideRecentListings}")
+  h3 Recent Listings
+  table.listings
+    thead
+      tr
+        th.book(colspan="2") Book
+        //- th.seller(colspan="2") Seller
+        th.seller Seller
+        th.condition Cond.
+        th.price Price
+        th.contact Offer
+    tbody
+      tr(ng-repeat="listing in recentListings",
+         ng-class="{'disabled': listing.userID == currentUser.userID}",
+         ng-include="'partials/main.recent_listings'")
+    tfoot
+      tr
+        td(colspan="6")
+          button(ng-if="recentListings.length < totalListings" ng-click="getMoreRecentListings()")
+            span.symbol +
+            |  Load more
+          span(ng-if="recentListings.length >= totalListings") That's all she wrote!
+
+div.modal-wrapper(
+  ng-class="{'visible':offer.active}",
+  ng-htb-self-mousedown="offer.active = false"
+  )
+  div.modal.offer
+    h2 Make an Offer
+    textarea(ng-model="offer.message")
+    div.bottom-buttons
+      button.cancel(ng-click="offer.active = false") Cancel
+      button(ng-click="makeOffer()") Send email
