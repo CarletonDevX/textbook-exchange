@@ -22,7 +22,7 @@ var User = new Schema({
     bio: { type: String, maxlength: 200 },
     avatar: { type: String, default: 'images/default-avatar.png' },
     gradYear: { type: Number, required: true },
-    created: { type: Date, default: new Date() },
+    created: { type: Date, default: Date.now },
 });
 
 // Compare input password to user password

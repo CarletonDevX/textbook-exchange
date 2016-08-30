@@ -6,7 +6,7 @@ var Listing = new Schema({
     condition: { type: Number, required: true },
     sellingPrice: { type: Number },
     rentingPrice: { type: Number },
-    created: { type: Date, default: new Date() },
+    created: { type: Date, default: Date.now },
     completed: Boolean,
 });
 

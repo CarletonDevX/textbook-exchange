@@ -6,7 +6,7 @@ var Offer = new Schema({
     sellerID: { type: String, required: true },
     message: String,
     ISBN: { type: String, required: true },
-    date: { type: Date, default: new Date() },
+    date: { type: Date, default: Date.now },
 });
 
 module.exports = Offer;
