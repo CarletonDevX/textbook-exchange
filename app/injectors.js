@@ -48,7 +48,7 @@ exports.ListingsIntoBooks = function (req, res, next) {
         ISBNs.push(books[i].ISBN);
         listingDict[books[i].ISBN] = [];
     }
-    Listing.find({ISBN: {$in: ISBNs}}, function (err, listings) {
+    Listing.find({completed: false, ISBN: {$in: ISBNs}}, function (err, listings) {
         if (err) return next(new MongoError(err));
         // Map listings to books
         for (var i = 0; i < listings.length; i++) {

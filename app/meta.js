@@ -35,7 +35,6 @@ exports.set = function (route) {
             break;
         case routeNames.BOOK:
             // TODO: look up book name
-            var metaProps = extend(metaProps);
             metaProps['og:desc'] = "A book on Carleton Hits the Books, the streamlined platform for face-to-face textbook transactions with fellow Carls.";
             metaProps['og:type'] = "books.book";
             // TODO: Lookup book name
