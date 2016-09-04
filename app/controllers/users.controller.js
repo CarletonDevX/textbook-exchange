@@ -57,7 +57,7 @@ exports.registerUser = function (req, res, next) {
     validateRegistrationInfo(req.body, function (err) {
         if (err) return next(err);
         // Before creating a new user, check to make sure they haven't already registered
-        User.findOne({email: req.body.username}, function (err, user) {
+        User.findOne({email: req.body.username.toLowerCase()}, function (err, user) {
             if (err) return next(new MongoError(err));
             if (!user) {
                 createUser(req, res, next);
@@ -79,7 +79,7 @@ var createUser = function (req, res, next) {
     var verifier = hash((Math.random()*100).toString());
     console.log(verifier);
     var newUser = new User({
-        email: info.username,
+        email: info.username.toLowerCase(),
         name: {
             givenName: info.givenName,
             familyName: info.familyName,
