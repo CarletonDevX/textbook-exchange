@@ -13,7 +13,8 @@ var assetManager = require('connect-assetmanager'),
     passport = require('./app/config/passport'),
     routes = require('./app/routes'),
     sass = require('node-sass-middleware'),
-    session = require('express-session');
+    session = require('express-session'),
+    normalizers = require('./app/normalizers');
 
 var app = express();
 
@@ -80,6 +81,9 @@ app.use(passport.session());
 // Form parsing
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// normalizers
+app.use(normalizers.lowerCaseEmail);
 
 // Our routes
 routes.setup(app);
