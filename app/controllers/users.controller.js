@@ -248,7 +248,7 @@ exports.getSubscriptionUsers = function (req, res, next) {
     var subscriptions = req.rSubscriptions;
     var userIDs = [];
     for (var i = 0; i < subscriptions.length; i++) {
-        userIDs.push(subscriptions[i].ISBN);
+        userIDs.push(subscriptions[i].userID);
     };
     User.find({_id: {$in: userIDs}}, function (err, users) {
         if (err) return next(new MongoError(err));
