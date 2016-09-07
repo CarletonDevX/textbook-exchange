@@ -360,9 +360,6 @@ table.listings{
     tr.make-listing.inactive{
       display:none;
     }
-  }
-  tfoot{
-    // background-color: white;
     tr.make-listing{
       background-color: $row-highlight-color;
       p{
@@ -381,6 +378,8 @@ table.listings{
         margin-top: 15px;
       }
     }
+  }
+  tfoot{
     tr.add-listing{
       td{
         text-align: center;
