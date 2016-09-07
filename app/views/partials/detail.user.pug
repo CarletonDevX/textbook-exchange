@@ -26,7 +26,7 @@ div.user-about
         ng-disabled="disabledComponents.newUserInfo",
         ng-model="newUserInfo.familyName")
     p.stats
-      span Class year: 
+      span Class year:
         select#grad-year( ng-model="newUserInfo.gradYear" ng-options="x for x in gradYears" )
     h4 Bio
     textarea(
@@ -123,7 +123,6 @@ div.user-settings(ng-if="user.userID == currentUser.userID && editingUser")
 
   p#account-links
     a.logout(href, ng-click="logout()") Log Out
-    |  
     a.delete(href, ng-click="deleteAccount()") Delete My Account...
 
 div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
@@ -153,7 +152,7 @@ div.watchlist-wrapper(ng-if="user.userID == currentUser.userID")
 
 div.listings
     div.tabs
-      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}") 
+      button(ng-click="whichListings = 'both'", ng-class="{'active': whichListings=='both'}")
         | All Listings
       button(ng-click="whichListings = 'selling'", ng-class="{'active': whichListings=='selling'}")
         | Selling
@@ -168,18 +167,9 @@ div.listings
             th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
             th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Offer'}}
         tbody(ng-if="whichListings=='both'")
-          tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
+          tr(ng-repeat="(index, listing) in user.listings | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
-
-        tbody(ng-if="whichListings=='selling'")
-          tr(ng-repeat="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
-             ng-include="'partials/detail.user.listings'")
-
-        tbody(ng-if="whichListings=='renting'")
-          tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
-             ng-include="'partials/detail.user.listings'")
-        tfoot(ng-if="user.userID == currentUser.userID")
-          tr.make-listing(ng-class="{'inactive':!listingPaneOpen}")
+          tr.make-listing(ng-if="user.userID == currentUser.userID" ng-class="{'inactive':!listingPaneOpen}")
             td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":
             td.condition
               select(
@@ -195,7 +185,7 @@ div.listings
                   ng-model="newListing.selling",
                   ng-disabled="newListing.selling && !newListing.renting"
                   )
-                span.label Sell for 
+                span.label Sell for
                 input#sellingPriceInput.price(
                   type="text",
                   ng-model="newListing.sellingPrice",
@@ -210,7 +200,7 @@ div.listings
                   ng-model="newListing.renting",
                   ng-disabled="!newListing.selling && newListing.renting"
                   )
-                span.label Rent for 
+                span.label Rent for
                 input#rentingPriceInput.price(
                   type="text",
                   ng-model="newListing.rentingPrice",
@@ -222,6 +212,13 @@ div.listings
               button.confirm(type="submit")
                 span.symbol ✓
                 | Update!
+        tbody(ng-if="whichListings=='selling'")
+          tr(ng-repeat="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+             ng-include="'partials/detail.user.listings'")
+        tbody(ng-if="whichListings=='renting'")
+          tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+             ng-include="'partials/detail.user.listings'")
+        tfoot(ng-if="user.userID == currentUser.userID")
           tr.add-listing: td(colspan="5")
             div(ng-if="!currentUser")
               a(href, ng-click="openAccount()") Sign in

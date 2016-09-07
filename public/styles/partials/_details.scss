@@ -266,7 +266,7 @@ table.listings{
         font-size: 16px;
       }
     }
-    
+
 
     td.make-an-offer.complete-wrapper{
       background-color: #f7f7f7;
@@ -357,6 +357,9 @@ table.listings{
       //     height: 1.5em;
       // }
     }
+    tr.make-listing.inactive{
+      display:none;
+    }
   }
   tfoot{
     // background-color: white;
@@ -377,9 +380,6 @@ table.listings{
         display: inline-block;
         margin-top: 15px;
       }
-    }
-    tr.make-listing.inactive{
-      display:none;
     }
     tr.add-listing{
       td{
@@ -492,7 +492,7 @@ div#user-image{
 
 div.user-about{
   h2, h3, h4, .edit-names{
-    font-family: 'Droid Sans', serif; 
+    font-family: 'Droid Sans', serif;
   }
   h2{
     margin-top: 0;
@@ -701,7 +701,7 @@ form.about small{
   font-size: 10pt;
   float: left;
   a.delete{
-    color: #b51f1f; 
+    color: #b51f1f;
   }
   a.logout{
     color: black;
