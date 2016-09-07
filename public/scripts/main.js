@@ -1290,6 +1290,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
       renting   : (listing.rentingPrice != null),
       listingID : listing.listingID
     };
+    console.log($scope.newListing.listingID);
     $scope.listingPaneOpen = true;
   }
 
@@ -1338,8 +1339,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     }, function (err) {
       console.log(err);
     });
-}
-
+  }
 });
 
 // Top-level shit

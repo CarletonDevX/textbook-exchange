@@ -167,71 +167,22 @@ div.listings
             th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
             th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Offer'}}
         tbody(ng-if="whichListings=='both'")
-          tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
-             ng-include="'partials/detail.user.listings'")
-          tr.make-listing(ng-if="user.userID == currentUser.userID" ng-class="{'inactive':!listingPaneOpen}")
-            td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":
-            td.condition
-              select(
-                ng-model="newListing.condition",
-                ng-options="opt.name for opt in conditionOptions track by opt.code"
-              )
-              a.dashed.tooltip(title="{{conditionDescriptions[newListing.condition.code]}}") Definition
-            td
-              p
-                input(
-                  type="checkbox",
-                  id="sellbox",
-                  ng-model="newListing.selling",
-                  ng-disabled="newListing.selling && !newListing.renting"
-                  )
-                span.label Sell for
-                input#sellingPriceInput.price(
-                  type="text",
-                  ng-model="newListing.sellingPrice",
-                  ng-change="validateSellingPrice()"
-                  placeholder="$12",
-                  ng-disabled="!newListing.selling"
-                )
-              p
-                input(
-                  type="checkbox",
-                  id="rentbox",
-                  ng-model="newListing.renting",
-                  ng-disabled="!newListing.selling && newListing.renting"
-                  )
-                span.label Rent for
-                input#rentingPriceInput.price(
-                  type="text",
-                  ng-model="newListing.rentingPrice",
-                  ng-change="validateRentingPrice()",
-                  placeholder="$12",
-                  ng-disabled="!newListing.renting"
-                )
-            td.confirm
-              button.confirm(type="submit")
-                span.symbol ✓
-                | Update!
+          tr(ng-include="'partials/detail.user.listings'" ng-repeat-start="listing in user.listings | orderBy:listingOrder:reverseSort")
+          tr(ng-if='newListing.listingID == listing.listingID' ng-include='partials/detail.book.edit' ng-repeat-end)
         tbody(ng-if="whichListings=='selling'")
           tr(ng-repeat="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
         tbody(ng-if="whichListings=='renting'")
           tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
-        tfoot(ng-if="user.userID == currentUser.userID")
+        tfoot
           tr.add-listing: td(colspan="5")
-            div(ng-if="!currentUser")
-              a(href, ng-click="openAccount()") Sign in
+            div(ng-if="currentUser==null")
+              a(href='#', ng-click="openAccount()") Sign in
               |  to add a listing
-            button.cancel(type="button", ng-if="listingPaneOpen && currentUser", ng-click="closeListingPane()")
-              span.symbol ×
-              |  Cancel
-            div(ng-if="!listingPaneOpen && currentUser")
+            div(ng-if="currentUser!=null")
               a(ui-sref="main") Search for a book
               |  to add a listing
-            button.edit(type="button", ng-if="!listingPaneOpen && currentUser && currUserListing", ng-click="openListingPane()")
-              span.symbol &#9998;
-              |  Edit Listing
 
 div.modal-wrapper(
   ng-class="{'visible':offer.active}",
