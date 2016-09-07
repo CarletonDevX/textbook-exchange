@@ -167,7 +167,7 @@ div.listings
             th.price.sortable(ng-click="handleReorder('price')", ng-class="{'active':listingOrder=='price','reversed':reverseSort}") Price
             th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Offer'}}
         tbody(ng-if="whichListings=='both'")
-          tr(ng-repeat="(index, listing) in user.listings | orderBy:listingOrder:reverseSort",
+          tr(ng-repeat="listing in user.listings | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
           tr.make-listing(ng-if="user.userID == currentUser.userID" ng-class="{'inactive':!listingPaneOpen}")
             td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":

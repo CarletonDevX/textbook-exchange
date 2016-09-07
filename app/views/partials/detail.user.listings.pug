@@ -35,7 +35,7 @@ td.make-an-offer(ng-class="(currentUser && offersDict[listing.listingID]) ? 'com
 	button.edit(
 		type="button",
 		ng-if="listing.userID == currentUser.userID",
-		ng-click="openListingPane(listing, index)",
+		ng-click="openListingPane(listing)",
 		ng-hide="removingListingID == listing.listingID") &#9998;
 	button.delete(
 		type="button",

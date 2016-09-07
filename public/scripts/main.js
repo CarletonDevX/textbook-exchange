@@ -1276,11 +1276,10 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     }
   }
 
-  $scope.openListingPane = function(listing, index) {
+  $scope.openListingPane = function(listing) {
     // initializes the listing pane with correct settings
     // cast prices to checkmarks -- should this be done elsewhere?
     //copy the deets of the user's listing into the panel
-    console.log(index);
     $scope.newListing = {
       bookName : listing.book.name,
       condition : $scope.conditionOptions[listing.condition],
