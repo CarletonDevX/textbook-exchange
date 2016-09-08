@@ -176,11 +176,19 @@ div.listings
         tbody(ng-if="whichListings=='selling'")
           tr(ng-repeat-start="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
-          tr.make-listing(ng-if='newListing.listingID == listing.listingID' ng-include="'partials/detail.user.listings.edit'" ng-repeat-end)
+          tr.make-listing(ng-if='newListing.listingID == listing.listingID && listingPaneOpen && currentUser' ng-include="'partials/detail.user.listings.edit'")
+          tr.add-listing(ng-if="newListing.listingID == listing.listingID && listingPaneOpen && currentUser", ng-repeat-end): td(colspan="5")
+            button.cancel(type="button", ng-click="closeListingPane()")
+                span.symbol ×
+                |  Cancel
         tbody(ng-if="whichListings=='renting'")
-          tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+          tr(ng-repeat-start="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
-          tr.make-listing(ng-if='newListing.listingID == listing.listingID' ng-include="'partials/detail.user.listings.edit'" ng-repeat-end)
+          tr.make-listing(ng-if='newListing.listingID == listing.listingID && listingPaneOpen && currentUser' ng-include="'partials/detail.user.listings.edit'")
+          tr.add-listing(ng-if="newListing.listingID == listing.listingID && listingPaneOpen && currentUser", ng-repeat-end): td(colspan="5")
+            button.cancel(type="button", ng-click="closeListingPane()")
+                span.symbol ×
+                |  Cancel
         tfoot
           tr.add-listing: td(colspan="5")
             div(ng-if="currentUser==null")
