@@ -1069,6 +1069,20 @@ table.listings {
     table.listings tbody tr.make-listing td.condition a {
       display: inline-block;
       margin-top: 15px; }
+  table.listings tfoot tr.make-listing.inactive {
+    display: none; }
+  table.listings tfoot tr.make-listing {
+    background-color: #fffcf5; }
+    table.listings tfoot tr.make-listing p {
+      text-align: center; }
+    table.listings tfoot tr.make-listing span.label {
+      width: 4.5em;
+      display: inline-block; }
+    table.listings tfoot tr.make-listing input.price {
+      width: 2em; }
+    table.listings tfoot tr.make-listing td.condition a {
+      display: inline-block;
+      margin-top: 15px; }
   table.listings tfoot tr.add-listing td {
     text-align: center;
     border-bottom: none;

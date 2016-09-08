@@ -397,6 +397,27 @@ table.listings{
     }
   }
   tfoot{
+    tr.make-listing.inactive{
+      display:none;
+    }
+    tr.make-listing{
+      background-color: $row-highlight-color;
+      p{
+        text-align: center;
+      }
+      span.label{
+        width: 4.5em;
+        display: inline-block;
+      }
+      input.price{
+        width:2em;
+      }
+
+      td.condition a {
+        display: inline-block;
+        margin-top: 15px;
+      }
+    }
     tr.add-listing{
       td{
         text-align: center;
