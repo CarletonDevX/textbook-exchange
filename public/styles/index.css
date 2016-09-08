@@ -1029,11 +1029,9 @@ table.listings {
         width: 50%;
         display: inline-block; }
   table.listings tbody td {
-    height: 80px;
     padding: 0; }
   table.listings tbody tr.add-listing td {
     text-align: center;
-    border-bottom: none;
     padding: 0; }
     table.listings tbody tr.add-listing td button {
       font-style: italic;

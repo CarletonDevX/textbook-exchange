@@ -321,15 +321,12 @@ table.listings{
   }
   tbody{
     td{
-      height: $listing-row-height;
       padding:0;
     }
     tr.add-listing{
       td{
         text-align: center;
-        border-bottom: none;
         padding: 0;
-
         $footer-el-height: 2.5em;
         button {
           font-style: italic;
