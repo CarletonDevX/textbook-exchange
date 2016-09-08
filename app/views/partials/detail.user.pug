@@ -191,10 +191,10 @@ div.listings
                 |  Cancel
         tfoot
           tr.add-listing: td(colspan="5")
-            div(ng-if="currentUser==null")
-              a(href='#', ng-click="openAccount()") Sign in
+            div(ng-if="!currentUser")
+              a(href, ng-click="openAccount()") Sign in
               |  to add a listing
-            div(ng-if="currentUser!=null")
+            div(ng-if="currentUser")
               a(ui-sref="main") Search for a book
               |  to add a listing
 
