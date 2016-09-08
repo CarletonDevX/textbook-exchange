@@ -1338,8 +1338,7 @@ hitsTheBooks.controller('userPageController', function($scope, $state, $timeout,
     }, function (err) {
       console.log(err);
     });
-}
-
+  }
 });
 
 // Top-level shit

@@ -1,0 +1,42 @@
+td.label(colspan="2") Edit my listing for "{{ newListing.bookName | limitTo: 20 }}{{newListing.bookName.length > 20 ? '…' : ''}}":
+td.condition
+  select(
+    ng-model="newListing.condition",
+    ng-options="opt.name for opt in conditionOptions track by opt.code"
+  )
+  a.dashed.tooltip(title="{{conditionDescriptions[newListing.condition.code]}}") Definition
+td
+  p
+    input(
+      type="checkbox",
+      id="sellbox",
+      ng-model="newListing.selling",
+      ng-disabled="newListing.selling && !newListing.renting"
+      )
+    span.label Sell for
+    input#sellingPriceInput.price(
+      type="text",
+      ng-model="newListing.sellingPrice",
+      ng-change="validateSellingPrice()"
+      placeholder="$12",
+      ng-disabled="!newListing.selling"
+    )
+  p
+    input(
+      type="checkbox",
+      id="rentbox",
+      ng-model="newListing.renting",
+      ng-disabled="!newListing.selling && newListing.renting"
+      )
+    span.label Rent for
+    input#rentingPriceInput.price(
+      type="text",
+      ng-model="newListing.rentingPrice",
+      ng-change="validateRentingPrice()",
+      placeholder="$12",
+      ng-disabled="!newListing.renting"
+    )
+td.confirm
+  button.confirm(type="submit")
+    span.symbol ✓
+    | Update!

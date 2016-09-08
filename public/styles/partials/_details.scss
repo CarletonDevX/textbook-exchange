@@ -266,7 +266,7 @@ table.listings{
         font-size: 16px;
       }
     }
-    
+
 
     td.make-an-offer.complete-wrapper{
       background-color: #f7f7f7;
@@ -321,8 +321,25 @@ table.listings{
   }
   tbody{
     td{
-      height: $listing-row-height;
       padding:0;
+    }
+    tr.add-listing{
+      td{
+        text-align: center;
+        padding: 0;
+        $footer-el-height: 2.5em;
+        button {
+          font-style: italic;
+          font-family: 'Droid Serif', Serif;
+          width: 100%;
+          height: $footer-el-height;
+          span.symbol{
+            font-size: 16px;
+            display: inline-block;
+            vertical-align: middle;
+          }
+        }
+      }
     }
     table.price-table{
       width: 100%;
@@ -357,9 +374,9 @@ table.listings{
       //     height: 1.5em;
       // }
     }
-  }
-  tfoot{
-    // background-color: white;
+    tr.make-listing.inactive{
+      display:none;
+    }
     tr.make-listing{
       background-color: $row-highlight-color;
       p{
@@ -378,8 +395,28 @@ table.listings{
         margin-top: 15px;
       }
     }
+  }
+  tfoot{
     tr.make-listing.inactive{
       display:none;
+    }
+    tr.make-listing{
+      background-color: $row-highlight-color;
+      p{
+        text-align: center;
+      }
+      span.label{
+        width: 4.5em;
+        display: inline-block;
+      }
+      input.price{
+        width:2em;
+      }
+
+      td.condition a {
+        display: inline-block;
+        margin-top: 15px;
+      }
     }
     tr.add-listing{
       td{
@@ -492,7 +529,7 @@ div#user-image{
 
 div.user-about{
   h2, h3, h4, .edit-names{
-    font-family: 'Droid Sans', serif; 
+    font-family: 'Droid Sans', serif;
   }
   h2{
     margin-top: 0;
@@ -701,7 +738,7 @@ form.about small{
   font-size: 10pt;
   float: left;
   a.delete{
-    color: #b51f1f; 
+    color: #b51f1f;
   }
   a.logout{
     color: black;

@@ -1029,8 +1029,19 @@ table.listings {
         width: 50%;
         display: inline-block; }
   table.listings tbody td {
-    height: 80px;
     padding: 0; }
+  table.listings tbody tr.add-listing td {
+    text-align: center;
+    padding: 0; }
+    table.listings tbody tr.add-listing td button {
+      font-style: italic;
+      font-family: 'Droid Serif', Serif;
+      width: 100%;
+      height: 2.5em; }
+      table.listings tbody tr.add-listing td button span.symbol {
+        font-size: 16px;
+        display: inline-block;
+        vertical-align: middle; }
   table.listings tbody table.price-table {
     width: 100%;
     height: 79px;
@@ -1044,6 +1055,22 @@ table.listings {
       border-bottom: none; }
     table.listings tbody table.price-table tr:first-child {
       border-bottom: 1px solid #eee; }
+  table.listings tbody tr.make-listing.inactive {
+    display: none; }
+  table.listings tbody tr.make-listing {
+    background-color: #fffcf5; }
+    table.listings tbody tr.make-listing p {
+      text-align: center; }
+    table.listings tbody tr.make-listing span.label {
+      width: 4.5em;
+      display: inline-block; }
+    table.listings tbody tr.make-listing input.price {
+      width: 2em; }
+    table.listings tbody tr.make-listing td.condition a {
+      display: inline-block;
+      margin-top: 15px; }
+  table.listings tfoot tr.make-listing.inactive {
+    display: none; }
   table.listings tfoot tr.make-listing {
     background-color: #fffcf5; }
     table.listings tfoot tr.make-listing p {
@@ -1056,8 +1083,6 @@ table.listings {
     table.listings tfoot tr.make-listing td.condition a {
       display: inline-block;
       margin-top: 15px; }
-  table.listings tfoot tr.make-listing.inactive {
-    display: none; }
   table.listings tfoot tr.add-listing td {
     text-align: center;
     border-bottom: none;
