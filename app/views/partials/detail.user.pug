@@ -168,13 +168,15 @@ div.listings
             th.contact {{ user.userID == currentUser.userID ? 'Edit' : 'Offer'}}
         tbody(ng-if="whichListings=='both'")
           tr(ng-include="'partials/detail.user.listings'" ng-repeat-start="listing in user.listings | orderBy:listingOrder:reverseSort")
-          tr(ng-if='newListing.listingID == listing.listingID' ng-include='partials/detail.book.edit' ng-repeat-end)
+          tr.make-listing(ng-if='newListing.listingID == listing.listingID' ng-include="'partials/detail.user.listings.edit'" ng-repeat-end)
         tbody(ng-if="whichListings=='selling'")
-          tr(ng-repeat="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
+          tr(ng-repeat-start="listing in user.listings | filter:{sellingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
+          tr.make-listing(ng-if='newListing.listingID == listing.listingID' ng-include="'partials/detail.user.listings.edit'" ng-repeat-end)
         tbody(ng-if="whichListings=='renting'")
           tr(ng-repeat="listing in user.listings | filter:{rentingPrice:'!!'} | orderBy:listingOrder:reverseSort",
              ng-include="'partials/detail.user.listings'")
+          tr.make-listing(ng-if='newListing.listingID == listing.listingID' ng-include="'partials/detail.user.listings.edit'" ng-repeat-end)
         tfoot
           tr.add-listing: td(colspan="5")
             div(ng-if="currentUser==null")
